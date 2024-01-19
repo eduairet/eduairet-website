@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.scss';
+import NavBar from '@/components/ui/NavBar/NavBar';
+import StoreProvider from '@/store/StoreProvider';
 
 export const metadata: Metadata = {
   title: "eat's portfolio",
@@ -13,11 +15,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
-      <head>
-        <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT}></link>
-      </head>
-      <body>{children}</body>
-    </html>
+    <StoreProvider>
+      <html lang='en'>
+        <head>
+          <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT}></link>
+        </head>
+        <body>
+          <NavBar />
+          {children}
+        </body>
+      </html>
+    </StoreProvider>
   );
 }

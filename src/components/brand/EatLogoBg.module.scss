@@ -1,0 +1,13 @@
+.picture {
+  background-color: var(--foreground);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 5px solid var(--foreground);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  svg {
+    fill: var(--background);
+  }
+}

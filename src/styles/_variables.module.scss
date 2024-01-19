@@ -1,0 +1,14 @@
+// Colors
+$black: #000;
+$white: #fff;
+$accent: #f00;
+
+// Sizes
+$max-width: 1080px;
+
+:export {
+  black: $black;
+  white: $white;
+  accent: $accent;
+  maxWidth: $max-width;
+}

@@ -1,0 +1,16 @@
+$theme-button-size: 40px;
+
+.theme-button {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: $theme-button-size;
+  height: $theme-button-size;
+  border-radius: 50%;
+  border: 3px solid var(--foreground);
+  background-color: var(--background);
+  padding: 5px 2px 2px;
+  svg {
+    fill: var(--foreground);
+  }
+}

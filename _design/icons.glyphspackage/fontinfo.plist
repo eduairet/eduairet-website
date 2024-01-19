@@ -1,0 +1,92 @@
+{
+.appVersion = "3221";
+.formatVersion = 3;
+axes = (
+{
+name = Weight;
+tag = wght;
+}
+);
+date = "2024-01-19 02:33:26 +0000";
+familyName = "Eat Icons";
+fontMaster = (
+{
+axesValues = (
+100
+);
+id = m01;
+metricValues = (
+{
+over = 16;
+pos = 800;
+},
+{
+over = -16;
+},
+{
+over = -16;
+pos = -200;
+},
+{
+},
+{
+},
+{
+}
+);
+name = Light;
+userData = {
+GSCornerRadius = 40;
+};
+},
+{
+axesValues = (
+900
+);
+id = "E3608475-D469-4DB9-8D65-CFEC6BFE02BE";
+metricValues = (
+{
+over = 16;
+pos = 800;
+},
+{
+over = -16;
+},
+{
+over = -16;
+pos = -200;
+},
+{
+},
+{
+},
+{
+}
+);
+name = Dark;
+}
+);
+metrics = (
+{
+type = ascender;
+},
+{
+type = baseline;
+},
+{
+type = descender;
+},
+{
+type = "cap height";
+},
+{
+type = "x-height";
+},
+{
+type = "italic angle";
+}
+);
+unitsPerEm = 1000;
+versionMajor = 1;
+versionMinor = 0;
+}
