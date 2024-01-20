@@ -1,25 +1,40 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { useContext } from 'react';
+import { LanguageContext } from '@/store/LanguageContext';
 import styles from './NavBar.module.scss';
-import Link from 'next/link';
-import ThemeButton from '../ThemeButton/ThemeButton';
+import { Lang } from '@/models';
+import NavLink from '../NavLink/NavLink';
 
 export default function NavBar() {
-  const pathname = usePathname();
+  const { language, updateLanguage } = useContext(LanguageContext);
 
   return (
-    <nav className={styles.nav}>
-      {/*<ul className={styles.actions}>
-        <li>
-          <Link href='/' className={pathname == '/' ? 'active' : ''}>
-            Home
-          </Link>
-        </li>
-      </ul>*/}
-      <div className={styles.actions}>
-        <ThemeButton />
-      </div>
-    </nav>
+    <>
+      <nav className={styles.nav}>
+        <ul className={styles.actions}>
+          <li>
+            <NavLink href='/' text='Home' />
+          </li>
+        </ul>
+        <ul className={styles.actions}>
+          <li className={styles.languages}>
+            <button
+              className={language === Lang.EN ? styles.active : ''}
+              onClick={() => updateLanguage(Lang.EN)}
+            >
+              {language == Lang.EN ? 'ENG' : 'ING'}
+            </button>
+            <button
+              className={language === Lang.SP ? styles.active : ''}
+              onClick={() => updateLanguage(Lang.SP)}
+            >
+              {language == Lang.EN ? 'SPN' : 'ESP'}
+            </button>
+          </li>
+        </ul>
+      </nav>
+      <div className={styles.divider}></div>
+    </>
   );
 }

@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import '@/styles/globals.scss';
 import NavBar from '@/components/ui/NavBar/NavBar';
 import StoreProvider from '@/store/StoreProvider';
+import Footer from '@/components/ui/Footer/Footer';
+import MainWrapper from '@/components/layout/MainWrapper';
 
 export const metadata: Metadata = {
   title: "eat's portfolio",
@@ -22,7 +24,8 @@ export default function RootLayout({
         </head>
         <body>
           <NavBar />
-          {children}
+          <MainWrapper>{children}</MainWrapper>
+          <Footer />
         </body>
       </html>
     </StoreProvider>

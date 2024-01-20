@@ -1,25 +1,52 @@
+$header-height: 90px;
+
 .nav {
-  position: fixed;
-  padding: 2rem 1rem;
+  height: $header-height;
   width: 100vw;
-  margin: 0 auto;
+  padding: 1rem 2rem;
+  max-width: $max-width;
+  position: fixed;
+  top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
   li {
     display: inline-block;
-    margin: 0 1rem;
     a {
-      font-size: 1.25rem;
       font-variation-settings: 'wght' 400, 'opsz' 12;
+    }
+    &.languages {
+      color: var(--foreground);
+      display: flex;
+      gap: 0.5rem;
+
+      button {
+        color: var(--foreground);
+        border: none;
+        background: none;
+        font-variation-settings: 'wght' 400, 'opsz' 12;
+        cursor: pointer;
+        transition: color 0.2s ease-in-out;
+
+        &:hover {
+          font-variation-settings: 'wght' 700;
+        }
+
+        &.active {
+          color: $accent;
+        }
+      }
     }
   }
 }
 
 .actions {
   max-width: $max-width;
-  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.divider {
+  height: $header-height;
 }

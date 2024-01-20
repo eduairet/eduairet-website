@@ -2,12 +2,12 @@
 
 import { createContext, useState, useEffect, ReactNode } from 'react';
 
-type ThemeContextType = {
+interface IThemeContext {
   darkMode: boolean;
   toggleDarkMode: () => void;
-};
+}
 
-export const ThemeContext = createContext<ThemeContextType>({
+export const ThemeContext = createContext<IThemeContext>({
   darkMode: false,
   toggleDarkMode: () => {},
 });
