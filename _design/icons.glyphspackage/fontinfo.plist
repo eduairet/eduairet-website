@@ -1,5 +1,5 @@
 {
-.appVersion = "3221";
+.appVersion = "3234";
 .formatVersion = 3;
 axes = (
 {
@@ -14,6 +14,7 @@ fontMaster = (
 axesValues = (
 100
 );
+iconName = Light;
 id = m01;
 metricValues = (
 {
@@ -37,6 +38,11 @@ pos = -200;
 name = Light;
 userData = {
 GSCornerRadius = 40;
+GSExtrudeAngle = 30;
+GSExtrudeOffset = 15;
+GSOffsetHorizontal = 50;
+GSOffsetProportional = 1;
+GSOffsetVertical = 10;
 };
 },
 {
