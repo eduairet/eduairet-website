@@ -45,16 +45,18 @@ a {
   text-decoration: none;
   transition: color 0.2s ease-in-out;
   &:hover,
-  &:focus,
   &:active,
   &.active {
     color: $accent;
     font-variation-settings: 'wght' 700;
   }
-  &:focus,
   &:focus-visible {
-    outline: 3px solid $accent;
-    border-radius: 3px;
-    outline-offset: 3px;
+    @include accessibility-outline;
+  }
+}
+
+button {
+  &:focus-visible {
+    @include accessibility-outline;
   }
 }

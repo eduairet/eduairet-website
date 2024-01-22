@@ -1,0 +1,4 @@
+@mixin accessibility-outline {
+  outline: 3px solid $accent;
+  outline-offset: 3px;
+}
