@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.scss';
 import NavBar from '@/components/ui/NavBar/NavBar';
+import EatLogoBg from '@/components/brand/EatLogoBg';
 import StoreProvider from '@/store/StoreProvider';
 import Footer from '@/components/ui/Footer/Footer';
 import MainWrapper from '@/components/layout/MainWrapper';
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
   title: "eat's portfolio",
   description:
     'Eduardo Aire Torres professional portfolio, development and design',
+  themeColor: 'var(--background',
 };
 
 export default function RootLayout({
@@ -24,7 +26,10 @@ export default function RootLayout({
         </head>
         <body>
           <NavBar />
-          <MainWrapper>{children}</MainWrapper>
+          <MainWrapper>
+            <EatLogoBg />
+            {children}
+          </MainWrapper>
           <Footer />
         </body>
       </html>

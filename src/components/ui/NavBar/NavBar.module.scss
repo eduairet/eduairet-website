@@ -10,17 +10,20 @@ $header-height: 90px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
+
   li {
-    display: inline-block;
-    a {
-      font-variation-settings: 'wght' 400, 'opsz' 12;
-    }
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+
     &.languages {
       color: var(--foreground);
       display: flex;
       gap: 0.5rem;
 
       button {
+        font-size: 1rem;
         color: var(--foreground);
         border: none;
         background: none;
@@ -34,6 +37,7 @@ $header-height: 90px;
 
         &.active {
           color: $accent;
+          font-variation-settings: 'wght' 700;
         }
       }
     }
@@ -45,6 +49,7 @@ $header-height: 90px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .divider {

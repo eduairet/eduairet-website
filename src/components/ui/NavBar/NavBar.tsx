@@ -13,9 +13,11 @@ export default function NavBar() {
     <>
       <nav className={styles.nav}>
         <ul className={styles.actions}>
-          <li>
-            <NavLink href='/' text='Home' />
-          </li>
+          <NavLink href='/' text='Home' />
+          <NavLink
+            href='/contact'
+            text={language === Lang.SP ? 'Contacto' : 'Contact'}
+          />
         </ul>
         <ul className={styles.actions}>
           <li className={styles.languages}>

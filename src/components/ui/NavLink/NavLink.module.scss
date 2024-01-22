@@ -1,0 +1,13 @@
+.nav-link {
+  a {
+    font-size: 1rem;
+    text-transform: uppercase;
+    display: inline-block;
+    font-variation-settings: 'wght' 400, 'opsz' 12;
+
+    &.active {
+      color: $accent;
+      font-variation-settings: 'wght' 700;
+    }
+  }
+}

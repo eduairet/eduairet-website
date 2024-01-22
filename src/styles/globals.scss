@@ -49,6 +49,7 @@ a {
   &:active,
   &.active {
     color: $accent;
+    font-variation-settings: 'wght' 700;
   }
   &:focus,
   &:focus-visible {
