@@ -3,10 +3,10 @@ import { Lang } from '@/models';
 
 interface IProps {
   params: {
-    lang: string;
+    locale: string;
   };
 }
 
-export default function Home({ params: { lang } }: IProps) {
-  return <HomeContent lang={lang as Lang} />;
+export default function Home({ params: { locale } }: IProps) {
+  return <HomeContent lang={locale as Lang} />;
 }

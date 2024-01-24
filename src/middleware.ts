@@ -1,16 +1,27 @@
+import { NextRequest } from 'next/server';
+
 let locales = ['en', 'es'];
 
 function getLocale(request: { headers: { [x: string]: any } }) {
   let language = request.headers['accept-language'];
+  if (!language) return locales[0];
   let locale = locales.find((locale) => language.includes(locale));
   return locale || locales[0];
 }
 
-export function middleware(request: {
-  nextUrl?: any;
-  headers?: { [x: string]: any };
-}) {
+const PUBLIC_FILE = /\.(.*)$/;
+
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
+
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.includes('/api/') ||
+    PUBLIC_FILE.test(pathname)
+  ) {
+    return;
+  }
+
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );

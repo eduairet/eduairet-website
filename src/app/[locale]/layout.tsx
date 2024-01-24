@@ -17,23 +17,23 @@ export const metadata: Metadata = {
 interface IProps {
   children: ReactNode;
   params: {
-    lang: string;
+    locale: string;
   };
 }
 
 export async function generateStaticParams() {
-  return [{ lang: 'en' }, { lang: 'es' }];
+  return [{ locale: 'en' }, { locale: 'es' }];
 }
 
-export default function RootLayout({ children, params: { lang } }: IProps) {
+export default function RootLayout({ children, params: { locale } }: IProps) {
   return (
     <StoreProvider>
-      <html lang={lang}>
+      <html lang={locale}>
         <head>
           <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT}></link>
         </head>
         <body>
-          <NavBar lang={lang as Lang} />
+          <NavBar lang={locale as Lang} />
           <MainWrapper>
             <EatLogoBg />
             {children}
