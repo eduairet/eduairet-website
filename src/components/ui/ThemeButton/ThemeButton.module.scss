@@ -1,4 +1,4 @@
-$theme-button-size: 40px;
+$theme-button-size: 30px;
 
 .theme-button {
   cursor: pointer;
@@ -10,6 +10,13 @@ $theme-button-size: 40px;
   border: 3px solid var(--foreground);
   background-color: var(--background);
   padding: 5px 2px 2px;
+  transition: border-color 0.2s ease-in-out;
+  &:hover {
+    border-color: $accent;
+    & svg {
+      fill: $accent;
+    }
+  }
   svg {
     fill: var(--foreground);
   }

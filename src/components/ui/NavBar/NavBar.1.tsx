@@ -1,16 +1,11 @@
 'use client';
-
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import styles from './NavBar.module.scss';
 import { Lang } from '@/models';
 import NavLink from '../NavLink/NavLink';
 
-interface IProps {
-  lang: Lang;
-}
-
-export default function NavBar({ lang }: IProps) {
+export default function NavBar({ lang }: { lang: Lang }) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -36,9 +31,7 @@ export default function NavBar({ lang }: IProps) {
             </button>
             <button
               className={lang === Lang.SP ? styles.active : ''}
-              onClick={() => {
-                return router.push(pathname.replace(Lang.EN, Lang.SP));
-              }}
+              onClick={() => router.push(pathname.replace(Lang.EN, Lang.SP))}
             >
               {lang == Lang.EN ? 'SPN' : 'ESP'}
             </button>
