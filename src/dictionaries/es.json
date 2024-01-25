@@ -1,0 +1,14 @@
+{
+  "nav": {
+    "home": "Home",
+    "contact": "Contacto",
+    "langs": {
+      "en": "ING",
+      "es": "ESP"
+    }
+  },
+  "home": {
+    "subtitle": "Desarrollador • Diseñador • Artista",
+    "text": "Próximamente…"
+  }
+}

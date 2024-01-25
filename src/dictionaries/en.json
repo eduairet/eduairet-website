@@ -1,0 +1,14 @@
+{
+  "nav": {
+    "home": "Home",
+    "contact": "Contact",
+    "langs": {
+      "en": "ENG",
+      "es": "SPN"
+    }
+  },
+  "home": {
+    "subtitle": "Developer • Designer • Artist",
+    "text": "Coming soon…"
+  }
+}

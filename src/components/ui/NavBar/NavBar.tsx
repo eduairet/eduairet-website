@@ -1,48 +1,34 @@
-'use client';
-
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/navigation';
 import styles from './NavBar.module.scss';
 import { Lang } from '@/models';
+import { getDictionary } from '@/app/[locale]/dictionaries';
 import NavLink from '../NavLink/NavLink';
 
 interface IProps {
   lang: Lang;
+  pathname: string;
 }
 
-export default function NavBar({ lang }: IProps) {
-  const router = useRouter();
-  const pathname = usePathname();
+export default async function NavBar({ lang, pathname }: IProps) {
+  const content = await getDictionary(lang);
 
   return (
     <>
       <nav className={styles.nav}>
         <ul className={styles.actions}>
-          <NavLink href={`/${lang}`} text='Home' />
-          <NavLink
-            href={`/${lang}/contact`}
-            text={lang === Lang.SP ? 'Contacto' : 'Contact'}
-          />
+          <NavLink href={`/${lang}`} text={content.nav.home} />
+          <NavLink href={`/${lang}/contact`} text={content.nav.contact} />
         </ul>
         <ul className={styles.actions}>
-          <li className={styles.languages}>
-            <button
-              className={lang === Lang.EN ? styles.active : ''}
-              onClick={() => {
-                return router.push(pathname.replace(Lang.SP, Lang.EN));
-              }}
-            >
-              {lang == Lang.EN ? 'ENG' : 'ING'}
-            </button>
-            <button
-              className={lang === Lang.SP ? styles.active : ''}
-              onClick={() => {
-                return router.push(pathname.replace(Lang.EN, Lang.SP));
-              }}
-            >
-              {lang == Lang.EN ? 'SPN' : 'ESP'}
-            </button>
-          </li>
+          <NavLink
+            href={pathname.replace('es', 'en')}
+            text={content.nav.langs.en}
+            isLangLink
+          />
+          <NavLink
+            href={pathname.replace('en', 'es')}
+            text={content.nav.langs.es}
+            isLangLink
+          />
         </ul>
       </nav>
       <div className={styles.divider}></div>

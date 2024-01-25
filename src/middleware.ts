@@ -1,11 +1,11 @@
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 let locales = ['en', 'es'];
 
 function getLocale(request: { headers: { [x: string]: any } }) {
   let language = request.headers['accept-language'];
   if (!language) return locales[0];
-  let locale = locales.find((locale) => locale.includes(language));
+  let locale = locales.find((locale) => language.includes(locale));
   return locale || locales[0];
 }
 
@@ -25,7 +25,17 @@ export function middleware(request: NextRequest) {
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
-  if (pathnameHasLocale) return;
+  if (pathnameHasLocale) {
+    const requestHeaders = new Headers(request.headers);
+    requestHeaders.set('x-pathname', request.nextUrl.pathname);
+
+    return NextResponse.next({
+      request: {
+        headers: requestHeaders,
+      },
+    });
+  }
+
   const locale = getLocale({ headers: request.headers || {} });
   request.nextUrl.pathname = `/${locale}${pathname}`;
   return Response.redirect(request.nextUrl);

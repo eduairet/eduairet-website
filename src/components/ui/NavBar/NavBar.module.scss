@@ -16,31 +16,6 @@ $header-height: 90px;
     list-style-type: none;
     margin: 0;
     padding: 0;
-
-    &.languages {
-      color: var(--foreground);
-      display: flex;
-      gap: 0.5rem;
-
-      button {
-        font-size: 1rem;
-        color: var(--foreground);
-        border: none;
-        background: none;
-        font-variation-settings: 'wght' 400, 'opsz' 12;
-        cursor: pointer;
-        transition: color 0.2s ease-in-out;
-
-        &:hover {
-          font-variation-settings: 'wght' 700;
-        }
-
-        &.active {
-          color: $accent;
-          font-variation-settings: 'wght' 700;
-        }
-      }
-    }
   }
 }
 
