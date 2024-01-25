@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
-import { headers } from 'next/headers';
 import '@/styles/globals.scss';
 import StoreProvider from '@/store/StoreProvider';
 import NavBar from '@/components/ui/NavBar/NavBar';
@@ -23,8 +22,6 @@ interface IProps {
 }
 
 export default function RootLayout({ children, params: { locale } }: IProps) {
-  const pathname = headers().get('x-pathname') as string;
-
   return (
     <StoreProvider>
       <html lang={locale}>
@@ -32,7 +29,7 @@ export default function RootLayout({ children, params: { locale } }: IProps) {
           <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT}></link>
         </head>
         <body>
-          <NavBar lang={locale} pathname={pathname} />
+          <NavBar lang={locale} />
           <MainWrapper>
             <EatLogoBg />
             {children}

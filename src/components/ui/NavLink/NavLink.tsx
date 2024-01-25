@@ -19,9 +19,14 @@ export default function NavLink({ href, text, isLangLink = false }: IProps) {
     return pathname == href;
   };
 
+  const setHref = () => {
+    if (!isLangLink) return href;
+    return `${href}/${pathname.replace(/^\/[^\/]+\//, '')}`;
+  };
+
   return (
     <li className={styles['nav-link']}>
-      <Link href={href} className={isActive() ? styles.active : ''}>
+      <Link href={setHref()} className={isActive() ? styles.active : ''}>
         {text}
       </Link>
     </li>
