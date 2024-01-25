@@ -16,7 +16,7 @@ export function middleware(request: NextRequest) {
 
   if (
     pathname.startsWith('/_next') ||
-    pathname.includes('/api/') ||
+    pathname.includes('/api') ||
     PUBLIC_FILE.test(pathname)
   ) {
     return;

@@ -1,13 +1,13 @@
-import CurrentDate from '../CurrentDate/CurrentDate';
-import ThemeButton from '../ThemeButton/ThemeButton';
+import { getYear } from '@/services';
 import styles from './Footer.module.scss';
+import ThemeButton from '../ThemeButton/ThemeButton';
 
-export default function Footer() {
+export default async function Footer() {
+  const currentYear = await getYear();
+
   return (
     <footer className={styles.footer}>
-      <p>
-        Eduardo Aire Torres <CurrentDate />
-      </p>
+      <p>Eduardo Aire Torres {currentYear}</p>
       <ThemeButton />
     </footer>
   );
