@@ -5,7 +5,7 @@ let locales = ['en', 'es'];
 function getLocale(request: { headers: { [x: string]: any } }) {
   let language = request.headers['accept-language'];
   if (!language) return locales[0];
-  let locale = locales.find((locale) => language.includes(locale));
+  let locale = locales.find((locale) => locale.includes(language));
   return locale || locales[0];
 }
 
