@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
-let locales = ['en', 'es'];
+const locales = ['en', 'es'];
+const defaultLocale = locales[0];
 
-function getLocale(request: { headers: { [x: string]: any } }) {
-  let language = request.headers['accept-language'];
-  if (!language) return locales[0];
-  let locale = locales.find((locale) => language.includes(locale));
-  return locale || locales[0];
+function getLocale(request: NextRequest) {
+  let language = request.headers.get('accept-language') || '';
+  if (language.includes('es')) return locales[1];
+  return defaultLocale;
 }
 
 const PUBLIC_FILE = /\.(.*)$/;
@@ -36,7 +36,7 @@ export function middleware(request: NextRequest) {
     });
   }
 
-  const locale = getLocale({ headers: request.headers || {} });
+  const locale = getLocale(request);
   request.nextUrl.pathname = `/${locale}${pathname}`;
   return Response.redirect(request.nextUrl);
 }
