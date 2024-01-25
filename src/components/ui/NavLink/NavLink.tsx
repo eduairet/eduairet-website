@@ -21,7 +21,10 @@ export default function NavLink({ href, text, isLangLink = false }: IProps) {
 
   const setHref = () => {
     if (!isLangLink) return href;
-    return `${href}/${pathname.replace(/^\/[^\/]+\//, '')}`;
+    const newHref = pathname
+      .replace(params.locale as string, '')
+      .replace(/\/{2,}/g, '/');
+    return `${href}${newHref}`;
   };
 
   return (
