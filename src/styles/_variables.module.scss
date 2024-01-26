@@ -5,10 +5,16 @@ $accent: #f00;
 
 // Sizes
 $max-width: 1080px;
+$icon-button-size: 30px;
+
+// Transitions and animations
+$default-time: 0.25s;
 
 :export {
   black: $black;
   white: $white;
   accent: $accent;
   maxWidth: $max-width;
+  iconButtonSize: $icon-button-size;
+  defaultTime: $default-time;
 }

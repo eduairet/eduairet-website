@@ -2,3 +2,20 @@
   outline: 3px solid $accent;
   outline-offset: 3px;
 }
+
+@mixin merge-transitions(
+  $properties,
+  $time: $default-time,
+  $timing-function: ease-in-out
+) {
+  $transition-list: ();
+  $property-list: $properties;
+  @each $property in $property-list {
+    $transition-list: append(
+      $transition-list,
+      $property $time $timing-function,
+      comma
+    );
+  }
+  transition: $transition-list;
+}

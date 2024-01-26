@@ -3,12 +3,14 @@ import styles from './SvgWrapper.module.scss';
 
 interface IProps {
   children: ReactNode;
+  className?: string;
   width?: number;
   height?: number;
 }
 
 export default function SvgWrapper({
   children,
+  className,
   width = 100,
   height = 100,
 }: IProps) {
@@ -19,7 +21,7 @@ export default function SvgWrapper({
       height={height}
       viewBox={`0 0 ${width} ${height}`}
       xmlSpace='preserve'
-      className={styles['svg-wrapper']}
+      className={className || ''}
     >
       {children}
     </svg>

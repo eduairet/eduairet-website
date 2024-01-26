@@ -1,4 +1,5 @@
-@import './variables.module.scss';
+@import './_variables.module.scss';
+@import './_mixins.module.scss';
 
 * {
   box-sizing: border-box;
@@ -24,7 +25,8 @@ body {
   justify-content: space-between;
   background-color: var(--background);
   color: var(--foreground);
-  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+  @include merge-transitions((background-color));
+
   &[data-theme='dark'] {
     --background: black;
     --foreground: white;
@@ -43,13 +45,19 @@ h6 {
 a {
   color: currentColor;
   text-decoration: none;
-  transition: color 0.2s ease-in-out;
+  font-variation-settings: 'wght' 400, 'opsz' 12;
+  @include merge-transitions((color, font-variation-settings));
+
   &:hover,
   &:active,
   &.active {
-    color: $accent;
-    font-variation-settings: 'wght' 700;
+    font-variation-settings: 'wght' 700, 'opsz' 16;
   }
+
+  &.active {
+    color: $accent;
+  }
+
   &:focus-visible {
     @include accessibility-outline;
   }

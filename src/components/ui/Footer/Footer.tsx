@@ -1,6 +1,6 @@
 import { getYear } from '@/services';
 import styles from './Footer.module.scss';
-import ThemeButton from '../ThemeButton/ThemeButton';
+import ThemeButton from '../../svg/ThemeButton';
 
 export default async function Footer() {
   const currentYear = await getYear();

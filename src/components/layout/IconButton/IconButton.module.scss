@@ -1,0 +1,28 @@
+.icon-button {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $icon-button-size;
+  height: $icon-button-size;
+  border-radius: 50%;
+  border: 2px solid var(--foreground);
+  background-color: transparent;
+  @include merge-transitions((border-color));
+
+  & svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--foreground);
+    @include merge-transitions((fill));
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: $accent;
+      & svg {
+        fill: $accent;
+      }
+    }
+  }
+}
