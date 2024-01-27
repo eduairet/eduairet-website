@@ -1,5 +1,3 @@
-import { Lang } from '@/models';
-
 export default function Custom404() {
   return (
     <div>
