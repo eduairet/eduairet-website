@@ -1,12 +1,11 @@
 'use client';
 
-import { useContext } from 'react';
-import { ThemeContext } from '@/store/ThemeContext';
 import useLanguage from '@/hooks/useLanguage';
 import IconButton from '@/components/layout/IconButton/IconButton';
+import useDarkMode from '@/hooks/useDarkMode';
 
 export default function ThemeButton() {
-  const { darkMode, toggleDarkMode } = useContext(ThemeContext);
+  const { darkMode, toggleDarkMode } = useDarkMode();
   const language = useLanguage();
 
   const toggleTheme = () => {

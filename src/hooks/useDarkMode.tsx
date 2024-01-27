@@ -1,21 +1,8 @@
 'use client';
 
-import { createContext, useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect } from 'react';
 
-interface IThemeContext {
-  darkMode: boolean;
-  toggleDarkMode: () => void;
-}
-
-export const ThemeContext = createContext<IThemeContext>({
-  darkMode: false,
-  toggleDarkMode: () => {},
-});
-
-interface IProps {
-  children?: ReactNode;
-}
-export const ThemeProvider = (props: IProps) => {
+export default function useDarkMode() {
   const [darkMode, setDarkMode] = useState(false);
 
   const toggleDarkMode = () => {
@@ -35,9 +22,5 @@ export const ThemeProvider = (props: IProps) => {
     localStorage.setItem('theme', theme);
   }, []);
 
-  return (
-    <ThemeContext.Provider value={{ darkMode, toggleDarkMode }}>
-      {props.children}
-    </ThemeContext.Provider>
-  );
-};
+  return { darkMode, toggleDarkMode };
+}
