@@ -1,6 +1,7 @@
 # Eduardo Aire Portfolio
 
-![EAT Logo](./_docs/img/eat-logo-100px.svg)
+![Fancy logo](./_docs/img/eat-logo-100px-white.svg#gh-dark-mode-only)
+![Fancy logo](./_docs/img/eat-logo-100px-black.svg#gh-light-mode-only)
 
 ## eduairet.com
 
