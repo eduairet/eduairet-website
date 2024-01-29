@@ -1,10 +1,11 @@
 // Colors
-$black: #000;
-$white: #fff;
+$black: #030303;
+$white: #ededed;
 $accent: #f00;
 
 // Sizes
 $max-width: 1080px;
+$header-height: 90px;
 $icon-button-size: 30px;
 
 // Transitions and animations
@@ -15,6 +16,7 @@ $default-time: 0.25s;
   white: $white;
   accent: $accent;
   maxWidth: $max-width;
+  headerHeight: $header-height;
   iconButtonSize: $icon-button-size;
   defaultTime: $default-time;
 }

@@ -1,5 +1,10 @@
 @import './_variables.module.scss';
-@import './_mixins.module.scss';
+@import '@/styles/_mixins.module.scss';
+
+:root {
+  --background: #030303;
+  --foreground: #ededed;
+}
 
 * {
   box-sizing: border-box;
@@ -8,11 +13,6 @@
   font-family: degular-variable, sans-serif;
   font-variation-settings: 'wght' 400, 'ital' 0, 'opsz' 16;
   text-align: center;
-}
-
-:root {
-  --background: white;
-  --foreground: black;
 }
 
 html,
@@ -31,9 +31,9 @@ body {
   align-items: center;
   justify-content: space-between;
 
-  &[data-theme='dark'] {
-    --background: black;
-    --foreground: white;
+  &[data-theme='light'] {
+    --background: #ededed;
+    --foreground: #030303;
   }
 }
 

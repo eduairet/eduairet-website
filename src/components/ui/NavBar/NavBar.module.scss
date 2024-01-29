@@ -1,4 +1,4 @@
-$header-height: 90px;
+@import '@/styles/_variables.module.scss';
 
 .nav {
   height: $header-height;

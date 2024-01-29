@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+import variables from '@/styles/_variables.module.scss';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
@@ -7,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'Eduardo Aire Torres portfolio',
     start_url: '/en',
     display: 'standalone',
-    background_color: '#000',
-    theme_color: '#000',
+    background_color: variables.black,
+    theme_color: variables.black,
     icons: [
       {
         src: '/favicon.ico',
