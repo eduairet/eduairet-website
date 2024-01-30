@@ -2,7 +2,7 @@
 @import '@/styles/_mixins.module.scss';
 
 :root {
-  --background: #030303;
+  --background: #000;
   --foreground: #ededed;
 }
 
@@ -33,7 +33,7 @@ body {
 
   &[data-theme='light'] {
     --background: #ededed;
-    --foreground: #030303;
+    --foreground: #000;
   }
 }
 
