@@ -1,17 +1,9 @@
 import { type NextRequest, NextResponse } from 'next/server';
-
-const locales = ['en', 'es'];
-const defaultLocale = locales[0];
-
-function getLocale(request: NextRequest) {
-  let language = request.headers.get('accept-language') || '';
-  if (language.includes('es')) return locales[1];
-  return defaultLocale;
-}
+import { locales, getLocale } from './utils/localization.utils';
 
 const PUBLIC_FILE = /\.(.*)$/;
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (
