@@ -1,4 +1,3 @@
-import { headers } from 'next/headers';
 import styles from './NavBar.module.scss';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import { Lang } from '@/models';

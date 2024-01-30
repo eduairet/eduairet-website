@@ -1,9 +1,10 @@
 'use client';
 
+import { useContext } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './NavLink.module.scss';
-import useLanguage from '@/hooks/useLanguage';
+import { LanguageContext } from '@/store/LanguageProvider';
 
 interface IProps {
   href: string;
@@ -13,16 +14,16 @@ interface IProps {
 
 export default function NavLink({ href, text, isLangLink = false }: IProps) {
   const pathname = usePathname();
-  const language = useLanguage();
+  const { locale } = useContext(LanguageContext);
 
   const isActive = () => {
-    if (isLangLink) return href.includes(language);
+    if (isLangLink) return href.includes(locale);
     return pathname == href;
   };
 
   const setHref = () => {
     if (!isLangLink) return href;
-    const newHref = pathname.replace(language, '').replace(/\/{2,}/g, '/');
+    const newHref = pathname.replace(locale, '').replace(/\/{2,}/g, '/');
     return `${href}${newHref}`;
   };
 

@@ -10,5 +10,10 @@
   "home": {
     "subtitle": "Developer • Designer • Artist",
     "text": "Coming soon…"
+  },
+  "client": {
+    "themeButton": {
+      "ariaLabel": "Toggle Theme Button"
+    }
   }
 }

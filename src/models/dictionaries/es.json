@@ -10,5 +10,10 @@
   "home": {
     "subtitle": "Desarrollador • Diseñador • Artista",
     "text": "Próximamente…"
+  },
+  "client": {
+    "themeButton": {
+      "ariaLabel": "Botón para cambiar de tema"
+    }
   }
 }
