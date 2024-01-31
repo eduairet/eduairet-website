@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-import styles from './SvgWrapper.module.scss';
 
 interface IProps {
   children: ReactNode;

@@ -10,6 +10,7 @@ compiled/
 
 lerna.json
 test-timings.json
+package.json
 pnpm-lock.yaml
 
 packages/next/src/bundles/webpack/packages/*.runtime.js
