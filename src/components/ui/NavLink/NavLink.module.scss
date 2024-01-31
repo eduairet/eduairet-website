@@ -9,6 +9,11 @@
       color: $accent;
       pointer-events: none;
       font-variation-settings: 'wght' 700, 'opsz' 16;
+
+      &::before {
+        transform-origin: left;
+        transform: scaleX(1);
+      }
     }
   }
 }

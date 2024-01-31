@@ -13,6 +13,10 @@
   background-color: transparent;
   @include merge-transitions((border-color));
 
+  &::before {
+    background: none;
+  }
+
   & svg {
     width: 20px;
     height: 20px;

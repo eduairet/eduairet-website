@@ -17,7 +17,6 @@ export default async function NavBar({ lang }: IProps) {
         <ul className={styles.actions}>
           <NavLink href={`/${lang}`} text={content.nav.home} />
           <NavLink href={`/${lang}/contact`} text={content.nav.contact} />
-          <GitHubIcon />
         </ul>
         <ul className={styles.actions}>
           <NavLink href={'/en'} text={content.nav.langs.en} isLangLink />
