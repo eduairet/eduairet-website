@@ -34,7 +34,7 @@ export default function RootLayout({ children, params: { locale } }: IProps) {
             <EatLogoBg />
             {children}
           </MainWrapper>
-          <Footer />
+          <Footer lang={locale} />
         </body>
       </html>
     </StoreProvider>

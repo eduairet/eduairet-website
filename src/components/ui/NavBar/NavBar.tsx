@@ -2,7 +2,6 @@ import styles from './NavBar.module.scss';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import { Lang } from '@/models';
 import NavLink from '../NavLink/NavLink';
-import GitHubIcon from '@/components/svg/GitHubIcon';
 
 interface IProps {
   lang: Lang;

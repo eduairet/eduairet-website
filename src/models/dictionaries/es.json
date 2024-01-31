@@ -7,6 +7,15 @@
       "es": "ESP"
     }
   },
+  "footer": {
+    "social": {
+      "ariaLabel": "Enlaces de redes sociales"
+    },
+    "theme": {
+      "ariaLabel": "Sección de tema",
+      "text": "Tema"
+    }
+  },
   "home": {
     "subtitle": "Desarrollador • Diseñador • Artista",
     "text": "Próximamente…"

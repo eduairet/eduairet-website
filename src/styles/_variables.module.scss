@@ -8,6 +8,13 @@ $max-width: 1080px;
 $header-height: 90px;
 $icon-button-size: 30px;
 
+// Breakpoints
+$breakpoint-xs: 0px;
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;
+
 // Transitions and animations
 $default-time: 0.25s;
 
@@ -18,5 +25,10 @@ $default-time: 0.25s;
   maxWidth: $max-width;
   headerHeight: $header-height;
   iconButtonSize: $icon-button-size;
+  breakpointXs: $breakpoint-xs;
+  breakpointSm: $breakpoint-sm;
+  breakpointMd: $breakpoint-md;
+  breakpointLg: $breakpoint-lg;
+  breakpointXl: $breakpoint-xl;
   defaultTime: $default-time;
 }

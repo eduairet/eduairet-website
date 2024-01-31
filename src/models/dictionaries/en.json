@@ -7,6 +7,15 @@
       "es": "SPN"
     }
   },
+  "footer": {
+    "social": {
+      "ariaLabel": "Social Media Links"
+    },
+    "theme": {
+      "ariaLabel": "Theme Section",
+      "text": "Theme"
+    }
+  },
   "home": {
     "subtitle": "Developer • Designer • Artist",
     "text": "Coming soon…"
