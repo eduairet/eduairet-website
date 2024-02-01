@@ -2,9 +2,9 @@ import styles from './Footer.module.scss';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import { Lang } from '@/models';
 import ThemeButton from '../../svg/ThemeButton';
-import GitHubIcon from '@/components/svg/GitHubIcon';
-import XIcon from '@/components/svg/XIcon';
-import LinkedInIcon from '@/components/svg/LinkedInIcon';
+import GitHubLink from '@/components/svg/GitHubLink';
+import XLink from '@/components/svg/XLink';
+import LinkedInLink from '@/components/svg/LinkedInLink';
 
 interface IProps {
   lang: Lang;
@@ -21,9 +21,9 @@ export default async function Footer({ lang }: IProps) {
         className={styles.section}
       >
         <div className={styles.actions}>
-          <GitHubIcon />
-          <LinkedInIcon />
-          <XIcon />
+          <GitHubLink />
+          <LinkedInLink />
+          <XLink />
         </div>
       </section>
       <section

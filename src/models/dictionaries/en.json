@@ -1,11 +1,7 @@
 {
   "nav": {
     "home": "Home",
-    "contact": "Contact",
-    "langs": {
-      "en": "ENG",
-      "es": "SPN"
-    }
+    "contact": "Contact"
   },
   "footer": {
     "social": {
@@ -21,7 +17,18 @@
     "text": "Coming soon…"
   },
   "client": {
+    "nav": {
+      "langs": {
+        "en": "ENG",
+        "es": "SPN"
+      }
+    },
+    "langsButton": {
+      "title": "Languages",
+      "ariaLabel": "Language Select Button"
+    },
     "themeButton": {
+      "title": "Theme",
       "ariaLabel": "Toggle Theme Button"
     }
   }

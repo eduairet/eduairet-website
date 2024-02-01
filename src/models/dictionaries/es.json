@@ -1,11 +1,7 @@
 {
   "nav": {
     "home": "Home",
-    "contact": "Contacto",
-    "langs": {
-      "en": "ING",
-      "es": "ESP"
-    }
+    "contact": "Contacto"
   },
   "footer": {
     "social": {
@@ -21,7 +17,18 @@
     "text": "Próximamente…"
   },
   "client": {
+    "nav": {
+      "langs": {
+        "en": "ING",
+        "es": "ESP"
+      }
+    },
+    "langsButton": {
+      "title": "Lenguajes",
+      "ariaLabel": "Botón para cambiar lenguaje"
+    },
     "themeButton": {
+      "title": "Tema",
       "ariaLabel": "Botón para cambiar de tema"
     }
   }

@@ -1,6 +1,7 @@
 @import '@/styles/_variables.module.scss';
 
 .nav {
+  background-color: var(--background);
   height: $header-height;
   width: 100vw;
   padding: 1rem 2rem;

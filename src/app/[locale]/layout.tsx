@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
 import '@/styles/globals.scss';
+import '@/styles/pages.scss';
 import StoreProvider from '@/store/StoreProvider';
 import NavBar from '@/components/ui/NavBar/NavBar';
 import EatLogoBg from '@/components/brand/EatLogoBg';
@@ -23,11 +24,17 @@ interface IProps {
 
 export default function RootLayout({ children, params: { locale } }: IProps) {
   return (
-    <StoreProvider>
-      <html lang={locale}>
-        <head>
-          <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT}></link>
-        </head>
+    <html lang={locale}>
+      <head>
+        <link
+          rel='preload'
+          href={process.env.NEXT_PUBLIC_TYPEKIT}
+          as='style'
+          crossOrigin='anonymous'
+        />
+        <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT} />
+      </head>
+      <StoreProvider>
         <body>
           <NavBar lang={locale} />
           <MainWrapper>
@@ -36,7 +43,7 @@ export default function RootLayout({ children, params: { locale } }: IProps) {
           </MainWrapper>
           <Footer lang={locale} />
         </body>
-      </html>
-    </StoreProvider>
+      </StoreProvider>
+    </html>
   );
 }

@@ -25,11 +25,16 @@
   }
 
   @media (hover: hover) {
-    &:hover {
+    &:hover,
+    &.active {
       border-color: $accent;
       & svg {
         fill: $accent;
       }
     }
   }
+}
+
+.screen-only {
+  @include screen-only;
 }

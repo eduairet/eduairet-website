@@ -21,3 +21,10 @@
   }
   transition: $transition-list;
 }
+
+@mixin screen-only {
+  display: none;
+  @media (hover: none) {
+    display: block;
+  }
+}

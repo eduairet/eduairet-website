@@ -1,8 +1,13 @@
 import IconButtonLink from '../layout/IconButton/IconButtonLink';
 
-export default function GitHubIcon() {
+export default function GitHubLink() {
   return (
-    <IconButtonLink href='https://github.com/eduairet' external>
+    <IconButtonLink
+      title='GitHub'
+      ariaLabel='GitHub Link'
+      href='https://github.com/eduairet'
+      external
+    >
       <path d='M49.5 12.5c-21 0-37 15.9-37 36.9 0 16.8 10.6 31.1 25.6 36.2 1.9.3 2.6-.8 2.6-1.8v-9.3S30.1 76.8 27.9 70c0 0-1.7-4.4-4.2-5.5 0 0-3.5-2.4.2-2.3 0 0 3.8.3 5.8 3.9 3.3 5.8 8.9 4.2 11 3.2.3-2.4 1.3-4.1 2.4-5.1-8.5-.9-17-2.2-17-16.7 0-4.2 1.1-6.2 3.6-8.9-.4-1-1.7-5 .4-10.3 3.2-1 10.4 4.1 10.4 4.1 3-.8 6.3-1.3 9.5-1.3s6.5.4 9.5 1.3c0 0 7.3-5.1 10.4-4.1 2.1 5.2.8 9.3.4 10.3 2.4 2.7 3.9 4.8 3.9 8.9 0 14.6-8.9 15.8-17.4 16.7 1.4 1.2 2.6 3.5 2.6 7v12.6c0 1 .7 2.2 2.6 1.8 15.1-5 25.4-19.4 25.4-36.1.1-21.1-16.9-37-37.9-37z' />
     </IconButtonLink>
   );
