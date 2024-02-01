@@ -7,7 +7,7 @@ interface IProps {
   children: ReactNode;
   title?: string;
   ariaLabel?: string;
-  isActive: boolean;
+  isActive?: boolean;
   onClick?: () => void;
 }
 
