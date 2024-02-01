@@ -5,5 +5,5 @@ interface IProps {
 }
 
 export default function IconButtonScreenTitle({ title }: IProps) {
-  return <span className={styles['screen-only']}>{title}</span>;
+  return <span className={styles['screen-reader-only']}>{title}</span>;
 }
