@@ -1,4 +1,4 @@
-import IconButtonLink from '../layout/IconButton/IconButtonLink';
+import IconButtonLink from './IconButton/IconButtonLink';
 
 export default function GitHubLink() {
   return (

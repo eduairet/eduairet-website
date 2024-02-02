@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import styles from './IconButton.module.scss';
-import SvgWrapper from '../SvgWrapper';
+import SvgWrapper from '../../wrappers/SvgWrapper';
 import IconButtonScreenTitle from './IconButtonScreenTitle';
 
 interface IProps {

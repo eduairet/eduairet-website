@@ -4,7 +4,7 @@ import { useState, useContext } from 'react';
 import styles from './LangMenu.module.scss';
 import { LanguageContext } from '@/store/LanguageProvider';
 import NavLink from '../NavLink/NavLink';
-import GlobeButton from '@/components/svg/GlobeButton';
+import GlobeButton from '@/components/ui/GlobeButton';
 
 export default function LangMenu() {
   const { content } = useContext(LanguageContext);

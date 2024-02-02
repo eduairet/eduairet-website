@@ -5,7 +5,7 @@ import '@/styles/pages.scss';
 import StoreProvider from '@/store/StoreProvider';
 import NavBar from '@/components/ui/NavBar/NavBar';
 import EatLogoBg from '@/components/brand/EatLogoBg';
-import MainWrapper from '@/components/layout/MainWrapper/MainWrapper';
+import MainWrapper from '@/components/wrappers/MainWrapper/MainWrapper';
 import Footer from '@/components/ui/Footer/Footer';
 import { Lang } from '@/models';
 

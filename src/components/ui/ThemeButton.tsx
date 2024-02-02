@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext } from 'react';
-import IconButton from '@/components/layout/IconButton/IconButton';
+import IconButton from '@/components/ui/IconButton/IconButton';
 import useDarkMode from '@/hooks/useDarkMode';
 import { LanguageContext } from '@/store/LanguageProvider';
 

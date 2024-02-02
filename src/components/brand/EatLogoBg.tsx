@@ -1,5 +1,5 @@
 import styles from './EatLogoBg.module.scss';
-import EatLogo from '@/components/svg/EatLogo';
+import EatLogo from '@/components/brand/EatLogo';
 
 export default function EatLogoBg() {
   return (

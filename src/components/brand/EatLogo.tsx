@@ -1,4 +1,4 @@
-import SvgWrapper from '../layout/SvgWrapper';
+import SvgWrapper from '../wrappers/SvgWrapper';
 
 export default function EatLogo() {
   return (
