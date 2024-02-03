@@ -1,17 +1,20 @@
 @import '@/styles/_variables.module.scss';
+@import '@/styles/_mixins.module.scss';
 
 .nav {
   background-color: var(--background);
-  height: $header-height;
-  width: 100vw;
+  height: calc($header-height - 1.5rem);
+  min-width: 350px;
   padding: 1rem 2rem;
   max-width: $max-width;
   position: fixed;
-  top: 0;
+  top: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+  @include border($weight: 2px);
+  @include rounded-corners($radius: 3rem);
 
   li {
     list-style-type: none;

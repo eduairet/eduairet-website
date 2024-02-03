@@ -30,3 +30,47 @@
   height: 1px;
   overflow: hidden;
 }
+
+@mixin border(
+  $left: true,
+  $right: true,
+  $top: true,
+  $bottom: true,
+  $weight: 1px,
+  $color: var(--foreground),
+  $style: solid
+) {
+  @if $top {
+    border-top: $weight $style $color;
+  }
+  @if $right {
+    border-right: $weight $style $color;
+  }
+  @if $bottom {
+    border-bottom: $weight $style $color;
+  }
+  @if $left {
+    border-left: $weight $style $color;
+  }
+}
+
+@mixin rounded-corners(
+  $top-left: true,
+  $top-right: true,
+  $bottom-right: true,
+  $bottom-left: true,
+  $radius: $border-radius
+) {
+  @if $top-left {
+    border-top-left-radius: $radius;
+  }
+  @if $top-right {
+    border-top-right-radius: $radius;
+  }
+  @if $bottom-right {
+    border-bottom-right-radius: $radius;
+  }
+  @if $bottom-left {
+    border-bottom-left-radius: $radius;
+  }
+}
