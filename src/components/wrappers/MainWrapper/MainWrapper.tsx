@@ -15,14 +15,12 @@ export default function MainWrapper({ children }: IProps) {
 
   return (
     <>
-      <main className={styles.main}>
-        {backdropState.navBackdrop && (
-          <NavBarBackdrop
-            toggleBackdrop={() => toggleBackdrop(BackdropType.NAV)}
-          />
-        )}
-        {children}
-      </main>
+      {backdropState.navBackdrop && (
+        <NavBarBackdrop
+          toggleBackdrop={() => toggleBackdrop(BackdropType.NAV)}
+        />
+      )}
+      <main className={styles.main}>{children}</main>
     </>
   );
 }
