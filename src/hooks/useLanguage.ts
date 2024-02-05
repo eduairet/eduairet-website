@@ -2,9 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import EnContent from '@/models/dictionaries/en.json';
-import EsContent from '@/models/dictionaries/es.json';
-import { LanguageClientContent } from '@/models';
+import { LanguageClientContent, EnContent, EsContent } from '@/models';
 
 export default function useLanguage() {
   const { locale } = useParams();
