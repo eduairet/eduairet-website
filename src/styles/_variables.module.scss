@@ -18,6 +18,7 @@ $breakpoint-xl: 1200px;
 
 // Transitions and animations
 $default-time: 0.25s;
+$fade-in-duration: 0.35s;
 
 :export {
   black: $black;
@@ -32,4 +33,5 @@ $default-time: 0.25s;
   breakpointLg: $breakpoint-lg;
   breakpointXl: $breakpoint-xl;
   defaultTime: $default-time;
+  fadeInDuration: $fade-in-duration;
 }

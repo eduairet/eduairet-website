@@ -1,3 +1,21 @@
+@import '@/styles/_variables.module.scss';
+
 .nav-bar-backdrop {
   background-color: var(--background);
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  animation: fade-in $fade-in-duration ease-in;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.8;
+  }
 }

@@ -1,3 +1,5 @@
+'use client';
+
 import { createContext, ReactNode } from 'react';
 import useBackdrop from '@/hooks/useBackdrop';
 import { BackdropHook, BackdropState } from '@/models';
