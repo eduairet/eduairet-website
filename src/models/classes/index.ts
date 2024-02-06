@@ -1,2 +1,2 @@
 export * from './backdrop';
-export * from './language';
+export * from './locale';
