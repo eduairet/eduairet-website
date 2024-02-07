@@ -25,12 +25,7 @@ export default function RootLayout({ children, params: { locale } }: IProps) {
   return (
     <html lang={locale}>
       <head>
-        <link
-          rel='preload'
-          href={process.env.NEXT_PUBLIC_TYPEKIT}
-          as='style'
-          crossOrigin='anonymous'
-        />
+        <link rel='preload' href={process.env.NEXT_PUBLIC_TYPEKIT} as='style' />
         <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT} />
       </head>
       <StoreProvider>
