@@ -2,7 +2,8 @@ import styles from './NavBar.module.scss';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import { Lang } from '@/models';
 import NavLink from '../NavLink/NavLink';
-import LangMenu from '../LangMenu/LangMenu';
+import NavMainMenu from '../NavMainMenu';
+import NavLangMenu from '../NavLangMenu';
 
 interface IProps {
   lang: Lang;
@@ -14,11 +15,11 @@ export default async function NavBar({ lang }: IProps) {
   return (
     <>
       <nav className={styles.nav}>
-        <ul className={styles.actions}>
+        <NavMainMenu>
           <NavLink href={`/${lang}`} text={content.nav.home} />
           <NavLink href={`/${lang}/contact`} text={content.nav.contact} />
-        </ul>
-        <LangMenu />
+        </NavMainMenu>
+        <NavLangMenu />
       </nav>
       <div className={styles.divider}></div>
     </>

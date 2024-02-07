@@ -14,13 +14,21 @@ export default function useBackdrop(): BackdropHook {
     action: { type: BackdropType }
   ) => {
     switch (action.type) {
-      case BackdropType.NAV:
+      case BackdropType.OPEN_NAV_MAIN:
         return {
-          ...state,
-          navBackdrop: !state.navBackdrop,
-          // Set the other backdrops to false
+          navMainBackdrop: true,
+          navLangBackdrop: false,
         };
-      // Add more cases for other backdrops as needed
+      case BackdropType.OPEN_NAV_LANG:
+        return {
+          navMainBackdrop: false,
+          navLangBackdrop: true,
+        };
+      case BackdropType.CLOSE_NAV:
+        return {
+          navMainBackdrop: false,
+          navLangBackdrop: false,
+        };
       default:
         return state;
     }
@@ -28,12 +36,12 @@ export default function useBackdrop(): BackdropHook {
 
   const [backdropState, dispatch] = useReducer(backdropReducer, initialState);
 
-  const toggleBackdrop: ToggleBackdrop = (backdropType: BackdropType) => {
+  const setBackdrop: ToggleBackdrop = (backdropType: BackdropType) => {
     dispatch({ type: backdropType });
   };
 
   return {
     backdropState,
-    toggleBackdrop,
+    setBackdrop,
   };
 }

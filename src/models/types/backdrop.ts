@@ -4,5 +4,5 @@ export type ToggleBackdrop = (_backdropType: BackdropType) => void;
 
 export type BackdropHook = {
   backdropState: BackdropState;
-  toggleBackdrop: ToggleBackdrop;
+  setBackdrop: ToggleBackdrop;
 };

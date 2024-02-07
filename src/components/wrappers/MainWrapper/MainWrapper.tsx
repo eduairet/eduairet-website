@@ -11,13 +11,13 @@ interface IProps {
 }
 
 export default function MainWrapper({ children }: IProps) {
-  const { backdropState, toggleBackdrop } = useContext(BackdropContext);
+  const { backdropState, setBackdrop } = useContext(BackdropContext);
 
   return (
     <>
-      {backdropState.navBackdrop && (
+      {(backdropState.navMainBackdrop || backdropState.navLangBackdrop) && (
         <NavBarBackdrop
-          toggleBackdrop={() => toggleBackdrop(BackdropType.NAV)}
+          closeBackdrop={() => setBackdrop(BackdropType.CLOSE_NAV)}
         />
       )}
       <main className={styles.main}>{children}</main>

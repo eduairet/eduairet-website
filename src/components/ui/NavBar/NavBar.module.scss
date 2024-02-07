@@ -3,9 +3,10 @@
 .nav {
   z-index: 2;
   background-color: var(--background);
-  height: calc($header-height - 1.5rem);
+  height: calc($header-height - 2.5rem);
   min-width: 350px;
-  padding: 1rem 2rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
   max-width: $max-width;
   position: fixed;
   top: 1rem;
@@ -21,14 +22,6 @@
     margin: 0;
     padding: 0;
   }
-}
-
-.actions {
-  max-width: $max-width;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 .divider {

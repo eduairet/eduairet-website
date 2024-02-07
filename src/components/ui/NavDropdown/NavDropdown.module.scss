@@ -1,24 +1,20 @@
 @import '@/styles/abstracts/_index.scss';
 
-.langs-wrapper {
-  position: relative;
-}
-
 .actions {
   position: absolute;
-  width: 60px;
   background-color: var(--background);
   border: 1px solid var(--foreground);
-  border-radius: $border-radius;
+  border-radius: 10px;
   padding: 0.75rem;
-  top: 40px;
-  right: 0;
+  width: 100px;
+  top: 50px;
+  left: -35px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  transform: scale(0);
+  transform: scaleY(0);
   transform-origin: top right;
   @include merge-transitions((transform));
 
@@ -35,6 +31,6 @@
   }
 
   &.opened {
-    transform: scale(1);
+    transform: scaleY(1);
   }
 }

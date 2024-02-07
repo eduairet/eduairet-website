@@ -6,7 +6,7 @@ import { BackdropHook, BackdropState } from '@/models';
 
 export const BackdropContext = createContext<BackdropHook>({
   backdropState: new BackdropState(),
-  toggleBackdrop: () => {},
+  setBackdrop: () => {},
 });
 
 interface IProps {
@@ -14,10 +14,10 @@ interface IProps {
 }
 
 export const BackdropProvider = ({ children }: IProps) => {
-  const { backdropState, toggleBackdrop } = useBackdrop();
+  const { backdropState, setBackdrop } = useBackdrop();
 
   return (
-    <BackdropContext.Provider value={{ backdropState, toggleBackdrop }}>
+    <BackdropContext.Provider value={{ backdropState, setBackdrop }}>
       {children}
     </BackdropContext.Provider>
   );

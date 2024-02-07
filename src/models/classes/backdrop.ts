@@ -1,7 +1,9 @@
 export class BackdropState {
-  navBackdrop: boolean;
+  navMainBackdrop: boolean;
+  navLangBackdrop: boolean;
 
   constructor() {
-    this.navBackdrop = false;
+    this.navMainBackdrop = false;
+    this.navLangBackdrop = false;
   }
 }

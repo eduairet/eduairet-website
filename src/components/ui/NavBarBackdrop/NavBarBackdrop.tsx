@@ -1,15 +1,15 @@
 import styles from './NavBarBackdrop.module.scss';
 
 interface IProps {
-  toggleBackdrop: () => void;
+  closeBackdrop: () => void;
 }
 
-export default function NavBarBackdrop({ toggleBackdrop }: IProps) {
+export default function NavBarBackdrop({ closeBackdrop }: IProps) {
   return (
     <div
       className={styles['nav-bar-backdrop']}
-      onClick={toggleBackdrop}
-      onScroll={toggleBackdrop}
+      onClick={closeBackdrop}
+      onScroll={closeBackdrop}
     />
   );
 }
