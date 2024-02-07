@@ -1,5 +1,4 @@
-@import '@/styles/_variables.module.scss';
-@import '@/styles/_mixins.module.scss';
+@import '@/styles/abstracts/_index.scss';
 
 .icon-button {
   cursor: pointer;
@@ -36,5 +35,5 @@
 }
 
 .screen-reader-only {
-  @include screen-reader-only;
+  @extend %screen-reader-only;
 }

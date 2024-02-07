@@ -1,0 +1,7 @@
+$default-time: 0.25s;
+$fade-in-duration: 0.35s;
+
+:export {
+  defaultTime: $default-time;
+  fadeInDuration: $fade-in-duration;
+}

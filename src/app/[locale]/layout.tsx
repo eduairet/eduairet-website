@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import type { Metadata } from 'next';
-import '@/styles/globals.scss';
-import '@/styles/pages.scss';
+import '@/styles/main.scss';
 import StoreProvider from '@/store/StoreProvider';
 import NavBar from '@/components/ui/NavBar/NavBar';
 import EatLogoBg from '@/components/brand/EatLogoBg';

@@ -1,0 +1,11 @@
+$max-width: 1080px;
+$border-radius: 5px;
+$header-height: 90px;
+$icon-button-size: 30px;
+
+:export {
+  maxWidth: $max-width;
+  borderRadius: $border-radius;
+  headerHeight: $header-height;
+  iconButtonSize: $icon-button-size;
+}
