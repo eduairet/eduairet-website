@@ -25,7 +25,7 @@ export default function RootLayout({ children, params: { locale } }: IProps) {
       </head>
       <StoreProvider>
         <body>
-          <NavBar lang={locale} />
+          <NavBar />
           <MainWrapper>
             <EatLogoBg />
             {children}
