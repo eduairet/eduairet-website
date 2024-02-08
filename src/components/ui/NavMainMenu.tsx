@@ -1,16 +1,15 @@
 'use client';
 
-import { useContext, ReactNode } from 'react';
-import { BackdropContext } from '@/store/BackdropProvider';
-import HamburgerButton from './HamburgerButton/HamburgerButton';
+import { useContext } from 'react';
 import { BackdropType } from '@/models';
+import { BackdropContext } from '@/store/BackdropProvider';
+import { LanguageContext } from '@/store/LanguageProvider';
+import NavLink from './NavLink/NavLink';
 import NavDropdown from './NavDropdown/NavDropdown';
+import HamburgerButton from './HamburgerButton/HamburgerButton';
 
-interface IProps {
-  children: ReactNode;
-}
-
-export default function NavMainMenu({ children }: IProps) {
+export default function NavMainMenu() {
+  const { locale, content } = useContext(LanguageContext);
   const {
     backdropState: { navMainBackdrop },
     setBackdrop,
@@ -24,7 +23,10 @@ export default function NavMainMenu({ children }: IProps) {
   return (
     <div>
       <HamburgerButton isActive={navMainBackdrop} onClick={toggleMenu} />
-      <NavDropdown isOpen={navMainBackdrop}>{children}</NavDropdown>
+      <NavDropdown isOpen={navMainBackdrop} onClick={toggleMenu}>
+        <NavLink href={`/${locale}`} text={content.nav.home} />
+        <NavLink href={`/${locale}/contact`} text={content.nav.contact} />
+      </NavDropdown>
     </div>
   );
 }

@@ -15,17 +15,17 @@ export default function NavLangMenu() {
     setBackdrop,
   } = useContext(BackdropContext);
 
-  const openLanguages = () => {
+  const toggleLanguages = () => {
     if (!navLangBackdrop) setBackdrop(BackdropType.OPEN_NAV_LANG);
     else setBackdrop(BackdropType.CLOSE_NAV);
   };
 
   return (
     <div>
-      <GlobeButton isActive={navLangBackdrop} onClick={openLanguages} />
-      <NavDropdown isOpen={navLangBackdrop}>
-        <NavLink href={'/en'} text={content.nav.langs.en} isLangLink />
-        <NavLink href={'/es'} text={content.nav.langs.es} isLangLink />
+      <GlobeButton isActive={navLangBackdrop} onClick={toggleLanguages} />
+      <NavDropdown isOpen={navLangBackdrop} onClick={toggleLanguages}>
+        <NavLink href={'/en'} text={content.client.nav.langs.en} isLangLink />
+        <NavLink href={'/es'} text={content.client.nav.langs.es} isLangLink />
       </NavDropdown>
     </div>
   );

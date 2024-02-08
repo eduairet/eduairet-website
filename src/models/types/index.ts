@@ -1,3 +1,4 @@
 export * from './api';
-export * from './lang';
 export * from './backdrop';
+export * from './locale';
+export * from './meta';

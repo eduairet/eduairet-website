@@ -1,5 +1,6 @@
 {
   "nav": {
+    "menu": "Menú",
     "home": "Home",
     "contact": "Contacto"
   },
@@ -10,6 +11,16 @@
     "theme": {
       "ariaLabel": "Sección de tema",
       "text": "Tema"
+    }
+  },
+  "meta": {
+    "default": {
+      "title": "portafolio",
+      "description": "portafolio profesional de eat | desarrollador • diseñador • artista"
+    },
+    "contact": {
+      "title": "contacto",
+      "description": "eat's professional portfolio | contacto"
     }
   },
   "home": {

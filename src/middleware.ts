@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { locales, getLocale } from './utils/localization.utils';
+import { locales, getLocale } from '@/utils';
 
 const PUBLIC_FILE = /\.(.*)$/;
 

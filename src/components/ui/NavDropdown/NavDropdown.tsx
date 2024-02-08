@@ -4,11 +4,15 @@ import styles from './NavDropdown.module.scss';
 interface IProps {
   children: ReactNode;
   isOpen: boolean;
+  onClick?: () => void;
 }
 
-export default function NavDropdown({ children, isOpen }: IProps) {
+export default function NavDropdown({ children, isOpen, onClick }: IProps) {
   return (
-    <ul className={[styles.actions, isOpen ? styles.opened : ''].join(' ')}>
+    <ul
+      className={[styles.actions, isOpen ? styles.opened : ''].join(' ')}
+      onClick={onClick}
+    >
       {children}
     </ul>
   );

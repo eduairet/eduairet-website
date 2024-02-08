@@ -2,16 +2,16 @@
 
 import { createContext, ReactNode } from 'react';
 import useLanguage from '@/hooks/useLanguage';
-import { LanguageClientContent } from '@/models';
+import { Dictionary, Lang } from '@/models';
 
 interface LanguageContextProps {
-  locale: string;
-  content: LanguageClientContent;
+  locale: Lang;
+  content: Dictionary;
 }
 
 export const LanguageContext = createContext<LanguageContextProps>({
-  locale: '',
-  content: new LanguageClientContent(),
+  locale: 'en',
+  content: new Dictionary(),
 });
 
 interface IProps {

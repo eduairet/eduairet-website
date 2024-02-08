@@ -1,5 +1,9 @@
-import IconButtonScreenTitle from '../IconButton/IconButtonScreenTitle';
+'use client';
+
+import { useContext } from 'react';
 import styles from './HamburgerButton.module.scss';
+import IconButtonScreenTitle from '@/components/ui/IconButton/IconButtonScreenTitle';
+import { LanguageContext } from '@/store/LanguageProvider';
 
 interface IProps {
   isActive: boolean;
@@ -7,8 +11,14 @@ interface IProps {
 }
 
 export default function HamburgerButton({ isActive, onClick }: IProps) {
+  const { content } = useContext(LanguageContext);
+
   return (
-    <button aria-label='Menu' className={styles.hamburger} onClick={onClick}>
+    <button
+      aria-label={content.nav.menu}
+      className={styles.hamburger}
+      onClick={onClick}
+    >
       <span
         className={[
           styles['hamburger-lines'],
@@ -19,7 +29,7 @@ export default function HamburgerButton({ isActive, onClick }: IProps) {
         <span></span>
         <span></span>
       </span>
-      <IconButtonScreenTitle title='Menu' />
+      <IconButtonScreenTitle title={content.nav.menu} />
     </button>
   );
 }

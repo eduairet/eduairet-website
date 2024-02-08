@@ -1,3 +1,5 @@
+export { generateMetadata } from '@/utils';
+
 export default function Contact() {
   return (
     <h1>

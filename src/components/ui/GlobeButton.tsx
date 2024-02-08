@@ -14,8 +14,8 @@ export default function GlobeButton({ isActive, onClick }: IProps) {
 
   return (
     <IconButton
-      title={content.langsButton.title}
-      ariaLabel={content.langsButton.ariaLabel}
+      title={content.client.langsButton.title}
+      ariaLabel={content.client.langsButton.ariaLabel}
       isActive={isActive}
       onClick={onClick}
     >

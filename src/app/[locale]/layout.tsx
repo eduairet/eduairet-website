@@ -1,18 +1,11 @@
 import { ReactNode } from 'react';
-import type { Metadata } from 'next';
 import '@/styles/main.scss';
+import { Lang } from '@/models';
 import StoreProvider from '@/store/StoreProvider';
 import NavBar from '@/components/ui/NavBar/NavBar';
 import EatLogoBg from '@/components/brand/EatLogoBg';
 import MainWrapper from '@/components/wrappers/MainWrapper/MainWrapper';
 import Footer from '@/components/ui/Footer/Footer';
-import { Lang } from '@/models';
-
-export const metadata: Metadata = {
-  title: "eat's portfolio",
-  description:
-    'Eduardo Aire Torres professional portfolio, development and design',
-};
 
 interface IProps {
   children: ReactNode;
@@ -20,6 +13,8 @@ interface IProps {
     locale: Lang;
   };
 }
+
+export { generateMetadata } from '@/utils';
 
 export default function RootLayout({ children, params: { locale } }: IProps) {
   return (

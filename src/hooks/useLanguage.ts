@@ -2,19 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { LanguageClientContent, EnContent, EsContent } from '@/models';
+import { Dictionary, EnContent, EsContent, Lang } from '@/models';
 
 export default function useLanguage() {
   const { locale } = useParams();
-  const [content, setContent] = useState<LanguageClientContent>(
-    new LanguageClientContent()
-  );
+  const [content, setContent] = useState<Dictionary>(new Dictionary());
 
   useEffect(() => {
-    if (locale === 'es')
-      setContent(new LanguageClientContent(EsContent.client));
-    else setContent(new LanguageClientContent(EnContent.client));
+    if (locale === 'es') setContent(new Dictionary(EsContent));
+    else setContent(new Dictionary(EnContent));
   }, [locale]);
 
-  return { locale: locale as string, content };
+  return { locale: locale as Lang, content };
 }

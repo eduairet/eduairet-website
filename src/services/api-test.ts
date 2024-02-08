@@ -1,4 +1,4 @@
-import { getHost, getData } from '@/utils/api.utils';
+import { getHost, getData } from '@/utils';
 
 export const checkHealth = async () => {
   try {
