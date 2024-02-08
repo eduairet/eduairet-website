@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { headers } from 'next/headers';
 import type { MetaProps } from '@/models';
 import { getDictionary } from '@/app/[locale]/dictionaries';
+import { getHost } from '.';
 
 export async function generateMetadata({
   params,
@@ -23,6 +24,7 @@ export async function generateMetadata({
   }
 
   return {
+    metadataBase: new URL(getHost()),
     title: `${title} | eat`,
     description,
   };
