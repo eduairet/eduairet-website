@@ -24,12 +24,18 @@
   }
 
   @media (hover: hover) {
-    &:hover,
-    &.active {
+    &:hover {
       border-color: $accent;
       & svg {
         fill: $accent;
       }
+    }
+  }
+
+  &.active {
+    border-color: $accent;
+    & svg {
+      fill: $accent;
     }
   }
 }
