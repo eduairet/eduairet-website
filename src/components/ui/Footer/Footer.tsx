@@ -31,7 +31,10 @@ export default async function Footer({ lang }: IProps) {
       </section>
       <section className={styles.section}>
         <p>Eduardo Aire Torres {new Date().getFullYear()}</p>
-        <p aria-label={content.footer.theme.ariaLabel} className={styles.actions}>
+        <p
+          aria-label={content.footer.theme.ariaLabel}
+          className={styles.actions}
+        >
           <span>{content.footer.theme.text}</span>
           <ThemeButton />
         </p>
