@@ -14,7 +14,7 @@ interface IProps {
   };
 }
 
-export { generateMetadata } from '@/utils';
+export { generateMetadata, viewport } from '@/utils';
 
 export default function RootLayout({ children, params: { locale } }: IProps) {
   return (

@@ -15,8 +15,9 @@
   justify-content: center;
   gap: 10px;
   transform: scaleY(0);
+  opacity: 0;
   transform-origin: top right;
-  @include merge-transitions((transform));
+  @include merge-transitions((transform, opacity));
 
   & li > a {
     @include merge-transitions((color));
@@ -32,5 +33,6 @@
 
   &.opened {
     transform: scaleY(1);
+    opacity: 1;
   }
 }
