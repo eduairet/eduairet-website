@@ -21,7 +21,7 @@ export default function RootLayout({ children, params: { locale } }: IProps) {
     <html lang={locale}>
       <head>
         <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT} />
-        {['192x192', '256x256', '384x384', '512x512'].map((size) => (
+        {['192x192', '196x196', '256x256', '384x384', '512x512'].map((size) => (
           <link
             key={size}
             rel='icon'
