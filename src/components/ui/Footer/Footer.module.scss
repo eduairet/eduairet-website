@@ -1,16 +1,22 @@
 @import '@/styles/abstracts/_index.scss';
 
 .footer {
-  padding: 1rem 0 3rem;
+  padding: 3rem 0;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2.5rem;
+  flex-direction: column;
+  gap: 1rem;
 
   @media (width < $breakpoint-sm) {
-    flex-direction: column;
-    gap: 1rem;
+    gap: 1.5rem;
+  }
+
+  section + section {
+    @media (width < $breakpoint-sm) {
+      flex-direction: column;
+    }
   }
 }
 
@@ -18,7 +24,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .actions {

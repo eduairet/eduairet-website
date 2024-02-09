@@ -5,6 +5,8 @@ import ThemeButton from '../ThemeButton';
 import GitHubLink from '@/components/ui/GitHubLink';
 import XLink from '@/components/ui/XLink';
 import LinkedInLink from '@/components/ui/LinkedInLink';
+import InstagramLink from '../InstagramLink';
+import EmailLink from '../EmailLink';
 
 interface IProps {
   lang: Lang;
@@ -15,7 +17,6 @@ export default async function Footer({ lang }: IProps) {
 
   return (
     <footer className={styles.footer}>
-      <p>Eduardo Aire Torres {new Date().getFullYear()}</p>
       <section
         aria-label={content.footer.social.ariaLabel}
         className={styles.section}
@@ -24,14 +25,16 @@ export default async function Footer({ lang }: IProps) {
           <GitHubLink />
           <LinkedInLink />
           <XLink />
+          <InstagramLink />
+          <EmailLink />
         </div>
       </section>
-      <section
-        aria-label={content.footer.theme.ariaLabel}
-        className={styles.section}
-      >
-        <p>{content.footer.theme.text}</p>
-        <ThemeButton />
+      <section className={styles.section}>
+        <p>Eduardo Aire Torres {new Date().getFullYear()}</p>
+        <p aria-label={content.footer.theme.ariaLabel} className={styles.actions}>
+          <span>{content.footer.theme.text}</span>
+          <ThemeButton />
+        </p>
       </section>
     </footer>
   );

@@ -10,6 +10,7 @@ interface IProps {
   title?: string;
   ariaLabel?: string;
   external?: boolean;
+  email?: boolean;
 }
 
 export default function IconButtonLink({
@@ -26,7 +27,7 @@ export default function IconButtonLink({
       <a
         aria-label={ariaLabel}
         href={href}
-        target='_blank'
+        target={href.includes('mailto:') ? '_self' : '_blank'}
         className={styles['icon-button']}
       >
         <SvgWrapper>{children}</SvgWrapper>
