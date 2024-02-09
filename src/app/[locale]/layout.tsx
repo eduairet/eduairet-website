@@ -20,8 +20,16 @@ export default function RootLayout({ children, params: { locale } }: IProps) {
   return (
     <html lang={locale}>
       <head>
-        <link rel='preload' href={process.env.NEXT_PUBLIC_TYPEKIT} as='style' />
         <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT} />
+        {['192x192', '256x256', '384x384', '512x512'].map((size) => (
+          <link
+            key={size}
+            rel='icon'
+            href={`/icon-${size}.png`}
+            type='image/png'
+            sizes={size}
+          ></link>
+        ))}
       </head>
       <StoreProvider>
         <body>
