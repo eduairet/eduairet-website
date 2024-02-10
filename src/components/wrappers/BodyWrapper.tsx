@@ -1,11 +1,9 @@
-import { ReactNode, memo } from 'react';
+import { ReactNode } from 'react';
 
 interface IProps {
   children: ReactNode;
 }
 
-function BodyWrapper({ children }: IProps) {
+export default function BodyWrapper({ children }: IProps) {
   return <body>{children}</body>;
 }
-
-export default memo(BodyWrapper);

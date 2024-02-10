@@ -1,4 +1,4 @@
-import { ReactNode, memo } from 'react';
+import { ReactNode } from 'react';
 import styles from './IconButton.module.scss';
 import SvgWrapper from '../../wrappers/SvgWrapper';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ interface IProps {
   email?: boolean;
 }
 
-function IconButtonLink({
+export default function IconButtonLink({
   children,
   href,
   ariaLabel = 'Link',
@@ -42,5 +42,3 @@ function IconButtonLink({
     </Link>
   );
 }
-
-export default memo(IconButtonLink);

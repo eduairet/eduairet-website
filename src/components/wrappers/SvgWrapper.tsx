@@ -1,4 +1,4 @@
-import { ReactNode, memo } from 'react';
+import { ReactNode } from 'react';
 
 interface IProps {
   children: ReactNode;
@@ -9,7 +9,7 @@ interface IProps {
   focusable?: boolean;
 }
 
-function SvgWrapper({
+export default function SvgWrapper({
   children,
   className,
   width = 100,
@@ -32,5 +32,3 @@ function SvgWrapper({
     </svg>
   );
 }
-
-export default memo(SvgWrapper);

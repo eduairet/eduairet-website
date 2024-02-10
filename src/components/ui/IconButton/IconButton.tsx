@@ -1,4 +1,4 @@
-import { ReactNode, memo } from 'react';
+import { ReactNode } from 'react';
 import styles from './IconButton.module.scss';
 import SvgWrapper from '../../wrappers/SvgWrapper';
 import IconButtonScreenTitle from './IconButtonScreenTitle';
@@ -11,7 +11,7 @@ interface IProps {
   onClick?: () => void;
 }
 
-function IconButton({
+export default function IconButton({
   children,
   ariaLabel,
   onClick,
@@ -31,5 +31,3 @@ function IconButton({
     </button>
   );
 }
-
-export default memo(IconButton);

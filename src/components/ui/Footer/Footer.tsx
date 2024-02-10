@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import styles from './Footer.module.scss';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import { Lang } from '@/models';
@@ -13,7 +12,7 @@ interface IProps {
   lang: Lang;
 }
 
-async function Footer({ lang }: IProps) {
+export default async function Footer({ lang }: IProps) {
   const content = await getDictionary(lang);
 
   return (
@@ -43,5 +42,3 @@ async function Footer({ lang }: IProps) {
     </footer>
   );
 }
-
-export default memo(Footer);
