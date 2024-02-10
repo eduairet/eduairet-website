@@ -1,10 +1,11 @@
+import { memo } from 'react';
 import styles from './NavBarBackdrop.module.scss';
 
 interface IProps {
   closeBackdrop: () => void;
 }
 
-export default function NavBarBackdrop({ closeBackdrop }: IProps) {
+function NavBarBackdrop({ closeBackdrop }: IProps) {
   return (
     <div
       className={styles['nav-bar-backdrop']}
@@ -13,3 +14,5 @@ export default function NavBarBackdrop({ closeBackdrop }: IProps) {
     />
   );
 }
+
+export default memo(NavBarBackdrop);

@@ -2,10 +2,12 @@ import { ReactNode } from 'react';
 import '@/styles/main.scss';
 import { Lang } from '@/models';
 import StoreProvider from '@/store/StoreProvider';
-import NavBar from '@/components/ui/NavBar/NavBar';
-import EatLogoBg from '@/components/brand/EatLogoBg';
+import MetaIcons from '@/components/metadata/MetaIcons';
 import MainWrapper from '@/components/wrappers/MainWrapper/MainWrapper';
+import BodyWrapper from '@/components/wrappers/BodyWrapper';
+import NavBar from '@/components/ui/NavBar/NavBar';
 import Footer from '@/components/ui/Footer/Footer';
+import EatLogoBg from '@/components/brand/EatLogoBg';
 
 interface IProps {
   children: ReactNode;
@@ -21,25 +23,17 @@ export default function RootLayout({ children, params: { locale } }: IProps) {
     <html lang={locale}>
       <head>
         <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT} />
-        {['192x192', '196x196', '256x256', '384x384', '512x512'].map((size) => (
-          <link
-            key={size}
-            rel='icon'
-            href={`/icon-${size}.png`}
-            type='image/png'
-            sizes={size}
-          ></link>
-        ))}
+        <MetaIcons />
       </head>
       <StoreProvider>
-        <body>
+        <BodyWrapper>
           <NavBar />
           <MainWrapper>
             <EatLogoBg />
             {children}
           </MainWrapper>
           <Footer lang={locale} />
-        </body>
+        </BodyWrapper>
       </StoreProvider>
     </html>
   );

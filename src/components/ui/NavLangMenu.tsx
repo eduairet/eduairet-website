@@ -24,8 +24,8 @@ export default function NavLangMenu() {
     <div>
       <GlobeButton isActive={navLangBackdrop} onClick={toggleLanguages} />
       <NavDropdown isOpen={navLangBackdrop} onClick={toggleLanguages}>
-        <NavLink href={'/en'} text={content.client.nav.langs.en} isLangLink />
-        <NavLink href={'/es'} text={content.client.nav.langs.es} isLangLink />
+        <NavLink href={'/en'} text={content.nav.langs.en} isLangLink />
+        <NavLink href={'/es'} text={content.nav.langs.es} isLangLink />
       </NavDropdown>
     </div>
   );

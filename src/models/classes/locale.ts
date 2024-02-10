@@ -1,5 +1,23 @@
+interface Button {
+  title: string;
+  ariaLabel: string;
+}
+
 export class Dictionary {
-  nav: { menu: string; home: string; contact: string };
+  meta: {
+    [key: string]: {
+      title: string;
+      description: string;
+    };
+  };
+  nav: {
+    menu: string;
+    home: string;
+    contact: string;
+    langs: {
+      [key: string]: string;
+    };
+  };
   footer: {
     social: {
       ariaLabel: string;
@@ -9,44 +27,16 @@ export class Dictionary {
       text: string;
     };
   };
-  meta: {
-    [key: string]: {
-      title: string;
-      description: string;
-    };
+  buttons: {
+    langsButton: Button;
+    themeButton: Button;
   };
   home: {
     subtitle: string;
     text: string;
   };
-  client: {
-    nav: {
-      langs: {
-        en: string;
-        es: string;
-      };
-    };
-    langsButton: {
-      title: string;
-      ariaLabel: string;
-    };
-    themeButton: {
-      title: string;
-      ariaLabel: string;
-    };
-  };
 
   constructor(data: Partial<Dictionary> = {}) {
-    this.nav = data.nav || { menu: '', home: '', contact: '' };
-    this.footer = {
-      social: {
-        ariaLabel: data.footer?.social?.ariaLabel || '',
-      },
-      theme: {
-        ariaLabel: data.footer?.theme?.ariaLabel || '',
-        text: data.footer?.theme?.text || '',
-      },
-    };
     this.meta = {
       default: {
         title: data.meta?.default?.title || '',
@@ -57,25 +47,37 @@ export class Dictionary {
         description: data.meta?.contact?.description || '',
       },
     };
+    this.nav = data.nav || {
+      menu: '',
+      home: '',
+      contact: '',
+      langs: {
+        en: '',
+        es: '',
+      },
+    };
+    this.footer = {
+      social: {
+        ariaLabel: data.footer?.social?.ariaLabel || '',
+      },
+      theme: {
+        ariaLabel: data.footer?.theme?.ariaLabel || '',
+        text: data.footer?.theme?.text || '',
+      },
+    };
+    this.buttons = {
+      langsButton: {
+        title: data.buttons?.langsButton?.title || '',
+        ariaLabel: data.buttons?.langsButton?.ariaLabel || '',
+      },
+      themeButton: {
+        title: data.buttons?.themeButton?.title || '',
+        ariaLabel: data.buttons?.themeButton?.ariaLabel || '',
+      },
+    };
     this.home = {
       subtitle: data.home?.subtitle || '',
       text: data.home?.text || '',
-    };
-    this.client = {
-      nav: {
-        langs: {
-          en: data.client?.nav?.langs?.en || '',
-          es: data.client?.nav?.langs?.es || '',
-        },
-      },
-      langsButton: {
-        title: data.client?.langsButton?.title || '',
-        ariaLabel: data.client?.langsButton?.ariaLabel || '',
-      },
-      themeButton: {
-        title: data.client?.themeButton?.title || '',
-        ariaLabel: data.client?.themeButton?.ariaLabel || '',
-      },
     };
   }
 

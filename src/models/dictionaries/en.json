@@ -1,18 +1,4 @@
 {
-  "nav": {
-    "menu": "Menu",
-    "home": "Home",
-    "contact": "Contact"
-  },
-  "footer": {
-    "social": {
-      "ariaLabel": "Social Media Links"
-    },
-    "theme": {
-      "ariaLabel": "Theme Section",
-      "text": "Theme"
-    }
-  },
   "meta": {
     "default": {
       "title": "portfolio",
@@ -23,17 +9,25 @@
       "description": "eat's professional portfolio | contact"
     }
   },
-  "home": {
-    "subtitle": "Developer • Designer • Artist",
-    "text": "Coming soon…"
+  "nav": {
+    "menu": "Menu",
+    "home": "Home",
+    "contact": "Contact",
+    "langs": {
+      "en": "ENG",
+      "es": "SPN"
+    }
   },
-  "client": {
-    "nav": {
-      "langs": {
-        "en": "ENG",
-        "es": "SPN"
-      }
+  "footer": {
+    "social": {
+      "ariaLabel": "Social Media Links"
     },
+    "theme": {
+      "ariaLabel": "Theme Section",
+      "text": "Theme"
+    }
+  },
+  "buttons": {
     "langsButton": {
       "title": "Languages",
       "ariaLabel": "Language Select Button"
@@ -42,5 +36,9 @@
       "title": "Theme",
       "ariaLabel": "Toggle Theme Button"
     }
+  },
+  "home": {
+    "subtitle": "Developer • Designer • Artist",
+    "text": "Coming soon…"
   }
 }

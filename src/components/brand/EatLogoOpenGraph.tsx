@@ -1,4 +1,5 @@
 import variables from '@/styles/abstracts/_variables.module.scss';
+import { memo } from 'react';
 
 interface IProps {
   width: number;
@@ -6,7 +7,7 @@ interface IProps {
   fill: 'black' | 'white';
 }
 
-export default function EatLogoOpenGraph({ width, height, fill }: IProps) {
+function EatLogoOpenGraph({ width, height, fill }: IProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -20,3 +21,5 @@ export default function EatLogoOpenGraph({ width, height, fill }: IProps) {
     </svg>
   );
 }
+
+export default memo(EatLogoOpenGraph);

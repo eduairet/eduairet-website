@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import styles from './HamburgerButton.module.scss';
 import IconButtonScreenTitle from '@/components/ui/IconButton/IconButtonScreenTitle';
 import { LanguageContext } from '@/store/LanguageProvider';
@@ -10,7 +10,7 @@ interface IProps {
   onClick: () => void;
 }
 
-export default function HamburgerButton({ isActive, onClick }: IProps) {
+function HamburgerButton({ isActive, onClick }: IProps) {
   const { content } = useContext(LanguageContext);
 
   return (
@@ -33,3 +33,7 @@ export default function HamburgerButton({ isActive, onClick }: IProps) {
     </button>
   );
 }
+
+HamburgerButton.displayName = 'HamburgerButton';
+
+export default memo(HamburgerButton);

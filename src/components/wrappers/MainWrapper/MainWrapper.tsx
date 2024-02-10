@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext, ReactNode } from 'react';
+import { useContext, ReactNode, memo } from 'react';
 import styles from './MainWrapper.module.scss';
 import { BackdropType } from '@/models';
 import { BackdropContext } from '@/store/BackdropProvider';
@@ -10,7 +10,7 @@ interface IProps {
   children: ReactNode;
 }
 
-export default function MainWrapper({ children }: IProps) {
+function MainWrapper({ children }: IProps) {
   const { backdropState, setBackdrop } = useContext(BackdropContext);
 
   return (
@@ -24,3 +24,5 @@ export default function MainWrapper({ children }: IProps) {
     </>
   );
 }
+
+export default memo(MainWrapper);

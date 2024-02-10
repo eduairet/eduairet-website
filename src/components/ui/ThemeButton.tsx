@@ -15,8 +15,8 @@ export default function ThemeButton() {
 
   return (
     <IconButton
-      title={content.client.themeButton.title}
-      ariaLabel={content.client.themeButton.ariaLabel}
+      title={content.buttons.themeButton.title}
+      ariaLabel={content.buttons.themeButton.ariaLabel}
       onClick={toggleTheme}
     >
       {!darkMode ? (

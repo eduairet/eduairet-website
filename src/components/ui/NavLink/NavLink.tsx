@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './NavLink.module.scss';
@@ -12,7 +12,7 @@ interface IProps {
   isLangLink?: boolean;
 }
 
-export default function NavLink({ href, text, isLangLink = false }: IProps) {
+function NavLink({ href, text, isLangLink = false }: IProps) {
   const pathname = usePathname();
   const { locale } = useContext(LanguageContext);
 
@@ -35,3 +35,5 @@ export default function NavLink({ href, text, isLangLink = false }: IProps) {
     </li>
   );
 }
+
+export default memo(NavLink);

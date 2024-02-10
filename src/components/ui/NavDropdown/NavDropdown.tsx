@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, memo } from 'react';
 import styles from './NavDropdown.module.scss';
 
 interface IProps {
@@ -7,7 +7,7 @@ interface IProps {
   onClick?: () => void;
 }
 
-export default function NavDropdown({ children, isOpen, onClick }: IProps) {
+function NavDropdown({ children, isOpen, onClick }: IProps) {
   return (
     <ul
       className={[styles.actions, isOpen ? styles.opened : ''].join(' ')}
@@ -17,3 +17,5 @@ export default function NavDropdown({ children, isOpen, onClick }: IProps) {
     </ul>
   );
 }
+
+export default memo(NavDropdown);

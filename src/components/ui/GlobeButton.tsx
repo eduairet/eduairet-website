@@ -1,6 +1,6 @@
 'use client';
 
-import { useContext } from 'react';
+import { memo, useContext } from 'react';
 import IconButton from '@/components/ui/IconButton/IconButton';
 import { LanguageContext } from '@/store/LanguageProvider';
 
@@ -9,13 +9,13 @@ interface IProps {
   onClick: () => void;
 }
 
-export default function GlobeButton({ isActive, onClick }: IProps) {
+function GlobeButton({ isActive, onClick }: IProps) {
   const { content } = useContext(LanguageContext);
 
   return (
     <IconButton
-      title={content.client.langsButton.title}
-      ariaLabel={content.client.langsButton.ariaLabel}
+      title={content.buttons.langsButton.title}
+      ariaLabel={content.buttons.langsButton.ariaLabel}
       isActive={isActive}
       onClick={onClick}
     >
@@ -23,3 +23,5 @@ export default function GlobeButton({ isActive, onClick }: IProps) {
     </IconButton>
   );
 }
+
+export default memo(GlobeButton);
