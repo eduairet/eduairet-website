@@ -10,7 +10,7 @@ interface IProps {
   currentSketch?: number;
 }
 
-export default function Art({ currentSketch = 1 }: IProps) {
+export default function Art({ currentSketch = 2 }: IProps) {
   const containerRef = useRef<SketchContainerRef>();
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const sketch = sketches[`sketch${currentSketch.toString().padStart(2, '0')}`];

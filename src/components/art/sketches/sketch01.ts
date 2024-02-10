@@ -1,7 +1,3 @@
-/**
- * Ths spiral is based on the Archimedean spiral from this site https://codepen.io/PaperNathan/pen/gvMNJY
- */
-
 import { FRAME_RATE, SKETCH_CONTAINER_ID } from '@/utils/client';
 import type P5 from 'p5';
 
@@ -26,7 +22,7 @@ const sketch01 = (p: P5) => {
     h = p.height;
     p.clear();
     p.noFill();
-    p.stroke(theme === 'dark' ? 255 : 0);
+    p.stroke(theme === 'dark' ? '#ededed' : '#000');
     p.strokeWeight(1);
     drawSpiral();
     spiralWidth = 0.1 + 0.45 * (Math.sin(p.frameCount / 100) + 1);
