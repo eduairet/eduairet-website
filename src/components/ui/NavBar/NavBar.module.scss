@@ -10,6 +10,8 @@
   max-width: $max-width;
   position: fixed;
   top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -22,8 +24,4 @@
     margin: 0;
     padding: 0;
   }
-}
-
-.divider {
-  height: $header-height;
 }

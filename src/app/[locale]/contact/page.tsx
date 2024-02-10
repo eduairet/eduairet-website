@@ -1,4 +1,4 @@
-export { generateMetadata } from '@/utils';
+export { generateMetadata } from '@/utils/server';
 
 export default function Contact() {
   return (

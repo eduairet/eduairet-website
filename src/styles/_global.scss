@@ -35,6 +35,11 @@ body {
   }
 }
 
+header {
+  height: $header-height;
+  width: 100vw;
+}
+
 h1,
 h2,
 h3,

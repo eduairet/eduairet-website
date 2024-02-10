@@ -1,12 +1,12 @@
 import styles from './Footer.module.scss';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import { Lang } from '@/models';
-import ThemeButton from '../ThemeButton';
 import GitHubLink from '@/components/ui/GitHubLink';
-import XLink from '@/components/ui/XLink';
 import LinkedInLink from '@/components/ui/LinkedInLink';
-import InstagramLink from '../InstagramLink';
-import EmailLink from '../EmailLink';
+import XLink from '@/components/ui/XLink';
+import InstagramLink from '@/components/ui/InstagramLink';
+import EmailLink from '@/components/ui/EmailLink';
+import ThemeButton from '@/components/ui/ThemeButton';
 
 interface IProps {
   lang: Lang;

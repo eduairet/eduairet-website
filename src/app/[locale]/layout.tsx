@@ -16,7 +16,7 @@ interface IProps {
   };
 }
 
-export { generateMetadata, viewport } from '@/utils';
+export { generateMetadata, viewport } from '@/utils/server';
 
 export default function RootLayout({ children, params: { locale } }: IProps) {
   return (
@@ -27,7 +27,9 @@ export default function RootLayout({ children, params: { locale } }: IProps) {
       </head>
       <StoreProvider>
         <BodyWrapper>
-          <NavBar />
+          <header>
+            <NavBar />
+          </header>
           <MainWrapper>
             <EatLogoBg />
             {children}

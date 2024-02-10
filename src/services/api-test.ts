@@ -1,4 +1,4 @@
-import { getHost, getData } from '@/utils';
+import { getHost, getData } from '@/utils/server';
 
 export const checkHealth = async () => {
   try {

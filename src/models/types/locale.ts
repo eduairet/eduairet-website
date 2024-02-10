@@ -1,8 +1,10 @@
-import { Dictionary } from '../index';
+/* eslint-disable no-unused-vars */
+/* eslint-disable unused-imports/no-unused-vars */
+
+import { Dictionary } from '@/models';
 
 export type Lang = 'en' | 'es';
 
 export type Dictionaries = {
-  // eslint-disable-next-line unused-imports/no-unused-vars
   [key in Lang]: () => Promise<Dictionary>;
 };

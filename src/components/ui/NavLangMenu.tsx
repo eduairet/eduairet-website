@@ -3,9 +3,9 @@
 import { useContext } from 'react';
 import { LanguageContext } from '@/store/LanguageProvider';
 import { BackdropContext } from '@/store/BackdropProvider';
-import NavLink from './NavLink/NavLink';
-import GlobeButton from '@/components/ui/GlobeButton';
 import { BackdropType } from '@/models';
+import GlobeButton from '@/components/ui/GlobeButton';
+import NavLink from './NavLink/NavLink';
 import NavDropdown from './NavDropdown/NavDropdown';
 
 export default function NavLangMenu() {

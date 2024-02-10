@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { NextRequest } from 'next/server';
-import { middleware } from '../src/middleware';
+import { middleware } from '@/middleware';
 
 const testCases = [
   { language: 'es_MX', expectedLocation: 'http://localhost:3000/es' },
