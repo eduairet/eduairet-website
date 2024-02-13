@@ -2,47 +2,59 @@ import { FRAME_RATE, SKETCH_CONTAINER_ID } from '@/utils/client';
 import type P5 from 'p5';
 
 const sketch01 = (p: P5) => {
-  let size = 1500;
-  let spiralWidth = 0.1;
-  let angle = 80;
-  let w: number, h: number, oldX: number, oldY: number;
+  let x: number, y: number;
   let theme: string;
+  const isMobile = navigator.userAgent.match(
+    /(iPad)|(iPhone)|(iPod)|(android)|(webOS)/i
+  );
+  const mainColor = (a: number) =>
+    theme === 'dark' ? `rgba(237,237,237,${a})` : `rgba(0,0,0,${a})`;
 
   p.setup = () => {
     const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
     canvas.parent(SKETCH_CONTAINER_ID);
-    p.pixelDensity(2);
     p.frameRate(FRAME_RATE);
-    p.angleMode(p.DEGREES);
+    x = p.width / 2;
+    y = p.height / 2;
   };
 
   p.draw = () => {
     theme = localStorage.getItem('theme') || 'dark';
-    w = p.width;
-    h = p.height;
     p.clear();
     p.noFill();
-    p.stroke(theme === 'dark' ? '#ededed' : '#000');
-    p.strokeWeight(1);
-    drawSpiral();
-    spiralWidth = 0.1 + 0.45 * (Math.sin(p.frameCount / 100) + 1);
+    p.noStroke();
+    drawShape();
+    updatePosition();
   };
 
   p.windowResized = () => {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
   };
 
-  function drawSpiral() {
-    oldX = w / 2;
-    oldY = h / 2;
+  function updatePosition() {
+    if (!isMobile) {
+      x = p.mouseX;
+      y = p.mouseY;
+    }
+  }
 
-    for (let i = 0; i < size; i++) {
-      let newAngle = (angle / 10) * i;
-      let x = w / 2 + spiralWidth * newAngle * p.sin(newAngle);
-      let y = h / 2 + spiralWidth * newAngle * p.cos(newAngle);
-      p.line(oldX, oldY, x, y);
-      oldX = x;
-      oldY = y;
+  function drawShape() {
+    const shapes = 100;
+    const distance = 5;
+    for (let i = shapes; i > 0; i--) {
+      const angle = p.frameCount / 9 + (i * p.PI * 0.05) / 2;
+      const size = distance * (shapes - i);
+      const o = p.lerp(0, 0.01, i / shapes);
+      const fillColor = mainColor(o);
+      p.push();
+      p.fill(fillColor);
+      p.ellipse(
+        x + distance * p.cos(angle),
+        y + distance * p.sin(angle),
+        size,
+        size
+      );
+      p.pop();
     }
   }
 };
