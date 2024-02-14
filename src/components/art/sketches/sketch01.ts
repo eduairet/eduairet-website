@@ -48,7 +48,7 @@ const sketch01 = (p: P5) => {
       const shapeColor = mainColor(o);
       p.push();
       p.stroke(shapeColor);
-      p.strokeWeight(3);
+      p.strokeWeight(1);
       p.ellipse(
         x + distance * p.cos(angle),
         y + distance * p.sin(angle),
