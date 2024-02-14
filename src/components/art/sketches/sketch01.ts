@@ -39,15 +39,16 @@ const sketch01 = (p: P5) => {
   }
 
   function drawShape() {
-    const shapes = 100;
-    const distance = 5;
+    const shapes = 30;
+    const distance = 30;
     for (let i = shapes; i > 0; i--) {
-      const angle = p.frameCount / 9 + (i * p.PI * 0.05) / 2;
+      const angle = p.frameCount / 20 + (i * p.PI * 0.1) / 2;
       const size = distance * (shapes - i);
-      const o = p.lerp(0, 0.01, i / shapes);
-      const fillColor = mainColor(o);
+      const o = p.lerp(0, 0.2, i / shapes);
+      const shapeColor = mainColor(o);
       p.push();
-      p.fill(fillColor);
+      p.stroke(shapeColor);
+      p.strokeWeight(3);
       p.ellipse(
         x + distance * p.cos(angle),
         y + distance * p.sin(angle),

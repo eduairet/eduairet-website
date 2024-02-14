@@ -9,7 +9,7 @@
   height: $icon-button-size;
   border-radius: 50%;
   border: 2px solid var(--foreground);
-  background-color: transparent;
+  background-color: var(--background);
   @include merge-transitions((border-color));
 
   &::before {
