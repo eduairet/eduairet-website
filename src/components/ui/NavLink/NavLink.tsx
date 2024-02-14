@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useContext } from 'react';
+import { memo, useState, useContext, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './NavLink.module.scss';
@@ -14,6 +14,7 @@ interface IProps {
 }
 
 function NavLink({ href, text, isLangLink = false }: IProps) {
+  const [hrefState, setHrefState] = useState<string>(href);
   const pathname = usePathname();
   const { animatedRoute } = useAnimatedRouter();
   const { locale } = useContext(LanguageContext);
@@ -23,19 +24,23 @@ function NavLink({ href, text, isLangLink = false }: IProps) {
     return pathname == href;
   };
 
-  const setHref = () => {
+  const setHref = useCallback(() => {
     if (!isLangLink) return href;
     const newHref = pathname.replace(locale, '').replace(/\/{2,}/g, '/');
     return `${href}${newHref}`;
-  };
+  }, [href, isLangLink, pathname, locale]);
+
+  useEffect(() => {
+    setHrefState(setHref());
+  }, [pathname, setHref]);
 
   return (
     <li className={styles['nav-link']}>
       <Link
         className={isActive() ? styles.active : ''}
-        href={setHref()}
+        href={hrefState}
         onClick={() => {
-          animatedRoute(setHref());
+          animatedRoute(hrefState);
         }}
         passHref
       >
