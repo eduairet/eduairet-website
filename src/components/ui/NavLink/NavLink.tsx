@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './NavLink.module.scss';
 import { LanguageContext } from '@/store/LanguageProvider';
-import useAnimatedRouter from '@/hooks/useAnimatedRouter';
 
 interface IProps {
   href: string;
@@ -16,8 +15,7 @@ interface IProps {
 function NavLink({ href, text, isLangLink = false }: IProps) {
   const [hrefState, setHrefState] = useState<string>(href);
   const pathname = usePathname();
-  const { animatedRoute } = useAnimatedRouter();
-  const { locale } = useContext(LanguageContext);
+  const { locale, isLoading } = useContext(LanguageContext);
 
   const isActive = () => {
     if (isLangLink) return href.includes(locale);
@@ -34,16 +32,11 @@ function NavLink({ href, text, isLangLink = false }: IProps) {
     setHrefState(setHref());
   }, [pathname, setHref]);
 
+  if (isLoading) return null;
+
   return (
     <li className={styles['nav-link']}>
-      <Link
-        className={isActive() ? styles.active : ''}
-        href={hrefState}
-        onClick={() => {
-          animatedRoute(hrefState);
-        }}
-        passHref
-      >
+      <Link className={isActive() ? styles.active : ''} href={hrefState}>
         {text}
       </Link>
     </li>

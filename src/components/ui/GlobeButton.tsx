@@ -10,7 +10,9 @@ interface IProps {
 }
 
 export default function GlobeButton({ isActive, onClick }: IProps) {
-  const { content } = useContext(LanguageContext);
+  const { content, isLoading } = useContext(LanguageContext);
+
+  if (isLoading) return null;
 
   return (
     <IconButton

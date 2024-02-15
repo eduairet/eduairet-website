@@ -7,11 +7,13 @@ import { LanguageContext } from '@/store/LanguageProvider';
 
 export default function ThemeButton() {
   const { darkMode, toggleDarkMode } = useDarkMode();
-  const { content } = useContext(LanguageContext);
+  const { content, isLoading } = useContext(LanguageContext);
 
   const toggleTheme = () => {
     toggleDarkMode();
   };
+
+  if (isLoading) return null;
 
   return (
     <IconButton
