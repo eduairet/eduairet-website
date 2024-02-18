@@ -33,7 +33,6 @@ export class Dictionary {
   };
   home: {
     subtitle: string;
-    text: string;
   };
 
   constructor(data: Partial<Dictionary> = {}) {
@@ -77,7 +76,6 @@ export class Dictionary {
     };
     this.home = {
       subtitle: data.home?.subtitle || '',
-      text: data.home?.text || '',
     };
   }
 

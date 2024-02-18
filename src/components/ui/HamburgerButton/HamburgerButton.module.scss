@@ -18,9 +18,7 @@
     @include merge-transitions((stroke));
 
     &.active {
-      span {
-        stroke: $accent;
-      }
+      stroke: $accent;
     }
   }
 

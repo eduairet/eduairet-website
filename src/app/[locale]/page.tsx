@@ -14,7 +14,6 @@ export default async function Home({ params: { locale } }: IProps) {
     <>
       <h1 className='title'>Eduardo Aire Torres</h1>
       <h2 className='subtitle'>{content.home.subtitle}</h2>
-      <p>{content.home.text}</p>
     </>
   );
 }

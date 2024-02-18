@@ -10,4 +10,30 @@
   padding-left: 1rem;
   padding-right: 1rem;
   gap: 2rem;
+
+  &.blurred {
+    filter: blur(3px);
+  }
+}
+
+.loading {
+  z-index: 2;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  background: var(--background);
+  opacity: 0.9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fade-in $fade-in-duration ease-in;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.8;
+  }
 }

@@ -17,9 +17,7 @@ interface IProps {
 }
 
 function HamburgerButton({ isActive, onClick }: IProps) {
-  const { content, isLoading } = useContext(LanguageContext);
-
-  if (isLoading) return null;
+  const { content } = useContext(LanguageContext);
 
   return (
     <button
@@ -28,6 +26,7 @@ function HamburgerButton({ isActive, onClick }: IProps) {
       onClick={onClick}
     >
       <svg
+        className={isActive ? styles.active : ''}
         width='30'
         height='30'
         viewBox='0 0 30 30'

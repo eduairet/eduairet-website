@@ -15,7 +15,7 @@ interface IProps {
 function NavLink({ href, text, isLangLink = false }: IProps) {
   const [hrefState, setHrefState] = useState<string>(href);
   const pathname = usePathname();
-  const { locale, isLoading } = useContext(LanguageContext);
+  const { locale } = useContext(LanguageContext);
 
   const isActive = () => {
     if (isLangLink) return href.includes(locale);
@@ -31,8 +31,6 @@ function NavLink({ href, text, isLangLink = false }: IProps) {
   useEffect(() => {
     setHrefState(setHref());
   }, [pathname, setHref]);
-
-  if (isLoading) return null;
 
   return (
     <li className={styles['nav-link']}>

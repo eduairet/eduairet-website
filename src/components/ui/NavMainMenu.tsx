@@ -9,7 +9,7 @@ import NavDropdown from './NavDropdown/NavDropdown';
 import HamburgerButton from './HamburgerButton/HamburgerButton';
 
 export default function NavMainMenu() {
-  const { locale, content, isLoading } = useContext(LanguageContext);
+  const { locale, content } = useContext(LanguageContext);
   const {
     backdropState: { navMainBackdrop },
     setBackdrop,
@@ -19,8 +19,6 @@ export default function NavMainMenu() {
     if (!navMainBackdrop) setBackdrop(BackdropType.OPEN_NAV_MAIN);
     else setBackdrop(BackdropType.CLOSE_NAV);
   };
-
-  if (isLoading) return null;
 
   return (
     <div>

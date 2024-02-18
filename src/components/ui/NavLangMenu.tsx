@@ -9,7 +9,7 @@ import NavLink from './NavLink/NavLink';
 import NavDropdown from './NavDropdown/NavDropdown';
 
 export default function NavLangMenu() {
-  const { content, isLoading } = useContext(LanguageContext);
+  const { content } = useContext(LanguageContext);
   const {
     backdropState: { navLangBackdrop },
     setBackdrop,
@@ -19,8 +19,6 @@ export default function NavLangMenu() {
     if (!navLangBackdrop) setBackdrop(BackdropType.OPEN_NAV_LANG);
     else setBackdrop(BackdropType.CLOSE_NAV);
   };
-
-  if (isLoading) return null;
 
   return (
     <div>
