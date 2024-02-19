@@ -6,7 +6,7 @@ import LinkedInLink from '@/components/ui/LinkedInLink';
 import XLink from '@/components/ui/XLink';
 import InstagramLink from '@/components/ui/InstagramLink';
 import EmailLink from '@/components/ui/EmailLink';
-import ThemeButton from '@/components/ui/ThemeButton';
+import ThemeButton from '@/components/ui/ThemeButton/ThemeButton';
 
 interface IProps {
   lang: Lang;

@@ -7,26 +7,30 @@
     background: none;
   }
 
-  & svg {
+  & .bulb {
+    font-family: var(--eat-icons-vf);
+    color: var(--foreground);
+    font-size: 20px;
+    text-align: center;
     width: 20px;
     height: 20px;
-    fill: var(--foreground);
-    @include merge-transitions((fill));
+    color: var(--foreground);
+    @include merge-transitions((color));
   }
 
   @media (hover: hover) {
     &:hover {
       border-color: $accent;
-      & svg {
-        fill: $accent;
+      & .bulb {
+        color: $accent;
       }
     }
   }
 
   &.active {
     border-color: $accent;
-    & svg {
-      fill: $accent;
+    & .bulb {
+      color: $accent;
     }
   }
 }

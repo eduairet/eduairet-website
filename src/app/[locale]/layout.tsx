@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import localFont from 'next/font/local';
 import '@/styles/main.scss';
 import { Lang } from '@/models';
 import StoreProvider from '@/store/StoreProvider';
@@ -8,6 +9,13 @@ import BodyWrapper from '@/components/wrappers/BodyWrapper';
 import NavBar from '@/components/ui/NavBar/NavBar';
 import Footer from '@/components/ui/Footer/Footer';
 import EatLogoBg from '@/components/brand/EatLogoBg';
+
+const eatIconsVF = localFont({
+  src: './fonts/EatIconsVF.woff2',
+  preload: true,
+  variable: '--eat-icons-vf',
+  display: 'swap',
+});
 
 interface IProps {
   children: ReactNode;
@@ -20,7 +28,7 @@ export { generateMetadata, viewport } from '@/utils/server';
 
 export default function RootLayout({ children, params: { locale } }: IProps) {
   return (
-    <html lang={locale}>
+    <html lang={locale} className={eatIconsVF.variable}>
       <head>
         <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT} />
         <MetaIcons />
