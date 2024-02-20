@@ -8,7 +8,6 @@ import MainWrapper from '@/components/wrappers/MainWrapper/MainWrapper';
 import BodyWrapper from '@/components/wrappers/BodyWrapper';
 import NavBar from '@/components/ui/NavBar/NavBar';
 import Footer from '@/components/ui/Footer/Footer';
-import EatLogoBg from '@/components/brand/EatLogoBg';
 
 const eatIconsVF = localFont({
   src: './fonts/EatIconsVF.woff2',
@@ -38,10 +37,7 @@ export default function RootLayout({ children, params: { locale } }: IProps) {
           <header>
             <NavBar />
           </header>
-          <MainWrapper>
-            <EatLogoBg />
-            {children}
-          </MainWrapper>
+          <MainWrapper>{children}</MainWrapper>
           <Footer lang={locale} />
         </BodyWrapper>
       </StoreProvider>

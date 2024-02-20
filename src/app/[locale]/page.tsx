@@ -1,5 +1,6 @@
 import { Lang } from '@/models';
 import { getDictionary } from './dictionaries';
+import HomeContent from '@/components/pages/HomeContent/HomeContent';
 
 interface IProps {
   params: {
@@ -10,10 +11,5 @@ interface IProps {
 export default async function Home({ params: { locale } }: IProps) {
   const content = await getDictionary(locale as Lang);
 
-  return (
-    <>
-      <h1 className='title'>Eduardo Aire Torres</h1>
-      <h2 className='subtitle'>{content.home.subtitle}</h2>
-    </>
-  );
+  return <HomeContent content={content} />;
 }

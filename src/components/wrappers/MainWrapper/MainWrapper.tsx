@@ -30,11 +30,6 @@ function MainWrapper({ children }: IProps) {
 
   return (
     <>
-      {isLoading && (
-        <div className={styles.loading}>
-          <Spinner />
-        </div>
-      )}
       {(backdropState.navMainBackdrop || backdropState.navLangBackdrop) && (
         <NavBarBackdrop
           closeBackdrop={() => setBackdrop(BackdropType.CLOSE_NAV)}
