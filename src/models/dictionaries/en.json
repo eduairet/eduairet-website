@@ -39,5 +39,15 @@
   },
   "home": {
     "subtitle": "Developer • Designer • Artist"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Let's work together!",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "submit": "Submit"
+    }
   }
 }

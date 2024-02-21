@@ -34,6 +34,16 @@ export class Dictionary {
   home: {
     subtitle: string;
   };
+  contact: {
+    title: string;
+    subtitle: string;
+    form: {
+      name: string;
+      email: string;
+      message: string;
+      submit: string;
+    };
+  };
 
   constructor(data: Partial<Dictionary> = {}) {
     this.meta = {
@@ -76,6 +86,16 @@ export class Dictionary {
     };
     this.home = {
       subtitle: data.home?.subtitle || '',
+    };
+    this.contact = {
+      title: data.contact?.title || '',
+      subtitle: data.contact?.subtitle || '',
+      form: {
+        name: data.contact?.form?.name || '',
+        email: data.contact?.form?.email || '',
+        message: data.contact?.form?.message || '',
+        submit: data.contact?.form?.submit || '',
+      },
     };
   }
 
