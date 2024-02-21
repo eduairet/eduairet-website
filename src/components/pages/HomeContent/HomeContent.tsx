@@ -8,10 +8,10 @@ interface IProps {
 
 export default function HomeContent({ content }: IProps) {
   return (
-    <div className={styles.content}>
+    <section className={styles.content}>
       <EatLogoBg />
       <h1 className={styles.title}>Eduardo Aire Torres</h1>
       <h2 className={styles.subtitle}>{content.home.subtitle}</h2>
-    </div>
+    </section>
   );
 }

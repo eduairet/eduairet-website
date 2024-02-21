@@ -1,0 +1,36 @@
+@import '@/styles/abstracts/_index.scss';
+
+.button {
+  font-size: 1rem;
+  font-variation-settings: 'wght' 600, 'opsz' 16;
+  cursor: pointer;
+  background-color: var(--background);
+  color: var(--foreground);
+  min-width: 150px;
+  max-width: 300px;
+  height: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  @include border($weight: 2px);
+  @include rounded-corners($radius: 1rem);
+  @include merge-transitions((border-color, color));
+
+  @media (hover: hover) {
+    &:hover:not(:disabled) {
+      border-color: $accent;
+      color: $accent;
+    }
+  }
+
+  &:active {
+    background-color: $accent;
+    color: $white;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
