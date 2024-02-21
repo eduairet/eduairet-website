@@ -1,4 +1,5 @@
 import { headers } from 'next/headers';
+import { RequestInit } from 'next/dist/server/web/spec-extension/request';
 
 export const getHost = () => {
   const host = headers().get('host');
@@ -6,11 +7,31 @@ export const getHost = () => {
   return `${protocol}://${host}`;
 };
 
-export const getData = async (url: string) => {
-  const res = await fetch(url);
-  if (res.ok) {
-    const data = await res.json();
-    return data;
-  }
-  throw new Error('Error fetching data');
+interface IOptions {
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  headers?: {
+    'Content-Type'?: string;
+  };
+  body?: unknown;
+}
+
+export const fetchData = async (
+  url: string,
+  {
+    method = 'GET',
+    headers = {
+      'Content-Type': 'application/json',
+    },
+    body = {},
+  }: IOptions = {}
+) => {
+  const res = await fetch(url, {
+    method,
+    headers,
+    body: JSON.stringify(body),
+  } as RequestInit);
+
+  if (!res.ok) throw new Error('Error fetching data');
+  const data = await res.json();
+  return data;
 };
