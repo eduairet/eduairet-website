@@ -9,6 +9,7 @@ interface IProps {
   onClick: () => void;
 }
 
+// TODO Check why it's not focusable
 export default function GlobeButton({ isActive, onClick }: IProps) {
   const { content } = useContext(LanguageContext);
 
