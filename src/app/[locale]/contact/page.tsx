@@ -1,9 +1,24 @@
+import { getDictionary } from '../dictionaries';
+import { Lang } from '@/models';
+import SectionWrapper from '@/components/wrappers/SectionWrapper/SectionWrapper';
+import ContactForm from '@/components/pages/ContactForm/ContactForm';
+
 export { generateMetadata } from '@/utils/server';
 
-export default function Contact() {
+interface IProps {
+  params: {
+    locale: string;
+  };
+}
+
+export default async function Contact({ params: { locale } }: IProps) {
+  const content = await getDictionary(locale as Lang);
+
   return (
-    <h1>
-      <a href='mailto:hola@eduairet.com'>hola@eduairet.com</a>
-    </h1>
+    <SectionWrapper>
+      <h1>{content.contact.title}</h1>
+      <h2>{content.contact.subtitle}</h2>
+      <ContactForm />
+    </SectionWrapper>
   );
 }

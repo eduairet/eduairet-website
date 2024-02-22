@@ -1,6 +1,8 @@
 $black: #000;
 $white: #ededed;
 $accent: #f00;
+$valid: #00ffc3;
+$invalid: $accent;
 
 :export {
   black: $black;

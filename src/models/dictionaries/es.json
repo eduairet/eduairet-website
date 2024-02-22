@@ -47,7 +47,19 @@
       "name": "Nombre",
       "email": "Correo",
       "message": "Mensaje",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "errors": {
+        "empty": {
+          "name": "El nombre es requerido",
+          "email": "El correo es requerido",
+          "message": "El mensaje es requerido"
+        },
+        "invalid": {
+          "name": "Nombre inválido",
+          "email": "Correo inválido",
+          "message": "Mensaje inválido"
+        }
+      }
     }
   }
 }

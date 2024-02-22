@@ -42,12 +42,24 @@
   },
   "contact": {
     "title": "Contact",
-    "subtitle": "Let's work together!",
+    "subtitle": "Let's talk!",
     "form": {
       "name": "Name",
       "email": "Email",
       "message": "Message",
-      "submit": "Submit"
+      "submit": "Submit",
+      "errors": {
+        "empty": {
+          "name": "Name is required",
+          "email": "Email is required",
+          "message": "Message is required"
+        },
+        "invalid": {
+          "name": "Invalid name",
+          "email": "Invalid email",
+          "message": "Invalid message"
+        }
+      }
     }
   }
 }

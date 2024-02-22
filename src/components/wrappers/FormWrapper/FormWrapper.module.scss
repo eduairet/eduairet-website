@@ -1,0 +1,19 @@
+@import '@/styles/abstracts/_index.scss';
+
+.form {
+  background-color: var(--background);
+  width: 100%;
+  max-width: 350px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 2rem 2rem 3rem;
+  @include border($weight: 3px);
+  @include rounded-corners($radius: 1rem);
+}
+
+.error {
+  color: red;
+  margin-top: 0.5rem;
+  text-align: center;
+}

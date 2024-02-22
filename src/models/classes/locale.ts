@@ -1,3 +1,8 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable unused-imports/no-unused-vars */
+
+import { ContactFormErrors } from '@/models';
+
 interface Button {
   title: string;
   ariaLabel: string;
@@ -42,6 +47,10 @@ export class Dictionary {
       email: string;
       message: string;
       submit: string;
+      errors: {
+        empty: ContactFormErrors;
+        invalid: ContactFormErrors;
+      };
     };
   };
 
@@ -95,17 +104,19 @@ export class Dictionary {
         email: data.contact?.form?.email || '',
         message: data.contact?.form?.message || '',
         submit: data.contact?.form?.submit || '',
+        errors: {
+          empty: {
+            name: data.contact?.form?.errors?.empty?.name || '',
+            email: data.contact?.form?.errors?.empty?.email || '',
+            message: data.contact?.form?.errors?.empty?.message || '',
+          },
+          invalid: {
+            name: data.contact?.form?.errors?.invalid?.name || '',
+            email: data.contact?.form?.errors?.invalid?.email || '',
+            message: data.contact?.form?.errors?.invalid?.message || '',
+          },
+        },
       },
     };
-  }
-
-  getValue(key: string): any {
-    const keys = key.split('.');
-    let value: any = this;
-    for (const prop of keys) {
-      value = value?.[prop];
-      if (value === undefined) return undefined;
-    }
-    return value;
   }
 }

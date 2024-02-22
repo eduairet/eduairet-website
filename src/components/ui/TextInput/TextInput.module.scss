@@ -1,0 +1,52 @@
+@import '@/styles/abstracts/_index.scss';
+
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+.input,
+.textarea {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  text-align: left;
+  border: 2px solid var(--foreground);
+  background-color: var(--background);
+  color: var(--foreground);
+  outline: none;
+  border-radius: 5px;
+  width: 100%;
+  @include merge-transitions((border-color));
+
+  &:focus {
+    border-color: $valid;
+  }
+
+  &.invalid {
+    border-color: $invalid;
+  }
+}
+
+.textarea {
+  min-height: 5rem;
+  resize: none;
+}
+
+.input-info {
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+  text-align: right;
+  color: var(--foreground);
+}
+
+.error {
+  color: red;
+}

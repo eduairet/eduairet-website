@@ -1,15 +1,9 @@
 import 'server-only';
-import { Dictionaries, Dictionary, Lang } from '@/models';
+import { Dictionaries, Dictionary, Lang, EnContent, EsContent } from '@/models';
 
 const dictionaries: Dictionaries = {
-  en: () =>
-    import('@/models/dictionaries/en.json').then(
-      (module) => new Dictionary(module.default)
-    ),
-  es: () =>
-    import('@/models/dictionaries/es.json').then(
-      (module) => new Dictionary(module.default)
-    ),
+  en: new Dictionary(EnContent),
+  es: new Dictionary(EsContent),
 };
 
-export const getDictionary = async (locale: Lang) => dictionaries[locale]();
+export const getDictionary = async (locale: Lang) => dictionaries[locale];
