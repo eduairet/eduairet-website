@@ -1,14 +1,21 @@
 'use server';
 
-import { fetchData } from '@/utils/server';
 import { GoogleCaptchaResponse } from '@/models';
 
-export async function verifyCaptcha(token: string | null) {
-  const res = await fetchData<GoogleCaptchaResponse>(
+export async function verifyCaptcha(
+  token: string | null
+): Promise<GoogleCaptchaResponse> {
+  const res = await fetch(
     `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`,
     {
       method: 'POST',
     }
   );
-  return res;
+  const data = await res.json();
+  return {
+    success: data.success,
+    challengeTs: new Date(data.challenge_ts),
+    hostname: data.hostname,
+    errorCodes: data['error-codes'],
+  };
 }

@@ -1,6 +1,6 @@
 export type GoogleCaptchaResponse = {
   success: boolean;
-  challenge_ts: Date;
+  challengeTs: Date;
   hostname: string;
   errorCodes: number[];
 };
