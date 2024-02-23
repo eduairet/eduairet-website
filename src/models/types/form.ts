@@ -2,7 +2,6 @@
 /* eslint-disable unused-imports/no-unused-vars */
 
 interface IValidation {
-  errorMessage: string;
   validate: (value: string) => boolean;
 }
 

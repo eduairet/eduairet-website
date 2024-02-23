@@ -48,7 +48,9 @@
       "email": "Email",
       "message": "Message",
       "submit": "Submit",
+      "success": "The form was submitted successfully!",
       "errors": {
+        "submit": "There was an error submitting the form",
         "empty": {
           "name": "Name is required",
           "email": "Email is required",

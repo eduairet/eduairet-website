@@ -5,15 +5,29 @@ import styles from './FormWrapper.module.scss';
 
 interface IProps {
   children: ReactNode;
-  error?: string | null;
+  submitMessage?: string;
+  error?: boolean;
   onSubmit: FormEventHandler<HTMLFormElement>;
 }
 
-function FormWrapper({ children, onSubmit, error = null }: IProps) {
+function FormWrapper({
+  children,
+  submitMessage,
+  onSubmit,
+  error = false,
+}: IProps) {
   return (
     <form className={styles.form} onSubmit={onSubmit}>
       {children}
-      {error && <p className={styles.error}>{error}</p>}
+      {submitMessage && (
+        <p
+          className={[styles['submit-message'], error ? styles.error : ''].join(
+            ' '
+          )}
+        >
+          {submitMessage}
+        </p>
+      )}
     </form>
   );
 }

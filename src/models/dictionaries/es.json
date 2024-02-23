@@ -48,7 +48,9 @@
       "email": "Correo",
       "message": "Mensaje",
       "submit": "Enviar",
+      "success": "¡El formulario se ha enviado correctamente!",
       "errors": {
+        "submit": "Hubo un error al enviar el formulario",
         "empty": {
           "name": "El nombre es requerido",
           "email": "El correo es requerido",

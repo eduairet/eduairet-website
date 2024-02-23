@@ -47,7 +47,9 @@ export class Dictionary {
       email: string;
       message: string;
       submit: string;
+      success: string;
       errors: {
+        submit: string;
         empty: ContactFormErrors;
         invalid: ContactFormErrors;
       };
@@ -104,7 +106,9 @@ export class Dictionary {
         email: data.contact?.form?.email || '',
         message: data.contact?.form?.message || '',
         submit: data.contact?.form?.submit || '',
+        success: data.contact?.form?.success || '',
         errors: {
+          submit: data.contact?.form?.errors?.submit || '',
           empty: {
             name: data.contact?.form?.errors?.empty?.name || '',
             email: data.contact?.form?.errors?.empty?.email || '',
