@@ -6,17 +6,17 @@ import { TextInputType } from '@/models';
 export default function useTextInput(
   type: TextInputType,
   inputName: string,
-  value: string
+  value: string,
+  focused: boolean
 ) {
   const { content } = useContext(LanguageContext);
   const emptyError = content.contact.form.errors.empty[inputName];
   const invalidError = content.contact.form.errors.invalid[inputName];
-  const [firstFocus, setFirstFocus] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    if (firstFocus) {
+    if (focused) {
       if (!value) {
         setIsValid(false);
         setErrorMessage(emptyError);
@@ -30,12 +30,10 @@ export default function useTextInput(
       }
       setIsValid(true);
     }
-  }, [emptyError, firstFocus, invalidError, type, value]);
+  }, [emptyError, invalidError, type, value, focused]);
 
   return {
     isValid,
     errorMessage,
-    firstFocus,
-    setFirstFocus,
   };
 }

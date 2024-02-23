@@ -12,19 +12,26 @@ export class ApiResponse<T> {
   }
 }
 
-interface IField {
+class Field {
   value: string;
+  focused: boolean;
   isValid: boolean;
+
+  constructor(value?: string, focused?: boolean, isValid?: boolean) {
+    this.value = value || '';
+    this.focused = focused || false;
+    this.isValid = isValid || false;
+  }
 }
 
 export class ContactFormModel {
-  [ContactFormField.NAME]: IField;
-  [ContactFormField.EMAIL]: IField;
-  [ContactFormField.MESSAGE]: IField;
+  [ContactFormField.NAME]: Field;
+  [ContactFormField.EMAIL]: Field;
+  [ContactFormField.MESSAGE]: Field;
 
-  constructor(name?: IField, email?: IField, message?: IField) {
-    this[ContactFormField.NAME] = name || { value: '', isValid: false };
-    this[ContactFormField.EMAIL] = email || { value: '', isValid: false };
-    this[ContactFormField.MESSAGE] = message || { value: '', isValid: false };
+  constructor(name?: Field, email?: Field, message?: Field) {
+    this[ContactFormField.NAME] = name || new Field();
+    this[ContactFormField.EMAIL] = email || new Field();
+    this[ContactFormField.MESSAGE] = message || new Field();
   }
 }

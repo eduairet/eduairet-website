@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, FocusEventHandler } from 'react';
 import styles from './TextInput.module.scss';
 import { TextInputType } from '@/models';
 import useTextInput from '@/hooks/useTextInput';
@@ -11,8 +11,9 @@ interface IProps {
   type?: TextInputType;
   required?: boolean;
   value?: string;
+  focused?: boolean;
   // eslint-disable-next-line unused-imports/no-unused-vars, no-unused-vars
-  onChange: (value: string, isValid: boolean) => void;
+  onChange: (value: string, focused: boolean, isValid: boolean) => void;
 }
 
 export default function TextInput({
@@ -20,20 +21,27 @@ export default function TextInput({
   label,
   onChange,
   value = '',
+  focused = false,
   required = true,
   type = 'text',
 }: IProps) {
-  const { isValid, errorMessage, setFirstFocus } = useTextInput(
+  const { isValid, errorMessage } = useTextInput(
     type,
     id as string,
-    value
+    value,
+    focused
   );
+
+  const handleBlur: FocusEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (e) => {
+    onChange(e.target.value, true, isValid);
+  };
 
   const handleChange: ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = (e) => {
-    setFirstFocus(true);
-    onChange(e.target.value, isValid);
+    onChange(e.target.value, true, isValid);
   };
 
   return (
@@ -52,7 +60,7 @@ export default function TextInput({
           id={id}
           value={value}
           required={required}
-          onBlur={() => setFirstFocus(true)}
+          onBlur={handleBlur}
           onChange={handleChange}
         />
       ) : (
@@ -62,7 +70,7 @@ export default function TextInput({
           type={type}
           value={value}
           required={required}
-          onBlur={() => setFirstFocus(true)}
+          onBlur={handleBlur}
           onChange={handleChange}
         />
       )}
