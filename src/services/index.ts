@@ -1,1 +1,1 @@
-export * from './server/api-test';
+export * from './server/captcha';
