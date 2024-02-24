@@ -1,7 +1,7 @@
-import { getDictionary } from '../dictionaries';
+import { getDictionary } from '@/app/[locale]/dictionaries';
 import { Lang } from '@/models';
 import SectionWrapper from '@/components/wrappers/SectionWrapper/SectionWrapper';
-import ContactForm from '@/components/pages/ContactForm/ContactForm';
+import ContactForm from '@/app/[locale]/contact/components/ContactForm/ContactForm';
 
 export { generateMetadata } from '@/utils/server';
 

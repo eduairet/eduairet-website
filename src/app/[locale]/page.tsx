@@ -1,6 +1,6 @@
 import { Lang } from '@/models';
 import { getDictionary } from './dictionaries';
-import HomeContent from '@/components/pages/HomeContent/HomeContent';
+import HomeContent from '@/app/[locale]/components/HomeContent/HomeContent';
 
 interface IProps {
   params: {
