@@ -2,7 +2,12 @@
 
 import { useState, useContext, useReducer, memo, FormEvent } from 'react';
 import { LanguageContext } from '@/store/LanguageProvider';
-import { ContactFormModel, ContactFormField, SpinnerSize } from '@/models';
+import {
+  ContactFormModel,
+  ContactFormField,
+  SpinnerSize,
+  TextInputType,
+} from '@/models';
 import { fetchData } from '@/utils/client';
 import FormWrapper from '@/components/wrappers/FormWrapper/FormWrapper';
 import TextInput from '@/components/ui/TextInput/TextInput';
@@ -78,56 +83,54 @@ function ContactForm() {
     setIsSending(false);
   };
 
+  const inputFields = [
+    {
+      id: ContactFormField.NAME,
+      label: content.contact.form.name,
+      value: state.name.value,
+      focused: state.name.focused,
+      type: 'text',
+    },
+    {
+      id: ContactFormField.EMAIL,
+      label: content.contact.form.email,
+      value: state.email.value,
+      focused: state.email.focused,
+      type: 'email',
+    },
+    {
+      id: ContactFormField.MESSAGE,
+      label: content.contact.form.message,
+      value: state.message.value,
+      focused: state.message.focused,
+      type: 'textarea',
+    },
+  ];
+
   return (
     <FormWrapper
       onSubmit={handleSubmit}
       error={formError}
       submitMessage={submitMessage}
     >
-      <TextInput
-        id={ContactFormField.NAME}
-        label={content.contact.form.name}
-        value={state.name.value}
-        focused={state.name.focused}
-        onChange={(value: string, focused: boolean, isValid: boolean) =>
-          dispatch({
-            type: ContactFormField.NAME,
-            value,
-            focused,
-            isValid,
-          })
-        }
-      />
-      <TextInput
-        id={ContactFormField.EMAIL}
-        label={content.contact.form.email}
-        type='email'
-        value={state.email.value}
-        focused={state.email.focused}
-        onChange={(value: string, focused: boolean, isValid: boolean) =>
-          dispatch({
-            type: ContactFormField.EMAIL,
-            value,
-            focused,
-            isValid,
-          })
-        }
-      />
-      <TextInput
-        id={ContactFormField.MESSAGE}
-        label={content.contact.form.message}
-        value={state.message.value}
-        focused={state.message.focused}
-        type='textarea'
-        onChange={(value: string, focused: boolean, isValid: boolean) =>
-          dispatch({
-            type: ContactFormField.MESSAGE,
-            value,
-            focused,
-            isValid,
-          })
-        }
-      />
+      {inputFields.map((field) => (
+        <TextInput
+          key={field.id}
+          id={field.id}
+          label={field.label}
+          type={field.type as TextInputType}
+          value={field.value}
+          focused={field.focused}
+          onChange={(value: string, focused: boolean, isValid: boolean) =>
+            dispatch({
+              type: field.id,
+              value,
+              focused,
+              isValid,
+            })
+          }
+        />
+      ))}
       <Button type='submit' disabled={isSending}>
         {isSending ? (
           <Spinner size={SpinnerSize.XS} />
