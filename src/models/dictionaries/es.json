@@ -63,5 +63,6 @@
         }
       }
     }
-  }
+  },
+  "captcha": "No soy un robot"
 }

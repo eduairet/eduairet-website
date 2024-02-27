@@ -55,6 +55,7 @@ export class Dictionary {
       };
     };
   };
+  captcha: string;
 
   constructor(data: Partial<Dictionary> = {}) {
     this.meta = {
@@ -122,5 +123,6 @@ export class Dictionary {
         },
       },
     };
+    this.captcha = data.captcha || '';
   }
 }

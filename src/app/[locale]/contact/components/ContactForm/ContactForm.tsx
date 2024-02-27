@@ -166,7 +166,7 @@ function ContactForm() {
       ))}
       <Checkbox
         id='captcha'
-        label='I am not a robot'
+        label={content.captcha}
         checked={!!captchaToken}
         onChange={handleCaptcha}
       />
