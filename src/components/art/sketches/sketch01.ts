@@ -1,4 +1,4 @@
-import { FRAME_RATE, SKETCH_CONTAINER_ID } from '@/utils/client';
+import { FRAME_RATE, SKETCH_CONTAINER_ID } from '@/utils/constants';
 import type P5 from 'p5';
 
 const sketch01 = (p: P5) => {

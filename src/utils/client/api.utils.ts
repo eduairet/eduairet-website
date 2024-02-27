@@ -13,18 +13,14 @@ interface IOptions {
 
 export const fetchData = async <Type>(
   url: string,
-  {
-    method = 'GET',
-    headers = {
-      'Content-Type': 'application/json',
-    },
-    body = {},
-  }: IOptions = {}
+  options: IOptions = {}
 ): Promise<ApiResponse<Type>> => {
+  const { method, headers, body } = options;
+
   const res = await fetch(url, {
-    method,
-    headers,
-    body: JSON.stringify(body),
+    method: method || 'GET',
+    headers: headers || { 'Content-Type': 'application/json' },
+    body: body ? JSON.stringify(body) : undefined,
   } as RequestInit);
 
   if (!res.ok) return new ApiResponse(res.statusText, false);

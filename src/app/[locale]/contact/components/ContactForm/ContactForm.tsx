@@ -7,12 +7,14 @@ import {
   ContactFormField,
   SpinnerSize,
   TextInputType,
+  ContactRequest,
 } from '@/models';
 import { fetchData } from '@/utils/client';
 import FormWrapper from '@/components/wrappers/FormWrapper/FormWrapper';
 import TextInput from '@/components/ui/TextInput/TextInput';
 import Button from '@/components/ui/Button/Button';
 import Spinner from '@/components/ui/Spinner/Spinner';
+import { ApiUrls } from '@/utils/constants';
 
 interface IReducerAction {
   type: ContactFormField | 'RESET';
@@ -68,9 +70,13 @@ function ContactForm() {
       setIsSending(false);
       return;
     }
-    const res = await fetchData<string>('/api/contact', {
+    const res = await fetchData<string>(ApiUrls.contact, {
       method: 'POST',
-      body: JSON.stringify(state),
+      body: new ContactRequest(
+        state.name.value,
+        state.email.value,
+        state.message.value
+      ),
     });
     if (!res.success) {
       setFormError(true);
