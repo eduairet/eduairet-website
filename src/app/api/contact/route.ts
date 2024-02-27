@@ -1,7 +1,8 @@
 import { verifyCaptcha } from '@/services/server';
 
 export async function POST(req: Request) {
-  if (req.method !== 'POST') return { status: 405, body: 'Method Not Allowed' };
+  if (req.method !== 'POST')
+    return Response.json({ status: 405, body: 'Method Not Allowed' });
 
   const { name, email, message, captchaToken } = await req.json();
 
