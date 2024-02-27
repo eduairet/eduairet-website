@@ -1,0 +1,45 @@
+@import '@/styles/abstracts/_index.scss';
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  gap: 0.5rem;
+}
+
+.checkbox {
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  background-color: var(--background);
+  color: var(--foreground);
+  margin: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid currentColor;
+  border-radius: 0.15em;
+  transform: translateY(-0.1rem);
+  display: grid;
+  place-content: center;
+
+  &::before {
+    content: '';
+    width: 0.8em;
+    height: 0.8em;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    transform: scale(0);
+    opacity: 0;
+    transform-origin: bottom left;
+    background-color: var(--foreground);
+    @include merge-transitions((transform, opacity));
+  }
+
+  &:checked::before {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.checkbox-label {
+  margin-left: 20px;
+}

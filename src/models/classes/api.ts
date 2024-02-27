@@ -14,10 +14,17 @@ export class ContactRequest {
   name: string;
   email: string;
   message: string;
+  captchaToken: string;
 
-  constructor(name: string, email: string, message: string) {
+  constructor(
+    name: string,
+    email: string,
+    message: string,
+    captchaToken: string
+  ) {
     this.name = name;
     this.email = email;
     this.message = message;
+    this.captchaToken = captchaToken;
   }
 }

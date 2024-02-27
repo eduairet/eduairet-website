@@ -5,6 +5,7 @@ import styles from './Button.module.scss';
 
 interface IProps {
   children: ReactNode;
+  className?: string;
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
   onClick?: () => void;
@@ -12,13 +13,14 @@ interface IProps {
 
 export default function Button({
   children,
+  className = '',
   onClick = () => {},
   type = 'button',
   disabled = false,
 }: IProps) {
   return (
     <button
-      className={styles.button}
+      className={[styles.button, className].join(' ')}
       type={type}
       disabled={disabled}
       onClick={onClick}

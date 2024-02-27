@@ -12,7 +12,7 @@ interface IProps {
 
 export default function Art({ currentSketch = 1 }: IProps) {
   const containerRef = useRef<SketchContainerRef>();
-  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [isMounted, setIsMounted] = useState(false);
   const sketch = sketches[`sketch${currentSketch.toString().padStart(2, '0')}`];
 
   useEffect(() => {
