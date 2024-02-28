@@ -1,3 +1,5 @@
+import { Lang } from '../types';
+
 export class ApiResponse<T> {
   message?: string | undefined;
   success: boolean;
@@ -11,17 +13,20 @@ export class ApiResponse<T> {
 }
 
 export class ContactRequest {
+  locale: Lang;
   name: string;
   email: string;
   message: string;
   captchaToken: string;
 
   constructor(
+    locale: Lang,
     name: string,
     email: string,
     message: string,
     captchaToken: string
   ) {
+    this.locale = locale;
     this.name = name;
     this.email = email;
     this.message = message;

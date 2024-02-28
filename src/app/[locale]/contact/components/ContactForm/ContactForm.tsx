@@ -49,7 +49,7 @@ const ContactFormReducer: IReducer = (state, action) => {
 };
 
 function ContactForm() {
-  const { content } = useContext(LanguageContext);
+  const { locale, content } = useContext(LanguageContext);
   const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [isCaptchaLoading, setIsCaptchaLoading] = useState(false);
   const [isSending, setIsSending] = useState<boolean>(false);
@@ -98,6 +98,7 @@ function ContactForm() {
     const res = await fetchData<string>(ApiUrls.contact, {
       method: 'POST',
       body: new ContactRequest(
+        locale,
         state.name.value,
         state.email.value,
         state.message.value,

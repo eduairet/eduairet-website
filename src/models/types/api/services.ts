@@ -4,3 +4,9 @@ export type GoogleCaptchaResponse = {
   hostname: string;
   errorCodes: number[];
 };
+
+export type MailResponse = {
+  success: boolean;
+  message: string;
+  status: number;
+};
