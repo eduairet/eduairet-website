@@ -1,5 +1,5 @@
 import { verifyCaptcha } from '@/services/server';
-import { sendEmail } from '@/services/server/email.service';
+import { sendEmail } from '@/services/server';
 
 export async function POST(req: Request) {
   if (req.method !== 'POST')
