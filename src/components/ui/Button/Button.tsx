@@ -9,6 +9,7 @@ interface IProps {
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
   onClick?: () => void;
+  props?: any;
 }
 
 export default function Button({
@@ -17,6 +18,7 @@ export default function Button({
   onClick = () => {},
   type = 'button',
   disabled = false,
+  props,
 }: IProps) {
   return (
     <button
@@ -24,6 +26,7 @@ export default function Button({
       type={type}
       disabled={disabled}
       onClick={onClick}
+      {...props}
     >
       {children}
     </button>

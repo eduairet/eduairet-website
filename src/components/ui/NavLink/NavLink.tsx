@@ -13,7 +13,7 @@ interface IProps {
 }
 
 function NavLink({ href, text, isLangLink = false }: IProps) {
-  const [hrefState, setHrefState] = useState<string>(href);
+  const [hrefState, setHrefState] = useState(href);
   const pathname = usePathname();
   const { locale } = useContext(LanguageContext);
 

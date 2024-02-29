@@ -24,6 +24,7 @@ export const fetchData = async <Type>(
   } as RequestInit);
 
   if (!res.ok) return new ApiResponse(res.statusText, false);
+
   const data: Type = await res.json();
   return new ApiResponse('Success', true, data);
 };

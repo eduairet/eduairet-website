@@ -6,8 +6,8 @@ import { Dictionary, EnContent, EsContent, Lang } from '@/models';
 
 export default function useLanguage() {
   const { locale } = useParams();
-  const [content, setContent] = useState<Dictionary>(new Dictionary());
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [content, setContent] = useState(new Dictionary());
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);

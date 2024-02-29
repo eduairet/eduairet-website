@@ -4,18 +4,26 @@ import styles from './Checkbox.module.scss';
 interface IProps {
   id: string;
   label: string;
-  checked: boolean;
+  checked?: boolean;
+  disabled?: boolean;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
-export default function Checkbox({ id, label, checked, onChange }: IProps) {
+export default function Checkbox({
+  id,
+  label,
+  disabled,
+  onChange,
+  checked = false,
+}: IProps) {
   return (
     <div className={styles['checkbox-wrapper']}>
       <input
         type='checkbox'
         id={id}
-        className={styles.checkbox}
         checked={checked}
+        disabled={disabled}
+        className={styles.checkbox}
         onChange={onChange}
       />
       <label htmlFor={id}>{label}</label>

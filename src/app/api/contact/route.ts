@@ -3,30 +3,27 @@ import { sendEmail } from '@/services/server';
 
 export async function POST(req: Request) {
   if (req.method !== 'POST')
-    return Response.json({ status: 405, body: 'Method Not Allowed' });
+    return new Response('Method Not Allowed', { status: 405 });
 
-  const { locale, name, email, message, captchaToken } = await req.json();
+  const { locale, name, email, message, recaptchaToken } = await req.json();
+  console.log([locale, name, email, message, recaptchaToken]);
 
-  if (!locale || !name || !email || !message || !captchaToken)
-    return Response.json({ status: 400, body: 'Bad Request' });
+  if (!locale || !name || !email || !message || !recaptchaToken)
+    return new Response('Bad Request', { status: 400 });
 
   try {
-    const captchaVerification = await verifyCaptcha(captchaToken);
+    const captchaVerification = await verifyCaptcha(recaptchaToken);
     if (!captchaVerification.success)
-      return Response.json({
+      return new Response("We couldn't verify your ReCaptcha Token", {
         status: 400,
-        body: 'Captcha verification failed. Please try again',
       });
 
     const mailResponse = await sendEmail(locale, email, name, message);
     if (!mailResponse.success)
-      return Response.json({
-        status: mailResponse.status,
-        body: mailResponse.message,
-      });
+      return new Response(mailResponse.message, { status: 400 });
   } catch (e) {
-    return Response.json({ status: 500, body: 'Internal Server Error' });
+    return new Response('Internal Server Error', { status: 500 });
   }
 
-  return Response.json({ result: 'Success' });
+  return Response.json('Email sent successfully!');
 }

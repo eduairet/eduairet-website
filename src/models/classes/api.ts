@@ -17,19 +17,19 @@ export class ContactRequest {
   name: string;
   email: string;
   message: string;
-  captchaToken: string;
+  recaptchaToken: string;
 
   constructor(
     locale: Lang,
     name: string,
     email: string,
     message: string,
-    captchaToken: string
+    recaptchaToken: string
   ) {
     this.locale = locale;
     this.name = name;
     this.email = email;
     this.message = message;
-    this.captchaToken = captchaToken;
+    this.recaptchaToken = recaptchaToken;
   }
 }

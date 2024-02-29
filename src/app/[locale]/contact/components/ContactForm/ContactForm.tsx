@@ -2,7 +2,6 @@
 
 import { useState, useContext, useReducer, memo, FormEvent } from 'react';
 import styles from './ContactForm.module.scss';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { LanguageContext } from '@/store/LanguageProvider';
 import {
   ContactFormModel,
@@ -13,6 +12,7 @@ import {
 } from '@/models';
 import { fetchData } from '@/utils/client';
 import { ApiUrls } from '@/utils/constants';
+import useRecaptcha from '@/hooks/useRecaptcha';
 import FormWrapper from '@/components/wrappers/FormWrapper/FormWrapper';
 import TextInput from '@/components/ui/TextInput/TextInput';
 import Button from '@/components/ui/Button/Button';
@@ -50,9 +50,13 @@ const ContactFormReducer: IReducer = (state, action) => {
 
 function ContactForm() {
   const { locale, content } = useContext(LanguageContext);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const [isCaptchaLoading, setIsCaptchaLoading] = useState(false);
-  const [isSending, setIsSending] = useState<boolean>(false);
+  const {
+    isRecaptchaLoading,
+    recaptchaToken,
+    verifyRecaptcha,
+    resetRecaptcha,
+  } = useRecaptcha();
+  const [isSending, setIsSending] = useState(false);
   const [formError, setFormError] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
   const [state, dispatch] = useReducer(
@@ -60,27 +64,8 @@ function ContactForm() {
     new ContactFormModel()
   );
 
-  const { executeRecaptcha } = useGoogleReCaptcha();
-
   const formIsValid = () => {
     return state.name.isValid && state.email.isValid && state.message.isValid;
-  };
-
-  const handleCaptcha = async () => {
-    setIsCaptchaLoading(true);
-    if (!executeRecaptcha) {
-      setCaptchaToken(null);
-      setIsCaptchaLoading(false);
-      return;
-    }
-    if (captchaToken) {
-      setCaptchaToken(null);
-      setIsCaptchaLoading(false);
-      return;
-    }
-    const token = await executeRecaptcha();
-    setCaptchaToken(token);
-    setIsCaptchaLoading(false);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -88,7 +73,8 @@ function ContactForm() {
     setIsSending(true);
     setFormError(false);
     setSubmitMessage('');
-    if (!formIsValid() || !captchaToken) {
+
+    if (!formIsValid() || !recaptchaToken) {
       setFormError(true);
       setSubmitMessage(content.contact.form.errors.submit);
       setIsSending(false);
@@ -102,17 +88,19 @@ function ContactForm() {
         state.name.value,
         state.email.value,
         state.message.value,
-        captchaToken
+        recaptchaToken
       ),
     });
+
     if (!res.success) {
       setFormError(true);
       setSubmitMessage(content.contact.form.errors.submit);
       setIsSending(false);
       return;
     }
+
     setSubmitMessage(content.contact.form.success);
-    setCaptchaToken(null);
+    resetRecaptcha();
     dispatch({ type: 'RESET' });
     setIsSending(false);
   };
@@ -168,15 +156,18 @@ function ContactForm() {
       <Checkbox
         id='captcha'
         label={content.captcha}
-        checked={!!captchaToken}
-        onChange={handleCaptcha}
+        disabled={isRecaptchaLoading}
+        checked={!!recaptchaToken}
+        onChange={(e) => {
+          e.target.checked ? verifyRecaptcha() : resetRecaptcha();
+        }}
       />
       <Button
         type='submit'
         className={styles.submit}
-        disabled={isSending || !captchaToken}
+        disabled={isSending || !recaptchaToken}
       >
-        {isSending || isCaptchaLoading ? (
+        {isSending || isRecaptchaLoading ? (
           <Spinner size={SpinnerSize.XS} />
         ) : (
           content.contact.form.submit

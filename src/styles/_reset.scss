@@ -23,4 +23,5 @@ p {
 
 .grecaptcha-badge {
   visibility: hidden !important;
+  z-index: -1;
 }
