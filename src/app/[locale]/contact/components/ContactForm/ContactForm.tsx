@@ -100,6 +100,9 @@ function ContactForm() {
     }
 
     setSubmitMessage(content.contact.form.success);
+    setTimeout(() => {
+      setSubmitMessage('');
+    }, 10000);
     resetRecaptcha();
     dispatch({ type: 'RESET' });
     setIsSending(false);
