@@ -21,7 +21,10 @@ p {
   text-wrap: pretty;
 }
 
+div:has(.grecaptcha-badge) {
+  position: absolute;
+}
+
 .grecaptcha-badge {
   visibility: hidden !important;
-  z-index: -1;
 }

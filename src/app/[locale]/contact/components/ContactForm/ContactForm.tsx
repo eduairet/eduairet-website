@@ -173,6 +173,7 @@ function ContactForm() {
           content.contact.form.submit
         )}
       </Button>
+      <div id='recaptcha' />
     </FormWrapper>
   );
 }

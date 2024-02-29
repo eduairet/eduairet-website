@@ -6,7 +6,6 @@ export async function POST(req: Request) {
     return new Response('Method Not Allowed', { status: 405 });
 
   const { locale, name, email, message, recaptchaToken } = await req.json();
-  console.log([locale, name, email, message, recaptchaToken]);
 
   if (!locale || !name || !email || !message || !recaptchaToken)
     return new Response('Bad Request', { status: 400 });

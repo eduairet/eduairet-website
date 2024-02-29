@@ -31,7 +31,7 @@ export default function Art({ currentSketch = 1 }: IProps) {
           sketchInstance = p;
         });
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     initSketch();
