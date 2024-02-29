@@ -11,13 +11,14 @@
 
 %icon-button {
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   width: $icon-button-size;
   height: $icon-button-size;
   border-radius: 50%;
   border: 2px solid var(--foreground);
   background-color: var(--background);
   @include merge-transitions((border-color));
+
+  &::before {
+    content: none;
+  }
 }

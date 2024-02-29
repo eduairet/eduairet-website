@@ -2,10 +2,9 @@
 
 .icon-button {
   @extend %icon-button;
-
-  &::before {
-    background: none;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   & .bulb {
     font-family: var(--eat-icons-vf);

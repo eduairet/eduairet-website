@@ -3,11 +3,11 @@
 .icon-button {
   @extend %icon-button;
 
-  &::before {
-    background: none;
-  }
-
   & svg {
+    position: absolute;
+    left: 50%;
+    top: 3px;
+    transform: translateX(-50%);
     width: 20px;
     height: 20px;
     fill: var(--foreground);
