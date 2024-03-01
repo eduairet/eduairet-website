@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import localFont from 'next/font/local';
+import Script from 'next/script';
 import '@/styles/main.scss';
 import { Lang } from '@/models';
 import StoreProvider from '@/store/StoreProvider';
@@ -30,6 +31,11 @@ export default function RootLayout({ children, params: { locale } }: IProps) {
     <html lang={locale} className={eatIconsVF.variable}>
       <head>
         <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT} />
+        <Script
+          src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+          async
+          defer
+        />
         <MetaIcons />
       </head>
       <StoreProvider>
