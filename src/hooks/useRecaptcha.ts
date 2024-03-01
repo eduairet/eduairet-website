@@ -8,9 +8,9 @@ export default function useRecaptcha() {
 
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
-  const resetRecaptcha = useCallback(() => {
+  const resetRecaptcha = useCallback(async () => {
     setIsRecaptchaLoading(true);
-    (window as any).grecaptcha.reset(siteKey);
+    await (window as any).grecaptcha.reset(siteKey);
     setRecaptchaToken(null);
     setIsRecaptchaLoading(false);
   }, [siteKey]);
