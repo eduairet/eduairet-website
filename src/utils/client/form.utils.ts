@@ -1,38 +1,45 @@
 'use-client';
 
+import { formRegex, fieldLength } from '@/utils/constants';
 import { TextInputValidations } from '@/models';
-
-// TODO Localized error messages
 
 export const textInputValidations: TextInputValidations = {
   text: {
+    min: fieldLength.text.min,
+    max: fieldLength.text.max,
     validate: (value: string) =>
-      value.length > 0 && value.length < 100 && /^[a-zA-Z\s]*$/.test(value),
+      value.length >= fieldLength.text.min &&
+      value.length <= fieldLength.text.max &&
+      formRegex.text.test(value),
   },
   textarea: {
+    min: fieldLength.textarea.min,
+    max: fieldLength.textarea.max,
     validate: (value: string) =>
-      value.length > 0 && value.length < 1000 && /^[a-zA-Z\s]*$/.test(value),
+      value.length >= fieldLength.textarea.min &&
+      value.length <= fieldLength.textarea.max &&
+      formRegex.textarea.test(value),
   },
   email: {
-    validate: (value: string) =>
-      value.length > 0 &&
-      value.length < 100 &&
-      /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value),
+    validate: (value: string) => formRegex.email.test(value),
   },
   password: {
+    min: fieldLength.password.min,
+    max: fieldLength.password.max,
     validate: (value: string) =>
-      value.length > 0 &&
-      value.length < 100 &&
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value),
+      value.length >= fieldLength.password.min &&
+      value.length <= fieldLength.password.max &&
+      formRegex.password.test(value),
   },
   number: {
-    validate: (value: string) =>
-      +value.length > 0 && +value.length < 100 && /^[0-9]*$/.test(value),
+    validate: (value: string) => formRegex.number.test(value),
   },
   tel: {
-    validate: (value: string) => /^[0-9]{10}$/.test(value),
+    min: fieldLength.tel.min,
+    max: fieldLength.tel.max,
+    validate: (value: string) => formRegex.tel.test(value),
   },
   url: {
-    validate: (value: string) => /^(https):\/\/[^ "]+$/.test(value),
+    validate: (value: string) => formRegex.url.test(value),
   },
 };

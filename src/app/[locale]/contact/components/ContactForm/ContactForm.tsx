@@ -36,6 +36,7 @@ const ContactFormReducer: IReducer = (state, action) => {
     return {
       ...state,
       [action.type]: {
+        ...state[action.type as ContactFormField],
         value: action.value,
         focused: action.focused,
         isValid: action.isValid,
@@ -103,6 +104,7 @@ function ContactForm() {
     setTimeout(() => {
       setSubmitMessage('');
     }, 10000);
+
     resetRecaptcha();
     dispatch({ type: 'RESET' });
     setIsSending(false);
@@ -111,6 +113,8 @@ function ContactForm() {
   const inputFields = [
     {
       id: ContactFormField.NAME,
+      minLength: state.name.minLength,
+      maxLength: state.name.maxLength,
       label: content.contact.form.name,
       value: state.name.value,
       focused: state.name.focused,
@@ -125,6 +129,8 @@ function ContactForm() {
     },
     {
       id: ContactFormField.MESSAGE,
+      minLength: state.message.minLength,
+      maxLength: state.message.maxLength,
       label: content.contact.form.message,
       value: state.message.value,
       focused: state.message.focused,
@@ -145,6 +151,8 @@ function ContactForm() {
           label={field.label}
           type={field.type as TextInputType}
           value={field.value}
+          minLength={field.minLength}
+          maxLength={field.maxLength}
           focused={field.focused}
           onChange={(value: string, focused: boolean, isValid: boolean) =>
             dispatch({
@@ -168,7 +176,7 @@ function ContactForm() {
       <Button
         type='submit'
         className={styles.submit}
-        disabled={isSending || !recaptchaToken}
+        disabled={isSending || !recaptchaToken || !formIsValid()}
       >
         {isSending || isRecaptchaLoading ? (
           <Spinner size={SpinnerSize.XS} />
@@ -176,7 +184,6 @@ function ContactForm() {
           content.contact.form.submit
         )}
       </Button>
-      <div id='recaptcha' />
     </FormWrapper>
   );
 }

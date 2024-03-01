@@ -1,5 +1,6 @@
 import { verifyCaptcha } from '@/services/server';
 import { sendEmail } from '@/services/server';
+import { serverFormValidations } from '@/utils/server';
 
 export async function POST(req: Request) {
   if (req.method !== 'POST')
@@ -7,7 +8,11 @@ export async function POST(req: Request) {
 
   const { locale, name, email, message, recaptchaToken } = await req.json();
 
-  if (!locale || !name || !email || !message || !recaptchaToken)
+  if (
+    !locale ||
+    !recaptchaToken ||
+    !serverFormValidations.contactForm(name, email, message)
+  )
     return new Response('Bad Request', { status: 400 });
 
   try {

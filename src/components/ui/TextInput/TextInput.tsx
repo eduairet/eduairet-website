@@ -11,6 +11,8 @@ interface IProps {
   type?: TextInputType;
   required?: boolean;
   value?: string;
+  minLength?: number;
+  maxLength?: number;
   focused?: boolean;
   // eslint-disable-next-line unused-imports/no-unused-vars, no-unused-vars
   onChange: (value: string, focused: boolean, isValid: boolean) => void;
@@ -20,6 +22,8 @@ export default function TextInput({
   id,
   label,
   onChange,
+  minLength,
+  maxLength,
   value = '',
   focused = false,
   required = true,
@@ -31,6 +35,9 @@ export default function TextInput({
     value,
     focused
   );
+
+  const hasLengthValidation =
+    typeof minLength === 'number' && typeof maxLength === 'number';
 
   const handleBlur: FocusEventHandler<
     HTMLInputElement | HTMLTextAreaElement
@@ -46,12 +53,19 @@ export default function TextInput({
 
   return (
     <div className={styles.wrapper}>
-      <label
-        className={[styles.label, !isValid ? styles.error : ''].join(' ')}
-        htmlFor={id}
-      >
-        {label}
-      </label>
+      <div className={styles['label-wrapper']}>
+        <label
+          className={[styles.label, !isValid ? styles.error : ''].join(' ')}
+          htmlFor={id}
+        >
+          {`${label}${required ? '*' : ''}`}
+        </label>
+        {hasLengthValidation && (
+          <span
+            className={[styles.label, !isValid ? styles.error : ''].join(' ')}
+          >{`${minLength} - ${maxLength}`}</span>
+        )}
+      </div>
       {type === 'textarea' ? (
         <textarea
           className={[styles.textarea, !isValid ? styles.invalid : ''].join(
@@ -59,6 +73,8 @@ export default function TextInput({
           )}
           id={id}
           value={value}
+          minLength={minLength}
+          maxLength={maxLength}
           required={required}
           onBlur={handleBlur}
           onChange={handleChange}
@@ -69,6 +85,8 @@ export default function TextInput({
           id={id}
           type={type}
           value={value}
+          minLength={minLength}
+          maxLength={maxLength}
           required={required}
           onBlur={handleBlur}
           onChange={handleChange}
@@ -78,6 +96,16 @@ export default function TextInput({
         <p className={[styles['input-info'], styles.error].join(' ')}>
           {errorMessage || 'Error'}
         </p>
+      )}
+      {hasLengthValidation && focused && (
+        <p
+          className={[
+            styles['input-info'],
+            value.length < minLength || value.length > maxLength
+              ? styles.error
+              : '',
+          ].join(' ')}
+        >{`${value.length}/${maxLength}`}</p>
       )}
     </div>
   );

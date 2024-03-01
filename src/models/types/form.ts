@@ -2,6 +2,8 @@
 /* eslint-disable unused-imports/no-unused-vars */
 
 interface IValidation {
+  min?: number;
+  max?: number;
   validate: (value: string) => boolean;
 }
 
