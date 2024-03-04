@@ -8,26 +8,40 @@ export default function useRecaptcha() {
 
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
-  const resetRecaptcha = useCallback(async () => {
-    setIsRecaptchaLoading(true);
-    await (window as any).grecaptcha.reset(siteKey);
-    setRecaptchaToken(null);
-    setIsRecaptchaLoading(false);
-  }, [siteKey]);
+  const isReady = () => {
+    return (
+      typeof window !== 'undefined' &&
+      typeof window.grecaptcha !== 'undefined' &&
+      typeof window.grecaptcha.execute !== 'undefined'
+    );
+  };
 
-  const verifyRecaptcha = useCallback(async () => {
-    setIsRecaptchaLoading(true);
-    const token = await (window as any).grecaptcha.execute(siteKey, {
-      action: 'submit',
-    });
-    setRecaptchaToken(token);
-    setIsRecaptchaLoading(false);
-  }, [siteKey]);
+  const verifyRecaptcha = useCallback(
+    async (checked: boolean) => {
+      setIsRecaptchaLoading(true);
+      if (!isReady()) {
+        setRecaptchaToken(null);
+        setIsRecaptchaLoading(false);
+        return;
+      }
+      if (!checked) {
+        window.grecaptcha.reset();
+        setRecaptchaToken(null);
+        setIsRecaptchaLoading(false);
+        return;
+      }
+      const token = await window.grecaptcha.execute(siteKey as string, {
+        action: 'submit',
+      });
+      setRecaptchaToken(token);
+      setIsRecaptchaLoading(false);
+    },
+    [siteKey]
+  );
 
   return {
     isRecaptchaLoading,
     recaptchaToken,
     verifyRecaptcha,
-    resetRecaptcha,
   };
 }

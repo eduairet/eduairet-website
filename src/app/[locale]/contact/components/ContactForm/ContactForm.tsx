@@ -51,12 +51,8 @@ const ContactFormReducer: IReducer = (state, action) => {
 
 function ContactForm() {
   const { locale, content } = useContext(LanguageContext);
-  const {
-    isRecaptchaLoading,
-    recaptchaToken,
-    verifyRecaptcha,
-    resetRecaptcha,
-  } = useRecaptcha();
+  const { isRecaptchaLoading, recaptchaToken, verifyRecaptcha } =
+    useRecaptcha();
   const [isSending, setIsSending] = useState(false);
   const [formError, setFormError] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
@@ -105,7 +101,6 @@ function ContactForm() {
       setSubmitMessage('');
     }, 10000);
 
-    resetRecaptcha();
     dispatch({ type: 'RESET' });
     setIsSending(false);
   };
@@ -170,7 +165,7 @@ function ContactForm() {
         disabled={isRecaptchaLoading}
         checked={!!recaptchaToken}
         onChange={(e) => {
-          e.target.checked ? verifyRecaptcha() : resetRecaptcha();
+          verifyRecaptcha(e.target.checked);
         }}
       />
       <Button
