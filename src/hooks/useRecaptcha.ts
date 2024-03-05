@@ -25,7 +25,7 @@ export default function useRecaptcha() {
         return;
       }
       if (!checked) {
-        window.grecaptcha.reset();
+        window.grecaptcha.reset(siteKey);
         setRecaptchaToken(null);
         setIsRecaptchaLoading(false);
         return;

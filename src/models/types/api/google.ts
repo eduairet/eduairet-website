@@ -19,7 +19,7 @@ export type ReCaptcha = {
     },
     inherit?: boolean
   ): number;
-  reset(opt_widget_id?: number): void;
+  reset(opt_widget_id?: number | string): void;
   getResponse(opt_widget_id?: number): string;
   execute(opt_widget_id?: number): PromiseLike<void>;
   execute(siteKey: string, action: { action: string }): PromiseLike<string>;
