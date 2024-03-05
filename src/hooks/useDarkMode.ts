@@ -31,6 +31,22 @@ export default function useDarkMode() {
   useEffect(() => {
     const theme = getTheme();
     setTheme(theme);
+
+    const handleStorageChange = () => {
+      const updatedTheme = getTheme();
+      setTheme(updatedTheme);
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, [setTheme]);
+
+  useEffect(() => {
+    const theme = getTheme();
+    setTheme(theme);
   }, [setTheme]);
 
   return { darkMode, toggleDarkMode };
