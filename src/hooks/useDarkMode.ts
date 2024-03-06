@@ -44,10 +44,5 @@ export default function useDarkMode() {
     };
   }, [setTheme]);
 
-  useEffect(() => {
-    const theme = getTheme();
-    setTheme(theme);
-  }, [setTheme]);
-
   return { darkMode, toggleDarkMode };
 }
