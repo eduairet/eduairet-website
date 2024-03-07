@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import styles from './Button.module.scss';
+import styles from './ButtonWrapper.module.scss';
 
 interface IProps {
   children: ReactNode;
@@ -12,7 +12,7 @@ interface IProps {
   props?: any;
 }
 
-export default function Button({
+export default function ButtonWrapper({
   children,
   className = '',
   onClick = () => {},

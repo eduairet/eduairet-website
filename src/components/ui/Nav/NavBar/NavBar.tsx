@@ -1,6 +1,6 @@
 import styles from './NavBar.module.scss';
-import NavMainMenu from '@/components/ui/NavMainMenu';
-import NavLangMenu from '@/components/ui/NavLangMenu';
+import NavMainMenu from '@/components/ui/Nav/NavMainMenu';
+import NavLangMenu from '@/components/ui/Nav/NavLangMenu';
 
 export default async function NavBar() {
   return (

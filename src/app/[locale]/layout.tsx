@@ -7,7 +7,7 @@ import StoreProvider from '@/store/StoreProvider';
 import MetaIcons from '@/components/metadata/MetaIcons';
 import MainWrapper from '@/components/wrappers/MainWrapper/MainWrapper';
 import BodyWrapper from '@/components/wrappers/BodyWrapper';
-import NavBar from '@/components/ui/NavBar/NavBar';
+import NavBar from '@/components/ui/Nav/NavBar/NavBar';
 import Footer from '@/components/ui/Footer/Footer';
 
 const eatIconsVF = localFont({

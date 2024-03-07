@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { LanguageContext } from '@/store/LanguageProvider';
 import { BackdropContext } from '@/store/BackdropProvider';
 import { BackdropType } from '@/models';
-import GlobeButton from '@/components/ui/GlobeButton';
+import GlobeButton from '@/components/ui/Buttons/GlobeButton';
 import NavLink from './NavLink/NavLink';
 import NavDropdown from './NavDropdown/NavDropdown';
 

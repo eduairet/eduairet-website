@@ -29,6 +29,7 @@ export default function IconButtonLink({
         href={href}
         target={href.includes('mailto:') ? '_self' : '_blank'}
         className={styles['icon-button']}
+        rel='noreferrer noopener'
       >
         <SvgWrapper>{children}</SvgWrapper>
         <IconButtonScreenTitle title={title} />

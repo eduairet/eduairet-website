@@ -3,7 +3,7 @@
 import { memo, useContext } from 'react';
 import { motion } from 'framer-motion';
 import styles from './HamburgerButton.module.scss';
-import IconButtonScreenTitle from '@/components/ui/IconButton/IconButtonScreenTitle';
+import IconButtonScreenTitle from '@/components/ui/Buttons/IconButton/IconButtonScreenTitle';
 import { LanguageContext } from '@/store/LanguageProvider';
 
 const paths = {

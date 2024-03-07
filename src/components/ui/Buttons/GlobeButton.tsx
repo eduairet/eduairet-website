@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext } from 'react';
-import IconButton from '@/components/ui/IconButton/IconButton';
+import IconButton from '@/components/ui/Buttons/IconButton/IconButton';
 import { LanguageContext } from '@/store/LanguageProvider';
 
 interface IProps {

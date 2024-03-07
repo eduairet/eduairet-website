@@ -15,7 +15,7 @@ import { ApiUrls } from '@/utils/constants';
 import useRecaptcha from '@/hooks/useRecaptcha';
 import FormWrapper from '@/components/wrappers/FormWrapper/FormWrapper';
 import TextInput from '@/components/ui/TextInput/TextInput';
-import Button from '@/components/ui/Button/Button';
+import ButtonWrapper from '@/components/wrappers/ButtonWrapper/ButtonWrapper';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import Checkbox from '@/components/ui/Checkbox/Checkbox';
 
@@ -168,7 +168,7 @@ function ContactForm() {
           verifyRecaptcha(e.target.checked);
         }}
       />
-      <Button
+      <ButtonWrapper
         type='submit'
         className={styles.submit}
         disabled={isSending || !recaptchaToken || !formIsValid()}
@@ -178,7 +178,7 @@ function ContactForm() {
         ) : (
           content.contact.form.submit
         )}
-      </Button>
+      </ButtonWrapper>
     </FormWrapper>
   );
 }

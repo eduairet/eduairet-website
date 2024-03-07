@@ -6,7 +6,7 @@ import { BackdropContext } from '@/store/BackdropProvider';
 import { LanguageContext } from '@/store/LanguageProvider';
 import NavLink from './NavLink/NavLink';
 import NavDropdown from './NavDropdown/NavDropdown';
-import HamburgerButton from './HamburgerButton/HamburgerButton';
+import HamburgerButton from '../Buttons/HamburgerButton/HamburgerButton';
 
 export default function NavMainMenu() {
   const { locale, content } = useContext(LanguageContext);
