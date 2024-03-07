@@ -9,7 +9,7 @@ const titleArray = 'Eduardo Aire Torres'.split('');
 const letterInterpolation = (i: number) =>
   `'wght' ${lerp(
     degular.wght.max,
-    degular.wght.min,
+    degular.wght.min + 100,
     i / titleArray.length
   )} , 'opsz' ${degular.opsz.max}`;
 

@@ -6,9 +6,3 @@
   flex-direction: column;
   color: var(--foreground);
 }
-
-.subtitle {
-  text-align: left;
-  font-size: clamp(2rem, 10vw, 3rem);
-  @include degular($wght: 200, $opsz: 72);
-}

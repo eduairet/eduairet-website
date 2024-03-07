@@ -1,0 +1,28 @@
+@import '@/styles/abstracts/index';
+
+.subtitle {
+  text-align: left;
+  font-size: clamp(2.5rem, 10vw, 3rem);
+  line-height: clamp(2.5rem, 10vw, 3rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  @include degular($wght: 200, $opsz: 72);
+
+  @media (width >= $breakpoint-md) {
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .area {
+    color: $accent;
+    @include merge-transitions((color));
+
+    &:hover {
+      color: var(--foreground);
+    }
+  }
+}
