@@ -44,7 +44,7 @@ const sketch01 = (p: P5) => {
     for (let i = shapes; i > 0; i--) {
       const angle = p.frameCount / 20 + (i * p.PI * 0.1) / 2;
       const size = distance * (shapes - i);
-      const o = p.lerp(0, 0.2, i / shapes);
+      const o = p.lerp(0, 0.3, i / shapes);
       const shapeColor = mainColor(o);
       p.push();
       p.stroke(shapeColor);
