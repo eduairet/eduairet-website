@@ -1,6 +1,8 @@
 :root {
-  --background: #000;
-  --foreground: #ededed;
+  --background: #{$black};
+  --background-50: #{get-color($black, 0.5)};
+  --background-00: #{get-color($black, 0)};
+  --foreground: #{$white};
 }
 
 * {
@@ -8,9 +10,9 @@
   padding: 0;
   margin: 0;
   font-family: degular-variable, sans-serif;
-  font-variation-settings: 'wght' 400, 'opsz' 16;
   text-align: center;
   font-feature-settings: 'onum';
+  @include degular($wght: 400, $opsz: 16);
 }
 
 html,
@@ -29,8 +31,10 @@ body {
   justify-content: space-between;
 
   &[data-theme='light'] {
-    --background: #ededed;
-    --foreground: #000;
+    --background: #{$white};
+    --background-50: #{get-color($white, 0.5)};
+    --background-00: #{get-color($white, 0)};
+    --foreground: #{$black};
   }
 }
 
@@ -45,8 +49,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-variation-settings: 'wght' 700;
   font-feature-settings: off;
+  @include degular($wght: 700, $opsz: 36);
 }
 
 h1 {
@@ -81,7 +85,7 @@ a {
   position: relative;
   color: currentColor;
   text-decoration: none;
-  font-variation-settings: 'wght' 400, 'opsz' 16;
+  @include degular($wght: 400, $opsz: 16);
 
   &::before {
     content: '';

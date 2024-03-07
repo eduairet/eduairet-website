@@ -1,8 +1,7 @@
-@import '@/styles/abstracts/_index.scss';
+@import '@/styles/abstracts/index';
 
 .button {
   font-size: 1rem;
-  font-variation-settings: 'wght' 600, 'opsz' 16;
   cursor: pointer;
   background-color: var(--background);
   color: var(--foreground);
@@ -14,6 +13,7 @@
   align-items: center;
   justify-content: center;
   padding: 0.5rem 1rem;
+  @include degular($wght: 600, $opsz: 16);
   @include border($weight: 2px);
   @include rounded-corners($radius: 1.25rem);
   @include merge-transitions((border-color, color));

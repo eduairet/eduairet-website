@@ -1,0 +1,40 @@
+@import '@/styles/abstracts/index';
+
+$link-size: 60px;
+$border: 2px;
+
+.eat-home {
+  cursor: pointer;
+  width: $link-size;
+  height: $link-size;
+  border-radius: 50%;
+  border: $border solid var(--foreground);
+  background-color: var(--foreground);
+
+  &::before {
+    content: none;
+  }
+
+  & svg {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: $link-size - $border * 2;
+    height: $link-size - $border * 2;
+    fill: var(--background);
+    @include merge-transitions((fill));
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      & svg {
+        fill: $accent;
+      }
+    }
+  }
+
+  &.active {
+    pointer-events: none;
+  }
+}

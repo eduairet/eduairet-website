@@ -1,4 +1,4 @@
-@import '@/styles/abstracts/_index.scss';
+@import '@/styles/abstracts/index';
 
 .nav-link {
   a {
@@ -8,7 +8,7 @@
     &.active {
       color: $accent;
       pointer-events: none;
-      font-variation-settings: 'wght' 700, 'opsz' 16;
+      @include degular($wght: 700, $opsz: 16);
 
       &::before {
         transform-origin: left;

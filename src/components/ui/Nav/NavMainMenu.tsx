@@ -7,6 +7,7 @@ import { LanguageContext } from '@/store/LanguageProvider';
 import NavLink from './NavLink/NavLink';
 import NavDropdown from './NavDropdown/NavDropdown';
 import HamburgerButton from '../Buttons/HamburgerButton/HamburgerButton';
+import { PageUrls } from '@/utils/constants';
 
 export default function NavMainMenu() {
   const { locale, content } = useContext(LanguageContext);
@@ -24,8 +25,8 @@ export default function NavMainMenu() {
     <div>
       <HamburgerButton isActive={navMainBackdrop} onClick={toggleMenu} />
       <NavDropdown isOpen={navMainBackdrop} onClick={toggleMenu}>
-        <NavLink href={`/${locale}`} text={content.nav.home} />
-        <NavLink href={`/${locale}/contact`} text={content.nav.contact} />
+        <NavLink href={PageUrls.home_(locale)} text={content.nav.home} />
+        <NavLink href={PageUrls.contact_(locale)} text={content.nav.contact} />
       </NavDropdown>
     </div>
   );

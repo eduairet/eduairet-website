@@ -1,0 +1,7 @@
+@import '@/styles/abstracts/index';
+
+.title {
+  text-align: left;
+  font-size: clamp(5rem, 10vw, 9rem);
+  @include degular($wght: 700, $opsz: 72);
+}

@@ -1,11 +1,12 @@
-@import '@/styles/abstracts/_index.scss';
+@import '@/styles/abstracts/index';
 
 .main {
   width: 100vw;
   max-width: $max-width;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
+  justify-content: stretch;
   padding-left: 1rem;
   padding-right: 1rem;
   gap: 2rem;

@@ -41,7 +41,7 @@ export default function RootLayout({ children, params: { locale } }: IProps) {
       <StoreProvider>
         <BodyWrapper>
           <header>
-            <NavBar />
+            <NavBar locale={locale} />
           </header>
           <MainWrapper>{children}</MainWrapper>
           <Footer lang={locale} />

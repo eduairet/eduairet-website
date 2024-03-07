@@ -1,6 +1,6 @@
 import styles from './HomeContent.module.scss';
 import { Dictionary } from '@/models';
-import EatLogoBg from '@/components/brand/EatLogoBg';
+import HomeTitle from '@/app/[locale]/components/HomeTitle/HomeTitle';
 
 interface IProps {
   content: Dictionary;
@@ -9,8 +9,7 @@ interface IProps {
 export default function HomeContent({ content }: IProps) {
   return (
     <section className={styles.content}>
-      <EatLogoBg />
-      <h1 className={styles.title}>Eduardo Aire Torres</h1>
+      <HomeTitle />
       <h2 className={styles.subtitle}>{content.home.subtitle}</h2>
     </section>
   );

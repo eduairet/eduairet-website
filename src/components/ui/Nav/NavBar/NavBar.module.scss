@@ -1,17 +1,33 @@
-@import '@/styles/abstracts/_index.scss';
+@import '@/styles/abstracts/index';
 
 .nav {
+  &-wrapper {
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    height: $header-height;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(
+      0,
+      var(--background-00) 0%,
+      var(--background-50) 50%,
+      var(--background) 100%
+    );
+  }
+
   z-index: 2;
   background-color: var(--background);
   height: 50px;
-  min-width: 300px;
+  width: 100%;
+  max-width: 150px;
   padding-left: 2rem;
-  padding-right: 2rem;
-  max-width: $max-width;
-  position: fixed;
-  top: 2rem;
-  left: 50%;
-  transform: translateX(-50%);
+  padding-right: 1.75rem;
   display: flex;
   justify-content: space-between;
   align-items: center;

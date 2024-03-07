@@ -1,23 +1,14 @@
+@import '@/styles/abstracts/index';
+
 .content {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-
-  & picture {
-    margin-bottom: 1rem;
-  }
-}
-
-.title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-variation-settings: 'wght' 800, 'opsz' 36;
   color: var(--foreground);
 }
 
 .subtitle {
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
-  font-variation-settings: 'wght' 400, 'opsz' 12;
-  color: var(--foreground);
+  text-align: left;
+  font-size: clamp(2rem, 10vw, 3rem);
+  @include degular($wght: 200, $opsz: 72);
 }
