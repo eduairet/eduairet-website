@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 
 export default function useRecaptcha() {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
@@ -16,32 +16,22 @@ export default function useRecaptcha() {
     );
   };
 
-  const verifyRecaptcha = useCallback(
-    async (checked: boolean) => {
-      setIsRecaptchaLoading(true);
-      if (!isReady()) {
-        setRecaptchaToken(null);
-        setIsRecaptchaLoading(false);
-        return;
-      }
-      if (!checked) {
-        window.grecaptcha.reset(siteKey);
-        setRecaptchaToken(null);
-        setIsRecaptchaLoading(false);
-        return;
-      }
-      const token = await window.grecaptcha.execute(siteKey as string, {
-        action: 'submit',
-      });
-      setRecaptchaToken(token);
-      setIsRecaptchaLoading(false);
-    },
-    [siteKey]
-  );
+  const verifyRecaptcha = useCallback(async () => {
+    setIsRecaptchaLoading(true);
+    const token = await window.grecaptcha.execute(siteKey as string, {
+      action: 'submit',
+    });
+    setRecaptchaToken(token);
+    setIsRecaptchaLoading(false);
+  }, [siteKey]);
+
+  useEffect(() => {
+    if (!isReady()) return;
+    verifyRecaptcha();
+  }, [verifyRecaptcha]);
 
   return {
     isRecaptchaLoading,
     recaptchaToken,
-    verifyRecaptcha,
   };
 }

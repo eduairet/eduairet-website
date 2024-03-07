@@ -42,7 +42,6 @@
   },
   "contact": {
     "title": "Contact",
-    "subtitle": "Let's talk!",
     "form": {
       "name": "Name",
       "email": "Email",
@@ -63,6 +62,5 @@
         }
       }
     }
-  },
-  "captcha": "I am not a robot"
+  }
 }

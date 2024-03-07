@@ -17,7 +17,6 @@ import FormWrapper from '@/components/wrappers/FormWrapper/FormWrapper';
 import TextInput from '@/components/ui/TextInput/TextInput';
 import ButtonWrapper from '@/components/wrappers/ButtonWrapper/ButtonWrapper';
 import Spinner from '@/components/ui/Spinner/Spinner';
-import Checkbox from '@/components/ui/Checkbox/Checkbox';
 
 interface IReducerAction {
   type: ContactFormField | 'RESET';
@@ -51,8 +50,7 @@ const ContactFormReducer: IReducer = (state, action) => {
 
 function ContactForm() {
   const { locale, content } = useContext(LanguageContext);
-  const { isRecaptchaLoading, recaptchaToken, verifyRecaptcha } =
-    useRecaptcha();
+  const { isRecaptchaLoading, recaptchaToken } = useRecaptcha();
   const [isSending, setIsSending] = useState(false);
   const [formError, setFormError] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
@@ -159,15 +157,6 @@ function ContactForm() {
           }
         />
       ))}
-      <Checkbox
-        id='captcha'
-        label={content.captcha}
-        disabled={isRecaptchaLoading}
-        checked={!!recaptchaToken}
-        onChange={(e) => {
-          verifyRecaptcha(e.target.checked);
-        }}
-      />
       <ButtonWrapper
         type='submit'
         className={styles.submit}

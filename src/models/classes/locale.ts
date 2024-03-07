@@ -41,7 +41,6 @@ export class Dictionary {
   };
   contact: {
     title: string;
-    subtitle: string;
     form: {
       name: string;
       email: string;
@@ -55,7 +54,6 @@ export class Dictionary {
       };
     };
   };
-  captcha: string;
 
   constructor(data: Partial<Dictionary> = {}) {
     this.meta = {
@@ -101,7 +99,6 @@ export class Dictionary {
     };
     this.contact = {
       title: data.contact?.title || '',
-      subtitle: data.contact?.subtitle || '',
       form: {
         name: data.contact?.form?.name || '',
         email: data.contact?.form?.email || '',
@@ -123,6 +120,5 @@ export class Dictionary {
         },
       },
     };
-    this.captcha = data.captcha || '';
   }
 }

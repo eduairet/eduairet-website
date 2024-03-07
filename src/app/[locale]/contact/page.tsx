@@ -18,7 +18,6 @@ export default async function Contact({ params: { locale } }: IProps) {
     <SectionWrapper>
       <header>
         <h1>{content.contact.title}</h1>
-        <h2>{content.contact.subtitle}</h2>
       </header>
       <ContactForm />
     </SectionWrapper>

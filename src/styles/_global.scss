@@ -9,10 +9,15 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: degular-variable, sans-serif;
-  text-align: center;
-  font-feature-settings: 'onum';
-  @include degular($wght: 400, $opsz: 16);
+}
+
+html {
+  * {
+    font-family: degular-variable, sans-serif;
+    text-align: center;
+    font-feature-settings: 'onum';
+    @include degular($wght: 400, $opsz: 16);
+  }
 }
 
 html,
