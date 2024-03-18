@@ -21,7 +21,6 @@ const sketch01 = (p: P5) => {
   p.draw = () => {
     theme = localStorage.getItem('theme') || 'dark';
     p.clear();
-    p.noFill();
     p.noStroke();
     drawShape();
     updatePosition();
@@ -39,16 +38,15 @@ const sketch01 = (p: P5) => {
   }
 
   function drawShape() {
-    const shapes = 30;
-    const distance = 30;
+    const shapes = 100;
+    const distance = 10;
     for (let i = shapes; i > 0; i--) {
       const angle = p.frameCount / 20 + (i * p.PI * 0.1) / 2;
       const size = distance * (shapes - i);
-      const o = p.lerp(0, 0.3, i / shapes);
+      const o = p.lerp(0, 0.003, i / shapes);
       const shapeColor = mainColor(o);
       p.push();
-      p.stroke(shapeColor);
-      p.strokeWeight(1);
+      p.fill(shapeColor);
       p.ellipse(
         x + distance * p.cos(angle),
         y + distance * p.sin(angle),
