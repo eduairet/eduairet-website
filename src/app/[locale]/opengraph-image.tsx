@@ -2,8 +2,6 @@ import { ImageResponse } from 'next/og';
 import variables from '@/styles/abstracts/variables/index.module.scss';
 import EatLogoOpenGraph from '@/components/brand/EatLogoOpenGraph';
 
-export const runtime = 'edge';
-
 export const alt = 'Eduardo Aire Torres';
 export const size = {
   width: 1200,

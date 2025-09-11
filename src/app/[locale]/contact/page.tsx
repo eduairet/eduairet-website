@@ -6,15 +6,14 @@ import SectionWrapper from '@/components/wrappers/SectionWrapper/SectionWrapper'
 export { generateMetadata } from '@/utils/server';
 
 interface IProps {
-  params: {
+  params: Promise<{
     locale: string;
-  };
+  }>;
 }
 
 export default async function Contact({ params }: IProps) {
-  const { locale } = await params;
+  const locale = (await params).locale;
   const content = await getDictionary(locale as Lang);
-
   return (
     <SectionWrapper>
       <header>

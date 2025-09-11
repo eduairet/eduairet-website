@@ -1,14 +1,18 @@
 import type { Metadata, Viewport } from 'next';
 import { headers } from 'next/headers';
-import type { MetaProps } from '@/models';
+import type { Lang } from '@/models';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import variables from '@/styles/abstracts/variables/index.module.scss';
 import { getHost } from '.';
 
+interface PageProps<T = { locale: string }> {
+  params: Promise<T>;
+}
+
 export async function generateMetadata({
   params,
-}: MetaProps): Promise<Metadata> {
-  const { locale } = await params;
+}: PageProps<{ locale: Lang }>): Promise<Metadata> {
+  const locale = (await params).locale;
   const content = await getDictionary(locale);
 
   const headersList = headers();

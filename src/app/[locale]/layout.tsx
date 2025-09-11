@@ -19,15 +19,15 @@ const eatIconsVF = localFont({
 
 interface IProps {
   children: ReactNode;
-  params: {
-    locale: Lang;
-  };
+  params: Promise<{
+    locale: string;
+  }>;
 }
 
 export { generateMetadata, viewport } from '@/utils/server';
 
 export default async function RootLayout({ children, params }: IProps) {
-  const { locale } = await params;
+  const locale = (await params).locale;
 
   return (
     <html lang={locale} className={eatIconsVF.variable}>
@@ -43,10 +43,10 @@ export default async function RootLayout({ children, params }: IProps) {
       <StoreProvider>
         <BodyWrapper>
           <header>
-            <NavBar locale={locale} />
+            <NavBar locale={locale as Lang} />
           </header>
           <MainWrapper>{children}</MainWrapper>
-          <Footer lang={locale} />
+          <Footer lang={locale as Lang} />
         </BodyWrapper>
       </StoreProvider>
     </html>
