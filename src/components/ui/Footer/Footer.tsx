@@ -15,6 +15,25 @@ interface IProps {
 export default async function Footer({ lang }: IProps) {
   const content = await getDictionary(lang);
 
+  if (!content?.footer) {
+    return (
+      <footer className={styles.footer}>
+        <section className={styles.section}>
+          <div className={styles.actions}>
+            <GitHubLink />
+            <LinkedInLink />
+            <XLink />
+            <InstagramLink />
+            <EmailLink />
+          </div>
+        </section>
+        <section className={styles.section}>
+          <p>Eduardo Aire Torres {new Date().getFullYear()}</p>
+        </section>
+      </footer>
+    );
+  }
+
   return (
     <footer className={styles.footer}>
       <section

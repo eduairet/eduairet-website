@@ -1,3 +1,6 @@
+@use 'variables/index.module' as *;
+@use 'sass:list';
+
 @mixin accessibility-outline {
   outline: 3px solid $accent;
   outline-offset: 3px;
@@ -11,7 +14,7 @@
   $transition-list: ();
   $property-list: $properties;
   @each $property in $property-list {
-    $transition-list: append(
+    $transition-list: list.append(
       $transition-list,
       $property $time $timing-function,
       comma

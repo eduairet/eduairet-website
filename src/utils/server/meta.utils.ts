@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { headers } from 'next/headers';
 import type { MetaProps } from '@/models';
 import { getDictionary } from '@/app/[locale]/dictionaries';
-import variables from '@/styles/abstracts/_variables.module.scss';
+import variables from '@/styles/abstracts/variables/index.module.scss';
 import { getHost } from '.';
 
 export async function generateMetadata({

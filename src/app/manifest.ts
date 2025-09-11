@@ -1,5 +1,5 @@
 import { MetadataRoute } from 'next';
-import variables from '@/styles/abstracts/_variables.module.scss';
+import variables from '@/styles/abstracts/variables/index.module.scss';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {

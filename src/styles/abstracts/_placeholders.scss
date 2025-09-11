@@ -1,4 +1,5 @@
-@import 'variables.module';
+@use 'variables/index.module' as *;
+@use 'mixins' as *;
 
 %screen-reader-only {
   position: absolute;

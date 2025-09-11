@@ -1,4 +1,4 @@
-import variables from '@/styles/abstracts/_variables.module.scss';
+import variables from '@/styles/abstracts/variables/index.module.scss';
 
 interface IProps {
   width: number;
