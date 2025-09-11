@@ -26,7 +26,7 @@ interface IReducerAction {
 }
 
 interface IReducer {
-  // eslint-disable-next-line unused-imports/no-unused-vars, no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   (state: ContactFormModel, action: IReducerAction): ContactFormModel;
 }
 

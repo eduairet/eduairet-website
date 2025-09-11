@@ -14,7 +14,7 @@ interface IProps {
   minLength?: number;
   maxLength?: number;
   focused?: boolean;
-  // eslint-disable-next-line unused-imports/no-unused-vars, no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   onChange: (value: string, focused: boolean, isValid: boolean) => void;
 }
 

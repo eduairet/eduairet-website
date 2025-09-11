@@ -1,6 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable unused-imports/no-unused-vars */
-
 export type ReCaptcha = {
   render(
     container: string | HTMLElement,

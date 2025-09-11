@@ -19,7 +19,7 @@ export async function generateMetadata({
   try {
     title = content.meta[pathname].title;
     description = content.meta[pathname].description;
-  } catch (_) {
+  } catch {
     title = content.meta.default.title;
     description = content.meta.default.description;
   }
