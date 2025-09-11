@@ -11,7 +11,8 @@ interface IProps {
   };
 }
 
-export default async function Contact({ params: { locale } }: IProps) {
+export default async function Contact({ params }: IProps) {
+  const { locale } = await params;
   const content = await getDictionary(locale as Lang);
 
   return (
