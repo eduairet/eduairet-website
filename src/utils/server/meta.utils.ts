@@ -8,11 +8,11 @@ import { getHost } from '.';
 export async function generateMetadata({
   params,
 }: MetaProps): Promise<Metadata> {
-  const { locale } = params;
+  const { locale } = await params;
   const content = await getDictionary(locale);
 
   const headersList = headers();
-  let pathname = headersList.get('x-pathname') || '';
+  let pathname = (await headersList).get('x-pathname') || '';
   pathname = pathname.replace(`/${locale}`, '').replace(/\//g, '');
 
   let title, description;
@@ -25,7 +25,7 @@ export async function generateMetadata({
   }
 
   return {
-    metadataBase: new URL(getHost()),
+    metadataBase: new URL(await getHost()),
     title: `${title} | eat`,
     description,
   };

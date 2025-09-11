@@ -8,7 +8,8 @@ interface IProps {
   };
 }
 
-export default async function Home({ params: { locale } }: IProps) {
+export default async function Home({ params }: IProps) {
+  const { locale } = await params;
   const content = await getDictionary(locale as Lang);
 
   return <HomeContent content={content} />;

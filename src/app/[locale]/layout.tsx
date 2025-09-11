@@ -26,7 +26,9 @@ interface IProps {
 
 export { generateMetadata, viewport } from '@/utils/server';
 
-export default function RootLayout({ children, params: { locale } }: IProps) {
+export default async function RootLayout({ children, params }: IProps) {
+  const { locale } = await params;
+
   return (
     <html lang={locale} className={eatIconsVF.variable}>
       <head>
