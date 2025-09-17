@@ -15,10 +15,9 @@ compiled/
 .DS_Store
 Thumbs.db
 
-# VCS and lock files
+# VCS
 .git/
 .gitignore
-pnpm-lock.yaml
 
 # Sass cache
 .sass-cache/

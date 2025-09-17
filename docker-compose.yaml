@@ -2,13 +2,22 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
       - '3000:3000'
     volumes:
-      - .:/app
+      - eduairet-website:/app
     environment:
       - CI=true
+      - WATCHPACK_POLLING=true
     env_file:
       - .env
-    command: sh -c "pnpm install && pnpm run dev"
+    command: sh -c "pnpm dev"
+
+volumes:
+  eduairet-website:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: .
