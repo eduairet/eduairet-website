@@ -18,6 +18,8 @@ jobs:
   Deploy-Production:
     runs-on: ubuntu-latest
     steps:
+      - name: Install pnpm
+        run: npm install --global pnpm
       - uses: actions/checkout@v2
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
