@@ -16,7 +16,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build test image
         run: |
-          docker build -t eduairet-website-test .
+          docker build -f Dockerfile.test -t eduairet-website-test .
       - name: Run tests in Docker
         env:
           GMAIL: ${{ secrets.GMAIL }}
@@ -31,4 +31,4 @@ jobs:
             -e NEXT_PUBLIC_RECAPTCHA_SITE_KEY="$NEXT_PUBLIC_RECAPTCHA_SITE_KEY" \
             -e RECAPTCHA_SECRET_KEY="$RECAPTCHA_SECRET_KEY" \
             -e NEXT_PUBLIC_TYPEKIT="$NEXT_PUBLIC_TYPEKIT" \
-            eduairet-website-test pnpm test
+            eduairet-website-test
