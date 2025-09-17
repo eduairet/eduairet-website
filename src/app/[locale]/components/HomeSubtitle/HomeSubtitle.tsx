@@ -7,7 +7,7 @@ interface IProps {
 }
 
 export default function HomeSubtitle({ subtitle }: IProps) {
-  const subtitleArray = subtitle.split('/');
+  const subtitleArray = subtitle.split(' ');
 
   return (
     <h2 className={styles.subtitle}>

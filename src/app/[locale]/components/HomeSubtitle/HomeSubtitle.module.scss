@@ -5,32 +5,15 @@
   font-size: clamp(2.5rem, 10vw, 3rem);
   line-height: clamp(2.5rem, 10vw, 3rem);
   display: flex;
-  flex-direction: column;
   flex-wrap: wrap;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
   @include degular($wght: 200, $opsz: 72);
-
-  @media (width >= $breakpoint-md) {
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-  }
 
   .area {
     text-align: inherit;
     color: $accent;
     @include merge-transitions((color));
-
-    &:not(:last-child) {
-      &::after {
-        display: inline-block;
-        margin: 0 0.3rem;
-        content: '/';
-        color: var(--foreground);
-        @include degular($wght: 200, $opsz: 72)
-      }
-    }
 
     &:hover {
       color: var(--foreground);
