@@ -9,11 +9,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    services:
-      docker:
-        image: docker:20.10.24-dind
-        options: >
-          --dns 8.8.8.8
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,5 +18,17 @@ jobs:
         run: |
           docker build -t eduairet-website-test .
       - name: Run tests in Docker
+        env:
+          GMAIL: ${{ secrets.GMAIL }}
+          GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
+          NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
+          RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
+          NEXT_PUBLIC_TYPEKIT: ${{ secrets.NEXT_PUBLIC_TYPEKIT }}
         run: |
-          docker run --rm eduairet-website-test pnpm test
+          docker run --rm \
+            -e GMAIL="$GMAIL" \
+            -e GMAIL_PASSWORD="$GMAIL_PASSWORD" \
+            -e NEXT_PUBLIC_RECAPTCHA_SITE_KEY="$NEXT_PUBLIC_RECAPTCHA_SITE_KEY" \
+            -e RECAPTCHA_SECRET_KEY="$RECAPTCHA_SECRET_KEY" \
+            -e NEXT_PUBLIC_TYPEKIT="$NEXT_PUBLIC_TYPEKIT" \
+            eduairet-website-test pnpm test
