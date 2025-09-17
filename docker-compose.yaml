@@ -1,0 +1,12 @@
+services:
+  frontend:
+    build: .
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./src:/app/src
+    environment:
+      - CI=true
+    env_file:
+      - .env
+    command: sh -c "pnpm install && pnpm run dev"

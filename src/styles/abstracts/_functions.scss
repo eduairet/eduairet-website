@@ -1,13 +1,14 @@
 @use 'sass:color';
+@use 'sass:meta';
 
 @function get-color($color, $alpha: 1) {
-  @if type-of($color) != 'color' {
+  @if meta.type-of($color) != 'color' {
     @error "The input must be a valid color";
   }
 
-  $red: color.red($color);
-  $green: color.green($color);
-  $blue: color.blue($color);
+  $red: color.channel($color, 'red', $space: rgb);
+  $green: color.channel($color, 'green', $space: rgb);
+  $blue: color.channel($color, 'blue', $space: rgb);
 
   @return rgba($red, $green, $blue, $alpha);
 }
