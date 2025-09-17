@@ -1,15 +1,13 @@
-# Dockerfile for running Vitest tests
 FROM node:current-alpine3.22 AS test
 WORKDIR /app
 
 RUN npm install -g pnpm
 
-# Copy only what's needed for tests
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 COPY src ./src
 COPY __tests__ ./__tests__
-COPY vitest.config.ts ./vitest.config.ts
+COPY vitest.config.mts ./vitest.config.mts
 
 RUN pnpm install
 
