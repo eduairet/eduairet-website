@@ -1,4 +1,3 @@
-import 'server-only';
 import { Dictionaries, Dictionary, Lang, EnContent, EsContent } from '@/models';
 
 const dictionaries: Dictionaries = {
