@@ -6,7 +6,7 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - ./src:/app/src
+      - .:/app
     environment:
       - CI=true
     env_file:

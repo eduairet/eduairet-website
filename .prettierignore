@@ -5,6 +5,7 @@ _next/
 __tmp__/
 dist/
 node_modules/
+.pnpm-store/
 target/
 compiled/
 

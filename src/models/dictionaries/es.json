@@ -2,11 +2,11 @@
   "meta": {
     "default": {
       "title": "portafolio",
-      "description": "portafolio profesional de eat | desarrollador • diseñador • artista"
+      "description": "portafolio profesional de eat | Front‑end/Ingeniero de Software"
     },
     "contact": {
       "title": "contacto",
-      "description": "eat's professional portfolio | contacto"
+      "description": "portafolio profesional de eat | contacto"
     }
   },
   "nav": {
@@ -38,7 +38,7 @@
     }
   },
   "home": {
-    "subtitle": "Desarrollador • Diseñador • Artista"
+    "subtitle": "Front‑end/Ingeniero de Software"
   },
   "contact": {
     "title": "Contacto",

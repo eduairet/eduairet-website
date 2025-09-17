@@ -2,7 +2,7 @@
   "meta": {
     "default": {
       "title": "portfolio",
-      "description": "eat's professional portfolio | developer • designer • artist"
+      "description": "eat's professional portfolio | Front‑end/Software Engineer"
     },
     "contact": {
       "title": "contact",
@@ -38,7 +38,7 @@
     }
   },
   "home": {
-    "subtitle": "Developer • Designer • Artist"
+    "subtitle": "Front‑end/Software Engineer"
   },
   "contact": {
     "title": "Contact",
