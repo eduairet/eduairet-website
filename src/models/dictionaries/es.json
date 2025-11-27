@@ -2,7 +2,7 @@
   "meta": {
     "default": {
       "title": "portafolio",
-      "description": "portafolio profesional de eat | Ingeniero de Software Front End"
+      "description": "portafolio profesional de eat | Desarrollador de Software Front End"
     },
     "contact": {
       "title": "contacto",
@@ -38,7 +38,7 @@
     }
   },
   "home": {
-    "subtitle": "Ingeniero de Software Front End"
+    "subtitle": "Desarrollador de Software Front End"
   },
   "contact": {
     "title": "Contacto",
