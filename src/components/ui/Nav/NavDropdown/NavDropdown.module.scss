@@ -1,14 +1,19 @@
 @use '@/styles/abstracts/index' as *;
 
-.actions {
+.dropdownWrapper {
   position: absolute;
+  top: 50px;
+  left: -35px;
+  display: grid;
+  
+}
+
+.actions {
   background-color: var(--background);
   border: 2px solid var(--foreground);
   border-radius: 10px;
   padding: 0.75rem;
   width: 100px;
-  top: 50px;
-  left: -35px;
   display: flex;
   flex-direction: column;
   align-items: center;

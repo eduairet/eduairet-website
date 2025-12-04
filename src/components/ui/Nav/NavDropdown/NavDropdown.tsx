@@ -9,11 +9,13 @@ interface IProps {
 
 export default function NavDropdown({ children, isOpen, onClick }: IProps) {
   return (
-    <ul
-      className={[styles.actions, isOpen ? styles.opened : ''].join(' ')}
-      onClick={onClick}
-    >
-      {children}
-    </ul>
+    <div className={styles.dropdownWrapper}>
+      <ul
+        className={[styles.actions, isOpen ? styles.opened : ''].join(' ')}
+        onClick={onClick}
+      >
+        {children}
+      </ul>
+    </div>
   );
 }

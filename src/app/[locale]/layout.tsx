@@ -11,7 +11,7 @@ import NavBar from '@/components/ui/Nav/NavBar/NavBar';
 import Footer from '@/components/ui/Footer/Footer';
 
 const eatIconsVF = localFont({
-  src: './fonts/EatIconsVF.woff2',
+  src: '/fonts/EatIconsVF.woff2',
   preload: true,
   variable: '--eat-icons-vf',
   display: 'swap',
