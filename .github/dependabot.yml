@@ -1,0 +1,33 @@
+version: 2
+updates:
+  # Application dependencies (pnpm / npm).
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 10
+    # Wait a few days after a release before proposing it, mirroring the pnpm
+    # minimumReleaseAge cooldown so we don't auto-open PRs for brand-new,
+    # not-yet-vetted versions.
+    cooldown:
+      default-days: 3
+    groups:
+      npm:
+        patterns:
+          - '*'
+
+  # Keep GitHub Actions pinned to fresh commit SHAs.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns:
+          - '*'
+
+  # Keep the Docker base image up to date.
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
