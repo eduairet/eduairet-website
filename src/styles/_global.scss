@@ -2,6 +2,7 @@
 
 :root {
   --background: #{$black};
+  --background-80: #{get-color($black, 0.8)};
   --background-50: #{get-color($black, 0.5)};
   --background-00: #{get-color($black, 0)};
   --foreground: #{$white};
@@ -14,11 +15,19 @@
 }
 
 html {
+  scroll-behavior: smooth;
+
   * {
     font-family: degular-variable, sans-serif;
     text-align: center;
     font-feature-settings: 'onum';
     @include degular($wght: 400, $opsz: 16);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 }
 
@@ -31,14 +40,15 @@ body {
 
 body {
   width: 100vw;
-  overflow-x: hidden;
+  overflow-x: clip;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
 
   &[data-theme='light'] {
     --background: #{$white};
+    --background-80: #{get-color($white, 0.8)};
     --background-50: #{get-color($white, 0.5)};
     --background-00: #{get-color($white, 0)};
     --foreground: #{$black};

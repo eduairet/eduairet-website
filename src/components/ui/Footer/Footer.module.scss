@@ -1,13 +1,24 @@
 @use '@/styles/abstracts/index' as *;
 
 .footer {
-  padding: 3rem 0;
+  position: fixed;
+  z-index: 2;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  padding: 1.5rem 0;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
+  background: linear-gradient(
+    180deg,
+    var(--background-00) 0%,
+    var(--background-50) 50%,
+    var(--background) 100%
+  );
 
   @media (width >= $breakpoint-sm) {
     gap: 1.5rem;
@@ -16,8 +27,7 @@
   @media (width >= $breakpoint-md) {
     flex-direction: row;
     justify-content: space-between;
-    width: 100vw;
-    padding: 2rem 1.5rem;
+    padding: 1rem 1.5rem;
   }
 
   .section + .section {

@@ -9,7 +9,12 @@
   justify-content: stretch;
   padding-left: 1rem;
   padding-right: 1rem;
+  padding-bottom: calc(#{$footer-height} + 1rem);
   gap: 2rem;
+
+  @media (width >= $breakpoint-md) {
+    padding-bottom: calc(#{$footer-height-md} + 1rem);
+  }
 
   &.blurred {
     filter: blur(3px);

@@ -2,7 +2,7 @@
   "meta": {
     "default": {
       "title": "portfolio",
-      "description": "eat's professional portfolio | Front End Software Developer"
+      "description": "eat's professional portfolio | Software Engineer"
     },
     "contact": {
       "title": "contact",
@@ -38,7 +38,125 @@
     }
   },
   "home": {
-    "subtitle": "Front End Software Developer"
+    "subtitle": "Software Engineer",
+    "summary": "Six years building web applications end to end, on a decade of design.",
+    "scrollCue": "See my experience"
+  },
+  "experience": {
+    "title": "Experience",
+    "items": [
+      {
+        "role": "Software Engineer",
+        "company": "BevNET.com, Inc.",
+        "companyUrl": "https://www.bevnet.com",
+        "meta": "Contract · Remote",
+        "period": "May 2023 – Present",
+        "description": "I help run a media platform for five brands. I work across the whole thing, from the database to the screen, and I care about keeping it fast and steady for the people who use it every day.",
+        "stack": ["dotnet", "nextjs", "typescript", "react", "docker"]
+      },
+      {
+        "role": "Font Engineer",
+        "company": "And Repeat, Inc.",
+        "companyUrl": "https://andrepeat.com",
+        "meta": "Contract · Remote",
+        "period": "Apr 2021 – Jun 2022",
+        "description": "I built the tools behind the fonts. I wrote Python and Glyphs scripts that took the slow, repetitive parts of type production and made them quick, so the team could stay focused on the design. One even got a spot at Typographics TypeLab 2022.",
+        "stack": ["python"]
+      },
+      {
+        "role": "Frontend Developer & Creative Coder",
+        "company": "Abismo°",
+        "companyUrl": "https://abismozero.com",
+        "meta": "Freelance · Hybrid",
+        "period": "Apr 2020 – Apr 2023",
+        "description": "This is where art, design, and code came together for me. I built playful, custom interfaces for editorial and brand clients, and wrote small tools that took the tedious parts of production off everyone's plate.",
+        "stack": ["javascript", "python"]
+      },
+      {
+        "role": "Senior Graphic Designer",
+        "company": "Universidad Anáhuac México",
+        "companyUrl": "https://www.anahuac.mx/mexico/",
+        "meta": "On-site",
+        "period": "Jan 2017 – Mar 2020",
+        "description": "I designed the look of the department's events and the systems behind them. When the work got repetitive, I started writing code to handle it. That is how I found my way into software.",
+        "stack": ["python", "javascript"]
+      },
+      {
+        "role": "Design & Art Archive",
+        "company": "eduairet.myportfolio.com",
+        "companyUrl": "https://eduairet.myportfolio.com",
+        "meta": "",
+        "period": "2014 – Present",
+        "description": "I spent over ten years in design before code. This is the archive of that work. Take a look.",
+        "stack": []
+      }
+    ]
+  },
+  "projects": {
+    "title": "Projects",
+    "items": [
+      {
+        "role": "Melvin Pay",
+        "roleUrl": "https://melvinpay.com",
+        "company": "",
+        "companyUrl": "",
+        "meta": "",
+        "period": "Jan – Mar 2023",
+        "description": "A payments product I helped bring to launch. I cleaned up the shared components so they were easier to work with and shipped the merchant-portal features the team needed to go live.",
+        "stack": ["angular", "typescript", "sass"]
+      },
+      {
+        "role": "InterplanetaryFonts",
+        "roleUrl": "https://ethglobal.com/showcase/interplanetary-fonts-ekwuo",
+        "company": "Women Build Web3",
+        "companyUrl": "https://www.blog.encode.club/women-build-web3-accelerator-with-encode-summary-67cc905de63c",
+        "meta": "",
+        "period": "Sep 2022 – Apr 2023",
+        "description": "A decentralized marketplace for fonts that I co-designed. It reached the ETHOnline 2022 finals and joined the Women Build Web3 accelerator. I shaped the interface and the data behind it.",
+        "stack": ["react", "ethereum", "tailwind"]
+      }
+    ]
+  },
+  "education": {
+    "title": "Education",
+    "items": [
+      {
+        "role": "B.A. Graphic Design",
+        "company": "Universidad Anáhuac México Norte",
+        "companyUrl": "https://www.anahuac.mx/mexico/",
+        "meta": "",
+        "period": "2010 – 2014",
+        "description": "Where it all started. I studied graphic design and graduated with honors.",
+        "stack": []
+      },
+      {
+        "role": "Ethereum Developer Bootcamp",
+        "company": "Alchemy University",
+        "companyUrl": "https://www.alchemy.com/university/projects/collectible-pleasures",
+        "meta": "",
+        "period": "2022 – 2023",
+        "description": "I learned to build on Ethereum here, from smart contracts to the tooling around them.",
+        "stack": []
+      },
+      {
+        "role": "Blockchain Diploma",
+        "company": "Universidad Anáhuac Online",
+        "companyUrl": "https://credenciales.online.anahuac.mx/006b8075-30fa-4485-b35e-d7ca2a74104b",
+        "meta": "",
+        "period": "2022",
+        "description": "A closer look at how blockchains work and where they fit.",
+        "stack": []
+      },
+      {
+        "role": "Type@Cooper Condensed Program",
+        "company": "Cooper Union",
+        "companyUrl": "https://coopertype.org",
+        "meta": "",
+        "period": "2019",
+        "description": "An intensive type-design program that fed my love for letters.",
+        "stack": []
+      }
+    ]
   },
   "contact": {
     "title": "Contact",

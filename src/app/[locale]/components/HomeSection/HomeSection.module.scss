@@ -1,0 +1,167 @@
+@use '@/styles/abstracts/index' as *;
+
+.section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  scroll-margin-top: $header-height;
+}
+
+.title {
+  position: sticky;
+  top: $header-height;
+  z-index: 2;
+  text-align: left;
+  color: var(--foreground);
+  font-size: clamp(2rem, 8vw, 3rem);
+  line-height: 1;
+  padding: 2rem 0;
+  background: linear-gradient(
+    180deg,
+    var(--background-00) 0%,
+    var(--background-50) 25%,
+    var(--background-50) 75%,
+    var(--background-00) 100%
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  // Fade the blur (and its hard box edge) along with the gradient.
+  mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 25%,
+    #000 75%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    transparent 0%,
+    #000 25%,
+    #000 75%,
+    transparent 100%
+  );
+  @include degular($wght: 700, $opsz: 60);
+}
+
+.cards {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  min-height: clamp(16rem, 42vh, 22rem);
+  padding: clamp(1.5rem, 4vw, 2.75rem);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow: hidden;
+  color: $white;
+  background: radial-gradient(
+    170% 170% at 0% 0%,
+    #{$black} 0%,
+    #{$black} 50%,
+    #{$white} 135%
+  );
+  @include rounded-corners($radius: $border-radius);
+
+  &:nth-child(even) {
+    color: $black;
+    background: radial-gradient(
+      170% 170% at 0% 0%,
+      #{$white} 0%,
+      #{$white} 50%,
+      #{$black} 135%
+    );
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 32rem;
+  padding-bottom: 3rem;
+
+  @media (width >= $breakpoint-md) {
+    max-width: 50%;
+    padding-bottom: 0;
+  }
+}
+
+.period {
+  text-align: left;
+  color: $accent;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+  @include degular($wght: 500, $opsz: 12);
+}
+
+.roleTitle {
+  text-align: left;
+  color: inherit;
+  font-size: clamp(1.375rem, 3.5vw, 1.75rem);
+  line-height: 1.1;
+  margin-bottom: 0.35rem;
+  @include degular($wght: 600, $opsz: 36);
+}
+
+.company {
+  text-align: left;
+  color: inherit;
+  font-size: 1rem;
+  margin-bottom: 1.25rem;
+  @include degular($wght: 400, $opsz: 18);
+
+  .meta {
+    opacity: 0.65;
+  }
+}
+
+.description {
+  text-align: left;
+  color: inherit;
+  line-height: 1.55;
+  font-size: 1.0625rem;
+  @include degular($wght: 300, $opsz: 18);
+}
+
+.stack {
+  position: absolute;
+  right: clamp(1.5rem, 4vw, 2.75rem);
+  bottom: clamp(1.5rem, 4vw, 2.75rem);
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  // Match the card text color; the corner stays dominated by the top-left tone.
+  color: inherit;
+}
+
+.techIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  @include merge-transitions((color, border-color));
+
+  svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      color: $accent;
+    }
+  }
+}
