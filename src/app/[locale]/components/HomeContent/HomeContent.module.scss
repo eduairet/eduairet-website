@@ -1,8 +1,30 @@
-@use '@/styles/abstracts/index';
+@use '@/styles/abstracts/index' as *;
 
 .content {
   width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 2rem;
   color: var(--foreground);
+}
+
+.hero {
+  position: relative;
+  min-height: calc(100svh - #{$header-height} - 4rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+}
+
+.heroText {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero > a {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
 }

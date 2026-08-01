@@ -2,6 +2,9 @@ import styles from './HomeContent.module.scss';
 import { Dictionary } from '@/models';
 import HomeTitle from '@/app/[locale]/components/HomeTitle/HomeTitle';
 import HomeSubtitle from '../HomeSubtitle/HomeSubtitle';
+import HomeSummary from '../HomeSummary/HomeSummary';
+import ScrollCue from '../ScrollCue/ScrollCue';
+import HomeSection from '../HomeSection/HomeSection';
 
 interface IProps {
   content: Dictionary;
@@ -9,9 +12,18 @@ interface IProps {
 
 export default function HomeContent({ content }: IProps) {
   return (
-    <section className={styles.content}>
-      <HomeTitle />
-      <HomeSubtitle subtitle={content.home.subtitle} />
-    </section>
+    <div className={styles.content}>
+      <section className={styles.hero}>
+        <div className={styles.heroText}>
+          <HomeTitle />
+          <HomeSubtitle subtitle={content.home.subtitle} />
+          <HomeSummary summary={content.home.summary} />
+        </div>
+        <ScrollCue label={content.home.scrollCue} target='experience' />
+      </section>
+      <HomeSection id='experience' section={content.experience} />
+      <HomeSection id='projects' section={content.projects} />
+      <HomeSection id='education' section={content.education} />
+    </div>
   );
 }

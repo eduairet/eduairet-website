@@ -5,6 +5,36 @@ interface Button {
   ariaLabel: string;
 }
 
+export interface SectionEntry {
+  role: string;
+  roleUrl?: string;
+  company: string;
+  companyUrl: string;
+  meta: string;
+  period: string;
+  description: string;
+  stack: string[];
+}
+
+interface Section {
+  title: string;
+  items: SectionEntry[];
+}
+
+const toSection = (data?: Partial<Section>): Section => ({
+  title: data?.title || '',
+  items: (data?.items || []).map((item) => ({
+    role: item.role || '',
+    roleUrl: item.roleUrl || '',
+    company: item.company || '',
+    companyUrl: item.companyUrl || '',
+    meta: item.meta || '',
+    period: item.period || '',
+    description: item.description || '',
+    stack: item.stack || [],
+  })),
+});
+
 export class Dictionary {
   meta: {
     [key: string]: {
@@ -35,7 +65,12 @@ export class Dictionary {
   };
   home: {
     subtitle: string;
+    summary: string;
+    scrollCue: string;
   };
+  experience: Section;
+  projects: Section;
+  education: Section;
   contact: {
     title: string;
     form: {
@@ -93,7 +128,12 @@ export class Dictionary {
     };
     this.home = {
       subtitle: data.home?.subtitle || '',
+      summary: data.home?.summary || '',
+      scrollCue: data.home?.scrollCue || '',
     };
+    this.experience = toSection(data.experience);
+    this.projects = toSection(data.projects);
+    this.education = toSection(data.education);
     this.contact = {
       title: data.contact?.title || '',
       form: {

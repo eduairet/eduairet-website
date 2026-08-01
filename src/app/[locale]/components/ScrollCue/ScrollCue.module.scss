@@ -1,0 +1,49 @@
+@use '@/styles/abstracts/index' as *;
+
+.cue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--foreground);
+  @include merge-transitions((color));
+
+  &::before {
+    content: none;
+  }
+
+  &:hover,
+  &:active {
+    color: $accent;
+
+    .chevron {
+      animation-play-state: paused;
+    }
+  }
+
+  &:focus-visible {
+    @include accessibility-outline;
+  }
+}
+
+.chevron {
+  width: clamp(3rem, 6vw, 4rem);
+  height: clamp(3rem, 6vw, 4rem);
+  animation: scroll-bounce 1.6s ease-in-out infinite;
+}
+
+@keyframes scroll-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    animation: none;
+  }
+}
