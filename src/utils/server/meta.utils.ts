@@ -30,7 +30,7 @@ export async function generateMetadata({
 
   return {
     metadataBase: new URL(await getHost()),
-    title: `${title} | eat`,
+    title,
     description,
   };
 }

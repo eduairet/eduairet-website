@@ -1,12 +1,12 @@
 {
   "meta": {
     "default": {
-      "title": "portafolio",
-      "description": "portafolio profesional de eat | Ingeniero de Software"
+      "title": "Eduardo Aire Torres | Ingeniero de Diseño e Ingeniero de Producto",
+      "description": "Diseño y tipografía, junto con aplicaciones web full-stack en React, Next.js, TypeScript y .NET."
     },
     "contact": {
-      "title": "contacto",
-      "description": "portafolio profesional de eat | contacto"
+      "title": "Contacto | Eduardo Aire Torres",
+      "description": "Contacta a Eduardo Aire Torres sobre diseño, tipografía y aplicaciones web full-stack en React, Next.js, TypeScript y .NET."
     }
   },
   "nav": {
@@ -38,8 +38,8 @@
     }
   },
   "home": {
-    "subtitle": "Ingeniero de Software",
-    "summary": "Seis años creando aplicaciones web de principio a fin, sobre una década de diseño.",
+    "subtitle": "Ingeniero de Diseño · Ingeniero de Producto",
+    "summary": "Seis años creando aplicaciones web de principio a fin, sobre más de 10 años en diseño y tipografía.",
     "scrollCue": "Ver mi experiencia"
   },
   "experience": {
@@ -50,17 +50,26 @@
         "company": "BevNET.com, Inc.",
         "companyUrl": "https://www.bevnet.com",
         "meta": "Contrato · Remoto",
-        "period": "May 2023 – Presente",
-        "description": "Ayudo a mantener una plataforma de medios para cinco marcas. Trabajo en todo, desde la base de datos hasta la pantalla, y me importa que sea rápida y estable para quienes la usan cada día.",
+        "period": "Ene 2026 – Presente",
+        "description": "Trabajo en una plataforma de medios de cinco marcas, con .NET y Next.js, de la base de datos a la pantalla. Rediseñé la búsqueda de PressRelease para que, en pruebas locales, pasara de segundos a milisegundos, construí Nombase Funding de principio a fin e implementé Sentry en 7 servicios.",
         "stack": ["dotnet", "nextjs", "typescript", "react", "docker"]
       },
       {
-        "role": "Ingeniero de Fuentes Tipográficas",
+        "role": "Desarrollador Frontend",
+        "company": "BevNET.com, Inc.",
+        "companyUrl": "https://www.bevnet.com",
+        "meta": "Contrato · Remoto",
+        "period": "May 2023 – Ene 2026",
+        "description": "Llevé diseños a interfaces de producción para nombase.com y las marcas de BevNET, cuidando los detalles del diseño al código. Pasé del front-end al full-stack, con APIs, bases de datos, migraciones y pruebas, y de ahí al ascenso a Ingeniero de Software.",
+        "stack": ["nextjs", "typescript", "react"]
+      },
+      {
+        "role": "Font Engineer y Diseñador Tipográfico",
         "company": "And Repeat, Inc.",
         "companyUrl": "https://andrepeat.com",
         "meta": "Contrato · Remoto",
         "period": "Abr 2021 – Jun 2022",
-        "description": "Construí las herramientas detrás de las fuentes. Escribí scripts en Python y Glyphs que tomaron las partes lentas y repetitivas de la producción tipográfica y las hicieron rápidas, para que el equipo pudiera concentrarse en el diseño. Una incluso llegó a Typographics TypeLab 2022.",
+        "description": "Diseñé tipografías y construí las herramientas de producción detrás de las fuentes, con scripts en Python y plugins de Glyphs. También creé el Branding System Generator y lo presenté en Typographics TypeLab 2022.",
         "stack": ["python"]
       },
       {
@@ -69,7 +78,7 @@
         "companyUrl": "https://abismozero.com",
         "meta": "Autónomo · Híbrido",
         "period": "Abr 2020 – Abr 2023",
-        "description": "Aquí fue donde el arte, el diseño y el código se juntaron para mí. Creé interfaces originales para clientes editoriales y de marca, y escribí pequeñas herramientas que quitaron las partes tediosas de la producción.",
+        "description": "Aquí fue donde el arte, el diseño y el código se juntaron para mí. Desarrollé interfaces interactivas con arte generativo y animación, y automaticé el diseño editorial conectando Python y Pandas con InDesign.",
         "stack": ["javascript", "python"]
       },
       {
@@ -78,7 +87,7 @@
         "companyUrl": "https://www.anahuac.mx/mexico/",
         "meta": "Presencial",
         "period": "Ene 2017 – Mar 2020",
-        "description": "Diseñé la imagen de los eventos del departamento y los sistemas detrás de ellos. Cuando el trabajo se volvía repetitivo, empecé a escribir código para resolverlo. Así fue como llegué al software.",
+        "description": "Renové el lenguaje visual de las comunicaciones del departamento y armé sistemas de branding para eventos, del merchandising y el motion al editorial, la tipografía, la web y la señalética. El trabajo repetitivo, como diplomas e invitaciones animadas, fue lo que me llevó a escribir Python y JavaScript, y de ahí al software.",
         "stack": ["python", "javascript"]
       },
       {
