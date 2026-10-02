@@ -1,17 +1,8 @@
 import { defineConfig, globalIgnores } from 'eslint/config';
-import unusedImports from 'eslint-plugin-unused-imports';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
+import nextConfig from 'eslint-config-next';
+import prettierConfig from 'eslint-config-prettier';
+import unusedImports from 'eslint-plugin-unused-imports';
 
 export default defineConfig([
   globalIgnores([
@@ -23,11 +14,10 @@ export default defineConfig([
     'src/models/types/**/*.{ts,tsx,js,jsx}',
     'src/models/enums/**/*.{ts,tsx,js,jsx}',
   ]),
+  js.configs.recommended,
+  ...nextConfig,
+  prettierConfig,
   {
-    ignores: [],
-
-    extends: compat.extends('eslint:recommended', 'next', 'prettier'),
-
     plugins: {
       'unused-imports': unusedImports,
     },
@@ -45,10 +35,5 @@ export default defineConfig([
         },
       ],
     },
-  },
-  {
-    files: ['src/models/**/*.{ts,tsx,js,jsx}'],
-
-    extends: compat.extends('eslint:recommended', 'next', 'prettier'),
   },
 ]);

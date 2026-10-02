@@ -1,4 +1,4 @@
-FROM node:current-alpine3.22 AS build
+FROM node:24-alpine3.22 AS build
 WORKDIR /app
 
 # Install a pinned pnpm (keep this version in sync with "packageManager" in

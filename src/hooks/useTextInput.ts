@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useContext, useState } from 'react';
 import { textInputValidations } from '@/utils/client';
 import { LanguageContext } from '@/store/LanguageProvider';
 import { TextInputType } from '@/models';
@@ -12,28 +12,29 @@ export default function useTextInput(
   const { content } = useContext(LanguageContext);
   const emptyError = content.contact.form.errors.empty[inputName];
   const invalidError = content.contact.form.errors.invalid[inputName];
-  const [isValid, setIsValid] = useState(true);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [validation, setValidation] = useState<{
+    isValid: boolean;
+    errorMessage: string | null;
+  }>({ isValid: true, errorMessage: null });
 
-  useEffect(() => {
-    if (focused) {
-      if (!value) {
-        setIsValid(false);
-        setErrorMessage(emptyError);
-        return;
-      }
-      const validate = textInputValidations[type].validate(value);
-      if (!validate) {
-        setIsValid(false);
-        setErrorMessage(invalidError);
-        return;
-      }
-      setIsValid(true);
-    }
-  }, [emptyError, invalidError, type, value, focused]);
+  if (!focused) return validation;
 
-  return {
-    isValid,
-    errorMessage,
-  };
+  let isValid = true;
+  let errorMessage = validation.errorMessage;
+  if (!value) {
+    isValid = false;
+    errorMessage = emptyError;
+  } else if (!textInputValidations[type].validate(value)) {
+    isValid = false;
+    errorMessage = invalidError;
+  }
+
+  if (
+    isValid !== validation.isValid ||
+    errorMessage !== validation.errorMessage
+  ) {
+    setValidation({ isValid, errorMessage });
+  }
+
+  return { isValid, errorMessage };
 }
