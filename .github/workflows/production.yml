@@ -8,20 +8,27 @@ env:
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
   ENABLE_EXPERIMENTAL_COREPACK: true
 
+# Deploy the commit that passed Tests, once. A push to main starts Tests;
+# this workflow follows that run instead of deploying from the push itself.
 on:
   workflow_run:
     workflows: ['Tests']
     types:
       - completed
-  push:
     branches:
       - main
 
 jobs:
   Deploy-Production:
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
       - name: Enable pnpm via Corepack
         run: corepack enable
       - name: Install Vercel CLI
