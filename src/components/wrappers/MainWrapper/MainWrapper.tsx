@@ -11,10 +11,8 @@ interface IProps {
   children: ReactNode;
 }
 
-function MainWrapper({ children }: IProps) {
-  const { backdropState, setBackdrop } = useContext(BackdropContext);
-
-  const Loading = () => (
+function Loading({ children }: IProps) {
+  return (
     <>
       <div className={styles.loading}>
         <Spinner />
@@ -24,9 +22,13 @@ function MainWrapper({ children }: IProps) {
       </main>
     </>
   );
+}
+
+function MainWrapper({ children }: IProps) {
+  const { backdropState, setBackdrop } = useContext(BackdropContext);
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading>{children}</Loading>}>
       {(backdropState.navMainBackdrop || backdropState.navLangBackdrop) && (
         <NavBarBackdrop
           closeBackdrop={() => setBackdrop(BackdropType.CLOSE_NAV)}

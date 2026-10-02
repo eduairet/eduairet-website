@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest';
 import { NextRequest } from 'next/server';
-import { middleware } from '@/middleware';
+import { proxy } from '@/proxy';
 
 const testCases = [
   { language: 'es_MX', expectedLocation: 'http://localhost:3000/es' },
@@ -13,14 +13,14 @@ const runTest = async (language: string, expectedLocation: string) => {
   req.headers.set('accept-language', language);
 
   // Act
-  const res = await middleware(req);
+  const res = await proxy(req);
 
   // Assert
   expect(res?.headers.get('location')).toEqual(expectedLocation);
 };
 
 for (const testCase of testCases) {
-  test(`Middleware - ${testCase.language}`, async () => {
+  test(`Proxy - ${testCase.language}`, async () => {
     await runTest(testCase.language, testCase.expectedLocation);
   });
 }
