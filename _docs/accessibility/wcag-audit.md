@@ -4,7 +4,7 @@
 
 **Verdict before fixes (2026-10-05): Does not conform to WCAG 2.2 Level AA.**
 
-**Verdict after fixes (2026-10-06): Conforms** to WCAG 2.2 Level AA on every criterion I could test in Chrome. Two items stay "Needs review": F-21 needs a screen reader check, and F-22 needs your decision on `/resources`. Neither is a known failure.
+**Verdict after fixes (2026-10-06): Conforms** to WCAG 2.2 Level AA on every criterion I could test in Chrome. One item stays "Needs review": F-22 needs your decision on `/resources`. It is not a known failure. F-21 was closed on code review, at your call; no screen reader was run.
 
 Severity counts as found on 2026-10-05:
 
@@ -31,7 +31,7 @@ Severity counts as found on 2026-10-05:
   - The contact API was intercepted in tests, so no real email was sent. reCAPTCHA was stubbed with a fake token, because the site key does not run on localhost.
 - **Not available:** Claude in Chrome (the extension was not connected), so no test used your real Chrome profile. No screen reader (NVDA, JAWS, VoiceOver) was run. Findings that depend on how a screen reader speaks are marked "Needs review".
 
-**Verification after fixes (2026-10-06).** All 20 Critical, Serious, Moderate, and Minor findings are fixed; the 2 "Needs review" items are still open.
+**Verification after fixes (2026-10-06).** All 20 Critical, Serious, Moderate, and Minor findings are fixed; F-21 was closed on code review; F-22 is still "Needs review".
 
 - `npx tsc --noEmit`: pass.
 - `pnpm lint`: pass.
@@ -90,7 +90,7 @@ Severity counts as found on 2026-10-05:
 - Evidence: `useRecaptcha` calls `grecaptcha.execute()` once, when the page mounts, and never again. Google's reCAPTCHA v3 docs say "reCAPTCHA tokens expire after two minutes" and "call `execute` when the user takes the action rather than on page load". Each token can also be verified only once. So: (1) if a person spends more than two minutes on the form, the server rejects the token and the user sees only "There was an error submitting the form"; (2) every retry sends the same used token and fails again; (3) the only way out is to reload the page, which loses what they typed. There is no warning and no way to extend the limit. The essential exception does not apply, because calling `execute()` at submit time removes the limit without changing the feature.
 - Who is affected: people who type slowly or need breaks, such as screen reader users, switch and voice users, people with motor or cognitive disabilities, and people writing in a second language. They cannot contact you at all.
 - Fix: call `grecaptcha.execute(siteKey, { action: 'submit' })` inside `handleSubmit`, right before the `fetch`, and stop gating the submit button on a token.
-- Status: Fixed. `useRecaptcha` now returns `getRecaptchaToken()`, which `ContactForm` calls inside `handleSubmit`, and the button no longer waits for a token. Evidence: in Chrome with a stubbed `grecaptcha`, `execute` ran 0 times on load and once per submit. Unit test `contactForm.test.tsx` checks the token is fetched at submit. A real 2-minute expiry was not reproduced, because that needs a live send.
+- Status: Fixed. `useRecaptcha` now returns `getRecaptchaToken()`, which `ContactForm` calls inside `handleSubmit`, and the button no longer waits for a token. Evidence: in Chrome with a stubbed `grecaptcha`, `execute` ran 0 times on load and once per submit. Unit test `contactForm.test.tsx` checks the token is fetched at submit. A real 2-minute expiry was not reproduced, because that needs a live send. A real send on the Vercel preview (2026-10-06) showed the new error message ("Something went wrong and your message wasn't sent…"), so the error path works, but the email was not sent. The cause is not confirmed: the reCAPTCHA key may not allow `*.vercel.app`, or the preview may lack the Gmail or reCAPTCHA environment variables. To do after deploy: send one real message in production, and wait more than two minutes before pressing Submit.
 
 ### F-03 Red text on light backgrounds is too faint
 
@@ -320,7 +320,7 @@ Severity counts as found on 2026-10-05:
 - Evidence: the `<h1>` is built from 19 inline `<span>`s. Chrome's accessibility tree names the heading "Eduardo Aire Torres", which is good. Because the spans are inline (not flex, unlike F-10), most screen readers should read it as words.
 - Who is affected: screen reader users, if their browser and screen reader pair splits the spans.
 - What would settle it: test with NVDA + Chrome and VoiceOver + Safari. If either splits it, add `aria-label` on the `<h1>` and `aria-hidden` on the spans.
-- Status: Needs review. No change. Still needs an NVDA + Chrome and VoiceOver + Safari check.
+- Status: Closed (2026-10-06): accepted on code review by the site owner, no screen reader run. The spans are inline and hold no spaces of their own, Chrome exposes the heading as "Eduardo Aire Torres", and the text content is the full name, so it is treated as passing. If someone does hear it letter by letter, add `aria-label` on the `<h1>` and `aria-hidden` on the spans.
 
 ### F-22 The Resources page can't be reached from the site
 
@@ -344,7 +344,7 @@ Severity counts as found on 2026-10-05:
 | 1.2.3 Audio Description or Media Alternative    | A     | N/A          | No video                                                                                                                |
 | 1.2.4 Captions (Live)                           | AA    | N/A          | No live media                                                                                                           |
 | 1.2.5 Audio Description (Prerecorded)           | AA    | N/A          | No video                                                                                                                |
-| 1.3.1 Info and Relationships                    | A     | Needs review | F-07, F-10, F-19 fixed; F-21 needs a screen reader check                                                                |
+| 1.3.1 Info and Relationships                    | A     | Pass         | F-07, F-10, F-19 fixed; F-21 closed on code review                                                                      |
 | 1.3.2 Meaningful Sequence                       | A     | Pass         | DOM order matches visual order on all pages                                                                             |
 | 1.3.3 Sensory Characteristics                   | A     | Pass         | No shape/position-only instructions                                                                                     |
 | 1.3.4 Orientation                               | AA    | Pass         | No orientation lock                                                                                                     |
