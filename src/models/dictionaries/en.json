@@ -7,6 +7,14 @@
     "contact": {
       "title": "Contact | Eduardo Aire Torres",
       "description": "Contact Eduardo Aire Torres about design, typography, and full-stack web applications in React, Next.js, TypeScript, and .NET."
+    },
+    "resources": {
+      "title": "Resources | Eduardo Aire Torres",
+      "description": "Resources from Eduardo Aire Torres on design, typography, and web development."
+    },
+    "notFound": {
+      "title": "Page not found | Eduardo Aire Torres",
+      "description": "This page doesn't exist."
     }
   },
   "nav": {
@@ -14,33 +22,37 @@
     "home": "Home",
     "contact": "Contact",
     "langs": {
-      "en": "ENG",
-      "es": "SPN"
-    }
+      "en": "English",
+      "es": "Español"
+    },
+    "skip": "Skip to content"
   },
   "footer": {
     "social": {
-      "ariaLabel": "Social Media Links"
+      "ariaLabel": "Social links",
+      "email": "Email"
     },
     "theme": {
-      "ariaLabel": "Theme Section",
       "text": "Theme"
     }
   },
   "buttons": {
     "langsButton": {
-      "title": "Languages",
-      "ariaLabel": "Language Select Button"
+      "title": "Language",
+      "ariaLabel": "Language"
     },
     "themeButton": {
       "title": "Theme",
-      "ariaLabel": "Toggle Theme Button"
+      "toLight": "Switch to light theme",
+      "toDark": "Switch to dark theme"
     }
   },
   "home": {
     "subtitle": "Design Engineer · Product Engineer",
     "summary": "Six years building web applications end to end, on over ten years of design and typography.",
-    "scrollCue": "See my experience"
+    "scrollCue": "See my experience",
+    "techStack": "Tech stack",
+    "newTab": "(opens in a new tab)"
   },
   "experience": {
     "title": "Experience",
@@ -167,6 +179,13 @@
       }
     ]
   },
+  "resources": {
+    "title": "Resources",
+    "text": "Resources will be listed here soon."
+  },
+  "notFound": {
+    "title": "404 - Page not found"
+  },
   "contact": {
     "title": "Contact",
     "form": {
@@ -176,18 +195,29 @@
       "submit": "Submit",
       "success": "The form was submitted successfully!",
       "errors": {
-        "submit": "There was an error submitting the form",
+        "submit": "Something went wrong and your message wasn't sent. Please try again, or email me at hola@eduairet.com.",
         "empty": {
-          "name": "Name is required",
-          "email": "Email is required",
-          "message": "Message is required"
+          "name": "Please enter your name",
+          "email": "Please enter your email",
+          "message": "Please write a message"
         },
         "invalid": {
-          "name": "Invalid name",
-          "email": "Invalid email",
-          "message": "Invalid message"
+          "name": "Please use letters, spaces, apostrophes, or hyphens (3 to 100 characters)",
+          "email": "Please enter an email like name@example.com",
+          "message": "Please write between 10 and 255 characters"
         }
+      },
+      "sending": "Sending…",
+      "required": "Fields marked * are required.",
+      "lengthHint": "{min} to {max} characters",
+      "recaptcha": {
+        "text": "This site is protected by reCAPTCHA and the Google {privacy} and {terms} apply.",
+        "privacy": "Privacy Policy",
+        "terms": "Terms of Service"
       }
     }
+  },
+  "status": {
+    "loading": "Loading…"
   }
 }

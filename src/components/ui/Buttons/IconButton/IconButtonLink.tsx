@@ -13,10 +13,11 @@ interface IProps {
   email?: boolean;
 }
 
+// The visually hidden title names the link; ariaLabel is only for overrides.
 export default function IconButtonLink({
   children,
   href,
-  ariaLabel = 'Link',
+  ariaLabel,
   title = 'Link',
   external = false,
 }: IProps) {

@@ -4,7 +4,6 @@ export default function InstagramLink() {
   return (
     <IconButtonLink
       title='Instagram'
-      ariaLabel='Instagram Link'
       href='https://www.instagram.com/eduairet/'
       external
     >

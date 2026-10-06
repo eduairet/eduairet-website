@@ -13,6 +13,7 @@ import {
 import { fetchData } from '@/utils/client';
 import { ApiUrls } from '@/utils/constants';
 import useRecaptcha from '@/hooks/useRecaptcha';
+import { getTextInputError } from '@/hooks/useTextInput';
 import FormWrapper from '@/components/wrappers/FormWrapper/FormWrapper';
 import TextInput from '@/components/ui/TextInput/TextInput';
 import ButtonWrapper from '@/components/wrappers/ButtonWrapper/ButtonWrapper';
@@ -48,9 +49,15 @@ const ContactFormReducer: IReducer = (state, action) => {
   return state;
 };
 
+const fieldTypes: Record<ContactFormField, TextInputType> = {
+  [ContactFormField.NAME]: 'text',
+  [ContactFormField.EMAIL]: 'email',
+  [ContactFormField.MESSAGE]: 'textarea',
+};
+
 function ContactForm() {
   const { locale, content } = useContext(LanguageContext);
-  const { isRecaptchaLoading, recaptchaToken } = useRecaptcha();
+  const { getRecaptchaToken } = useRecaptcha();
   const [isSending, setIsSending] = useState(false);
   const [formError, setFormError] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
@@ -59,17 +66,41 @@ function ContactForm() {
     new ContactFormModel()
   );
 
-  const formIsValid = () => {
-    return state.name.isValid && state.email.isValid && state.message.isValid;
-  };
+  const lengthHint = (min?: number, max?: number) =>
+    typeof min === 'number' && typeof max === 'number'
+      ? content.contact.form.lengthHint
+          .replace('{min}', String(min))
+          .replace('{max}', String(max))
+      : undefined;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSending(true);
+    if (isSending) return;
     setFormError(false);
     setSubmitMessage('');
 
-    if (!formIsValid() || !recaptchaToken) {
+    // Show every field's error and move focus to the first one to fix.
+    const fields = Object.values(ContactFormField);
+    const invalid = fields.filter(
+      (field) =>
+        getTextInputError(fieldTypes[field], state[field].value) !== null
+    );
+    fields.forEach((field) =>
+      dispatch({
+        type: field,
+        value: state[field].value,
+        focused: true,
+        isValid: !invalid.includes(field),
+      })
+    );
+    if (invalid.length) {
+      document.getElementById(invalid[0])?.focus();
+      return;
+    }
+
+    setIsSending(true);
+    const recaptchaToken = await getRecaptchaToken();
+    if (!recaptchaToken) {
       setFormError(true);
       setSubmitMessage(content.contact.form.errors.submit);
       setIsSending(false);
@@ -94,11 +125,8 @@ function ContactForm() {
       return;
     }
 
+    // The message stays until the user starts typing again.
     setSubmitMessage(content.contact.form.success);
-    setTimeout(() => {
-      setSubmitMessage('');
-    }, 10000);
-
     dispatch({ type: 'RESET' });
     setIsSending(false);
   };
@@ -111,14 +139,14 @@ function ContactForm() {
       label: content.contact.form.name,
       value: state.name.value,
       focused: state.name.focused,
-      type: 'text',
+      autoComplete: 'name',
     },
     {
       id: ContactFormField.EMAIL,
       label: content.contact.form.email,
       value: state.email.value,
       focused: state.email.focused,
-      type: 'email',
+      autoComplete: 'email',
     },
     {
       id: ContactFormField.MESSAGE,
@@ -127,9 +155,12 @@ function ContactForm() {
       label: content.contact.form.message,
       value: state.message.value,
       focused: state.message.focused,
-      type: 'textarea',
     },
   ];
+
+  const [recaptchaBefore, recaptchaRest = ''] =
+    content.contact.form.recaptcha.text.split('{privacy}');
+  const [recaptchaMiddle, recaptchaAfter = ''] = recaptchaRest.split('{terms}');
 
   return (
     <FormWrapper
@@ -137,37 +168,62 @@ function ContactForm() {
       error={formError}
       submitMessage={submitMessage}
     >
+      <p className={styles.required}>{content.contact.form.required}</p>
       {inputFields.map((field) => (
         <TextInput
           key={field.id}
           id={field.id}
           label={field.label}
-          type={field.type as TextInputType}
+          type={fieldTypes[field.id]}
           value={field.value}
           minLength={field.minLength}
           maxLength={field.maxLength}
+          hint={lengthHint(field.minLength, field.maxLength)}
+          autoComplete={field.autoComplete}
           focused={field.focused}
-          onChange={(value: string, focused: boolean, isValid: boolean) =>
+          onChange={(value: string, focused: boolean, isValid: boolean) => {
+            if (submitMessage) setSubmitMessage('');
             dispatch({
               type: field.id,
               value,
               focused,
               isValid,
-            })
-          }
+            });
+          }}
         />
       ))}
       <ButtonWrapper
         type='submit'
         className={styles.submit}
-        disabled={isSending || !recaptchaToken || !formIsValid()}
+        ariaDisabled={isSending}
       >
-        {isSending || isRecaptchaLoading ? (
-          <Spinner size={SpinnerSize.XS} />
+        {isSending ? (
+          <Spinner size={SpinnerSize.XS} label={content.contact.form.sending} />
         ) : (
           content.contact.form.submit
         )}
       </ButtonWrapper>
+      <p className={styles.recaptcha}>
+        {recaptchaBefore}
+        <a
+          href='https://policies.google.com/privacy'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          {content.contact.form.recaptcha.privacy}
+          <span className='visually-hidden'> {content.home.newTab}</span>
+        </a>
+        {recaptchaMiddle}
+        <a
+          href='https://policies.google.com/terms'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          {content.contact.form.recaptcha.terms}
+          <span className='visually-hidden'> {content.home.newTab}</span>
+        </a>
+        {recaptchaAfter}
+      </p>
     </FormWrapper>
   );
 }

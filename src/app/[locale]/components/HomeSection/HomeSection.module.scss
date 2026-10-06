@@ -6,6 +6,10 @@
   flex-direction: column;
   align-items: stretch;
   scroll-margin-top: $header-height;
+
+  @media (height <= $breakpoint-short-height) {
+    scroll-margin-top: 0;
+  }
 }
 
 .title {
@@ -42,6 +46,10 @@
     transparent 100%
   );
   @include degular($wght: 700, $opsz: 60);
+
+  @media (height <= $breakpoint-short-height) {
+    position: static;
+  }
 }
 
 .cards {
@@ -77,6 +85,10 @@
       #{$white} 50%,
       #{$black} 135%
     );
+
+    .period {
+      color: $accent-on-light;
+    }
   }
 }
 
@@ -122,6 +134,14 @@
   .meta {
     opacity: 0.65;
   }
+}
+
+// Links in cards are underlined so they don't rely on lightness alone.
+.roleTitle a,
+.company a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
 }
 
 .description {

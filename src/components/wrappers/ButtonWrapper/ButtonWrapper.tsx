@@ -8,6 +8,7 @@ interface IProps {
   className?: string;
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
+  ariaDisabled?: boolean;
   onClick?: () => void;
   props?: any;
 }
@@ -18,6 +19,7 @@ export default function ButtonWrapper({
   onClick = () => {},
   type = 'button',
   disabled = false,
+  ariaDisabled,
   props,
 }: IProps) {
   return (
@@ -25,6 +27,7 @@ export default function ButtonWrapper({
       className={[styles.button, className].join(' ')}
       type={type}
       disabled={disabled}
+      aria-disabled={ariaDisabled || undefined}
       onClick={onClick}
       {...props}
     >

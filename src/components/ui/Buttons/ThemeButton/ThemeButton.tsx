@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import styles from './ThemeButton.module.scss';
 import useDarkMode from '@/hooks/useDarkMode';
 import { LanguageContext } from '@/store/LanguageProvider';
-import IconButtonScreenTitle from '../IconButton/IconButtonScreenTitle';
 
 export default function ThemeButton() {
   const { darkMode, toggleDarkMode } = useDarkMode();
@@ -15,13 +14,20 @@ export default function ThemeButton() {
     toggleDarkMode();
   };
 
+  // Name the button by what it does next, so the current theme is implied.
+  const label = darkMode
+    ? content.buttons.themeButton.toLight
+    : content.buttons.themeButton.toDark;
+
   return (
     <button
-      aria-label={content.buttons.themeButton.ariaLabel}
+      type='button'
+      aria-label={label}
       className={styles['icon-button']}
       onClick={toggleTheme}
     >
       <motion.span
+        aria-hidden='true'
         className={styles.bulb}
         animate={{
           fontVariationSettings: darkMode ? "'wght' 100" : "'wght' 900",
@@ -30,7 +36,6 @@ export default function ThemeButton() {
       >
         💡
       </motion.span>
-      <IconButtonScreenTitle title={content.buttons.themeButton.title} />
     </button>
   );
 }

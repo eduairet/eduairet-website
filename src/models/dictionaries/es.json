@@ -7,40 +7,52 @@
     "contact": {
       "title": "Contacto | Eduardo Aire Torres",
       "description": "Contacta a Eduardo Aire Torres sobre diseño, tipografía y aplicaciones web full-stack en React, Next.js, TypeScript y .NET."
+    },
+    "resources": {
+      "title": "Recursos | Eduardo Aire Torres",
+      "description": "Recursos de Eduardo Aire Torres sobre diseño, tipografía y desarrollo web."
+    },
+    "notFound": {
+      "title": "Página no encontrada | Eduardo Aire Torres",
+      "description": "Esta página no existe."
     }
   },
   "nav": {
     "menu": "Menú",
-    "home": "Home",
+    "home": "Inicio",
     "contact": "Contacto",
     "langs": {
-      "en": "ING",
-      "es": "ESP"
-    }
+      "en": "English",
+      "es": "Español"
+    },
+    "skip": "Saltar al contenido"
   },
   "footer": {
     "social": {
-      "ariaLabel": "Enlaces de redes sociales"
+      "ariaLabel": "Redes sociales",
+      "email": "Correo"
     },
     "theme": {
-      "ariaLabel": "Sección de tema",
       "text": "Tema"
     }
   },
   "buttons": {
     "langsButton": {
-      "title": "Lenguajes",
-      "ariaLabel": "Botón para cambiar lenguaje"
+      "title": "Idioma",
+      "ariaLabel": "Idioma"
     },
     "themeButton": {
       "title": "Tema",
-      "ariaLabel": "Botón para cambiar de tema"
+      "toLight": "Cambiar a tema claro",
+      "toDark": "Cambiar a tema oscuro"
     }
   },
   "home": {
     "subtitle": "Ingeniero de Diseño · Ingeniero de Producto",
     "summary": "Seis años creando aplicaciones web de principio a fin, sobre más de 10 años en diseño y tipografía.",
-    "scrollCue": "Ver mi experiencia"
+    "scrollCue": "Ver mi experiencia",
+    "techStack": "Tecnologías",
+    "newTab": "(se abre en otra pestaña)"
   },
   "experience": {
     "title": "Experiencia",
@@ -167,6 +179,13 @@
       }
     ]
   },
+  "resources": {
+    "title": "Recursos",
+    "text": "Pronto encontrarás recursos aquí."
+  },
+  "notFound": {
+    "title": "404 - Página no encontrada"
+  },
   "contact": {
     "title": "Contacto",
     "form": {
@@ -176,18 +195,29 @@
       "submit": "Enviar",
       "success": "¡El formulario se ha enviado correctamente!",
       "errors": {
-        "submit": "Hubo un error al enviar el formulario",
+        "submit": "Algo salió mal y tu mensaje no se envió. Inténtalo de nuevo o escríbeme a hola@eduairet.com.",
         "empty": {
-          "name": "El nombre es requerido",
-          "email": "El correo es requerido",
-          "message": "El mensaje es requerido"
+          "name": "Escribe tu nombre",
+          "email": "Escribe tu correo",
+          "message": "Escribe un mensaje"
         },
         "invalid": {
-          "name": "Nombre inválido",
-          "email": "Correo inválido",
-          "message": "Mensaje inválido"
+          "name": "Usa letras, espacios, apóstrofos o guiones (de 3 a 100 caracteres)",
+          "email": "Escribe un correo como nombre@ejemplo.com",
+          "message": "Escribe entre 10 y 255 caracteres"
         }
+      },
+      "sending": "Enviando…",
+      "required": "Los campos con * son obligatorios.",
+      "lengthHint": "De {min} a {max} caracteres",
+      "recaptcha": {
+        "text": "Este sitio está protegido por reCAPTCHA y se aplican la {privacy} y los {terms} de Google.",
+        "privacy": "Política de privacidad",
+        "terms": "Términos del servicio"
       }
     }
+  },
+  "status": {
+    "loading": "Cargando…"
   }
 }

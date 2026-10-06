@@ -1,8 +1,10 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { useContext } from 'react';
+import { motion } from 'framer-motion';
 import styles from './HomeSection.module.scss';
 import { SectionEntry } from '@/models';
+import { LanguageContext } from '@/store/LanguageProvider';
 import TechIcon from './TechIcon';
 import type { TechIconData } from './techStack';
 
@@ -12,25 +14,25 @@ interface IProps {
 }
 
 export default function SectionCard({ entry, icons }: IProps) {
-  const reduceMotion = useReducedMotion();
+  const { content } = useContext(LanguageContext);
 
-  const motionProps = reduceMotion
-    ? {}
-    : {
-        initial: { opacity: 0, y: 30 },
-        whileInView: { opacity: 1, y: 0 },
-        viewport: { once: false, amount: 0.3 },
-        transition: { ease: 'easeInOut' as const, duration: 0.6 },
-      };
-
+  // Same props on server and client; MotionConfig (template.tsx) drops the
+  // slide for users who prefer reduced motion.
   return (
-    <motion.li className={styles.card} {...motionProps}>
+    <motion.li
+      className={styles.card}
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.3 }}
+      transition={{ ease: 'easeInOut', duration: 0.6 }}
+    >
       <div className={styles.content}>
         <p className={styles.period}>{entry.period}</p>
         <h3 className={styles.roleTitle}>
           {entry.roleUrl ? (
             <a href={entry.roleUrl} target='_blank' rel='noopener noreferrer'>
               {entry.role}
+              <span className='visually-hidden'> {content.home.newTab}</span>
             </a>
           ) : (
             entry.role
@@ -45,6 +47,7 @@ export default function SectionCard({ entry, icons }: IProps) {
                 rel='noopener noreferrer'
               >
                 {entry.company}
+                <span className='visually-hidden'> {content.home.newTab}</span>
               </a>
             ) : (
               entry.company
@@ -60,7 +63,7 @@ export default function SectionCard({ entry, icons }: IProps) {
         <p className={styles.description}>{entry.description}</p>
       </div>
       {icons.length > 0 && (
-        <ul className={styles.stack} aria-label='Tech stack'>
+        <ul className={styles.stack} aria-label={content.home.techStack}>
           {icons.map((icon) => (
             <li key={icon.title}>
               <TechIcon icon={icon} />

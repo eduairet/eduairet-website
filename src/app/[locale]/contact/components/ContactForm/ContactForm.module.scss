@@ -1,3 +1,25 @@
 .submit {
   margin-top: 1rem;
 }
+
+.required {
+  font-size: 0.875rem;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.recaptcha {
+  font-size: 0.75rem;
+  line-height: 1.4;
+  margin-top: 1.5rem;
+
+  a {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+
+    &::before {
+      content: none;
+    }
+  }
+}

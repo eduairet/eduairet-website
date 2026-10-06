@@ -3,7 +3,7 @@
 import { ChangeEventHandler, FocusEventHandler } from 'react';
 import styles from './TextInput.module.scss';
 import { TextInputType } from '@/models';
-import useTextInput from '@/hooks/useTextInput';
+import useTextInput, { getTextInputError } from '@/hooks/useTextInput';
 
 interface IProps {
   id: string;
@@ -14,6 +14,8 @@ interface IProps {
   minLength?: number;
   maxLength?: number;
   focused?: boolean;
+  hint?: string;
+  autoComplete?: string;
   // eslint-disable-next-line no-unused-vars
   onChange: (value: string, focused: boolean, isValid: boolean) => void;
 }
@@ -24,6 +26,8 @@ export default function TextInput({
   onChange,
   minLength,
   maxLength,
+  hint,
+  autoComplete,
   value = '',
   focused = false,
   required = true,
@@ -39,16 +43,38 @@ export default function TextInput({
   const hasLengthValidation =
     typeof minLength === 'number' && typeof maxLength === 'number';
 
+  const hintId = hint ? `${id}-hint` : undefined;
+  const errorId = `${id}-error`;
+  const describedBy =
+    [!isValid ? errorId : null, hintId].filter(Boolean).join(' ') || undefined;
+
+  // Validate the new value, not the one from the previous render.
+  const report = (newValue: string) =>
+    onChange(newValue, true, getTextInputError(type, newValue) === null);
+
   const handleBlur: FocusEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = (e) => {
-    onChange(e.target.value, true, isValid);
+    report(e.target.value);
   };
 
   const handleChange: ChangeEventHandler<
     HTMLInputElement | HTMLTextAreaElement
   > = (e) => {
-    onChange(e.target.value, true, isValid);
+    report(e.target.value);
+  };
+
+  const fieldProps = {
+    id,
+    value,
+    minLength,
+    maxLength,
+    required,
+    autoComplete,
+    'aria-invalid': !isValid || undefined,
+    'aria-describedby': describedBy,
+    onBlur: handleBlur,
+    onChange: handleChange,
   };
 
   return (
@@ -58,12 +84,16 @@ export default function TextInput({
           className={[styles.label, !isValid ? styles.error : ''].join(' ')}
           htmlFor={id}
         >
-          {`${label}${required ? '*' : ''}`}
+          {label}
+          {required && <span aria-hidden='true'>*</span>}
         </label>
-        {hasLengthValidation && (
+        {hint && (
           <span
+            id={hintId}
             className={[styles.label, !isValid ? styles.error : ''].join(' ')}
-          >{`${minLength} - ${maxLength}`}</span>
+          >
+            {hint}
+          </span>
         )}
       </div>
       {type === 'textarea' ? (
@@ -71,30 +101,21 @@ export default function TextInput({
           className={[styles.textarea, !isValid ? styles.invalid : ''].join(
             ' '
           )}
-          id={id}
-          value={value}
-          minLength={minLength}
-          maxLength={maxLength}
-          required={required}
-          onBlur={handleBlur}
-          onChange={handleChange}
+          {...fieldProps}
         />
       ) : (
         <input
           className={[styles.input, !isValid ? styles.invalid : ''].join(' ')}
-          id={id}
           type={type}
-          value={value}
-          minLength={minLength}
-          maxLength={maxLength}
-          required={required}
-          onBlur={handleBlur}
-          onChange={handleChange}
+          {...fieldProps}
         />
       )}
       {!isValid && (
-        <p className={[styles['input-info'], styles.error].join(' ')}>
-          {errorMessage || 'Error'}
+        <p
+          id={errorId}
+          className={[styles['input-info'], styles.error].join(' ')}
+        >
+          {errorMessage}
         </p>
       )}
       {hasLengthValidation && focused && (

@@ -9,10 +9,11 @@ import { LanguageContext } from '@/store/LanguageProvider';
 interface IProps {
   href: string;
   text: string;
+  lang?: string;
   isLangLink?: boolean;
 }
 
-function NavLink({ href, text, isLangLink = false }: IProps) {
+function NavLink({ href, text, lang, isLangLink = false }: IProps) {
   const pathname = usePathname();
   const { locale } = useContext(LanguageContext);
 
@@ -27,7 +28,13 @@ function NavLink({ href, text, isLangLink = false }: IProps) {
 
   return (
     <li className={styles['nav-link']}>
-      <Link className={isActive() ? styles.active : ''} href={hrefState}>
+      <Link
+        className={isActive() ? styles.active : ''}
+        href={hrefState}
+        lang={lang}
+        hrefLang={lang}
+        aria-current={isActive() ? 'page' : undefined}
+      >
         {text}
       </Link>
     </li>
