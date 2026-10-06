@@ -4,7 +4,7 @@
 
 **Verdict before fixes (2026-10-05): Does not conform to WCAG 2.2 Level AA.**
 
-**Verdict after fixes (2026-10-06): Conforms** to WCAG 2.2 Level AA on every criterion I could test in Chrome. One item stays "Needs review": F-22 needs your decision on `/resources`. It is not a known failure. F-21 was closed on code review, at your call; no screen reader was run.
+**Verdict after fixes (2026-10-06): Conforms** to WCAG 2.2 Level AA on every criterion I could test in Chrome. No findings are open. F-21 was closed on code review, at your call; no screen reader was run. For F-22, `/resources` now returns 404 until it has content.
 
 Severity counts as found on 2026-10-05:
 
@@ -31,11 +31,11 @@ Severity counts as found on 2026-10-05:
   - The contact API was intercepted in tests, so no real email was sent. reCAPTCHA was stubbed with a fake token, because the site key does not run on localhost.
 - **Not available:** Claude in Chrome (the extension was not connected), so no test used your real Chrome profile. No screen reader (NVDA, JAWS, VoiceOver) was run. Findings that depend on how a screen reader speaks are marked "Needs review".
 
-**Verification after fixes (2026-10-06).** All 20 Critical, Serious, Moderate, and Minor findings are fixed; F-21 was closed on code review; F-22 is still "Needs review".
+**Verification after fixes (2026-10-06).** All 20 Critical, Serious, Moderate, and Minor findings are fixed; F-21 was closed on code review; F-22 was closed by unpublishing `/resources`.
 
 - `npx tsc --noEmit`: pass.
 - `pnpm lint`: pass.
-- `pnpm test run`: 27 tests pass in 5 files. 26 are new, in `navMenu`, `contactForm`, `validation`, and `themeAndText`.
+- `pnpm test run`: 28 tests pass in 6 files. 27 are new, in `navMenu`, `contactForm`, `validation`, `themeAndText`, and `resources`.
 - `npx prettier --check .`: on this Windows checkout (`core.autocrlf=true`) every file has CRLF endings, so the strict check flags files whether I touched them or not. With `--end-of-line auto`, only 3 files fail (`SECURITY.md`, `opengraph-image.tsx`, `models/types/form.ts`), the same 3 as before the fixes.
 - axe-core 4.12.0 in headless Chrome: 0 violations in all 48 runs (8 pages × dark/light × menus closed/main open/language open).
 - Repeated by hand in headless Chrome:
@@ -330,69 +330,69 @@ Severity counts as found on 2026-10-05:
 - Evidence: /en/resources and /es/resources return 200 but are not linked from any menu or page. They show only a placeholder ("Resources will be listed here..."). Home and Contact are reachable from the nav menu on every page.
 - Who is affected: anyone who would need the page.
 - What would settle it: tell me whether /resources is a published page. If it is, link it from the nav. If it isn't yet, it can return 404 until it's ready, which also removes F-15 and F-16 for that page.
-- Status: Needs review. The page is now translated and has its own title, but it is still not linked from anywhere. You decide whether to link it or return a 404.
+- Status: Closed (2026-10-06). Following my recommendation, `/resources` returns 404 until it has content (a `RESOURCES_PUBLISHED` flag in `page.tsx`); the translated text stays in the dictionaries for later. Evidence: /en/resources and /es/resources return HTTP 404 with `<meta name="robots" content="noindex">`; Chrome shows "404 - Page not found" / "404 - Página no encontrada" with the matching title; test `resources.test.ts`. To publish it: set the flag to `true` and add a nav link in `NavMainMenu`.
 
 ---
 
 ## 3. Criteria table
 
-| Criterion                                       | Level | Result       | Findings                                                                                                                |
-| ----------------------------------------------- | ----- | ------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| 1.1.1 Non-text Content                          | A     | Pass         | F-09 fixed                                                                                                              |
-| 1.2.1 Audio-only and Video-only (Prerecorded)   | A     | N/A          | No audio or video                                                                                                       |
-| 1.2.2 Captions (Prerecorded)                    | A     | N/A          | No video                                                                                                                |
-| 1.2.3 Audio Description or Media Alternative    | A     | N/A          | No video                                                                                                                |
-| 1.2.4 Captions (Live)                           | AA    | N/A          | No live media                                                                                                           |
-| 1.2.5 Audio Description (Prerecorded)           | AA    | N/A          | No video                                                                                                                |
-| 1.3.1 Info and Relationships                    | A     | Pass         | F-07, F-10, F-19 fixed; F-21 closed on code review                                                                      |
-| 1.3.2 Meaningful Sequence                       | A     | Pass         | DOM order matches visual order on all pages                                                                             |
-| 1.3.3 Sensory Characteristics                   | A     | Pass         | No shape/position-only instructions                                                                                     |
-| 1.3.4 Orientation                               | AA    | Pass         | No orientation lock                                                                                                     |
-| 1.3.5 Identify Input Purpose                    | AA    | Pass         | F-11 fixed                                                                                                              |
-| 1.4.1 Use of Color                              | A     | Pass         | F-12 fixed                                                                                                              |
-| 1.4.2 Audio Control                             | A     | N/A          | No audio                                                                                                                |
-| 1.4.3 Contrast (Minimum)                        | AA    | Pass         | F-01, F-03 fixed                                                                                                        |
-| 1.4.4 Resize Text                               | AA    | Pass         | 200% (640×450): no loss of content or function                                                                          |
-| 1.4.5 Images of Text                            | AA    | Pass         | Only the logo (exempt)                                                                                                  |
-| 1.4.10 Reflow                                   | AA    | Pass         | No horizontal scroll at 320 px wide. See Nice to have for 320×256                                                       |
-| 1.4.11 Non-text Contrast                        | AA    | Pass         | F-04 fixed                                                                                                              |
-| 1.4.12 Text Spacing                             | AA    | Pass         | WCAG spacing overrides on /en, /es, /en/contact: no clipped or lost text                                                |
-| 1.4.13 Content on Hover or Focus                | AA    | Pass         | Only native `title` tooltips on tech icons (browser-controlled)                                                         |
-| 2.1.1 Keyboard                                  | A     | Pass         | All controls work with Enter/Space                                                                                      |
-| 2.1.2 No Keyboard Trap                          | A     | Pass         | Tab cycles through to the end on every page                                                                             |
-| 2.1.4 Character Key Shortcuts                   | A     | N/A          | No shortcuts                                                                                                            |
-| 2.2.1 Timing Adjustable                         | A     | Pass         | F-02, F-13 fixed                                                                                                        |
-| 2.2.2 Pause, Stop, Hide                         | A     | Pass         | F-14 fixed                                                                                                              |
-| 2.3.1 Three Flashes or Below Threshold          | A     | Pass         | Nothing flashes                                                                                                         |
-| 2.4.1 Bypass Blocks                             | A     | Pass         | Landmarks, plus a skip link added 2026-10-06                                                                            |
-| 2.4.2 Page Titled                               | A     | Pass         | F-15 fixed                                                                                                              |
-| 2.4.3 Focus Order                               | A     | Pass         | F-05, F-09 fixed                                                                                                        |
-| 2.4.4 Link Purpose (In Context)                 | A     | Pass         | F-20 fixed                                                                                                              |
-| 2.4.5 Multiple Ways                             | AA    | Needs review | F-22                                                                                                                    |
-| 2.4.6 Headings and Labels                       | AA    | Pass         | Headings and labels describe their content                                                                              |
-| 2.4.7 Focus Visible                             | AA    | Pass         | F-01, F-04, F-05 fixed                                                                                                  |
-| 2.4.11 Focus Not Obscured (Minimum)             | AA    | Pass         | F-06 fixed                                                                                                              |
-| 2.5.1 Pointer Gestures                          | A     | N/A          | No multipoint or path gestures                                                                                          |
-| 2.5.2 Pointer Cancellation                      | A     | Pass         | Actions fire on click (up event)                                                                                        |
-| 2.5.3 Label in Name                             | A     | Pass         | Text controls' names match visible text. Icon-only controls have no visible label (N/A per Understanding doc)           |
-| 2.5.4 Motion Actuation                          | A     | N/A          | No motion input                                                                                                         |
-| 2.5.7 Dragging Movements                        | AA    | N/A          | No dragging                                                                                                             |
-| 2.5.8 Target Size (Minimum)                     | AA    | Pass         | Icon buttons 30×30, theme button 24×24. 16px-tall menu links pass the 24px spacing test. Card links are inline (exempt) |
-| 3.1.1 Language of Page                          | A     | Pass         | `<html lang="en">` / `lang="es"`; unknown locales redirect                                                              |
-| 3.1.2 Language of Parts                         | AA    | Pass         | F-16 fixed                                                                                                              |
-| 3.2.1 On Focus                                  | A     | Pass         | No context change on focus                                                                                              |
-| 3.2.2 On Input                                  | A     | Pass         | No auto-submit or auto-navigation                                                                                       |
-| 3.2.3 Consistent Navigation                     | AA    | Pass         | Same header and footer on every page                                                                                    |
-| 3.2.4 Consistent Identification                 | AA    | Pass         | Same components, same names                                                                                             |
-| 3.2.6 Consistent Help                           | A     | Pass         | Email link in the footer and Contact in the nav, same place on every page                                               |
-| 3.3.1 Error Identification                      | A     | Pass         | F-02, F-07 fixed                                                                                                        |
-| 3.3.2 Labels or Instructions                    | A     | Pass         | F-08, F-17 fixed                                                                                                        |
-| 3.3.3 Error Suggestion                          | AA    | Pass         | F-08 fixed                                                                                                              |
-| 3.3.4 Error Prevention (Legal, Financial, Data) | AA    | N/A          | No legal, financial, or data-changing submissions                                                                       |
-| 3.3.7 Redundant Entry                           | A     | Pass         | Single step; values are kept after an error                                                                             |
-| 3.3.8 Accessible Authentication (Minimum)       | AA    | N/A          | No sign-in. reCAPTCHA v3 shows no challenge (third party)                                                               |
-| 4.1.2 Name, Role, Value                         | A     | Pass         | F-05, F-09, F-18 fixed                                                                                                  |
-| 4.1.3 Status Messages                           | AA    | Pass         | F-09 fixed                                                                                                              |
+| Criterion                                       | Level | Result | Findings                                                                                                                |
+| ----------------------------------------------- | ----- | ------ | ----------------------------------------------------------------------------------------------------------------------- |
+| 1.1.1 Non-text Content                          | A     | Pass   | F-09 fixed                                                                                                              |
+| 1.2.1 Audio-only and Video-only (Prerecorded)   | A     | N/A    | No audio or video                                                                                                       |
+| 1.2.2 Captions (Prerecorded)                    | A     | N/A    | No video                                                                                                                |
+| 1.2.3 Audio Description or Media Alternative    | A     | N/A    | No video                                                                                                                |
+| 1.2.4 Captions (Live)                           | AA    | N/A    | No live media                                                                                                           |
+| 1.2.5 Audio Description (Prerecorded)           | AA    | N/A    | No video                                                                                                                |
+| 1.3.1 Info and Relationships                    | A     | Pass   | F-07, F-10, F-19 fixed; F-21 closed on code review                                                                      |
+| 1.3.2 Meaningful Sequence                       | A     | Pass   | DOM order matches visual order on all pages                                                                             |
+| 1.3.3 Sensory Characteristics                   | A     | Pass   | No shape/position-only instructions                                                                                     |
+| 1.3.4 Orientation                               | AA    | Pass   | No orientation lock                                                                                                     |
+| 1.3.5 Identify Input Purpose                    | AA    | Pass   | F-11 fixed                                                                                                              |
+| 1.4.1 Use of Color                              | A     | Pass   | F-12 fixed                                                                                                              |
+| 1.4.2 Audio Control                             | A     | N/A    | No audio                                                                                                                |
+| 1.4.3 Contrast (Minimum)                        | AA    | Pass   | F-01, F-03 fixed                                                                                                        |
+| 1.4.4 Resize Text                               | AA    | Pass   | 200% (640×450): no loss of content or function                                                                          |
+| 1.4.5 Images of Text                            | AA    | Pass   | Only the logo (exempt)                                                                                                  |
+| 1.4.10 Reflow                                   | AA    | Pass   | No horizontal scroll at 320 px wide. See Nice to have for 320×256                                                       |
+| 1.4.11 Non-text Contrast                        | AA    | Pass   | F-04 fixed                                                                                                              |
+| 1.4.12 Text Spacing                             | AA    | Pass   | WCAG spacing overrides on /en, /es, /en/contact: no clipped or lost text                                                |
+| 1.4.13 Content on Hover or Focus                | AA    | Pass   | Only native `title` tooltips on tech icons (browser-controlled)                                                         |
+| 2.1.1 Keyboard                                  | A     | Pass   | All controls work with Enter/Space                                                                                      |
+| 2.1.2 No Keyboard Trap                          | A     | Pass   | Tab cycles through to the end on every page                                                                             |
+| 2.1.4 Character Key Shortcuts                   | A     | N/A    | No shortcuts                                                                                                            |
+| 2.2.1 Timing Adjustable                         | A     | Pass   | F-02, F-13 fixed                                                                                                        |
+| 2.2.2 Pause, Stop, Hide                         | A     | Pass   | F-14 fixed                                                                                                              |
+| 2.3.1 Three Flashes or Below Threshold          | A     | Pass   | Nothing flashes                                                                                                         |
+| 2.4.1 Bypass Blocks                             | A     | Pass   | Landmarks, plus a skip link added 2026-10-06                                                                            |
+| 2.4.2 Page Titled                               | A     | Pass   | F-15 fixed                                                                                                              |
+| 2.4.3 Focus Order                               | A     | Pass   | F-05, F-09 fixed                                                                                                        |
+| 2.4.4 Link Purpose (In Context)                 | A     | Pass   | F-20 fixed                                                                                                              |
+| 2.4.5 Multiple Ways                             | AA    | Pass   | F-22 closed: `/resources` returns 404; Home and Contact are in the nav on every page                                    |
+| 2.4.6 Headings and Labels                       | AA    | Pass   | Headings and labels describe their content                                                                              |
+| 2.4.7 Focus Visible                             | AA    | Pass   | F-01, F-04, F-05 fixed                                                                                                  |
+| 2.4.11 Focus Not Obscured (Minimum)             | AA    | Pass   | F-06 fixed                                                                                                              |
+| 2.5.1 Pointer Gestures                          | A     | N/A    | No multipoint or path gestures                                                                                          |
+| 2.5.2 Pointer Cancellation                      | A     | Pass   | Actions fire on click (up event)                                                                                        |
+| 2.5.3 Label in Name                             | A     | Pass   | Text controls' names match visible text. Icon-only controls have no visible label (N/A per Understanding doc)           |
+| 2.5.4 Motion Actuation                          | A     | N/A    | No motion input                                                                                                         |
+| 2.5.7 Dragging Movements                        | AA    | N/A    | No dragging                                                                                                             |
+| 2.5.8 Target Size (Minimum)                     | AA    | Pass   | Icon buttons 30×30, theme button 24×24. 16px-tall menu links pass the 24px spacing test. Card links are inline (exempt) |
+| 3.1.1 Language of Page                          | A     | Pass   | `<html lang="en">` / `lang="es"`; unknown locales redirect                                                              |
+| 3.1.2 Language of Parts                         | AA    | Pass   | F-16 fixed                                                                                                              |
+| 3.2.1 On Focus                                  | A     | Pass   | No context change on focus                                                                                              |
+| 3.2.2 On Input                                  | A     | Pass   | No auto-submit or auto-navigation                                                                                       |
+| 3.2.3 Consistent Navigation                     | AA    | Pass   | Same header and footer on every page                                                                                    |
+| 3.2.4 Consistent Identification                 | AA    | Pass   | Same components, same names                                                                                             |
+| 3.2.6 Consistent Help                           | A     | Pass   | Email link in the footer and Contact in the nav, same place on every page                                               |
+| 3.3.1 Error Identification                      | A     | Pass   | F-02, F-07 fixed                                                                                                        |
+| 3.3.2 Labels or Instructions                    | A     | Pass   | F-08, F-17 fixed                                                                                                        |
+| 3.3.3 Error Suggestion                          | AA    | Pass   | F-08 fixed                                                                                                              |
+| 3.3.4 Error Prevention (Legal, Financial, Data) | AA    | N/A    | No legal, financial, or data-changing submissions                                                                       |
+| 3.3.7 Redundant Entry                           | A     | Pass   | Single step; values are kept after an error                                                                             |
+| 3.3.8 Accessible Authentication (Minimum)       | AA    | N/A    | No sign-in. reCAPTCHA v3 shows no challenge (third party)                                                               |
+| 4.1.2 Name, Role, Value                         | A     | Pass   | F-05, F-09, F-18 fixed                                                                                                  |
+| 4.1.3 Status Messages                           | AA    | Pass   | F-09 fixed                                                                                                              |
 
 Results are after the 2026-10-06 fixes. Before the fixes, every row that lists a fixed finding was a Fail. 4.1.1 Parsing is obsolete in WCAG 2.2 and not evaluated.
 
@@ -443,4 +443,4 @@ Out of scope (not accessibility):
 - The Docker volume had stale `node_modules` (Next 15.5.21 vs. the locked 16.3.6). As a result, `src/proxy.ts` never ran in dev: `/` returned 404 and `/contact` returned 500. Fixed locally with `pnpm install --frozen-lockfile`. The old dev server had also rewritten `tsconfig.json`; I reverted that.
 - `src/app/robots.ts:10` points `sitemap` at `https://acme.com/sitemap.xml`.
 - `src/components/transitions/FadeTransition.tsx` is unused.
-- `/resources` is a placeholder page (see F-22).
+- `/resources` returns 404 until it has content (see F-22).
