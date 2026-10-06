@@ -1,43 +1,29 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback } from 'react';
 
+// reCAPTCHA v3 tokens expire after two minutes and can be verified only once,
+// so a fresh token is requested when the user submits, not on page load.
 export default function useRecaptcha() {
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
-  const [isRecaptchaLoading, setIsRecaptchaLoading] = useState(false);
   const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
-  useEffect(() => {
+  const getRecaptchaToken = useCallback(async (): Promise<string | null> => {
     if (
       typeof window === 'undefined' ||
       typeof window.grecaptcha === 'undefined' ||
       typeof window.grecaptcha.execute !== 'function' ||
       !siteKey
     ) {
-      return;
+      return null;
     }
 
-    let cancelled = false;
-    const timeoutId = window.setTimeout(() => {
-      if (cancelled) return;
-      setIsRecaptchaLoading(true);
-      void window.grecaptcha
-        .execute(siteKey, { action: 'submit' })
-        .then((token) => {
-          if (cancelled) return;
-          setRecaptchaToken(token);
-          setIsRecaptchaLoading(false);
-        });
-    }, 0);
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timeoutId);
-    };
+    try {
+      await new Promise<void>((resolve) => window.grecaptcha.ready(resolve));
+      return await window.grecaptcha.execute(siteKey, { action: 'submit' });
+    } catch {
+      return null;
+    }
   }, [siteKey]);
 
-  return {
-    isRecaptchaLoading,
-    recaptchaToken,
-  };
+  return { getRecaptchaToken };
 }

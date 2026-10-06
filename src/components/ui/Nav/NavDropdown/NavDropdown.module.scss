@@ -5,7 +5,6 @@
   top: 50px;
   left: -35px;
   display: grid;
-  
 }
 
 .actions {
@@ -21,8 +20,14 @@
   gap: 10px;
   transform: scaleY(0);
   opacity: 0;
+  // visibility removes the closed menu from the tab order and the
+  // accessibility tree; it flips after the closing animation ends.
+  visibility: hidden;
   transform-origin: top right;
-  @include merge-transitions((transform, opacity));
+  transition:
+    transform $default-time ease-in-out,
+    opacity $default-time ease-in-out,
+    visibility 0s linear $default-time;
 
   & li > a {
     @include merge-transitions((color));
@@ -32,12 +37,14 @@
     }
 
     &:hover {
-      color: $accent;
+      color: var(--accent-text);
     }
   }
 
   &.opened {
     transform: scaleY(1);
     opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
   }
 }

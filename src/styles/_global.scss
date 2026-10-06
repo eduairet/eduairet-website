@@ -6,6 +6,7 @@
   --background-50: #{get-color($black, 0.5)};
   --background-00: #{get-color($black, 0)};
   --foreground: #{$white};
+  --accent-text: #{$accent};
 }
 
 * {
@@ -16,6 +17,19 @@
 
 html {
   scroll-behavior: smooth;
+  // Keep focused elements clear of the fixed header, the sticky section
+  // titles and the fixed footer (WCAG 2.4.11, technique C43).
+  scroll-padding-top: calc(#{$header-height} + 7.5rem);
+  scroll-padding-bottom: calc(#{$footer-height} + 1rem);
+
+  @media (width >= $breakpoint-md) {
+    scroll-padding-bottom: calc(#{$footer-height-md} + 1rem);
+  }
+
+  @media (height <= $breakpoint-short-height) {
+    scroll-padding-top: 1rem;
+    scroll-padding-bottom: 1rem;
+  }
 
   * {
     font-family: degular-variable, sans-serif;
@@ -52,6 +66,7 @@ body {
     --background-50: #{get-color($white, 0.5)};
     --background-00: #{get-color($white, 0)};
     --foreground: #{$black};
+    --accent-text: #{$accent-on-light};
   }
 }
 
@@ -127,11 +142,36 @@ a {
   }
 
   &.active {
-    color: $accent;
+    color: var(--accent-text);
   }
 
   &:focus-visible {
     @include accessibility-outline;
+  }
+}
+
+.visually-hidden {
+  @extend %screen-reader-only;
+}
+
+.skip-link {
+  position: fixed;
+  z-index: 3;
+  top: 1rem;
+  left: 1rem;
+  padding: 0.5rem 1rem;
+  color: var(--foreground);
+  background-color: var(--background);
+  @include border($weight: 2px);
+  @include rounded-corners($radius: 1.25rem);
+  transform: translateY(calc(-100% - 2rem));
+
+  &::before {
+    content: none;
+  }
+
+  &:focus-visible {
+    transform: none;
   }
 }
 

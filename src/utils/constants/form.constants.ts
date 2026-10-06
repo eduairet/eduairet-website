@@ -1,7 +1,9 @@
 export const formRegex = {
-  text: /^[a-zA-Z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\s\\.]+$/,
-  textarea: /^.*$/,
-  email: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+  // Letters (with accents), spaces, dots, apostrophes and hyphens: O'Brien, Jean-Luc.
+  text: /^[a-zA-Z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u024F\s.'\u2019-]+$/,
+  // Any characters, line breaks included.
+  textarea: /^[\s\S]*$/,
+  email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
   password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
   number: /^[\d]*$/,
   tel: /^[0-9]{10}$/,

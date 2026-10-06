@@ -19,18 +19,19 @@
   @include merge-transitions((border-color, color));
 
   @media (hover: hover) {
-    &:hover:not(:disabled) {
+    &:hover:not(:disabled, [aria-disabled='true']) {
       border-color: $accent;
-      color: $accent;
+      color: var(--accent-text);
     }
   }
 
-  &:active:not(:disabled) {
+  &:active:not(:disabled, [aria-disabled='true']) {
     background-color: $accent;
-    color: $white;
+    color: $black;
   }
 
-  &:disabled {
+  &:disabled,
+  &[aria-disabled='true'] {
     opacity: 0.5;
     cursor: not-allowed;
   }

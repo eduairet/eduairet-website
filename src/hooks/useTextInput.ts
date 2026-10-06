@@ -1,40 +1,31 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { textInputValidations } from '@/utils/client';
 import { LanguageContext } from '@/store/LanguageProvider';
 import { TextInputType } from '@/models';
 
+export type TextInputError = 'empty' | 'invalid' | null;
+
+export function getTextInputError(
+  type: TextInputType,
+  value: string
+): TextInputError {
+  if (!value) return 'empty';
+  if (!textInputValidations[type].validate(value)) return 'invalid';
+  return null;
+}
+
+// Errors only show once the field has been touched (left or submitted).
 export default function useTextInput(
   type: TextInputType,
   inputName: string,
   value: string,
-  focused: boolean
+  touched: boolean
 ) {
   const { content } = useContext(LanguageContext);
-  const emptyError = content.contact.form.errors.empty[inputName];
-  const invalidError = content.contact.form.errors.invalid[inputName];
-  const [validation, setValidation] = useState<{
-    isValid: boolean;
-    errorMessage: string | null;
-  }>({ isValid: true, errorMessage: null });
+  const error = touched ? getTextInputError(type, value) : null;
 
-  if (!focused) return validation;
-
-  let isValid = true;
-  let errorMessage = validation.errorMessage;
-  if (!value) {
-    isValid = false;
-    errorMessage = emptyError;
-  } else if (!textInputValidations[type].validate(value)) {
-    isValid = false;
-    errorMessage = invalidError;
-  }
-
-  if (
-    isValid !== validation.isValid ||
-    errorMessage !== validation.errorMessage
-  ) {
-    setValidation({ isValid, errorMessage });
-  }
-
-  return { isValid, errorMessage };
+  return {
+    isValid: !error,
+    errorMessage: error ? content.contact.form.errors[error][inputName] : null,
+  };
 }

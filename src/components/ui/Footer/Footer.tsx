@@ -24,7 +24,7 @@ export default async function Footer({ lang }: IProps) {
             <LinkedInLink />
             <XLink />
             <InstagramLink />
-            <EmailLink />
+            <EmailLink title='Email' />
           </div>
         </section>
         <section className={styles.section}>
@@ -45,15 +45,12 @@ export default async function Footer({ lang }: IProps) {
           <LinkedInLink />
           <XLink />
           <InstagramLink />
-          <EmailLink />
+          <EmailLink title={content.footer.social.email} />
         </div>
       </section>
       <section className={styles.section}>
         <p>Eduardo Aire Torres {new Date().getFullYear()}</p>
-        <p
-          aria-label={content.footer.theme.ariaLabel}
-          className={styles.actions}
-        >
+        <p className={styles.actions}>
           <span>{content.footer.theme.text}</span>
           <ThemeButton />
         </p>

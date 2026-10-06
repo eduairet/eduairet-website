@@ -30,6 +30,10 @@
     padding: 1rem 1.5rem;
   }
 
+  @media (height <= $breakpoint-short-height) {
+    position: static;
+  }
+
   .section + .section {
     border: 2px solid var(--foreground);
     background-color: var(--background);

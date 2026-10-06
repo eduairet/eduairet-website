@@ -10,9 +10,11 @@ const spinnerSizes = {
 
 interface IProps {
   size?: SpinnerSize;
+  // Text alternative; without it the spinner is decorative.
+  label?: string;
 }
 
-export default function Spinner({ size = SpinnerSize.SM }: IProps) {
+export default function Spinner({ size = SpinnerSize.SM, label }: IProps) {
   let spinnerSize = spinnerSizes[size];
 
   return (
@@ -22,6 +24,10 @@ export default function Spinner({ size = SpinnerSize.SM }: IProps) {
       width={spinnerSize}
       height={spinnerSize}
       viewBox='0 0 24 24'
+      role={label ? 'img' : undefined}
+      aria-label={label}
+      aria-hidden={label ? undefined : true}
+      focusable={false}
     >
       <path
         fill='currentColor'

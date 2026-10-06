@@ -6,7 +6,7 @@
     display: inline-block;
 
     &.active {
-      color: $accent;
+      color: var(--accent-text);
       pointer-events: none;
       @include degular($wght: 700, $opsz: 16);
 

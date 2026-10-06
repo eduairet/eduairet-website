@@ -36,6 +36,10 @@
     border-color: $valid;
   }
 
+  &:focus-visible {
+    @include accessibility-outline;
+  }
+
   &.invalid {
     border-color: $invalid;
   }
@@ -54,5 +58,5 @@
 }
 
 .error {
-  color: red;
+  color: var(--accent-text);
 }

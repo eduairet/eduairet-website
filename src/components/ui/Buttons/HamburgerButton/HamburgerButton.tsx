@@ -13,15 +13,18 @@ const paths = {
 
 interface IProps {
   isActive: boolean;
+  controls: string;
   onClick: () => void;
 }
 
-function HamburgerButton({ isActive, onClick }: IProps) {
+function HamburgerButton({ isActive, controls, onClick }: IProps) {
   const { content } = useContext(LanguageContext);
 
   return (
     <button
-      aria-label={content.nav.menu}
+      type='button'
+      aria-expanded={isActive}
+      aria-controls={controls}
       className={styles.hamburger}
       onClick={onClick}
     >

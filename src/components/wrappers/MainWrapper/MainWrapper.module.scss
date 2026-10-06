@@ -16,6 +16,10 @@
     padding-bottom: calc(#{$footer-height-md} + 1rem);
   }
 
+  @media (height <= $breakpoint-short-height) {
+    padding-bottom: 1rem;
+  }
+
   &.blurred {
     filter: blur(3px);
   }

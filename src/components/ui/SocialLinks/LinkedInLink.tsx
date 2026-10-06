@@ -4,7 +4,6 @@ export default function LinkedInLink() {
   return (
     <IconButtonLink
       title='LinkedIn'
-      ariaLabel='LinkedIn Link'
       href='https://www.linkedin.com/in/eduairet/'
       external
     >

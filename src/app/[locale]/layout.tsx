@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import Script from 'next/script';
 import '@/styles/main.scss';
 import { Lang } from '@/models';
+import { getDictionary } from '@/app/[locale]/dictionaries';
 import StoreProvider from '@/store/StoreProvider';
 import MetaIcons from '@/components/metadata/MetaIcons';
 import MainWrapper from '@/components/wrappers/MainWrapper/MainWrapper';
@@ -28,6 +29,7 @@ export { generateMetadata, viewport } from '@/utils/server';
 
 export default async function RootLayout({ children, params }: IProps) {
   const locale = (await params).locale;
+  const content = await getDictionary(locale as Lang);
 
   return (
     <html lang={locale} className={eatIconsVF.variable}>
@@ -42,6 +44,9 @@ export default async function RootLayout({ children, params }: IProps) {
       </head>
       <StoreProvider>
         <BodyWrapper>
+          <a className='skip-link' href='#main'>
+            {content.nav.skip}
+          </a>
           <header>
             <NavBar locale={locale as Lang} />
           </header>

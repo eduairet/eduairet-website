@@ -3,6 +3,9 @@ $breakpoint-sm: 576px;
 $breakpoint-md: 768px;
 $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
+// Below this viewport height the fixed header and footer stop being fixed,
+// so zoomed or landscape screens keep room for content.
+$breakpoint-short-height: 500px;
 
 :export {
   breakpointXs: $breakpoint-xs;

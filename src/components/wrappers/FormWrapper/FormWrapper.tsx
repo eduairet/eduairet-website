@@ -16,18 +16,20 @@ function FormWrapper({
   onSubmit,
   error = false,
 }: IProps) {
+  // The status region is always rendered so screen readers announce the
+  // message when it appears. noValidate lets our own errors replace the
+  // browser's validation bubbles.
   return (
-    <form className={styles.form} onSubmit={onSubmit}>
+    <form className={styles.form} onSubmit={onSubmit} noValidate>
       {children}
-      {submitMessage && (
-        <p
-          className={[styles['submit-message'], error ? styles.error : ''].join(
-            ' '
-          )}
-        >
-          {submitMessage}
-        </p>
-      )}
+      <p
+        role='status'
+        className={[styles['submit-message'], error ? styles.error : ''].join(
+          ' '
+        )}
+      >
+        {submitMessage}
+      </p>
     </form>
   );
 }
