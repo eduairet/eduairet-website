@@ -1,3 +1,4 @@
+// $black and $white are mirrored in utils/constants/color.constants.ts for metadata and OG images.
 $black: #000;
 $white: #ededed;
 $accent: #f00;
@@ -5,9 +6,3 @@ $accent: #f00;
 $accent-on-light: #d40000;
 $valid: #00ffc3;
 $invalid: $accent;
-
-:export {
-  black: $black;
-  white: $white;
-  accent: $accent;
-}
