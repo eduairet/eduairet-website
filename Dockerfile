@@ -6,7 +6,7 @@ WORKDIR /app
 # version explicitly rather than installing an unpinned global pnpm.
 RUN npm install -g pnpm@10.24.0
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
 # --frozen-lockfile: install the exact, reviewed dependency tree and fail if the
 # lockfile is out of date rather than silently resolving new versions.
 RUN pnpm install --frozen-lockfile

@@ -1,5 +1,11 @@
+# Secrets and local tool state; runtime env comes from env_file or -e
+.env*
+.vercel/
+.claude/
+
 # Node modules and build artifacts
 node_modules/
+.pnpm-store/
 .next/
 dist/
 target/
