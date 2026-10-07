@@ -2,7 +2,7 @@
 
 import { useEffect, useSyncExternalStore } from 'react';
 
-type Theme = 'dark' | 'light';
+export type Theme = 'dark' | 'light';
 
 const listeners = new Set<() => void>();
 

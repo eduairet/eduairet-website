@@ -2,6 +2,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { act, cleanup, render } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
 import ParticleBackground from '@/components/art/ParticleBackground/ParticleBackground';
+import { MAX_LIFE } from '@/components/art/ParticleBackground/particleShaders';
 
 // jsdom has no WebGL, so three.js is replaced by stubs that record calls.
 const three = vi.hoisted(() => ({
@@ -79,6 +80,12 @@ vi.mock('three', () => {
   return {
     Camera: class {},
     CanvasTexture: Disposable,
+    DataTexture: Disposable,
+    MathUtils: {
+      lerp: (x: number, y: number, t: number) => x + (y - x) * t,
+      damp: (x: number, y: number, lambda: number, dt: number) =>
+        x + (y - x) * (1 - Math.exp(-lambda * dt)),
+    },
     BufferAttribute: class {},
     InstancedBufferGeometry,
     Mesh,
@@ -94,6 +101,7 @@ vi.mock('three', () => {
     OneFactor: 201,
     FloatType: 1015,
     HalfFloatType: 1016,
+    RGBAFormat: 1023,
   };
 });
 
@@ -254,7 +262,8 @@ describe('Particle background', () => {
     expect(renderer.setAnimationLoop).not.toHaveBeenCalledWith(
       expect.any(Function)
     );
-    // The still frame shows a settled field, not the empty start.
-    expect(three.computes[0].compute.mock.calls.length).toBeGreaterThan(300);
+    // The still frame shows a settled field: the last MAX_LIFE steps decide
+    // every particle, so exactly that many run.
+    expect(three.computes[0].compute).toHaveBeenCalledTimes(MAX_LIFE);
   });
 });

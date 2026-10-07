@@ -12,14 +12,16 @@ import {
   Camera,
   CanvasTexture,
   CustomBlending,
-  DoubleSide,
   AddEquation,
   MaxEquation,
   OneFactor,
+  DataTexture,
   FloatType,
   HalfFloatType,
+  RGBAFormat,
   BufferAttribute,
   InstancedBufferGeometry,
+  MathUtils,
   Mesh,
   Scene,
   ShaderMaterial,
@@ -30,9 +32,12 @@ import {
   type TextureDataType,
 } from 'three';
 import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js';
+import type { Theme } from '@/hooks/useDarkMode';
 import {
   ATLAS_COLUMNS,
   GLYPHS,
+  MAX_DELAY,
+  MAX_LIFE,
   drawFragmentShader,
   drawVertexShader,
   updateShader,
@@ -47,8 +52,6 @@ export interface ParticleScene {
   dispose: () => void;
 }
 
-type Theme = 'dark' | 'light';
-
 // Menlo on macOS, with the usual monospaced fallbacks elsewhere. All are
 // system fonts, so there is nothing to wait for.
 const GLYPH_FONT = 'Menlo, Consolas, "DejaVu Sans Mono", monospace';
@@ -56,22 +59,24 @@ const ATLAS_CELL = 32;
 
 const STEP_MS = 1000 / 30;
 const STEP_SECONDS = STEP_MS / 1000;
-// Enough steps for every particle to have spawned (the longest delay is 300).
-const STILL_FRAME_STEPS = 360;
+// By this frame every particle has spawned. A spawn overwrites a particle's
+// whole state, so only the last MAX_LIFE steps before it shape the still frame.
+const STILL_FRAME = MAX_DELAY + MAX_LIFE;
 const RESIZE_DEBOUNCE_MS = 150;
 // Pointer influence fades out this long after the last move.
 const POINTER_IDLE_MS = 600;
-const POINTER_EASE = 1 - Math.exp(-STEP_SECONDS / 0.25);
-const CENTER_EASE = 1 - Math.exp(-STEP_SECONDS / 1);
+// Easing rates (1 / time constant in seconds) for MathUtils.damp.
+const POINTER_RATE = 4;
+const CENTER_RATE = 1;
 // How far the spawn ring's center moves toward the pointer.
 const CENTER_FOLLOW = 0.35;
 // The ring rests right of center, away from the left-aligned content.
 const REST_X = 0.7;
 
-// Dark theme: gray light added together. The overlay in the stylesheet caps
-// the result at 20% brightness. Light theme: max blending, so the darkest
-// pixel is one particle at 25% black, 5% after the overlay. That keeps the red
-// home subtitle (#f00, 3.42:1 on the plain background) above 3:1.
+// Dark theme: gray light added together; the canvas's 20% opacity caps the
+// result at 20% brightness. Light theme: max blending, so the darkest pixel is
+// one letter at 25% black, 5% after the opacity. That keeps the red home
+// subtitle (#f00, 3.42:1 on the plain background) above 3:1.
 const THEMES = {
   dark: { gain: 0.8, light: 1, equation: AddEquation },
   light: { gain: 0.25, light: 0, equation: MaxEquation },
@@ -109,10 +114,18 @@ function createGlyphAtlas() {
   return new CanvasTexture(atlas);
 }
 
+// Particle budget by viewport width. These cut-offs set GPU cost, so they are
+// separate from the layout breakpoints.
 function stateSizeFor(width: number) {
   if (width >= 1024) return 128;
   if (width >= 640) return 96;
   return 64;
+}
+
+// Setup takes about 80 ms on a slow phone (4x CPU throttle). Yielding between
+// its three parts keeps each task under 50 ms.
+function nextTask() {
+  return new Promise((resolve) => setTimeout(resolve, 0));
 }
 
 function readTheme(): Theme {
@@ -153,28 +166,27 @@ export async function createParticleScene(
   let height = container.clientHeight || window.innerHeight;
   const stateSize = stateSizeFor(width);
 
-  const renderer = new WebGLRenderer({
-    canvas,
-    context: gl,
-    alpha: true,
-    antialias: false,
-    depth: false,
-    stencil: false,
-    premultipliedAlpha: true,
-    powerPreference: 'low-power',
-  });
+  // The context above already sets alpha, antialias and power preference.
+  const renderer = new WebGLRenderer({ canvas, context: gl, depth: false });
   renderer.setPixelRatio(1);
-  renderer.setSize(width, height, false);
   renderer.setClearColor(0x000000, 0);
 
-  // Simulation: one RGBA texel per particle, ping-ponged every step.
+  await nextTask();
+
+  // Simulation: one RGBA texel per particle, ping-ponged every step. Every
+  // particle starts at zero (waiting to spawn), so a 1x1 zero texture fills
+  // the whole state.
   const compute = new GPUComputationRenderer(stateSize, stateSize, renderer);
   compute.setDataType(dataType);
-  const state = compute.addVariable(
-    'uState',
-    updateShader,
-    compute.createTexture()
+  const zero = new DataTexture(
+    new Float32Array(4),
+    1,
+    1,
+    RGBAFormat,
+    FloatType
   );
+  zero.needsUpdate = true;
+  const state = compute.addVariable('uState', updateShader, zero);
   compute.setVariableDependencies(state, [state]);
   const pointer = new Vector3(width * REST_X, height / 2, 0);
   const center = new Vector2(width * REST_X, height / 2);
@@ -200,9 +212,7 @@ export async function createParticleScene(
     return null;
   }
 
-  // Setup takes about 70 ms on a slow phone (4x CPU throttle); splitting it
-  // here keeps each task under 50 ms.
-  await new Promise((resolve) => setTimeout(resolve, 0));
+  await nextTask();
 
   // Drawing: one instanced quad per particle.
   const geometry = new InstancedBufferGeometry();
@@ -220,7 +230,6 @@ export async function createParticleScene(
 
   const draw = {
     uState: { value: null as Texture | null },
-    uStateSize: { value: stateSize },
     uFrame: update.uFrame,
     uViewport: update.uViewport,
     uGain: { value: 0 },
@@ -234,9 +243,6 @@ export async function createParticleScene(
     transparent: true,
     depthTest: false,
     depthWrite: false,
-    side: DoubleSide,
-    // Without this, three draws transparent double-sided meshes in two passes.
-    forceSinglePass: true,
     blending: CustomBlending,
     blendSrc: OneFactor,
     blendDst: OneFactor,
@@ -256,7 +262,6 @@ export async function createParticleScene(
   let attached = false;
   // Set once both shader programs have compiled.
   let ready = false;
-  let disposed = false;
   let lastStep = -Infinity;
   let resizeTimer: ReturnType<typeof setTimeout> | undefined;
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -279,13 +284,17 @@ export async function createParticleScene(
 
   const step = (now: number) => {
     const moving = pointerActive && now - lastPointerMove < POINTER_IDLE_MS;
-    pointer.z += ((moving ? 1 : 0) - pointer.z) * POINTER_EASE;
+    pointer.z = MathUtils.damp(
+      pointer.z,
+      moving ? 1 : 0,
+      POINTER_RATE,
+      STEP_SECONDS
+    );
     const follow = CENTER_FOLLOW * pointer.z;
-    const restX = width * REST_X;
-    const targetX = restX + (pointer.x - restX) * follow;
-    const targetY = height / 2 + (pointer.y - height / 2) * follow;
-    center.x += (targetX - center.x) * CENTER_EASE;
-    center.y += (targetY - center.y) * CENTER_EASE;
+    const targetX = MathUtils.lerp(width * REST_X, pointer.x, follow);
+    const targetY = MathUtils.lerp(height / 2, pointer.y, follow);
+    center.x = MathUtils.damp(center.x, targetX, CENTER_RATE, STEP_SECONDS);
+    center.y = MathUtils.damp(center.y, targetY, CENTER_RATE, STEP_SECONDS);
 
     update.uFrame.value += 1;
     update.uTime.value += STEP_SECONDS;
@@ -306,12 +315,22 @@ export async function createParticleScene(
   };
 
   const renderStill = () => {
-    if (update.uFrame.value < STILL_FRAME_STEPS) {
+    if (update.uFrame.value < STILL_FRAME) {
       pointerActive = false;
       pointer.z = 0;
-      while (update.uFrame.value < STILL_FRAME_STEPS) step(0);
+      const first = STILL_FRAME - MAX_LIFE;
+      if (update.uFrame.value < first) {
+        update.uFrame.value = first;
+        update.uTime.value = first * STEP_SECONDS;
+      }
+      while (update.uFrame.value < STILL_FRAME) step(0);
     }
     render();
+  };
+
+  // Redraws the still frame after a theme or size change.
+  const redraw = () => {
+    if (ready && attached && !running) render();
   };
 
   const start = () => {
@@ -333,6 +352,21 @@ export async function createParticleScene(
     renderer.setAnimationLoop(null);
   };
 
+  const show = () => {
+    if (!ready || !attached) return;
+    if (reducedMotion.matches) {
+      stop();
+      renderStill();
+    } else start();
+  };
+
+  const measure = () => {
+    width = container.clientWidth || window.innerWidth;
+    height = container.clientHeight || window.innerHeight;
+    renderer.setSize(width, height, false);
+    layout();
+  };
+
   const onPointerMove = (event: PointerEvent) => {
     pointer.x = event.clientX;
     pointer.y = event.clientY;
@@ -349,55 +383,53 @@ export async function createParticleScene(
     if (document.hidden) stop();
     else start();
   };
-  const show = () => {
-    if (!ready || !attached) return;
-    if (reducedMotion.matches) {
-      stop();
-      renderStill();
-    } else start();
-  };
-  const measure = () => {
-    width = container.clientWidth || window.innerWidth;
-    height = container.clientHeight || window.innerHeight;
-    renderer.setSize(width, height, false);
-    layout();
-  };
   const onResize = () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
       measure();
-      if (ready && attached && !running) render();
+      redraw();
     }, RESIZE_DEBOUNCE_MS);
   };
+
+  // One abort removes every listener.
+  const listeners = new AbortController();
+  const { signal } = listeners;
+  const passive = { passive: true, signal };
+  window.addEventListener('pointermove', onPointerMove, passive);
+  window.addEventListener('pointerdown', onPointerMove, passive);
+  window.addEventListener('pointerup', onPointerEnd, passive);
+  window.addEventListener('pointercancel', onPointerEnd, passive);
+  window.addEventListener('resize', onResize, passive);
+  window.addEventListener('blur', onPointerLeave, { signal });
+  document.documentElement.addEventListener('pointerleave', onPointerLeave, {
+    signal,
+  });
+  document.addEventListener('visibilitychange', onVisibility, { signal });
+  reducedMotion.addEventListener('change', show, { signal });
+  // React keeps the same <body> across layout remounts, so one observer
+  // covers the whole session.
   const themeObserver = new MutationObserver(() => {
     applyTheme(readTheme());
-    if (ready && attached && !running) render();
+    redraw();
   });
-
-  const listen = { passive: true } as const;
-  window.addEventListener('pointermove', onPointerMove, listen);
-  window.addEventListener('pointerdown', onPointerMove, listen);
-  window.addEventListener('pointerup', onPointerEnd, listen);
-  window.addEventListener('pointercancel', onPointerEnd, listen);
-  window.addEventListener('blur', onPointerLeave);
-  window.addEventListener('resize', onResize, listen);
-  document.documentElement.addEventListener('pointerleave', onPointerLeave);
-  document.addEventListener('visibilitychange', onVisibility);
-  reducedMotion.addEventListener('change', show);
+  themeObserver.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  });
 
   const attach = (next: HTMLElement) => {
     container = next;
     container.appendChild(canvas);
     attached = true;
-    // A remounted layout can bring a new <body>.
-    themeObserver.disconnect();
-    themeObserver.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['data-theme'],
-    });
     applyTheme(readTheme());
     measure();
     show();
+  };
+
+  const detach = () => {
+    stop();
+    attached = false;
+    canvas.remove();
   };
 
   attach(container);
@@ -413,34 +445,17 @@ export async function createParticleScene(
   renderer.setRenderTarget(null);
   const drawReady = renderer.compileAsync(scene, camera);
   Promise.all([updateReady, drawReady]).then(() => {
-    if (disposed) return;
     ready = true;
     show();
   });
 
   return {
     attach,
-    detach() {
-      stop();
-      attached = false;
-      canvas.remove();
-    },
+    detach,
     dispose() {
-      disposed = true;
-      stop();
+      detach();
       clearTimeout(resizeTimer);
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerdown', onPointerMove);
-      window.removeEventListener('pointerup', onPointerEnd);
-      window.removeEventListener('pointercancel', onPointerEnd);
-      window.removeEventListener('blur', onPointerLeave);
-      window.removeEventListener('resize', onResize);
-      document.documentElement.removeEventListener(
-        'pointerleave',
-        onPointerLeave
-      );
-      document.removeEventListener('visibilitychange', onVisibility);
-      reducedMotion.removeEventListener('change', show);
+      listeners.abort();
       themeObserver.disconnect();
       compute.dispose();
       geometry.dispose();
@@ -448,7 +463,6 @@ export async function createParticleScene(
       draw.uAtlas.value.dispose();
       renderer.dispose();
       renderer.forceContextLoss();
-      canvas.remove();
     },
   };
 }

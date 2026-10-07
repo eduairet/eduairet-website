@@ -91,6 +91,12 @@ float snoise(vec3 v) {
 }
 `;
 
+// Each particle lives MIN_LIFE to MAX_LIFE steps and waits 0 to MAX_DELAY
+// steps before its first spawn, so the field fades in instead of popping.
+const MIN_LIFE = 15;
+export const MAX_LIFE = 90;
+export const MAX_DELAY = 300;
+
 // Per-particle randomness comes from an integer hash of the particle's texel,
 // so no seed texture is needed. Both the update pass and the draw pass call
 // `lifeCycle` and agree on every particle's age.
@@ -117,12 +123,10 @@ struct Cycle {
   uint seed;
 };
 
-// Life is 15 to 90 steps, and each particle waits 0 to 300 steps before its
-// first spawn, so the field fades in instead of popping.
 Cycle lifeCycle(uvec2 cell, float frame) {
   uint id = cell.x + cell.y * 4096u;
-  float life = 15.0 + floor(unitRandom(id * 3u) * 76.0);
-  float delay = floor(unitRandom(id * 3u + 1u) * 301.0);
+  float life = ${MIN_LIFE}.0 + floor(unitRandom(id * 3u) * ${MAX_LIFE - MIN_LIFE + 1}.0);
+  float delay = floor(unitRandom(id * 3u + 1u) * ${MAX_DELAY + 1}.0);
   float t = frame - delay;
   float cycle = floor(t / life);
   Cycle c;
@@ -202,15 +206,14 @@ void main() {
 // Letters drawn into the glyph atlas, in a grid of ATLAS_COLUMNS square cells.
 export const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 export const ATLAS_COLUMNS = 8;
-// On-screen size of a letter, in CSS px.
-export const GLYPH_SIZE = 14;
+// On-screen size of an atlas cell, in CSS px.
+const GLYPH_SIZE = 14;
 
 // Every particle is a letter, picked at random on each spawn and turned so it
 // reads along its direction of travel. One instanced draw call; the instance
 // id picks the texel.
 export const drawVertexShader = /* glsl */ `
 uniform sampler2D uState;
-uniform float uStateSize;
 uniform float uFrame;
 uniform vec2 uViewport;
 
@@ -220,7 +223,7 @@ varying vec2 vUv;
 ${lifeCycle}
 
 void main() {
-  int size = int(uStateSize);
+  int size = textureSize(uState, 0).x;
   uvec2 cell = uvec2(gl_InstanceID % size, gl_InstanceID / size);
   Cycle c = lifeCycle(cell, uFrame);
   vFade = c.started ? 1.0 - c.age / c.life : 0.0;
@@ -231,10 +234,12 @@ void main() {
   }
 
   // Atlas cell of this spawn's letter. The atlas texture is flipped in y.
+  // The quad covers only the middle 60% of the cell's width, where the ink of
+  // every monospaced letter fits, which skips 40% of the fragments.
   uint glyph = hash(c.seed + 7u) % ${GLYPHS.length}u;
   vec2 atlasCell = vec2(float(glyph % ${ATLAS_COLUMNS}u), float(glyph / ${ATLAS_COLUMNS}u));
-  vec2 corner = position.xy + 0.5;
-  vUv = vec2(atlasCell.x + corner.x, ${ATLAS_COLUMNS}.0 - atlasCell.y - 1.0 + corner.y)
+  vec2 local = position.xy * vec2(0.6, 1.0);
+  vUv = (vec2(atlasCell.x, ${ATLAS_COLUMNS}.0 - atlasCell.y - 1.0) + local + 0.5)
     / ${ATLAS_COLUMNS}.0;
 
   // Screen pixels grow downward: the letter's baseline follows the heading
@@ -243,7 +248,7 @@ void main() {
   vec2 forward = vec2(sin(state.z), cos(state.z));
   vec2 up = vec2(forward.y, -forward.x);
   vec2 pixel = state.xy * uViewport
-    + (forward * position.x + up * position.y) * ${GLYPH_SIZE}.0;
+    + (forward * local.x + up * local.y) * ${GLYPH_SIZE}.0;
   vec2 clip = pixel / uViewport * 2.0 - 1.0;
   gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);
 }

@@ -1,24 +1,19 @@
-// Sits in the body's stacking context (body has `isolation: isolate`), so a
-// negative z-index paints it above the page background and below the content.
+// z-index -1 works because body has `isolation: isolate` (see _global.scss).
 .background {
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
+  // Keeps text legible: the page background is solid behind the canvas, so
+  // 20% opacity caps the brightest pixel at 20% of white in the dark theme and
+  // limits darkening in the light theme (contrast measured in wcag-audit.md,
+  // F-23).
+  opacity: 0.2;
 
   canvas {
     display: block;
     width: 100%;
     height: 100%;
-  }
-
-  // Keeps text legible: caps the brightest particle at 20% of white in the
-  // dark theme (body text 10.8:1, red subtitle 3.16:1). Adapts to the theme.
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-color: var(--background-80);
   }
 }
