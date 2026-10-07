@@ -1,5 +1,8 @@
 # pnpm settings — see https://pnpm.io/settings
 
+autoInstallPeers: true
+nodeLinker: hoisted
+
 # Supply-chain "cooldown": refuse to install any package version that was
 # published less than this many minutes ago. Compromised npm releases are
 # almost always detected and unpublished within a day or two, so waiting a few

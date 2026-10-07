@@ -6,6 +6,7 @@
 # Node modules and build artifacts
 node_modules/
 .pnpm-store/
+tsconfig.tsbuildinfo
 .next/
 dist/
 target/
