@@ -55,6 +55,9 @@ body {
 body {
   width: 100vw;
   overflow-x: clip;
+  // Lets the fixed particle background (z-index -1) paint above the body
+  // background and below the content.
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   align-items: center;

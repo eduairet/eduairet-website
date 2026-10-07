@@ -1,0 +1,24 @@
+// Sits in the body's stacking context (body has `isolation: isolate`), so a
+// negative z-index paints it above the page background and below the content.
+.background {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  // Keeps text legible: caps the brightest particle at 20% of white in the
+  // dark theme (body text 10.8:1, red subtitle 3.16:1). Adapts to the theme.
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: var(--background-80);
+  }
+}

@@ -1,11 +1,15 @@
 import { ReactNode } from 'react';
+import ParticleBackground from '@/components/art/ParticleBackground/ParticleBackground';
 
 interface IProps {
   children: ReactNode;
-  hasSketch?: boolean;
 }
 
 export default function BodyWrapper({ children }: IProps) {
-  // TODO Add {hasSketch && <Art />} When performance issues are addressed
-  return <body>{children}</body>;
+  return (
+    <body>
+      <ParticleBackground />
+      {children}
+    </body>
+  );
 }
