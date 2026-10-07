@@ -16,6 +16,10 @@ minimumReleaseAge: 10080
 # No dependency may run install scripts; adding one here is the review step that stops a malicious postinstall.
 onlyBuiltDependencies: []
 
+# Only the sass CLI's --watch uses it, and it pulls in braces (GHSA-vfj7-8cjw-p6xm, no fix).
+ignoredOptionalDependencies:
+  - '@parcel/watcher'
+
 # esbuild ships prebuilt binaries as optional deps, so its install script is not needed.
 ignoredBuiltDependencies:
   - esbuild
