@@ -4,17 +4,14 @@ import { useEffect, useRef } from 'react';
 import styles from './ParticleBackground.module.scss';
 import type { ParticleScene } from './particleScene';
 
-// Switching locale remounts the root layout. Holding the scene for a moment
-// after unmount lets the next mount adopt it, so the session keeps one WebGL
-// context instead of creating a new one per switch.
+// Switching locale remounts the layout. Keeping the scene briefly lets the
+// next mount reuse it, so the page keeps a single WebGL context.
 const RELEASE_DELAY_MS = 1000;
 let retained: {
   scene: ParticleScene;
   timer: ReturnType<typeof setTimeout>;
 } | null = null;
 
-// Runs `callback` once the page is idle, so three.js never competes with the
-// first paint or the page enter animation. Returns a cancel function.
 function whenIdle(callback: () => void) {
   if (typeof window.requestIdleCallback === 'function') {
     const id = window.requestIdleCallback(callback, { timeout: 2000 });
@@ -24,8 +21,6 @@ function whenIdle(callback: () => void) {
   return () => window.clearTimeout(id);
 }
 
-// Decorative WebGL particle field behind every page. The server renders only
-// the empty container; three.js is loaded on the client after idle.
 export default function ParticleBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -43,8 +38,8 @@ export default function ParticleBackground() {
       const start = async () => {
         const { createParticleScene } = await import('./particleScene');
         if (cancelled) return;
-        // Evaluating three.js and building the scene each take a few dozen
-        // ms on a slow phone; a turn between them keeps both under 50 ms.
+        // Pause between loading three.js and building the scene; both are
+        // slow on phones.
         await new Promise<void>((resolve) => {
           cancelIdle = whenIdle(resolve);
         });
@@ -54,7 +49,7 @@ export default function ParticleBackground() {
         else scene = created;
       };
       cancelIdle = whenIdle(() => {
-        // A failed chunk load just leaves the page without a background.
+        // If three.js fails to load, the page simply has no background.
         start().catch(() => {});
       });
     }

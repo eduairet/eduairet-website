@@ -1,8 +1,4 @@
-// GLSL for the particle background. three.js compiles these as GLSL ES 3.00
-// (WebGL 2), so `uint`, `texelFetch` and `gl_InstanceID` are available.
-
-// Simplex noise by Ian McEwan, Ashima Arts (https://github.com/ashima/webgl-noise),
-// unchanged apart from layout.
+// Simplex noise by Ian McEwan, Ashima Arts (https://github.com/ashima/webgl-noise).
 //
 // Copyright (C) 2011 by Ashima Arts (Simplex noise)
 // Copyright (C) 2011-2016 by Stefan Gustavson (Classic noise and others)
@@ -91,15 +87,13 @@ float snoise(vec3 v) {
 }
 `;
 
-// Each particle lives MIN_LIFE to MAX_LIFE steps and waits 0 to MAX_DELAY
-// steps before its first spawn, so the field fades in instead of popping.
+// Random spawn delays make the field fade in instead of popping.
 const MIN_LIFE = 15;
 export const MAX_LIFE = 90;
 export const MAX_DELAY = 300;
 
-// Per-particle randomness comes from an integer hash of the particle's texel,
-// so no seed texture is needed. Both the update pass and the draw pass call
-// `lifeCycle` and agree on every particle's age.
+// Randomness comes from hashing each particle's texel, so both shaders agree
+// on its age without a seed texture.
 const lifeCycle = /* glsl */ `
 #define TAU 6.283185307179586
 
@@ -138,9 +132,8 @@ Cycle lifeCycle(uvec2 cell, float frame) {
 }
 `;
 
-// One RGBA texel per particle: position (0..1 of the viewport), heading in
-// radians, speed. `uState` and `resolution` are injected by
-// GPUComputationRenderer.
+// State per particle: position (0..1), heading (radians), speed.
+// GPUComputationRenderer adds the `uState` and `resolution` declarations.
 export const updateShader = /* glsl */ `
 uniform float uFrame;
 uniform float uTime;
@@ -177,12 +170,11 @@ void main() {
   float heading = state.z;
   float speed = state.w;
 
-  // Drift toward a slowly changing simplex flow field.
+  // Drift with a slowly changing noise flow field.
   float flow = snoise(vec3(position * 0.001, uTime * 0.1));
   heading = mix(heading, flow * TAU, 0.01);
 
-  // Near the pointer, turn toward a counter-clockwise swirl that leans
-  // slightly outward, fading out smoothly with distance.
+  // Swirl around the pointer, fading with distance.
   vec2 away = position - uPointer.xy;
   float dist = length(away);
   float pull = uPointer.z * (1.0 - smoothstep(0.0, uPointerRadius, dist));
@@ -195,7 +187,6 @@ void main() {
     speed += pull * 1.5;
   }
 
-  // Damped, noisy push.
   speed = (speed + flow * 0.5 + 0.5) * 0.9;
   position += vec2(sin(heading), cos(heading)) * speed * uStep;
 
@@ -203,15 +194,10 @@ void main() {
 }
 `;
 
-// Letters drawn into the glyph atlas, in a grid of ATLAS_COLUMNS square cells.
 export const GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 export const ATLAS_COLUMNS = 8;
-// On-screen size of an atlas cell, in CSS px.
-const GLYPH_SIZE = 14;
+const GLYPH_CELL_PX = 14;
 
-// Every particle is a letter, picked at random on each spawn and turned so it
-// reads along its direction of travel. One instanced draw call; the instance
-// id picks the texel.
 export const drawVertexShader = /* glsl */ `
 uniform sampler2D uState;
 uniform float uFrame;
@@ -233,30 +219,27 @@ void main() {
     return;
   }
 
-  // Atlas cell of this spawn's letter. The atlas texture is flipped in y.
-  // The quad covers only the middle 60% of the cell's width, where the ink of
-  // every monospaced letter fits, which skips 40% of the fragments.
+  // Each spawn picks a new letter. Only the middle 60% of the cell width is
+  // drawn; monospaced letters fit there. The atlas texture is flipped in y.
   uint glyph = hash(c.seed + 7u) % ${GLYPHS.length}u;
   vec2 atlasCell = vec2(float(glyph % ${ATLAS_COLUMNS}u), float(glyph / ${ATLAS_COLUMNS}u));
   vec2 local = position.xy * vec2(0.6, 1.0);
   vUv = (vec2(atlasCell.x, ${ATLAS_COLUMNS}.0 - atlasCell.y - 1.0) + local + 0.5)
     / ${ATLAS_COLUMNS}.0;
 
-  // Screen pixels grow downward: the letter's baseline follows the heading
-  // and its top points to the left of travel.
+  // Letters read along their heading. Screen y grows downward.
   vec4 state = texelFetch(uState, ivec2(cell), 0);
   vec2 forward = vec2(sin(state.z), cos(state.z));
   vec2 up = vec2(forward.y, -forward.x);
   vec2 pixel = state.xy * uViewport
-    + (forward * local.x + up * local.y) * ${GLYPH_SIZE}.0;
+    + (forward * local.x + up * local.y) * ${GLYPH_CELL_PX}.0;
   vec2 clip = pixel / uViewport * 2.0 - 1.0;
   gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);
 }
 `;
 
-// Premultiplied output. Dark theme: gray light, added together. Light theme:
-// black with alpha, combined with max blending so overlaps never get darker
-// than one letter.
+// Premultiplied. Dark theme: gray letters add up. Light theme: black letters
+// with max blending, so overlaps never get darker than one letter.
 export const drawFragmentShader = /* glsl */ `
 uniform sampler2D uAtlas;
 uniform float uGain;

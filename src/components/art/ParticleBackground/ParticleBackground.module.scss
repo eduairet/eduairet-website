@@ -1,14 +1,11 @@
-// z-index -1 works because body has `isolation: isolate` (see _global.scss).
 .background {
   position: fixed;
   inset: 0;
+  // Needs `isolation: isolate` on body to stay above the page background.
   z-index: -1;
   pointer-events: none;
   overflow: hidden;
-  // Keeps text legible: the page background is solid behind the canvas, so
-  // 20% opacity caps the brightest pixel at 20% of white in the dark theme and
-  // limits darkening in the light theme (contrast measured in wcag-audit.md,
-  // F-23).
+  // Keeps text legible (see wcag-audit.md, F-23).
   opacity: 0.2;
 
   canvas {

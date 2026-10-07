@@ -4,7 +4,7 @@ import { renderToString } from 'react-dom/server';
 import ParticleBackground from '@/components/art/ParticleBackground/ParticleBackground';
 import { MAX_LIFE } from '@/components/art/ParticleBackground/particleShaders';
 
-// jsdom has no WebGL, so three.js is replaced by stubs that record calls.
+// jsdom has no WebGL, so three.js is stubbed.
 const three = vi.hoisted(() => ({
   renderers: [] as Array<{
     canvas: HTMLCanvasElement;
@@ -13,7 +13,7 @@ const three = vi.hoisted(() => ({
     dispose: ReturnType<typeof vi.fn>;
     forceContextLoss: ReturnType<typeof vi.fn>;
   }>,
-  // Called when a renderer is created, to act mid-setup.
+  // Lets a test act the moment a renderer is created.
   onRenderer: null as null | (() => void),
   computes: [] as Array<{
     compute: ReturnType<typeof vi.fn>;
@@ -129,8 +129,7 @@ beforeEach(() => {
   three.computes.length = 0;
   three.onRenderer = null;
   reducedMotion = false;
-  // jsdom lacks requestIdleCallback, so the component's setTimeout fallback
-  // runs; matchMedia and canvas contexts are stubbed.
+  // jsdom has no requestIdleCallback, matchMedia or canvas contexts.
   window.matchMedia = vi.fn(() => ({
     matches: reducedMotion,
     addEventListener: vi.fn(),
@@ -149,14 +148,13 @@ beforeEach(() => {
 
 afterEach(async () => {
   cleanup();
-  // Let a retained scene finish its delayed disposal.
+  // Let a kept scene finish disposing.
   await vi.runAllTimersAsync();
   vi.restoreAllMocks();
   vi.useRealTimers();
 });
 
-// Idle callback, three.js import, second idle callback, two setup tasks, then
-// shader compilation; the scene is up once it has drawn or started its loop.
+// The scene is up once it has drawn or started its loop.
 const startScene = () =>
   vi.waitFor(
     () => {
@@ -221,11 +219,11 @@ describe('Particle background', () => {
   });
 
   test('unmounting before three.js loads never starts a scene', async () => {
-    // Warm the module cache so the dynamic import resolves quickly.
+    // Load the module first so the import resolves right away.
     await import('@/components/art/ParticleBackground/particleScene');
     const { unmount } = render(<ParticleBackground />);
 
-    // Fire the idle callback, which starts the import, then leave at once.
+    // Start the import, then unmount before it resolves.
     vi.advanceTimersByTime(250);
     unmount();
     await act(() => vi.advanceTimersByTimeAsync(5000));
@@ -236,7 +234,7 @@ describe('Particle background', () => {
 
   test('unmounting halfway through setup disposes of the new scene', async () => {
     const { unmount } = render(<ParticleBackground />);
-    // Leave as soon as the renderer exists, before the canvas is attached.
+    // Unmount once the renderer exists, before the canvas is attached.
     three.onRenderer = () => unmount();
     await vi.waitFor(() => expect(three.renderers).toHaveLength(1), {
       timeout: 5000,
@@ -262,8 +260,7 @@ describe('Particle background', () => {
     expect(renderer.setAnimationLoop).not.toHaveBeenCalledWith(
       expect.any(Function)
     );
-    // The still frame shows a settled field: the last MAX_LIFE steps decide
-    // every particle, so exactly that many run.
+    // Only the last MAX_LIFE steps shape the still frame.
     expect(three.computes[0].compute).toHaveBeenCalledTimes(MAX_LIFE);
   });
 });
