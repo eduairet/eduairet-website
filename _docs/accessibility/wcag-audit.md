@@ -6,6 +6,8 @@
 
 **Verdict after fixes (2026-10-06): Conforms** to WCAG 2.2 Level AA on every criterion I could test in Chrome. No findings are open. F-21 was closed on code review, at your call; no screen reader was run. For F-22, `/resources` now returns 404 until it has content.
 
+**Update (2026-10-06, branch `feat/particle-background`): one accepted deviation.** The new particle background has no pause control, so 2.2.2 Pause, Stop, Hide (Level A) is not met, and strictly the site no longer conforms. The site owner accepted this; see F-23 for the mitigations and the measured contrast. Every other criterion is unchanged.
+
 Severity counts as found on 2026-10-05:
 
 | Severity     | Count  |
@@ -332,6 +334,23 @@ Severity counts as found on 2026-10-05:
 - What would settle it: tell me whether /resources is a published page. If it is, link it from the nav. If it isn't yet, it can return 404 until it's ready, which also removes F-15 and F-16 for that page.
 - Status: Closed (2026-10-06). Following my recommendation, `/resources` returns 404 until it has content (a `RESOURCES_PUBLISHED` flag in `page.tsx`); the translated text stays in the dictionaries for later. Evidence: /en/resources and /es/resources return HTTP 404 with `<meta name="robots" content="noindex">`; Chrome shows "404 - Page not found" / "404 - Página no encontrada" with the matching title; test `resources.test.ts`. To publish it: set the flag to `true` and add a nav link in `NavMainMenu`.
 
+### F-23 The particle background moves with no pause control
+
+- Criterion: 2.2.2 Pause, Stop, Hide (A); also checked against 2.3.1 Three Flashes or Below Threshold (A) and 1.4.3 Contrast (Minimum) (AA)
+- Severity: Moderate
+- Where: `src/components/art/ParticleBackground/` (mounted once in `BodyWrapper`); every page, both locales, both themes. Added on branch `feat/particle-background` (2026-10-06).
+- Evidence: a full-screen WebGL field of drifting letters behind the content. It starts automatically, runs for as long as the page is open, and sits next to other content. There is no pause button. The 2.2.2 Understanding doc does not count an OS setting such as reduced motion as the mechanism, so this does not meet 2.2.2.
+- Who is affected: people with attention disorders or vestibular conditions, who find constant motion distracting, if they have not turned on reduced motion.
+- Decision: the site owner chose not to add visible UI. This is a known deviation, accepted by the owner. The mitigations below go beyond common practice for animated portfolio backgrounds.
+- Mitigations (all verified in Chrome 154 over CDP, dev build):
+  - **Reduced motion:** with `prefers-reduced-motion: reduce`, the scene draws one still frame and never starts its loop (1 draw in 3 s). Turning the setting off while the page is open starts the loop (30 frames/s); turning it on again stops it at once. Test: `particleBackground.test.tsx`.
+  - **Hidden tab:** the loop stops while the tab is hidden (draws stayed at 265 for 3 s with another tab in front) and resumes when it is shown again.
+  - **Soft and low contrast:** the canvas is drawn at 20% opacity over the solid page background. In the dark theme, no background pixel can be brighter than 20% gray (worst measured: relative luminance 0.033). In the light theme, a particle darkens the page by at most 5% (worst measured: 0.768 against 0.846 for the plain background).
+  - **No flashing (2.3.1):** a flash needs opposing luminance changes of at least 0.10. The 20% opacity caps the change at 0.033 in the dark theme and 0.093 in the light theme (0.08 measured), so the background cannot flash, at any rate.
+  - **Contrast (1.4.3):** text was hidden and the background behind every text run sampled 10 times over 10 s, on /en, /es, /en/contact and the 404 page in both themes. 0 failures. Lowest values: body text 14.40:1 (dark) and 16.67:1 (light); headings 10.79:1; the red home subtitle (large text) 3.16:1 (dark) and 3.12:1 (light). The nav, footer and form sit on opaque surfaces and are unchanged (17.78:1 or more).
+  - **Out of the way:** the canvas is `aria-hidden`, has `pointer-events: none`, and is not focusable. A mouse and keyboard run of the nav menu, language links, contact form, theme button, skip link and Escape passed with the canvas in place.
+- Status: Accepted (2026-10-06), as a known deviation. To meet 2.2.2 later, add a visible pause button that stops the loop and stores the choice.
+
 ---
 
 ## 3. Criteria table
@@ -351,7 +370,7 @@ Severity counts as found on 2026-10-05:
 | 1.3.5 Identify Input Purpose                    | AA    | Pass   | F-11 fixed                                                                                                              |
 | 1.4.1 Use of Color                              | A     | Pass   | F-12 fixed                                                                                                              |
 | 1.4.2 Audio Control                             | A     | N/A    | No audio                                                                                                                |
-| 1.4.3 Contrast (Minimum)                        | AA    | Pass   | F-01, F-03 fixed                                                                                                        |
+| 1.4.3 Contrast (Minimum)                        | AA    | Pass   | F-01, F-03 fixed; particle background measured (F-23)                                                                   |
 | 1.4.4 Resize Text                               | AA    | Pass   | 200% (640×450): no loss of content or function                                                                          |
 | 1.4.5 Images of Text                            | AA    | Pass   | Only the logo (exempt)                                                                                                  |
 | 1.4.10 Reflow                                   | AA    | Pass   | No horizontal scroll at 320 px wide. See Nice to have for 320×256                                                       |
@@ -362,8 +381,8 @@ Severity counts as found on 2026-10-05:
 | 2.1.2 No Keyboard Trap                          | A     | Pass   | Tab cycles through to the end on every page                                                                             |
 | 2.1.4 Character Key Shortcuts                   | A     | N/A    | No shortcuts                                                                                                            |
 | 2.2.1 Timing Adjustable                         | A     | Pass   | F-02, F-13 fixed                                                                                                        |
-| 2.2.2 Pause, Stop, Hide                         | A     | Pass   | F-14 fixed                                                                                                              |
-| 2.3.1 Three Flashes or Below Threshold          | A     | Pass   | Nothing flashes                                                                                                         |
+| 2.2.2 Pause, Stop, Hide                         | A     | Fail   | F-14 fixed; F-23 accepted deviation: particle background has no pause control                                           |
+| 2.3.1 Three Flashes or Below Threshold          | A     | Pass   | Nothing flashes; F-23 background luminance changes stay under 0.10                                                      |
 | 2.4.1 Bypass Blocks                             | A     | Pass   | Landmarks, plus a skip link added 2026-10-06                                                                            |
 | 2.4.2 Page Titled                               | A     | Pass   | F-15 fixed                                                                                                              |
 | 2.4.3 Focus Order                               | A     | Pass   | F-05, F-09 fixed                                                                                                        |

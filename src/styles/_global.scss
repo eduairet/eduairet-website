@@ -55,6 +55,8 @@ body {
 body {
   width: 100vw;
   overflow-x: clip;
+  // Lets the particle background (z-index -1) sit above the body background.
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   align-items: center;
