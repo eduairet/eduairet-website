@@ -3,22 +3,12 @@
 autoInstallPeers: true
 nodeLinker: hoisted
 
-# Supply-chain "cooldown": refuse to install any package version that was
-# published less than this many minutes ago. Compromised npm releases are
-# almost always detected and unpublished within a day or two, so waiting a few
-# days before a new version becomes installable keeps freshly poisoned versions
-# out of both installs and the lockfile. 10080 minutes = 7 days.
+# Skip versions newer than 7 days; compromised releases are usually pulled within a day or two.
 minimumReleaseAge: 10080
 
-# Lifecycle-script lockdown. pnpm blocks package build/postinstall scripts by
-# default; this makes that explicit and reviewable. An empty allowlist means NO
-# dependency may run install scripts. If a dependency legitimately needs to
-# build, add it here deliberately (that is the review checkpoint that stops a
-# malicious postinstall from running silently).
+# No dependency may run install scripts; adding one here is the review step that stops a malicious postinstall.
 onlyBuiltDependencies: []
 
-# Known packages we intentionally do NOT build. esbuild ships prebuilt platform
-# binaries via optional deps, so its install script is unnecessary here; listing
-# it documents the decision and silences the approval prompt.
+# esbuild ships prebuilt binaries as optional deps, so its install script is not needed.
 ignoredBuiltDependencies:
   - esbuild

@@ -2,9 +2,7 @@
 
 import { FocusEvent, KeyboardEvent, useRef } from 'react';
 
-// Disclosure behaviour for the nav dropdowns (WAI-ARIA APG disclosure pattern):
-// Escape closes and returns focus to the toggle, and the menu closes when
-// focus leaves it.
+// WAI-ARIA APG disclosure pattern for the nav dropdowns.
 export default function useNavMenu(isOpen: boolean, close: () => void) {
   const wrapperRef = useRef<HTMLDivElement>(null);
 

@@ -45,12 +45,8 @@ jobs:
       - name: Enable pnpm via Corepack
         run: corepack enable
       - name: Audit production dependencies (critical — blocking)
-        # Hard-fail the build if anything that ships to visitors has a critical
-        # advisory. Reads pnpm-lock.yaml only — no install, so no build scripts
-        # run.
+        # Reads pnpm-lock.yaml only, so no package code runs.
         run: pnpm audit --prod --audit-level=critical
       - name: Audit report (high and below — non-blocking)
-        # Surface the remaining advisories (mostly ReDoS-class issues in build
-        # tooling) for visibility without wedging deploys on issues that have no
-        # safe patch path yet.
+        # Visible, but doesn't block deploys on advisories with no safe patch yet.
         run: pnpm audit || true

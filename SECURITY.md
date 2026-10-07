@@ -20,19 +20,15 @@ deployed version is supported; fixes are applied to `main`.
 
 ## Supply-chain hardening
 
-This repository takes several measures to reduce supply-chain risk:
-
-- **Install cooldown** — pnpm's `minimumReleaseAge` (see `pnpm-workspace.yaml`)
-  blocks installing any dependency version published less than 7 days ago, so a
-  freshly compromised release is not pulled in before it is detected.
-- **Lifecycle-script lockdown** — package build/`postinstall` scripts are
-  disabled by default via an explicit empty `onlyBuiltDependencies` allowlist.
-- **Frozen lockfile** — CI and Docker installs use `--frozen-lockfile`, so only
-  the exact, reviewed dependency tree is ever installed.
-- **Pinned CI** — GitHub Actions are pinned to full commit SHAs, and the package
-  manager is provisioned via Corepack from the `packageManager` pin.
-- **Dependency auditing** — CI hard-fails on any *critical* advisory in the
-  production dependency tree (`pnpm audit --prod --audit-level=critical`) and
-  reports remaining advisories for visibility.
-- **Automated updates** — Dependabot keeps dependencies, Actions, and the Docker
-  base image current (with a cooldown mirroring the install policy).
+- **Install cooldown** — `minimumReleaseAge` in `pnpm-workspace.yaml` blocks
+  versions published less than 7 days ago, so a compromised release is caught
+  before we install it.
+- **No install scripts** — the empty `onlyBuiltDependencies` allowlist stops
+  any dependency from running `postinstall` or build scripts.
+- **Frozen lockfile** — CI and Docker install only the reviewed tree.
+- **Pinned tooling** — GitHub Actions are pinned to commit SHAs, and pnpm to
+  the `packageManager` version.
+- **Auditing** — CI fails on any _critical_ advisory in production
+  dependencies and reports the rest.
+- **Automated updates** — Dependabot proposes dependency, Action, and Docker
+  base image updates after a cooldown.
