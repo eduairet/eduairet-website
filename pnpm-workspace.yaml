@@ -3,6 +3,13 @@
 autoInstallPeers: true
 nodeLinker: hoisted
 
+# The Alpine dev container runs on the host's node_modules, so install its musl
+# binaries from the lockfile instead of letting Next download them unverified.
+supportedArchitectures:
+  os: [current, linux]
+  cpu: [current]
+  libc: [current, musl]
+
 # Skip versions newer than 7 days; compromised releases are usually pulled within a day or two.
 minimumReleaseAge: 10080
 
