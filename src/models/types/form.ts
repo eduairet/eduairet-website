@@ -5,13 +5,7 @@ interface IValidation {
 }
 
 export type TextInputType =
-  | 'text'
-  | 'email'
-  | 'textarea'
-  | 'password'
-  | 'number'
-  | 'tel'
-  | 'url';
+  'text' | 'email' | 'textarea' | 'password' | 'number' | 'tel' | 'url';
 
 export type TextInputValidations = {
   [key in TextInputType]: IValidation;
