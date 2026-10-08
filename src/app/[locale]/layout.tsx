@@ -32,7 +32,11 @@ export default async function RootLayout({ children, params }: IProps) {
   const content = await getDictionary(locale as Lang);
 
   return (
-    <html lang={locale} className={eatIconsVF.variable}>
+    <html
+      lang={locale}
+      className={eatIconsVF.variable}
+      data-scroll-behavior='smooth'
+    >
       <head>
         <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT} />
         <Script

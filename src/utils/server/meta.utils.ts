@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { headers } from 'next/headers';
 import type { Lang } from '@/models';
 import { getDictionary } from '@/app/[locale]/dictionaries';
-import variables from '@/styles/abstracts/variables/index.module.scss';
+import { Colors } from '@/utils/constants';
 import { getHost } from '.';
 
 interface PageProps<T = { locale: string }> {
@@ -37,7 +37,7 @@ export async function generateMetadata({
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: variables.white },
-    { media: '(prefers-color-scheme: dark)', color: variables.black },
+    { media: '(prefers-color-scheme: light)', color: Colors.white },
+    { media: '(prefers-color-scheme: dark)', color: Colors.black },
   ],
 };

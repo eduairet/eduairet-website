@@ -8,8 +8,7 @@ env:
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
   ENABLE_EXPERIMENTAL_COREPACK: true
 
-# Deploy the commit that passed Tests, once. A push to main starts Tests;
-# this workflow follows that run instead of deploying from the push itself.
+# Deploy only the main commit that passed Tests, once.
 on:
   workflow_run:
     workflows: ['Tests']

@@ -1,4 +1,4 @@
-@use 'variables/index.module' as *;
+@use 'variables' as *;
 @use 'mixins' as *;
 
 %screen-reader-only {

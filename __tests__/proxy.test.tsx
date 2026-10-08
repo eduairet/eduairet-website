@@ -8,14 +8,11 @@ const testCases = [
 ];
 
 const runTest = async (language: string, expectedLocation: string) => {
-  // Arrange
   const req = new NextRequest(new Request('http://localhost:3000'), {});
   req.headers.set('accept-language', language);
 
-  // Act
   const res = await proxy(req);
 
-  // Assert
   expect(res?.headers.get('location')).toEqual(expectedLocation);
 };
 
