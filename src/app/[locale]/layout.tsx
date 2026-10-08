@@ -6,7 +6,6 @@ import { Lang } from '@/models';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import { locales } from '@/utils/server';
 import StoreProvider from '@/store/StoreProvider';
-import MetaIcons from '@/components/metadata/MetaIcons';
 import MainWrapper from '@/components/wrappers/MainWrapper/MainWrapper';
 import BodyWrapper from '@/components/wrappers/BodyWrapper';
 import NavBar from '@/components/ui/Nav/NavBar/NavBar';
@@ -49,7 +48,6 @@ export default async function RootLayout({ children, params }: IProps) {
           async
           defer
         />
-        <MetaIcons />
       </head>
       <StoreProvider>
         <BodyWrapper>
