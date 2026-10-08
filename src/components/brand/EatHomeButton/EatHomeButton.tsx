@@ -65,7 +65,6 @@ export default function EatHomeButton({ locale }: IProps) {
       onClick={stayOnCurrentHome}
     >
       <EatLogo />
-      {/* Decorative: the link is still announced as "Home". */}
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         className={styles.photo}

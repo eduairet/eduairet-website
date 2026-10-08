@@ -4,7 +4,7 @@ interface IProps {
   data: object;
 }
 
-// A native script tag, not next/script: this is data, not code to execute.
+// Native script, not next/script: JSON-LD is data, not code.
 export default function JsonLd({ data }: IProps) {
   return (
     <script

@@ -48,7 +48,6 @@ export interface HomeStructuredData {
 
 const SITE_ROOT = `${SITE_URL}/`;
 
-// Mark up only what the home page shows.
 export async function buildHomeStructuredData(
   localeParam: string
 ): Promise<HomeStructuredData> {
@@ -89,6 +88,6 @@ export async function buildHomeStructuredData(
   };
 }
 
-// JSON.stringify doesn't escape "<", so "</script>" in a value could end the tag early.
+// Escape "<" so no value can close the script tag.
 export const serializeJsonLd = (data: object) =>
   JSON.stringify(data).replace(/</g, '\\u003c');

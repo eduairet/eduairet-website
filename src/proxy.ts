@@ -19,7 +19,7 @@ export async function proxy(request: NextRequest) {
   );
   if (pathnameHasLocale) return;
 
-  // Temporary on purpose: the target depends on Accept-Language.
+  // 302, not 308: the target depends on Accept-Language.
   const locale = getLocale(request);
   request.nextUrl.pathname = `/${locale}${pathname}`;
   return NextResponse.redirect(request.nextUrl, 302);

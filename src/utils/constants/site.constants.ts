@@ -33,5 +33,5 @@ export const SAME_AS = [
   SocialUrls.instagram,
 ];
 
-// Flip to true (and add a nav link in NavMainMenu) to publish /resources.
+// To publish, also add a link in NavMainMenu.
 export const RESOURCES_PUBLISHED = false;

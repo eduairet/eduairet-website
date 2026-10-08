@@ -74,8 +74,7 @@ test('og and X images use the locale image with a localized alt', async () => {
   });
 });
 
-// 404s render with the layout's metadata; Next adds the noindex itself.
-test('layout metadata has no canonical, hreflang, or robots override', () => {
+test('404s fall back to layout metadata: no canonical, hreflang, or robots override', () => {
   expect(siteMetadata.alternates).toBeUndefined();
   expect(siteMetadata.robots).toBeUndefined();
   expect(String(siteMetadata.metadataBase)).toBe(`${SITE}/`);

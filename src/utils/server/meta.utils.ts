@@ -27,12 +27,13 @@ export const indexablePages: SitePage[] = [
 export const pageUrl = (locale: Lang, page: SitePage) =>
   `${SITE_URL}/${locale}${PagePaths[page]}`;
 
-// The unprefixed path redirects by Accept-Language, which is what x-default is for.
+const localeRedirectUrl = (page: SitePage) => `${SITE_URL}${PagePaths[page]}`;
+
 export const languageAlternates = (page: SitePage) => ({
   ...Object.fromEntries(
     locales.map((locale) => [locale, pageUrl(locale, page)])
   ),
-  'x-default': `${SITE_URL}${PagePaths[page]}`,
+  'x-default': localeRedirectUrl(page),
 });
 
 export async function buildPageMetadata(
@@ -43,7 +44,7 @@ export async function buildPageMetadata(
   const content = await getDictionary(locale);
   const { title, description } = content.meta[page];
   const url = pageUrl(locale, page);
-  // A page-level openGraph replaces the segment's opengraph-image, so link it here.
+  // A page-level openGraph drops the opengraph-image file, so link it here.
   const images = [
     {
       url: `/${locale}/opengraph-image`,

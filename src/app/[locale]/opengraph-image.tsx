@@ -4,7 +4,7 @@ import EatLogoOpenGraph from '@/components/brand/EatLogoOpenGraph';
 
 export { generateLocaleParams as generateStaticParams } from '@/utils/server/localization.utils';
 
-// The localized alt text is set with the image in buildPageMetadata.
+// alt is localized in buildPageMetadata.
 export const size = OG_IMAGE_SIZE;
 export const contentType = 'image/png';
 

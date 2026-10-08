@@ -34,7 +34,7 @@ export default async function RootLayout({ children, params }: IProps) {
   const locale = (await params).locale;
   const content = await getDictionary(locale);
 
-  // Typekit fonts load in CORS mode; its CSS @imports p.typekit.net without it.
+  // Font files need a CORS connection; the CSS @import does not.
   preconnect('https://use.typekit.net', { crossOrigin: 'anonymous' });
   preconnect('https://p.typekit.net');
 

@@ -1,41 +1,32 @@
-# SEO audit: eduairet-website
+# SEO
 
-## 1. Summary
+Every indexable page is prerendered with its metadata in `<head>`: a self-referencing canonical on `https://www.eduairet.com`, hreflang with `x-default`, Open Graph and X tags, and a sitemap entry. The home pages carry `WebSite` and `ProfilePage` structured data.
 
-**Before (2026-10-07):** Google could crawl the site, but it got almost no help finding or understanding it. robots.txt pointed at the Next.js template's acme.com sitemap, `/sitemap.xml` returned 404, and no page had a canonical, hreflang, `og:url`, `og:site_name`, or structured data. Every page rendered per request because metadata read `headers()`, and absolute URLs followed the request host. Search Console indexed only `/`, `/en/contact`, and `/es`. It treated `/en` as a duplicate of `/` with no user-declared canonical and had never found `/es/contact`.
+## Decisions
 
-**After (branch `feat/seo-audit`):** every indexable page is prerendered with its metadata in `<head>` for every crawler. Each page has a self-referencing canonical on `https://www.eduairet.com`, reciprocal hreflang with `x-default`, full Open Graph and X tags, and a matching sitemap entry. The home pages carry `WebSite` and `ProfilePage` structured data.
+| Decision                                                                  | Why                                                                                                                                                                                                                             |
+| ------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| English home canonical is `/en`, not `/`                                  | `/` redirects by language, so it must stay a 302. A 302 target can still be canonical "if other canonicalization signals are present" ([redirects](https://developers.google.com/search/docs/crawling-indexing/301-redirects)). |
+| `x-default` is the unprefixed path (`/` for home, `/contact` for contact) | It redirects by language, which is what x-default is for ([localized versions](https://developers.google.com/search/docs/specialty/international/localized-versions)). Next writes the root without a trailing slash.           |
+| `WebSite.url` is the domain root, on both `/en` and `/es`                 | Site names only work at the root, and duplicate home pages need the same markup ([site names](https://developers.google.com/search/docs/appearance/site-names)).                                                                |
+| `Person.image` is the photo behind the logo                               | No placeholders, and markup must match what visitors see ([ProfilePage](https://developers.google.com/search/docs/appearance/structured-data/profile-page)).                                                                    |
+| All AI crawlers allowed; Vercel AI Bots ruleset on Log                    | Vercel's Deny would also block search and user-request fetchers.                                                                                                                                                                |
+| Sitemap has no `lastmod`, `priority`, or `changefreq`                     | Google ignores the last two and needs `lastmod` to be accurate ([sitemaps](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)).                                                                |
+| `favicon.ico` stays next to `icon.svg`                                    | Google doesn't support SVG favicons ([favicon](https://developers.google.com/search/docs/appearance/favicon-in-search)).                                                                                                        |
+| `not-found.tsx` keeps its `<title>` element                               | Only the root `app/not-found` can export metadata ([not-found](https://nextjs.org/docs/app/api-reference/file-conventions/not-found)).                                                                                          |
 
-- **Branch base:** `main` at `bda1b1d`. Next.js 16.3.8, React 19.3.0.
-- **Build tested:** production build in the Docker container (`pnpm build`, `pnpm start`).
+## Search Console baseline (2026-10-07)
 
-## 2. Decisions
+- Indexed: `/`, `/en/contact`, `/es`.
+- `/en`: duplicate of `/`, no user-declared canonical, found only through redirects.
+- 404: `/indoctrinated-hound`, `/36days-of-type-2019` (now 308 to eduairet.myportfolio.com).
+- Crawl stats, 90 days: 1,011 requests, 2.3% discovery, no 429s.
 
-| Decision                                                                                                                | Why                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| The English home canonical is `/en`, not `/`                                                                            | `/` must stay a temporary redirect because it depends on Accept-Language, so it can never serve a page. Google: a temporary redirect isn't a canonical signal for the target, but the target "might still be indexed if other canonicalization signals are present" ([redirects](https://developers.google.com/search/docs/crawling-indexing/301-redirects)). The canonical, hreflang, and sitemap all point at `/en`. |
-| `x-default` is the unprefixed path: `https://www.eduairet.com` for home, `https://www.eduairet.com/contact` for contact | Both redirect by Accept-Language, which is the case x-default exists for ([localized versions](https://developers.google.com/search/docs/specialty/international/localized-versions)). Next writes the site root without a trailing slash, so the sitemap uses the same form; it is the same URL.                                                                                                                      |
-| `WebSite.url` is `https://www.eduairet.com/`                                                                            | Site names only work at the domain root ([site names](https://developers.google.com/search/docs/appearance/site-names)). The same `WebSite` node is on `/en` and `/es`, as Google asks for duplicate home pages.                                                                                                                                                                                                       |
-| Site name "Eduardo Aire Torres", alternate name "eat"; Person alternate name "eduairet"                                 | Matches every `<title>`, the h1, `og:site_name`, and the manifest.                                                                                                                                                                                                                                                                                                                                                     |
-| `Person.image` is the photo behind the logo                                                                             | Google rejects placeholder images ([ProfilePage](https://developers.google.com/search/docs/appearance/structured-data/profile-page)) and asks that markup match what visitors see ([policies](https://developers.google.com/search/docs/appearance/structured-data/sd-policies)). The photo fades in on hover, keyboard focus, and touch.                                                                              |
-| All AI crawlers allowed; Vercel AI Bots ruleset on Log                                                                  | The site exists to be found by name. Vercel's Deny would also block search and user-request fetchers.                                                                                                                                                                                                                                                                                                                  |
-| No `lastModified`, `priority`, or `changefreq` in the sitemap                                                           | Google ignores the last two and uses `lastmod` only if it is consistently accurate ([sitemaps](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)).                                                                                                                                                                                                                                   |
-| `favicon.ico` (16/32/48) stays next to `icon.svg`                                                                       | Google's favicon formats don't include SVG ([favicon](https://developers.google.com/search/docs/appearance/favicon-in-search)).                                                                                                                                                                                                                                                                                        |
-| `not-found.tsx` keeps the React 19 `<title>` workaround                                                                 | Next 16 only supports metadata exports on the root `app/not-found` ([not-found](https://nextjs.org/docs/app/api-reference/file-conventions/not-found)); ours is nested under `[locale]` and is a client component.                                                                                                                                                                                                     |
+## How to check
 
-## 3. Search Console baseline (2026-10-07)
+On a production build:
 
-- **Indexed (3):** `https://www.eduairet.com/` (last crawl 2026-10-03), `/en/contact`, `/es`.
-- **Duplicate without user-selected canonical:** `https://www.eduairet.com/en`. Google-selected canonical `https://www.eduairet.com/`. Found only through `/` and the apex, with no sitemap.
-- **Page with redirect:** `http://eduairet.com/`, `https://eduairet.com/`, `http://www.eduairet.com/`. These are expected.
-- **Not found (404):** `https://eduairet.com/indoctrinated-hound` and `https://eduairet.com/36days-of-type-2019`. Both now 308 to eduairet.myportfolio.com.
-- **Crawl stats, 90 days:** www.eduairet.com 881 requests and eduairet.com 130. Discovery was 2.3% of requests. No 429 responses.
-
-## 4. How to check
-
-On the production build in the container:
-
-- **Every crawler gets metadata in `<head>`:** fetch each route with a browser, Googlebot, facebookexternalhit, and Slackbot user agent.
-- **Sitemap, canonicals, and hreflang agree:** load `/sitemap.xml`, then every page in it. Check that each canonical is absolute, on www, and self-referencing; that hreflang sets are identical and reciprocal and include x-default; and that every sitemap URL returns 200 with no noindex.
-- **Structured data:** POST the rendered `/en` and `/es` HTML to `https://validator.schema.org/validate` (the code-snippet endpoint). Expect 0 errors and 0 warnings.
-- **Unit tests:** `__tests__/pageMetadata.test.ts`, `sitemapRobots.test.ts`, `structuredData.test.tsx`, and `proxy.test.tsx`.
+- Fetch each route as a browser, Googlebot, facebookexternalhit, and Slackbot; metadata must be in `<head>`.
+- For every URL in `/sitemap.xml`: 200, no noindex, self canonical, and the same hreflang set as the sitemap.
+- POST the rendered `/en` and `/es` HTML to `https://validator.schema.org/validate`: 0 errors, 0 warnings.
+- `pnpm test run` covers metadata, sitemap, robots, manifest, and JSON-LD.
