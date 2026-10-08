@@ -98,9 +98,6 @@ export class Dictionary {
   notFound: {
     title: string;
   };
-  status: {
-    loading: string;
-  };
   contact: {
     title: string;
     form: {
@@ -179,9 +176,6 @@ export class Dictionary {
     };
     this.notFound = {
       title: data.notFound?.title || '',
-    };
-    this.status = {
-      loading: data.status?.loading || '',
     };
     this.contact = {
       title: data.contact?.title || '',
