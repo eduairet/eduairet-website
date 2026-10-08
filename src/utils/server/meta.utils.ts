@@ -33,11 +33,12 @@ export const pageUrl = (locale: Lang, page: SitePage) =>
   `${SITE_URL}/${locale}${pagePaths[page]}`;
 
 // x-default is the unprefixed path, which the proxy redirects by Accept-Language.
+// The home one has no trailing slash because Next writes the site root that way.
 export const languageAlternates = (page: SitePage) => ({
   ...Object.fromEntries(
     locales.map((locale) => [locale, pageUrl(locale, page)])
   ),
-  'x-default': `${SITE_URL}${pagePaths[page] || '/'}`,
+  'x-default': `${SITE_URL}${pagePaths[page]}`,
 });
 
 export async function buildPageMetadata(
