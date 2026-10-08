@@ -1,14 +1,15 @@
 import { ImageResponse } from 'next/og';
-import { Colors } from '@/utils/constants';
+import { Colors, OG_IMAGE_SIZE } from '@/utils/constants';
+import { locales } from '@/utils/server/localization.utils';
 import EatLogoOpenGraph from '@/components/brand/EatLogoOpenGraph';
 
-export const alt = 'Eduardo Aire Torres';
-export const size = {
-  width: 1200,
-  height: 630,
-};
-
+// The localized alt text is set with the image in buildPageMetadata.
+export const size = OG_IMAGE_SIZE;
 export const contentType = 'image/png';
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 export default async function Image() {
   return new ImageResponse(

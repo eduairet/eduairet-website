@@ -1,19 +1,20 @@
 import { notFound } from 'next/navigation';
 import { getDictionary } from '@/app/[locale]/dictionaries';
+import { RESOURCES_PUBLISHED } from '@/utils/constants';
+import {
+  buildNotFoundMetadata,
+  buildPageMetadata,
+  type LocaleParams,
+} from '@/utils/server';
 
-export { generateMetadata } from '@/utils/server';
-
-// Not published yet: the page returns 404 until there are resources to list.
-// To publish it, set this to true and add a nav link in NavMainMenu.
-const RESOURCES_PUBLISHED = false;
-
-interface IProps {
-  params: Promise<{
-    locale: string;
-  }>;
+export async function generateMetadata({ params }: LocaleParams) {
+  const locale = (await params).locale;
+  return RESOURCES_PUBLISHED
+    ? buildPageMetadata(locale, 'resources')
+    : buildNotFoundMetadata(locale);
 }
 
-export default async function Resources({ params }: IProps) {
+export default async function Resources({ params }: LocaleParams) {
   if (!RESOURCES_PUBLISHED) notFound();
 
   const locale = (await params).locale;

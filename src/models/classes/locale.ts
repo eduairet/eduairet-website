@@ -27,6 +27,16 @@ interface Section {
   items: SectionEntry[];
 }
 
+export interface PageMeta {
+  title: string;
+  description: string;
+}
+
+const toPageMeta = (data?: Partial<PageMeta>): PageMeta => ({
+  title: data?.title || '',
+  description: data?.description || '',
+});
+
 const toSection = (data?: Partial<Section>): Section => ({
   title: data?.title || '',
   items: (data?.items || []).map((item) => ({
@@ -43,10 +53,11 @@ const toSection = (data?: Partial<Section>): Section => ({
 
 export class Dictionary {
   meta: {
-    [key: string]: {
-      title: string;
-      description: string;
-    };
+    home: PageMeta;
+    contact: PageMeta;
+    resources: PageMeta;
+    notFound: PageMeta;
+    ogImageAlt: string;
   };
   nav: {
     menu: string;
@@ -116,22 +127,11 @@ export class Dictionary {
 
   constructor(data: Partial<Dictionary> = {}) {
     this.meta = {
-      default: {
-        title: data.meta?.default?.title || '',
-        description: data.meta?.default?.description || '',
-      },
-      contact: {
-        title: data.meta?.contact?.title || '',
-        description: data.meta?.contact?.description || '',
-      },
-      resources: {
-        title: data.meta?.resources?.title || '',
-        description: data.meta?.resources?.description || '',
-      },
-      notFound: {
-        title: data.meta?.notFound?.title || '',
-        description: data.meta?.notFound?.description || '',
-      },
+      home: toPageMeta(data.meta?.home),
+      contact: toPageMeta(data.meta?.contact),
+      resources: toPageMeta(data.meta?.resources),
+      notFound: toPageMeta(data.meta?.notFound),
+      ogImageAlt: data.meta?.ogImageAlt || '',
     };
     this.nav = data.nav || {
       menu: '',

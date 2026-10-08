@@ -1,5 +1,5 @@
 import { type NextRequest, NextResponse } from 'next/server';
-import { locales, getLocale } from '@/utils/server';
+import { locales, getLocale } from '@/utils/server/localization.utils';
 
 const PUBLIC_FILE = /\.(.*)$/;
 
@@ -17,20 +17,12 @@ export async function proxy(request: NextRequest) {
   const pathnameHasLocale = locales.some(
     (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
   );
-  if (pathnameHasLocale) {
-    const requestHeaders = new Headers(request.headers);
-    requestHeaders.set('x-pathname', request.nextUrl.pathname);
+  if (pathnameHasLocale) return;
 
-    return NextResponse.next({
-      request: {
-        headers: requestHeaders,
-      },
-    });
-  }
-
+  // Temporary on purpose: the target depends on Accept-Language.
   const locale = getLocale(request);
   request.nextUrl.pathname = `/${locale}${pathname}`;
-  return Response.redirect(request.nextUrl);
+  return NextResponse.redirect(request.nextUrl, 302);
 }
 
 export const config = {

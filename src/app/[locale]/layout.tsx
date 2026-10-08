@@ -4,6 +4,7 @@ import Script from 'next/script';
 import '@/styles/main.scss';
 import { Lang } from '@/models';
 import { getDictionary } from '@/app/[locale]/dictionaries';
+import { locales } from '@/utils/server';
 import StoreProvider from '@/store/StoreProvider';
 import MetaIcons from '@/components/metadata/MetaIcons';
 import MainWrapper from '@/components/wrappers/MainWrapper/MainWrapper';
@@ -25,7 +26,11 @@ interface IProps {
   }>;
 }
 
-export { generateMetadata, viewport } from '@/utils/server';
+export { siteMetadata as metadata, viewport } from '@/utils/server';
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 export default async function RootLayout({ children, params }: IProps) {
   const locale = (await params).locale;

@@ -13,6 +13,7 @@ const runTest = async (language: string, expectedLocation: string) => {
 
   const res = await proxy(req);
 
+  expect(res?.status).toBe(302);
   expect(res?.headers.get('location')).toEqual(expectedLocation);
 };
 
@@ -21,3 +22,20 @@ for (const testCase of testCases) {
     await runTest(testCase.language, testCase.expectedLocation);
   });
 }
+
+test('Proxy - keeps the path when it adds the locale', async () => {
+  const req = new NextRequest(new Request('http://localhost:3000/contact'));
+  req.headers.set('accept-language', 'es-MX,es;q=0.9');
+
+  const res = await proxy(req);
+
+  expect(res?.headers.get('location')).toBe('http://localhost:3000/es/contact');
+});
+
+test.each(['/en', '/es/contact', '/robots.txt', '/api/contact'])(
+  'Proxy - lets %s through untouched',
+  async (path) => {
+    const res = await proxy(new NextRequest(`http://localhost:3000${path}`));
+    expect(res).toBeUndefined();
+  }
+);

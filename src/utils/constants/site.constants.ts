@@ -1,0 +1,38 @@
+import type { Lang } from '@/models';
+
+export const SITE_URL = 'https://www.eduairet.com';
+export const SITE_NAME = 'Eduardo Aire Torres';
+export const SITE_SHORT_NAME = 'eat';
+export const PERSON_HANDLE = 'eduairet';
+export const X_HANDLE = '@eduairet';
+
+export const PROFILE_PHOTO = {
+  src: '/eduardo-aire-torres.webp',
+  width: 400,
+  height: 400,
+};
+
+export const OG_IMAGE_SIZE = { width: 1200, height: 630 };
+
+export const OpenGraphLocales: Record<Lang, string> = {
+  en: 'en_US',
+  es: 'es_MX',
+};
+
+export const SocialUrls = {
+  github: 'https://github.com/eduairet',
+  linkedin: 'https://www.linkedin.com/in/eduairet/',
+  x: 'https://x.com/eduairet',
+  instagram: 'https://www.instagram.com/eduairet/',
+  email: 'mailto:hola@eduairet.com',
+};
+
+export const SAME_AS = [
+  SocialUrls.github,
+  SocialUrls.linkedin,
+  SocialUrls.x,
+  SocialUrls.instagram,
+];
+
+// Flip to true (and add a nav link in NavMainMenu) to publish /resources.
+export const RESOURCES_PUBLISHED = false;

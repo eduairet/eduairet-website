@@ -1,12 +1,12 @@
 {
   "meta": {
-    "default": {
+    "home": {
       "title": "Eduardo Aire Torres | Design Engineer & Product Engineer",
-      "description": "Design and typography, together with full-stack web applications in React, Next.js, TypeScript, and .NET."
+      "description": "I'm a design engineer who came to code through graphic design and type. Here's my work, my projects, and how I got here."
     },
     "contact": {
       "title": "Contact | Eduardo Aire Torres",
-      "description": "Contact Eduardo Aire Torres about design, typography, and full-stack web applications in React, Next.js, TypeScript, and .NET."
+      "description": "Have a project, a role, or a question? Send me a message and I'll get back to you."
     },
     "resources": {
       "title": "Resources | Eduardo Aire Torres",
@@ -15,7 +15,8 @@
     "notFound": {
       "title": "Page not found | Eduardo Aire Torres",
       "description": "This page doesn't exist."
-    }
+    },
+    "ogImageAlt": "The eat logo: light letters inside a black circle."
   },
   "nav": {
     "menu": "Menu",
