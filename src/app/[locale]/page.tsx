@@ -1,4 +1,3 @@
-import { Lang } from '@/models';
 import { getDictionary } from './dictionaries';
 import HomeContent from '@/app/[locale]/components/HomeContent/HomeContent';
 
@@ -10,6 +9,6 @@ interface IProps {
 
 export default async function Home({ params }: IProps) {
   const locale = (await params).locale;
-  const content = await getDictionary(locale as Lang);
+  const content = await getDictionary(locale);
   return <HomeContent content={content} />;
 }

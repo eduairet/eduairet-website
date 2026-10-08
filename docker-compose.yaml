@@ -3,10 +3,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    # Localhost only: the dev server exposes debug endpoints such as /_next/mcp.
     ports:
-      - '3000:3000'
+      - '127.0.0.1:3000:3000'
     volumes:
       - eduairet-website:/app
+      # Keep the image's node_modules (frozen lockfile, Linux binaries) instead of
+      # the host's. After dependency changes: docker compose down -v && docker compose up -d --build
+      - /app/node_modules
     environment:
       - CI=true
       - WATCHPACK_POLLING=true

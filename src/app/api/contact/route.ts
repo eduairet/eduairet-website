@@ -1,12 +1,13 @@
-import { verifyCaptcha } from '@/services/server';
-import { sendEmail } from '@/services/server';
+import { sendEmail, verifyCaptcha } from '@/services/server';
 import { serverFormValidations } from '@/utils/server';
 
 export async function POST(req: Request) {
   if (req.method !== 'POST')
     return new Response('Method Not Allowed', { status: 405 });
 
-  const { locale, name, email, message, recaptchaToken } = await req.json();
+  const body = await req.json().catch(() => null);
+  if (!body) return new Response('Bad Request', { status: 400 });
+  const { locale, name, email, message, recaptchaToken } = body;
 
   if (
     !locale ||
@@ -16,8 +17,7 @@ export async function POST(req: Request) {
     return new Response('Bad Request', { status: 400 });
 
   try {
-    const captchaVerification = await verifyCaptcha(recaptchaToken);
-    if (!captchaVerification.success)
+    if (!(await verifyCaptcha(recaptchaToken, new URL(req.url).hostname)))
       return new Response("We couldn't verify your ReCaptcha Token", {
         status: 400,
       });

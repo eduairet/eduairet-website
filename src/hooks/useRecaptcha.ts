@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback } from 'react';
+import { recaptchaAction } from '@/utils/constants';
 
 // reCAPTCHA v3 tokens expire after two minutes and can be verified only once,
 // so a fresh token is requested when the user submits, not on page load.
@@ -19,7 +20,9 @@ export default function useRecaptcha() {
 
     try {
       await new Promise<void>((resolve) => window.grecaptcha.ready(resolve));
-      return await window.grecaptcha.execute(siteKey, { action: 'submit' });
+      return await window.grecaptcha.execute(siteKey, {
+        action: recaptchaAction,
+      });
     } catch {
       return null;
     }

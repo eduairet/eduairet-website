@@ -29,7 +29,7 @@ export { generateMetadata, viewport } from '@/utils/server';
 
 export default async function RootLayout({ children, params }: IProps) {
   const locale = (await params).locale;
-  const content = await getDictionary(locale as Lang);
+  const content = await getDictionary(locale);
 
   return (
     <html

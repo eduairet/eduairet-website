@@ -1,8 +1,8 @@
 export type GoogleCaptchaResponse = {
   success: boolean;
-  challengeTs: Date;
-  hostname: string;
-  errorCodes: number[];
+  score?: number;
+  action?: string;
+  hostname?: string;
 };
 
 export type MailResponse = {
