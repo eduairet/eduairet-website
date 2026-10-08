@@ -10,6 +10,7 @@ $border: 2px;
   border-radius: 50%;
   border: $border solid var(--foreground);
   background-color: var(--foreground);
+  @include merge-transitions((border-color));
 
   &::before {
     content: none;
@@ -41,14 +42,26 @@ $border: 2px;
     }
   }
 
-  &:focus-visible .photo,
-  &.revealed .photo {
-    opacity: 1;
+  &:focus-visible,
+  &.revealed {
+    border-color: $accent;
+
+    .photo {
+      opacity: 1;
+    }
   }
 
   @media (hover: hover) {
-    &:hover .photo {
-      opacity: 1;
+    &:hover {
+      border-color: $accent;
+
+      & svg {
+        fill: $accent;
+      }
+
+      .photo {
+        opacity: 1;
+      }
     }
   }
 
