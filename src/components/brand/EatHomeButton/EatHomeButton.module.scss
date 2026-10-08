@@ -26,15 +26,33 @@ $border: 2px;
     @include merge-transitions((fill));
   }
 
+  .photo {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    opacity: 0;
+    @include merge-transitions((opacity));
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  &:focus-visible .photo,
+  &.revealed .photo {
+    opacity: 1;
+  }
+
   @media (hover: hover) {
-    &:hover {
-      & svg {
-        fill: $accent;
-      }
+    &:hover .photo {
+      opacity: 1;
     }
   }
 
   &.active {
-    pointer-events: none;
+    cursor: default;
   }
 }
