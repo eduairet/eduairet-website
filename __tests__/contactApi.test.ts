@@ -16,17 +16,19 @@ const trusted = {
   hostname: 'www.eduairet.com',
 };
 
-const submit = () =>
+const validBody = JSON.stringify({
+  locale: 'en',
+  name: 'Test Person',
+  email: 'test@example.test',
+  message: 'Hello from the contact API test.',
+  recaptchaToken: 'token-123',
+});
+
+const submit = (body = validBody) =>
   POST(
     new Request('https://www.eduairet.com/api/contact', {
       method: 'POST',
-      body: JSON.stringify({
-        locale: 'en',
-        name: 'Test Person',
-        email: 'test@example.test',
-        message: 'Hello from the contact API test.',
-        recaptchaToken: 'token-123',
-      }),
+      body,
     })
   );
 
@@ -65,12 +67,7 @@ describe('POST /api/contact', () => {
   });
 
   test('answers a malformed body with 400', async () => {
-    const res = await POST(
-      new Request('https://www.eduairet.com/api/contact', {
-        method: 'POST',
-        body: 'not json',
-      })
-    );
+    const res = await submit('not json');
 
     expect(res.status).toBe(400);
     expect(fetchMock).not.toHaveBeenCalled();

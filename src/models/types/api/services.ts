@@ -2,9 +2,7 @@ export type GoogleCaptchaResponse = {
   success: boolean;
   score?: number;
   action?: string;
-  challengeTs: Date;
-  hostname: string;
-  errorCodes?: string[];
+  hostname?: string;
 };
 
 export type MailResponse = {

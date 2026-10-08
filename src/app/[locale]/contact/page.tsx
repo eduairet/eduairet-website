@@ -1,5 +1,4 @@
 import { getDictionary } from '@/app/[locale]/dictionaries';
-import { Lang } from '@/models';
 import ContactForm from '@/app/[locale]/contact/components/ContactForm/ContactForm';
 import SectionWrapper from '@/components/wrappers/SectionWrapper/SectionWrapper';
 
@@ -13,7 +12,7 @@ interface IProps {
 
 export default async function Contact({ params }: IProps) {
   const locale = (await params).locale;
-  const content = await getDictionary(locale as Lang);
+  const content = await getDictionary(locale);
   return (
     <SectionWrapper>
       <header>

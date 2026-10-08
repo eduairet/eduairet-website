@@ -9,7 +9,7 @@ services:
     volumes:
       - eduairet-website:/app
       # Keep the image's node_modules (frozen lockfile, Linux binaries) instead of
-      # the host's. After dependency changes: docker compose up -d --build -V
+      # the host's. After dependency changes: docker compose down -v && docker compose up -d --build
       - /app/node_modules
     environment:
       - CI=true

@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import { getDictionary } from '@/app/[locale]/dictionaries';
-import { Lang } from '@/models';
 
 export { generateMetadata } from '@/utils/server';
 
@@ -18,7 +17,7 @@ export default async function Resources({ params }: IProps) {
   if (!RESOURCES_PUBLISHED) notFound();
 
   const locale = (await params).locale;
-  const content = await getDictionary(locale as Lang);
+  const content = await getDictionary(locale);
   return (
     <div>
       <h1>{content.resources.title}</h1>
