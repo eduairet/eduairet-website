@@ -1,5 +1,4 @@
-import { verifyCaptcha } from '@/services/server';
-import { sendEmail } from '@/services/server';
+import { isTrustedCaptcha, sendEmail, verifyCaptcha } from '@/services/server';
 import { serverFormValidations } from '@/utils/server';
 
 export async function POST(req: Request) {
@@ -16,8 +15,8 @@ export async function POST(req: Request) {
     return new Response('Bad Request', { status: 400 });
 
   try {
-    const captchaVerification = await verifyCaptcha(recaptchaToken);
-    if (!captchaVerification.success)
+    const captcha = await verifyCaptcha(recaptchaToken);
+    if (!isTrustedCaptcha(captcha, new URL(req.url).hostname))
       return new Response("We couldn't verify your ReCaptcha Token", {
         status: 400,
       });

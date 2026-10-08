@@ -1,5 +1,3 @@
-'use server';
-
 import { Lang, MailResponse } from '@/models';
 import nodemailer from 'nodemailer';
 import Mail from 'nodemailer/lib/mailer';

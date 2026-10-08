@@ -10,6 +10,8 @@ export const formRegex = {
   url: /^(https):\/\/[^ "]+$/,
 };
 
+export const recaptchaAction = 'submit';
+
 export const fieldLength = {
   text: {
     min: 3,
