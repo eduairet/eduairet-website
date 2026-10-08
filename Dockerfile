@@ -1,4 +1,4 @@
-FROM node:24-alpine3.22 AS build
+FROM node:24-alpine3.23 AS build
 WORKDIR /app
 
 # Keep in sync with "packageManager"; recent Node images no longer bundle Corepack.
