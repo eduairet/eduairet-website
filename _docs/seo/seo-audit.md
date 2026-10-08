@@ -27,6 +27,7 @@ Every indexable page is prerendered with its metadata in `<head>`: a self-refere
 On a production build:
 
 - Fetch each route as a browser, Googlebot, facebookexternalhit, and Slackbot; metadata must be in `<head>`.
+- `/en/does-not-exist` and `/en/resources` return 404, not 200. A client Suspense boundary around page content turns them into 200s.
 - For every URL in `/sitemap.xml`: 200, no noindex, self canonical, and the same hreflang set as the sitemap.
 - POST the rendered `/en` and `/es` HTML to `https://validator.schema.org/validate`: 0 errors, 0 warnings.
 - `pnpm test run` covers metadata, sitemap, robots, manifest, and JSON-LD.
