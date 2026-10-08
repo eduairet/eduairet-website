@@ -8,6 +8,10 @@ updates:
     # Match pnpm's minimumReleaseAge: frozen-lockfile installs skip that check.
     cooldown:
       default-days: 7
+    # Node types follow the runtime's major (Dockerfile, Vercel); bump them together.
+    ignore:
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
     groups:
       npm:
         patterns:
