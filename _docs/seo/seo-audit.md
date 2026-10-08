@@ -1,4 +1,4 @@
-# SEO
+# SEO: eduairet-website
 
 Every indexable page is prerendered with its metadata in `<head>`: a self-referencing canonical on `https://www.eduairet.com`, hreflang with `x-default`, Open Graph and X tags, and a sitemap entry. The home pages carry `WebSite` and `ProfilePage` structured data.
 

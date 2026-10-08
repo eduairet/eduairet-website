@@ -8,6 +8,8 @@
 
 **Update (2026-10-06, branch `feat/particle-background`): one accepted deviation.** The new particle background has no pause control, so 2.2.2 Pause, Stop, Hide (Level A) is not met, and strictly the site no longer conforms. The site owner accepted this; see F-23 for the mitigations and the measured contrast. Every other criterion is unchanged.
 
+**Update (2026-10-08, branch `feat/seo-audit`): no criterion changes.** The logo now fades into a photo on hover, keyboard focus, and press. The photo has `alt=""`, so the link is still named "Home", and with reduced motion it swaps without fading. reCAPTCHA now loads only on the contact page.
+
 Severity counts as found on 2026-10-05:
 
 | Severity     | Count  |
@@ -250,7 +252,7 @@ Severity counts as found on 2026-10-05:
 - Evidence: the `<title>` of /en/resources and every English 404 is "Eduardo Aire Torres | Design Engineer & Product Engineer". On /es it's "Eduardo Aire Torres | Ingeniero de Diseño e Ingeniero de Producto". Home and contact titles are correct in both locales.
 - Who is affected: screen reader users, and anyone switching tabs, can't tell they landed on a 404 or the resources page.
 - Fix: add `resources` and `notFound` entries to `meta` in both dictionaries (e.g. "Page not found | Eduardo Aire Torres" / "Página no encontrada | Eduardo Aire Torres") and use them on those pages.
-- Status: Fixed. New `meta.resources` and `meta.notFound` entries in both dictionaries. Resources uses `generateMetadata`; the 404 page renders a `<title>` that React 19 hoists into the head, because `not-found.js` can't export metadata. Evidence: `document.title` in Chrome is "Resources | …", "Recursos | …", "Page not found | …" and "Página no encontrada | …". Caveat: the 404's server HTML still has the default title until React loads.
+- Status: Fixed. New `meta.resources` and `meta.notFound` entries in both dictionaries. Resources uses `generateMetadata`; the 404 page renders a `<title>` that React 19 hoists into the head, because `not-found.js` can't export metadata. Evidence: `document.title` in Chrome is "Resources | …", "Recursos | …", "Page not found | …" and "Página no encontrada | …". Caveat: until React loads, a 404's server HTML has the site name as its title.
 
 ### F-16 Spanish pages expose English names and text
 
@@ -332,7 +334,7 @@ Severity counts as found on 2026-10-05:
 - Evidence: /en/resources and /es/resources return 200 but are not linked from any menu or page. They show only a placeholder ("Resources will be listed here..."). Home and Contact are reachable from the nav menu on every page.
 - Who is affected: anyone who would need the page.
 - What would settle it: tell me whether /resources is a published page. If it is, link it from the nav. If it isn't yet, it can return 404 until it's ready, which also removes F-15 and F-16 for that page.
-- Status: Closed (2026-10-06). Following my recommendation, `/resources` returns 404 until it has content (a `RESOURCES_PUBLISHED` flag in `page.tsx`); the translated text stays in the dictionaries for later. Evidence: /en/resources and /es/resources return HTTP 404 with `<meta name="robots" content="noindex">`; Chrome shows "404 - Page not found" / "404 - Página no encontrada" with the matching title; test `resources.test.ts`. To publish it: set the flag to `true` and add a nav link in `NavMainMenu`.
+- Status: Closed (2026-10-06). Following my recommendation, `/resources` returns 404 until it has content (the `RESOURCES_PUBLISHED` flag in `src/utils/constants/site.constants.ts`); the translated text stays in the dictionaries for later. Evidence: /en/resources and /es/resources return HTTP 404 with `<meta name="robots" content="noindex">`; Chrome shows "404 - Page not found" / "404 - Página no encontrada" with the matching title; test `resources.test.ts`. To publish it: set the flag to `true` and add a nav link in `NavMainMenu`.
 
 ### F-23 The particle background moves with no pause control
 
@@ -449,6 +451,7 @@ AAA items and best practices (not required for AA):
 - **2.4.13 Focus Appearance (AAA):** the red outline is 3.42:1 on light. That passes 1.4.11 but is weaker than AAA would like.
 - **1.4.6 Contrast (Enhanced) (AAA):** red on black is 5.25:1 (AAA needs 7:1).
 - **Done 2026-10-06, 3.2.5 Change on Request (AAA) / G201:** 14 card links and 4 social links open a new tab without warning. Add "(opens in a new tab)" / "(se abre en otra pestaña)" as visually hidden text.
+- **404 pages without JavaScript:** the server sends an empty document (no `lang`, no heading) and React builds the 404 page in the browser. The cause is the loading fallback in `MainWrapper`, which renders the page a second time (see F-19). Decision pending.
 - **Content is hidden without JavaScript:** the server HTML ships every page's content at `opacity: 0` (`template.tsx`), so if JS is slow or fails, the page stays blank.
 - **New, short screens:** at 320×256 the scroll chevron (absolutely positioned at the bottom of the hero) overlaps two words of the summary. It was hidden under the fixed header before. Not fixed, because it's out of scope.
 - **Mobile overlap:** at 375px the sticky section titles ("Experience") slide over the logo button in the header.
@@ -460,6 +463,6 @@ Out of scope (not accessibility):
 - The dev container does not pick up file edits (it serves stale code until `docker compose restart frontend`), even with `WATCHPACK_POLLING=true`. Next 16 uses Turbopack by default, so that variable may no longer apply.
 
 - The Docker volume had stale `node_modules` (Next 15.5.21 vs. the locked 16.3.6). As a result, `src/proxy.ts` never ran in dev: `/` returned 404 and `/contact` returned 500. Fixed locally with `pnpm install --frozen-lockfile`. The old dev server had also rewritten `tsconfig.json`; I reverted that.
-- `src/app/robots.ts:10` points `sitemap` at `https://acme.com/sitemap.xml`.
+- Fixed 2026-10-08: `src/app/robots.ts` pointed `sitemap` at `https://acme.com/sitemap.xml`.
 - `src/components/transitions/FadeTransition.tsx` is unused.
 - `/resources` returns 404 until it has content (see F-22).
