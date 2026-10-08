@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
+import { preconnect } from 'react-dom';
 import localFont from 'next/font/local';
-import Script from 'next/script';
 import '@/styles/main.scss';
 import { Lang } from '@/models';
 import { getDictionary } from '@/app/[locale]/dictionaries';
@@ -35,6 +35,10 @@ export default async function RootLayout({ children, params }: IProps) {
   const locale = (await params).locale;
   const content = await getDictionary(locale);
 
+  // Typekit fonts load in CORS mode; its CSS @imports p.typekit.net without it.
+  preconnect('https://use.typekit.net', { crossOrigin: 'anonymous' });
+  preconnect('https://p.typekit.net');
+
   return (
     <html
       lang={locale}
@@ -43,11 +47,6 @@ export default async function RootLayout({ children, params }: IProps) {
     >
       <head>
         <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT} />
-        <Script
-          src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-          async
-          defer
-        />
       </head>
       <StoreProvider>
         <BodyWrapper>
