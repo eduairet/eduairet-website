@@ -1,39 +1,91 @@
 import type { Metadata, Viewport } from 'next';
-import { headers } from 'next/headers';
 import type { Lang } from '@/models';
-import { getDictionary } from '@/app/[locale]/dictionaries';
-import { Colors } from '@/utils/constants';
-import { getHost } from '.';
+import { getDictionary, toLang } from '@/app/[locale]/dictionaries';
+import {
+  Colors,
+  OG_IMAGE_SIZE,
+  OpenGraphLocales,
+  PagePaths,
+  RESOURCES_PUBLISHED,
+  SITE_NAME,
+  SITE_URL,
+  X_HANDLE,
+  type SitePage,
+} from '@/utils/constants';
+import { locales } from './localization.utils';
 
-interface PageProps<T = { locale: string }> {
-  params: Promise<T>;
+export interface LocaleProps {
+  params: Promise<{ locale: string }>;
 }
 
-export async function generateMetadata({
-  params,
-}: PageProps<{ locale: Lang }>): Promise<Metadata> {
-  const locale = (await params).locale;
+export const indexablePages: SitePage[] = [
+  'home',
+  'contact',
+  ...(RESOURCES_PUBLISHED ? (['resources'] as const) : []),
+];
+
+export const pageUrl = (locale: Lang, page: SitePage) =>
+  `${SITE_URL}/${locale}${PagePaths[page]}`;
+
+const localeRedirectUrl = (page: SitePage) => `${SITE_URL}${PagePaths[page]}`;
+
+export const languageAlternates = (page: SitePage) => ({
+  ...Object.fromEntries(
+    locales.map((locale) => [locale, pageUrl(locale, page)])
+  ),
+  'x-default': localeRedirectUrl(page),
+});
+
+export async function buildPageMetadata(
+  localeParam: string,
+  page: SitePage
+): Promise<Metadata> {
+  const locale = toLang(localeParam);
   const content = await getDictionary(locale);
-
-  const headersList = headers();
-  let pathname = (await headersList).get('x-pathname') || '';
-  pathname = pathname.replace(`/${locale}`, '').replace(/\//g, '');
-
-  let title, description;
-  try {
-    title = content.meta[pathname].title;
-    description = content.meta[pathname].description;
-  } catch {
-    title = content.meta.default.title;
-    description = content.meta.default.description;
-  }
+  const { title, description } = content.meta[page];
+  const url = pageUrl(locale, page);
+  // A page-level openGraph drops the opengraph-image file, so link it here.
+  const images = [
+    {
+      url: `/${locale}/opengraph-image`,
+      ...OG_IMAGE_SIZE,
+      alt: content.meta.ogImageAlt,
+      type: 'image/png',
+    },
+  ];
 
   return {
-    metadataBase: new URL(await getHost()),
     title,
     description,
+    alternates: { canonical: url, languages: languageAlternates(page) },
+    openGraph: {
+      type: 'website',
+      url,
+      siteName: SITE_NAME,
+      locale: OpenGraphLocales[locale],
+      alternateLocale: locales
+        .filter((other) => other !== locale)
+        .map((other) => OpenGraphLocales[other]),
+      title,
+      description,
+      images,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      site: X_HANDLE,
+      creator: X_HANDLE,
+      title,
+      description,
+      images,
+    },
   };
 }
+
+export const siteMetadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: SITE_NAME,
+  applicationName: SITE_NAME,
+};
 
 export const viewport: Viewport = {
   themeColor: [

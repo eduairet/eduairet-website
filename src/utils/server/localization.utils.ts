@@ -12,3 +12,5 @@ export const getLocale = (request: NextRequest) => {
   if (language.includes('es')) return locales[1];
   return defaultLocale;
 };
+
+export const generateLocaleParams = () => locales.map((locale) => ({ locale }));

@@ -1,11 +1,10 @@
 import { ReactNode } from 'react';
+import { preconnect } from 'react-dom';
 import localFont from 'next/font/local';
-import Script from 'next/script';
 import '@/styles/main.scss';
 import { Lang } from '@/models';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import StoreProvider from '@/store/StoreProvider';
-import MetaIcons from '@/components/metadata/MetaIcons';
 import MainWrapper from '@/components/wrappers/MainWrapper/MainWrapper';
 import BodyWrapper from '@/components/wrappers/BodyWrapper';
 import NavBar from '@/components/ui/Nav/NavBar/NavBar';
@@ -25,11 +24,19 @@ interface IProps {
   }>;
 }
 
-export { generateMetadata, viewport } from '@/utils/server';
+export {
+  generateLocaleParams as generateStaticParams,
+  siteMetadata as metadata,
+  viewport,
+} from '@/utils/server';
 
 export default async function RootLayout({ children, params }: IProps) {
   const locale = (await params).locale;
   const content = await getDictionary(locale);
+
+  // Font files need a CORS connection; the CSS @import does not.
+  preconnect('https://use.typekit.net', { crossOrigin: 'anonymous' });
+  preconnect('https://p.typekit.net');
 
   return (
     <html
@@ -39,12 +46,6 @@ export default async function RootLayout({ children, params }: IProps) {
     >
       <head>
         <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT} />
-        <Script
-          src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-          async
-          defer
-        />
-        <MetaIcons />
       </head>
       <StoreProvider>
         <BodyWrapper>

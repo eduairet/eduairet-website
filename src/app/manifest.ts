@@ -1,47 +1,32 @@
-import { MetadataRoute } from 'next';
-import { Colors } from '@/utils/constants';
+import type { MetadataRoute } from 'next';
+import { EnContent } from '@/models';
+import { Colors, SITE_NAME, SITE_SHORT_NAME } from '@/utils/constants';
+
+const icon = (size: number, purpose: 'any' | 'maskable') => ({
+  src: `/icon${purpose === 'maskable' ? '-maskable' : ''}-${size}x${size}.png`,
+  sizes: `${size}x${size}`,
+  type: 'image/png',
+  purpose,
+});
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "eat's portfolio",
-    short_name: 'eat',
-    description: 'Eduardo Aire Torres portfolio',
-    start_url: '/en',
+    id: '/',
+    name: SITE_NAME,
+    short_name: SITE_SHORT_NAME,
+    description: EnContent.meta.home.description,
+    lang: 'en',
+    dir: 'ltr',
+    start_url: '/',
+    scope: '/',
     display: 'standalone',
     background_color: Colors.black,
     theme_color: Colors.black,
     icons: [
-      {
-        src: '/favicon.ico',
-        sizes: '64x64',
-        type: 'image/x-icon',
-      },
-      {
-        src: '/icon-192x192.png',
-        sizes: '192x192',
-        type: 'image/png',
-      },
-      {
-        src: '/icon-196x196.png',
-        sizes: '196x196',
-        type: 'image/png',
-        purpose: 'maskable',
-      },
-      {
-        src: '/icon-256x256.png',
-        sizes: '256x256',
-        type: 'image/png',
-      },
-      {
-        src: '/icon-384x384.png',
-        sizes: '384x384',
-        type: 'image/png',
-      },
-      {
-        src: '/icon-512x512.png',
-        sizes: '512x512',
-        type: 'image/png',
-      },
+      icon(192, 'any'),
+      icon(512, 'any'),
+      icon(192, 'maskable'),
+      icon(512, 'maskable'),
     ],
   };
 }

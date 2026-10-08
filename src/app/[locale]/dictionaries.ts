@@ -1,5 +1,11 @@
 import { notFound } from 'next/navigation';
-import { Dictionaries, Dictionary, EnContent, EsContent } from '@/models';
+import {
+  Dictionaries,
+  Dictionary,
+  EnContent,
+  EsContent,
+  type Lang,
+} from '@/models';
 import { isLang } from '@/utils/server/localization.utils';
 
 const dictionaries: Dictionaries = {
@@ -9,7 +15,10 @@ const dictionaries: Dictionaries = {
 
 // Paths the proxy lets through (dotted files, /_next/*) can reach [locale] with
 // any segment, such as /wp-login.php; answer those with a 404, not a crash.
-export const getDictionary = async (locale: string) => {
+export const toLang = (locale: string): Lang => {
   if (!isLang(locale)) notFound();
-  return dictionaries[locale];
+  return locale;
 };
+
+export const getDictionary = async (locale: string) =>
+  dictionaries[toLang(locale)];
