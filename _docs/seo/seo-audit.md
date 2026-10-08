@@ -22,6 +22,15 @@ Every indexable page is prerendered with its metadata in `<head>`: a self-refere
 - 404: `/indoctrinated-hound`, `/36days-of-type-2019` (now 308 to eduairet.myportfolio.com).
 - Crawl stats, 90 days: 1,011 requests, 2.3% discovery, no 429s.
 
+## PageSpeed baseline (production, 2026-10-08, before this branch)
+
+| Page       | Perf | A11y | Best practices | SEO | LCP   | TBT       |
+| ---------- | ---- | ---- | -------------- | --- | ----- | --------- |
+| /en mobile | 27   | 100  | 96             | 100 | 9.3 s | 23,460 ms |
+| /es mobile | 39   | 100  | 96             | 100 | 9.2 s | 14,540 ms |
+
+Desktop runs time out (`RPC::DEADLINE_EXCEEDED`) on both pages. Best practices loses points to a reCAPTCHA console error, which this branch removes from the home pages.
+
 ## How to check
 
 On a production build:
