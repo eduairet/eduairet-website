@@ -4,12 +4,11 @@ export const SITE_URL = 'https://www.eduairet.com';
 export const SITE_NAME = 'Eduardo Aire Torres';
 export const SITE_SHORT_NAME = 'eat';
 export const PERSON_HANDLE = 'eduairet';
-export const X_HANDLE = '@eduairet';
+export const X_HANDLE = `@${PERSON_HANDLE}`;
 
-export const PROFILE_PHOTO = {
-  src: '/eduardo-aire-torres.webp',
-  width: 400,
-  height: 400,
+export const ProfilePhoto = {
+  full: '/eduardo-aire-torres.webp',
+  small: '/eduardo-aire-torres-112.webp',
 };
 
 export const OG_IMAGE_SIZE = { width: 1200, height: 630 };

@@ -1,8 +1,8 @@
 import { expect, test } from 'vitest';
 import {
-  buildNotFoundMetadata,
   buildPageMetadata,
   languageAlternates,
+  siteMetadata,
 } from '@/utils/server';
 import { generateMetadata as resourcesMetadata } from '@/app/[locale]/resources/page';
 
@@ -74,19 +74,18 @@ test('og and X images use the locale image with a localized alt', async () => {
   });
 });
 
-test('not-found metadata is noindex with no canonical or hreflang', async () => {
-  const metadata = await buildNotFoundMetadata('en');
-  expect(metadata.robots).toMatchObject({ index: false });
-  expect(metadata.alternates).toBeUndefined();
-  expect(metadata.title).toBe('Page not found | Eduardo Aire Torres');
+// 404s render with the layout's metadata; Next adds the noindex itself.
+test('layout metadata has no canonical, hreflang, or robots override', () => {
+  expect(siteMetadata.alternates).toBeUndefined();
+  expect(siteMetadata.robots).toBeUndefined();
+  expect(String(siteMetadata.metadataBase)).toBe(`${SITE}/`);
 });
 
-test('the unpublished resources page gets not-found metadata', async () => {
+test('the unpublished resources page adds no metadata of its own', async () => {
   const metadata = await resourcesMetadata({
     params: Promise.resolve({ locale: 'en' }),
   });
-  expect(metadata.robots).toMatchObject({ index: false });
-  expect(metadata.alternates).toBeUndefined();
+  expect(metadata).toEqual({});
 });
 
 test('unknown locales 404 instead of building metadata', async () => {

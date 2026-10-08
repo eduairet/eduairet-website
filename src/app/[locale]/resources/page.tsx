@@ -1,20 +1,15 @@
 import { notFound } from 'next/navigation';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import { RESOURCES_PUBLISHED } from '@/utils/constants';
-import {
-  buildNotFoundMetadata,
-  buildPageMetadata,
-  type LocaleParams,
-} from '@/utils/server';
+import { buildPageMetadata, type LocaleProps } from '@/utils/server';
 
-export async function generateMetadata({ params }: LocaleParams) {
-  const locale = (await params).locale;
+export async function generateMetadata({ params }: LocaleProps) {
   return RESOURCES_PUBLISHED
-    ? buildPageMetadata(locale, 'resources')
-    : buildNotFoundMetadata(locale);
+    ? buildPageMetadata((await params).locale, 'resources')
+    : {};
 }
 
-export default async function Resources({ params }: LocaleParams) {
+export default async function Resources({ params }: LocaleProps) {
   if (!RESOURCES_PUBLISHED) notFound();
 
   const locale = (await params).locale;

@@ -1,21 +1,23 @@
 import { Lang } from '@/models';
 
+export const PagePaths = {
+  home: '',
+  contact: '/contact',
+  resources: '/resources',
+};
+
+export type SitePage = keyof typeof PagePaths;
+
 export const PageUrls = {
   locale: {
     en: '/en',
     es: '/es',
   },
-  home: '/',
   home_(locale: Lang) {
-    return `/${locale}`;
+    return `/${locale}${PagePaths.home}`;
   },
-  contact: '/contact',
   contact_(locale: Lang) {
-    return `/${locale}/contact`;
-  },
-  resources: '/resources',
-  resources_(locale: Lang) {
-    return `/${locale}/resources`;
+    return `/${locale}${PagePaths.contact}`;
   },
 };
 

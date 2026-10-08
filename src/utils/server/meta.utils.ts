@@ -1,51 +1,45 @@
 import type { Metadata, Viewport } from 'next';
-import { notFound } from 'next/navigation';
 import type { Lang } from '@/models';
-import { getDictionary } from '@/app/[locale]/dictionaries';
+import { getDictionary, toLang } from '@/app/[locale]/dictionaries';
 import {
   Colors,
   OG_IMAGE_SIZE,
   OpenGraphLocales,
+  PagePaths,
   RESOURCES_PUBLISHED,
   SITE_NAME,
   SITE_URL,
   X_HANDLE,
+  type SitePage,
 } from '@/utils/constants';
-import { isLang, locales } from './localization.utils';
+import { locales } from './localization.utils';
 
-export interface LocaleParams {
+export interface LocaleProps {
   params: Promise<{ locale: string }>;
 }
 
-const pagePaths = {
-  home: '',
-  contact: '/contact',
-  resources: '/resources',
-};
-
-export type SitePage = keyof typeof pagePaths;
-
-export const indexablePages: SitePage[] = RESOURCES_PUBLISHED
-  ? ['home', 'contact', 'resources']
-  : ['home', 'contact'];
+export const indexablePages: SitePage[] = [
+  'home',
+  'contact',
+  ...(RESOURCES_PUBLISHED ? (['resources'] as const) : []),
+];
 
 export const pageUrl = (locale: Lang, page: SitePage) =>
-  `${SITE_URL}/${locale}${pagePaths[page]}`;
+  `${SITE_URL}/${locale}${PagePaths[page]}`;
 
-// x-default is the unprefixed path, which the proxy redirects by Accept-Language.
-// The home one has no trailing slash because Next writes the site root that way.
+// The unprefixed path redirects by Accept-Language, which is what x-default is for.
 export const languageAlternates = (page: SitePage) => ({
   ...Object.fromEntries(
     locales.map((locale) => [locale, pageUrl(locale, page)])
   ),
-  'x-default': `${SITE_URL}${pagePaths[page]}`,
+  'x-default': `${SITE_URL}${PagePaths[page]}`,
 });
 
 export async function buildPageMetadata(
-  locale: string,
+  localeParam: string,
   page: SitePage
 ): Promise<Metadata> {
-  if (!isLang(locale)) notFound();
+  const locale = toLang(localeParam);
   const content = await getDictionary(locale);
   const { title, description } = content.meta[page];
   const url = pageUrl(locale, page);
@@ -83,15 +77,6 @@ export async function buildPageMetadata(
       description,
       images,
     },
-  };
-}
-
-export async function buildNotFoundMetadata(locale: string): Promise<Metadata> {
-  const content = await getDictionary(locale);
-  return {
-    title: content.meta.notFound.title,
-    description: content.meta.notFound.description,
-    robots: { index: false, follow: true },
   };
 }
 

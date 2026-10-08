@@ -4,14 +4,14 @@ import JsonLd from '@/components/metadata/JsonLd';
 import {
   buildHomeStructuredData,
   buildPageMetadata,
-  type LocaleParams,
+  type LocaleProps,
 } from '@/utils/server';
 
-export async function generateMetadata({ params }: LocaleParams) {
+export async function generateMetadata({ params }: LocaleProps) {
   return buildPageMetadata((await params).locale, 'home');
 }
 
-export default async function Home({ params }: LocaleParams) {
+export default async function Home({ params }: LocaleProps) {
   const locale = (await params).locale;
   const content = await getDictionary(locale);
   return (

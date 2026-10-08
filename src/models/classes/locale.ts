@@ -27,7 +27,7 @@ interface Section {
   items: SectionEntry[];
 }
 
-export interface PageMeta {
+interface PageMeta {
   title: string;
   description: string;
 }
