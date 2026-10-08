@@ -64,6 +64,18 @@ describe('POST /api/contact', () => {
     expect(sendEmail).toHaveBeenCalledTimes(1);
   });
 
+  test('answers a malformed body with 400', async () => {
+    const res = await POST(
+      new Request('https://www.eduairet.com/api/contact', {
+        method: 'POST',
+        body: 'not json',
+      })
+    );
+
+    expect(res.status).toBe(400);
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   test.each([
     ['a failed check', { success: false }],
     ['a low score', { score: 0.1 }],
