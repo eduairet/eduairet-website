@@ -8,7 +8,8 @@ export async function proxy(request: NextRequest) {
 
   if (
     pathname.startsWith('/_next') ||
-    pathname.includes('/api') ||
+    pathname === '/api' ||
+    pathname.startsWith('/api/') ||
     PUBLIC_FILE.test(pathname)
   ) {
     return;

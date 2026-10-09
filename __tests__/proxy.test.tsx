@@ -32,10 +32,20 @@ test('Proxy - keeps the path when it adds the locale', async () => {
   expect(res?.headers.get('location')).toBe('http://localhost:3000/es/contact');
 });
 
-test.each(['/en', '/es/contact', '/robots.txt', '/api/contact'])(
+test.each(['/en', '/es/contact', '/robots.txt', '/api', '/api/contact'])(
   'Proxy - lets %s through untouched',
   async (path) => {
     const res = await proxy(new NextRequest(`http://localhost:3000${path}`));
     expect(res).toBeUndefined();
+  }
+);
+
+test.each(['/apiary', '/rapid/api'])(
+  'Proxy - adds the locale to %s, which only looks like the API',
+  async (path) => {
+    const res = await proxy(new NextRequest(`http://localhost:3000${path}`));
+    expect(res?.headers.get('location')).toBe(
+      `http://localhost:3000/en${path}`
+    );
   }
 );
