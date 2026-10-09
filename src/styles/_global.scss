@@ -72,7 +72,8 @@ body {
 }
 
 body {
-  width: 100vw;
+  // 100%, not 100vw: vw includes the scrollbar and would scroll sideways.
+  width: 100%;
   overflow-x: clip;
   // Lets the particle background (z-index -1) sit above the body background.
   isolation: isolate;
@@ -88,7 +89,7 @@ body {
 
 header {
   height: $header-height;
-  width: 100vw;
+  width: 100%;
 }
 
 h1,

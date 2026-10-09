@@ -30,8 +30,10 @@
     padding: 1rem 1.5rem;
   }
 
+  // In the page flow here, so 100vw would add the scrollbar's width.
   @media (height <= $breakpoint-short-height) {
     position: static;
+    width: 100%;
   }
 
   .section + .section {

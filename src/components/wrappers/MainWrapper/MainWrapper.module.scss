@@ -3,7 +3,7 @@
 .main {
   // Fills the screen below the header, so short pages reach the footer.
   flex-grow: 1;
-  width: 100vw;
+  width: 100%;
   max-width: $max-width;
   display: flex;
   flex-direction: column;

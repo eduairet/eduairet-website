@@ -21,6 +21,7 @@
 - A credit line closes every page. Its links are underlined and say they open in a new tab.
 - Card tech icons wrap under the text. Tools with no usable logo are listed by name, at 7.69:1 contrast or more.
 - On phones too short to fit it above the footer, the hero scroll arrow is hidden.
+- No page scrolls sideways at any tested size, 320 to 1920 wide (1.4.10). Before, desktop pages scrolled sideways by the scrollbar's width, and some phone layouts were wider than the screen.
 - Evidence: axe 4.11.0 found 0 violations in 48 runs (4 pages, both themes, menus closed and open, 1280 and 375 wide). A Tab walk forward and back on /en, /es and /en/contact at 4 sizes found no focus stop entirely hidden (772 stops). With reduced motion, nothing new moves.
 
 Severity counts as found on 2026-10-05:

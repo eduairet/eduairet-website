@@ -8,14 +8,17 @@
   padding-block: clamp(3rem, 8vw, 5rem);
 
   // Top and bottom lines run the full screen width, past the content column.
+  // The shadow paints them out to the edges without adding scrollable width.
   &::before,
   &::after {
     content: '';
     position: absolute;
-    left: 50%;
-    width: 100vw;
-    transform: translateX(-50%);
-    border-top: 2px solid var(--foreground);
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--foreground);
+    box-shadow: 0 0 0 100vmax var(--foreground);
+    clip-path: inset(0 -100vmax);
   }
 
   &::before {
