@@ -1,5 +1,6 @@
 import { expect, test } from 'vitest';
 import { GET } from '@/app/llms.txt/route';
+import { Dictionary, EnContent } from '@/models';
 
 test('llms.txt is Markdown with a title, a summary and every indexable page', async () => {
   const res = GET();
@@ -12,6 +13,7 @@ test('llms.txt is Markdown with a title, a summary and every indexable page', as
   expect(body.length).toBeGreaterThanOrEqual(50);
 
   expect(body.startsWith('# Eduardo Aire Torres\n')).toBe(true);
+  expect(body).toContain(new Dictionary(EnContent).about.text);
   for (const url of [
     'https://www.eduairet.com/en',
     'https://www.eduairet.com/es',

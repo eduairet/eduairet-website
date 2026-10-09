@@ -8,7 +8,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
-import { Dictionary, EnContent } from '@/models';
+import { Dictionary, EnContent, EsContent } from '@/models';
 
 import ContactForm from '@/app/[locale]/contact/components/ContactForm/ContactForm';
 
@@ -85,6 +85,32 @@ describe('ContactForm reCAPTCHA', () => {
 });
 
 describe('ContactForm accessibility', () => {
+  test.each([
+    ['en', EnContent, 'Please fill in all the fields.'],
+    ['es', EsContent, 'Llena todos los campos, por favor.'],
+  ] as const)(
+    '%s asks for every field once, before the fields',
+    (locale, data, instructions) => {
+      render(
+        <LanguageProvider locale={locale} content={new Dictionary(data)}>
+          <ContactForm />
+        </LanguageProvider>
+      );
+      const fields = screen.getAllByRole('textbox');
+      const instruction = screen.getByText(instructions);
+
+      expect(fields).toHaveLength(3);
+      expect(
+        instruction.compareDocumentPosition(fields[0]) &
+          Node.DOCUMENT_POSITION_FOLLOWING
+      ).toBeTruthy();
+      fields.forEach((field) =>
+        expect(field.hasAttribute('required')).toBe(true)
+      );
+      expect(document.querySelector('form')?.textContent).not.toContain('*');
+    }
+  );
+
   test('fields are named by their labels and linked to their hints', () => {
     renderForm();
     const name = screen.getByRole('textbox', { name: 'Name' });
