@@ -27,28 +27,8 @@ $border: 2px;
     @include merge-transitions((fill));
   }
 
-  .photo {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    opacity: 0;
-    @include merge-transitions((opacity));
-
-    @media (prefers-reduced-motion: reduce) {
-      transition: none;
-    }
-  }
-
-  &:focus-visible,
-  &.revealed {
+  &:focus-visible {
     border-color: $accent;
-
-    .photo {
-      opacity: 1;
-    }
   }
 
   @media (hover: hover) {
@@ -57,10 +37,6 @@ $border: 2px;
 
       & svg {
         fill: $accent;
-      }
-
-      .photo {
-        opacity: 1;
       }
     }
   }

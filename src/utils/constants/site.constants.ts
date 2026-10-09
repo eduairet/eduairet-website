@@ -6,10 +6,7 @@ export const SITE_SHORT_NAME = 'eat';
 export const PERSON_HANDLE = 'eduairet';
 export const X_HANDLE = `@${PERSON_HANDLE}`;
 
-export const ProfilePhoto = {
-  full: '/eduardo-aire-torres.webp',
-  small: '/eduardo-aire-torres-112.webp',
-};
+export const PROFILE_PHOTO = '/eduardo-aire-torres.webp';
 
 export const OG_IMAGE_SIZE = { width: 1200, height: 630 };
 

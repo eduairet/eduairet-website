@@ -51,9 +51,13 @@
   "home": {
     "subtitle": "Ingeniero de Diseño · Ingeniero de Producto",
     "summary": "Seis años creando aplicaciones web de principio a fin, sobre más de 10 años en diseño y tipografía.",
-    "scrollCue": "Ver mi experiencia",
+    "scrollCue": "Conoce más sobre mí",
     "techStack": "Tecnologías",
     "newTab": "(se abre en otra pestaña)"
+  },
+  "about": {
+    "title": "Sobre mí",
+    "text": "Soy ingeniero de diseño. Empecé en el diseño gráfico y la tipografía, y después pasé a construir aplicaciones web, desde la interfaz hasta la base de datos. Me sigue importando tanto cómo se siente un producto como cómo funciona. Ahí es donde más ayudo: llevo las ideas de diseño al código sin perder los detalles y tomo decisiones de producto pensando en las personas. En mis ratos libres diseño tipografías y pruebo ideas nuevas."
   },
   "experience": {
     "title": "Experiencia",

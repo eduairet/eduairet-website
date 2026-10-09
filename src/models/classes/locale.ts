@@ -88,6 +88,10 @@ export class Dictionary {
     techStack: string;
     newTab: string;
   };
+  about: {
+    title: string;
+    text: string;
+  };
   experience: Section;
   projects: Section;
   education: Section;
@@ -166,6 +170,10 @@ export class Dictionary {
       scrollCue: data.home?.scrollCue || '',
       techStack: data.home?.techStack || '',
       newTab: data.home?.newTab || '',
+    };
+    this.about = {
+      title: data.about?.title || '',
+      text: data.about?.text || '',
     };
     this.experience = toSection(data.experience);
     this.projects = toSection(data.projects);

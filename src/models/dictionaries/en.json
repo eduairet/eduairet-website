@@ -51,9 +51,13 @@
   "home": {
     "subtitle": "Design Engineer · Product Engineer",
     "summary": "Six years building web applications end to end, on over ten years of design and typography.",
-    "scrollCue": "See my experience",
+    "scrollCue": "See more about me",
     "techStack": "Tech stack",
     "newTab": "(opens in a new tab)"
+  },
+  "about": {
+    "title": "About",
+    "text": "I'm a design engineer. I started out in graphic design and typography, and later moved into building web apps, from the interface down to the database. I still care as much about how a product feels as how it works. That's where I help most: I turn design ideas into code without losing the details, and I make product choices with people in mind. On the side, I design typefaces and try out new ideas."
   },
   "experience": {
     "title": "Experience",

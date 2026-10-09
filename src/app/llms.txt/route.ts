@@ -19,7 +19,7 @@ export function GET() {
     '',
     `> ${en.meta.home.description}`,
     '',
-    en.home.summary,
+    en.about.text,
     '',
     '## Pages',
     '',
