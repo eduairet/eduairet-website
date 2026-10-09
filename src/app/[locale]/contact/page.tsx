@@ -1,4 +1,3 @@
-import Script from 'next/script';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import ContactForm from '@/app/[locale]/contact/components/ContactForm/ContactForm';
 import SectionWrapper from '@/components/wrappers/SectionWrapper/SectionWrapper';
@@ -13,9 +12,6 @@ export default async function Contact({ params }: LocaleProps) {
   const content = await getDictionary(locale);
   return (
     <SectionWrapper>
-      <Script
-        src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-      />
       <header>
         <h1>{content.contact.title}</h1>
       </header>

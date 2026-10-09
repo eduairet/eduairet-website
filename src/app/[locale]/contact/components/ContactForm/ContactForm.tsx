@@ -57,7 +57,7 @@ const fieldTypes: Record<ContactFormField, TextInputType> = {
 
 function ContactForm() {
   const { locale, content } = useContext(LanguageContext);
-  const { getRecaptchaToken } = useRecaptcha();
+  const { getRecaptchaToken, loadRecaptcha } = useRecaptcha();
   const [isSending, setIsSending] = useState(false);
   const [formError, setFormError] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
@@ -72,6 +72,9 @@ function ContactForm() {
           .replace('{min}', String(min))
           .replace('{max}', String(max))
       : undefined;
+
+  // A failed load shows up as the submit error instead.
+  const preloadRecaptcha = () => loadRecaptcha().catch(() => {});
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -165,6 +168,7 @@ function ContactForm() {
   return (
     <FormWrapper
       onSubmit={handleSubmit}
+      onFocus={preloadRecaptcha}
       error={formError}
       submitMessage={submitMessage}
     >
