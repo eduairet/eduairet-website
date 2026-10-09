@@ -1,3 +1,5 @@
+@use '@/styles/abstracts/index' as *;
+
 .credits {
   max-width: 40rem;
   margin: 2rem auto 0;
@@ -6,9 +8,7 @@
   color: var(--foreground);
 
   a {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.2em;
+    @extend %text-link;
 
     &::before {
       content: none;

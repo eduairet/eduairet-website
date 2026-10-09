@@ -1,3 +1,5 @@
+@use '@/styles/abstracts/index' as *;
+
 .submit {
   margin-top: 1rem;
 }
@@ -14,9 +16,7 @@
   margin-top: 1.5rem;
 
   a {
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.2em;
+    @extend %text-link;
 
     &::before {
       content: none;

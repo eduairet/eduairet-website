@@ -45,7 +45,6 @@
 }
 
 .card {
-  position: relative;
   width: 100%;
   min-height: clamp(16rem, 42vh, 22rem);
   padding: clamp(1.5rem, 4vw, 2.75rem);
@@ -132,14 +131,10 @@
   }
 }
 
-// Links in cards are underlined so they don't rely on lightness alone, and
-// keep their line's weight instead of the global link weight.
+// Links in cards are underlined so they don't rely on lightness alone.
 .roleTitle a,
 .company a {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
-  font-variation-settings: inherit;
+  @extend %text-link;
 }
 
 .description {
@@ -156,12 +151,10 @@
   gap: 0.5rem;
   margin-top: 1.5rem;
   list-style: none;
-  color: inherit;
 }
 
 .tools {
   text-align: left;
-  color: inherit;
   font-size: 0.875rem;
   line-height: 1.5;
   margin-top: 0.75rem;
