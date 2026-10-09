@@ -1,6 +1,8 @@
 @use '@/styles/abstracts/index' as *;
 
 .main {
+  // Fills the screen below the header, so short pages reach the footer.
+  flex-grow: 1;
   width: 100vw;
   max-width: $max-width;
   display: flex;
