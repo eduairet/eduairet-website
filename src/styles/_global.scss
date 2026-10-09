@@ -7,6 +7,7 @@
   --background-00: #{get-color($black, 0)};
   --foreground: #{$white};
   --accent-text: #{$accent};
+  --valid: #{$valid};
 }
 
 * {
@@ -71,6 +72,7 @@ body {
     --background-00: #{get-color($white, 0)};
     --foreground: #{$black};
     --accent-text: #{$accent-on-light};
+    --valid: #{$valid-on-light};
   }
 }
 

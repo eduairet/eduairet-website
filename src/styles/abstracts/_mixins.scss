@@ -1,9 +1,9 @@
 @use 'variables' as *;
 @use 'sass:list';
 
-@mixin accessibility-outline {
-  outline: 3px solid $accent;
-  outline-offset: 3px;
+@mixin accessibility-outline($color: $accent, $offset: 3px) {
+  outline: 3px solid $color;
+  outline-offset: $offset;
 }
 
 @mixin merge-transitions(
