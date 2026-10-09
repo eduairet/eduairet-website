@@ -1,8 +1,8 @@
 @use 'variables' as *;
 @use 'sass:list';
 
-@mixin accessibility-outline($color: $accent, $offset: 3px) {
-  outline: 3px solid $color;
+@mixin accessibility-outline($color: $accent, $offset: 3px, $width: 3px) {
+  outline: $width solid $color;
   outline-offset: $offset;
 }
 
