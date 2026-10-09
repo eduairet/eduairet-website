@@ -132,12 +132,14 @@
   }
 }
 
-// Links in cards are underlined so they don't rely on lightness alone.
+// Links in cards are underlined so they don't rely on lightness alone, and
+// keep their line's weight instead of the global link weight.
 .roleTitle a,
 .company a {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
+  font-variation-settings: inherit;
 }
 
 .description {
