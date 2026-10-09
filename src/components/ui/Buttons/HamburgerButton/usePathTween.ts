@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import { cubicBezier, lerp } from '@/utils';
 
 // framer-motion's default tween for non-transform values.
@@ -12,10 +12,12 @@ const numbersIn = (d: string) => (d.match(NUMBER) ?? []).map(Number);
 const round = (n?: number) =>
   n === undefined ? undefined : Math.round(n * 1e5) / 1e5;
 
-// Morphs an SVG path to `d` from wherever it is now. Paths must share the
-// same commands, so only their numbers change.
-export default function usePathTween(d: string) {
-  const ref = useRef<SVGPathElement>(null);
+// Morphs an SVG path to `d` from wherever it is now, and returns the `d`
+// to render. Paths must share the same commands, so only their numbers change.
+export default function usePathTween(
+  ref: RefObject<SVGPathElement | null>,
+  d: string
+) {
   // React renders the first path only, so it never overwrites a frame.
   const [initialD] = useState(d);
   const current = useRef(numbersIn(d));
@@ -43,7 +45,7 @@ export default function usePathTween(d: string) {
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [d]);
+  }, [ref, d]);
 
-  return { ref, d: initialD };
+  return initialD;
 }

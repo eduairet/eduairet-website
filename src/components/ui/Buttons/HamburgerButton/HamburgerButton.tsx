@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, useContext } from 'react';
+import { memo, useContext, useRef } from 'react';
 import styles from './HamburgerButton.module.scss';
 import IconButtonScreenTitle from '@/components/ui/Buttons/IconButton/IconButtonScreenTitle';
 import { LanguageContext } from '@/store/LanguageProvider';
@@ -19,8 +19,14 @@ interface IProps {
 
 function HamburgerButton({ isActive, controls, onClick }: IProps) {
   const { content } = useContext(LanguageContext);
-  const top = usePathTween(isActive ? paths.top.open : paths.top.closed);
-  const bottom = usePathTween(
+  const topRef = useRef<SVGPathElement>(null);
+  const bottomRef = useRef<SVGPathElement>(null);
+  const topD = usePathTween(
+    topRef,
+    isActive ? paths.top.open : paths.top.closed
+  );
+  const bottomD = usePathTween(
+    bottomRef,
     isActive ? paths.bottom.open : paths.bottom.closed
   );
 
@@ -41,9 +47,9 @@ function HamburgerButton({ isActive, controls, onClick }: IProps) {
         xmlSpace='preserve'
         aria-hidden
       >
-        <path ref={top.ref} d={top.d} />
+        <path ref={topRef} d={topD} />
         <path className={styles.middle} d='M5 15L25 15' />
-        <path ref={bottom.ref} d={bottom.d} />
+        <path ref={bottomRef} d={bottomD} />
       </svg>
       <IconButtonScreenTitle title={content.nav.menu} />
     </button>

@@ -3,8 +3,7 @@
 import { RefObject, useEffect, useState } from 'react';
 
 // True while the element intersects the viewport; checked each time
-// `amount` of it crosses the edge. Without IntersectionObserver the element
-// simply counts as visible.
+// `amount` of it crosses the edge.
 export default function useInView(
   ref: RefObject<Element | null>,
   amount: number
@@ -14,10 +13,6 @@ export default function useInView(
   useEffect(() => {
     const element = ref.current;
     if (!element) return;
-    if (typeof IntersectionObserver === 'undefined') {
-      setInView(true);
-      return;
-    }
     const observer = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
       { threshold: amount }

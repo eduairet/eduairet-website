@@ -149,7 +149,7 @@ beforeEach(async () => {
   })) as unknown as typeof window.matchMedia;
   vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(((
     type: string,
-    options?: WebGLContextAttributes
+    options?: { failIfMajorPerformanceCaveat?: boolean }
   ) => {
     if (type !== 'webgl2') return { fillText: vi.fn() };
     if (options?.failIfMajorPerformanceCaveat && majorPerformanceCaveat)
@@ -159,9 +159,7 @@ beforeEach(async () => {
       getParameter: (name: number) =>
         name === 0x1f01 ? 'WebKit WebGL' : webglRenderer,
       getExtension: (name: string) =>
-        ['EXT_color_buffer_float', 'WEBGL_debug_renderer_info'].includes(
-          name
-        )
+        ['EXT_color_buffer_float', 'WEBGL_debug_renderer_info'].includes(name)
           ? { UNMASKED_RENDERER_WEBGL: 0x9246 }
           : null,
     };
