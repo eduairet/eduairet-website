@@ -27,6 +27,11 @@
 
   > a {
     align-self: center;
+
+    // No room for the scroll cue above the fixed footer.
+    @media (width < $breakpoint-md) and (height > $breakpoint-short-height) and (height < $breakpoint-short-phone-height) {
+      display: none;
+    }
   }
 }
 
