@@ -7,7 +7,7 @@ My portfolio, in English and Spanish: [www.eduairet.com](https://www.eduairet.co
 
 ## Stack
 
-Next.js 16 (App Router), React 19, TypeScript, SCSS modules, framer-motion, and three.js. GitHub Actions build it and deploy it to Vercel.
+Next.js 16 (App Router), React 19, TypeScript, SCSS modules, and three.js. GitHub Actions build it and deploy it to Vercel.
 
 ## Run it
 

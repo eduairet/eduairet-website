@@ -12,7 +12,16 @@
 
 **Update (2026-10-08, branch `perf/lighthouse`): no criterion changes.** The particle background now starts on the first scroll, pointer or key input and stays off with software WebGL; with reduced motion it still draws one still frame. Pages no longer fade in, the theme is set before the first paint, and the card, theme and menu animations moved from framer-motion to CSS with the same timing and the same reduced-motion behavior. axe: 0 violations on all pages and the 404, both themes, menus open and closed.
 
-**Update (2026-10-09, branch `feat/ui-polish`): no criterion changes.** Section titles are sticky outlined pills. From 768px up they dock in the header; below that they sit under it, so the open menus stay on top. The photo left the logo for a new About section. The form asks for every field once, with no asterisks (F-17). Field focus is one ring in the border's color (F-04). A credit line closes every page; its links are underlined and say they open in a new tab. Card tech icons now wrap under the text, and tools with no usable logo are listed by name (lowest pixel-sampled contrast 7.69:1). Evidence: axe 4.11.0, 0 violations in 48 runs (4 pages, both themes, menus closed and open, 1280 and 375 wide). A Tab walk forward and back on /en, /es and /en/contact at 4 sizes found no focus stop entirely hidden (508 stops). With reduced motion nothing new moves.
+**Update (2026-10-09, branch `feat/ui-polish`): no criterion changes.**
+
+- Section titles are sticky outlined pills. From 768px up they dock in the header; below that they sit under it, so the open menus stay on top.
+- The photo moved from the logo to a new About section.
+- The form asks for every field once, with no asterisks (F-17).
+- Field focus is one ring in the border's color (F-04).
+- A credit line closes every page. Its links are underlined and say they open in a new tab.
+- Card tech icons wrap under the text. Tools with no usable logo are listed by name, at 7.69:1 contrast or more.
+- On phones too short to fit it above the footer, the hero scroll arrow is hidden.
+- Evidence: axe 4.11.0 found 0 violations in 48 runs (4 pages, both themes, menus closed and open, 1280 and 375 wide). A Tab walk forward and back on /en, /es and /en/contact at 4 sizes found no focus stop entirely hidden (772 stops). With reduced motion, nothing new moves.
 
 Severity counts as found on 2026-10-05:
 

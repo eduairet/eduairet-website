@@ -62,12 +62,16 @@ All pages: Accessibility, Best Practices and SEO 100; axe 0 violations in both t
 
 ## After branch `feat/ui-polish` (local, production build, 2026-10-09)
 
-GPU setup below, median of 3, `main` → branch. The LCP element did not change (the hero summary; the subtitle on /es mobile), and CLS stayed the same.
+GPU setup below, median of 3, `main` → branch, both measured in one Chrome session after the branch's last change.
 
-| Page | Mobile  | Desktop   | Mobile LCP  | CLS   |
-| ---- | ------- | --------- | ----------- | ----- |
-| /en  | 94 → 95 | 100 → 100 | 2.5 → 2.3 s | 0.002 |
-| /es  | 95 → 95 | 100 → 100 | 2.3 → 2.3 s | 0.002 |
+| Page | Mobile  | Desktop   | Mobile LCP  | Mobile CLS |
+| ---- | ------- | --------- | ----------- | ---------- |
+| /en  | 99 → 99 | 100 → 100 | 1.8 → 1.9 s | 0.002 → 0  |
+| /es  | 95 → 99 | 100 → 100 | 2.5 → 1.9 s | 0 → 0.008  |
+
+- The LCP element did not change: the hero summary, or the subtitle on /es mobile.
+- Mobile scores vary by run (`main` /es mobile: 99, 84, 95).
+- /es mobile CLS was 0.008 in all three branch runs, from the fixed footer. It stays under 0.01. In Chrome at the same size and throttling, the branch shows no layout shift, so the cause is still open.
 
 ## How to re-measure
 
