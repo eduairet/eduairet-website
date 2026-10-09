@@ -1,5 +1,29 @@
 @use 'abstracts/index' as *;
 
+// Arial scaled to Degular's width and line metrics, so text keeps its place
+// when the web font arrives. Bold and regular differ, so each has its own
+// scale; the overrides are Degular's ascent and descent divided by it.
+@font-face {
+  font-family: degular-fallback;
+  src: local('Arial'), local('ArialMT'), local('Helvetica');
+  font-weight: 100 599;
+  size-adjust: 90.5%;
+  ascent-override: 102.43%;
+  descent-override: 26.19%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: degular-fallback;
+  src:
+    local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Bold');
+  font-weight: 600 900;
+  size-adjust: 82.5%;
+  ascent-override: 112.36%;
+  descent-override: 28.73%;
+  line-gap-override: 0%;
+}
+
 :root {
   --background: #{$black};
   --background-80: #{get-color($black, 0.8)};
@@ -32,7 +56,7 @@ html {
   }
 
   * {
-    font-family: degular-variable, sans-serif;
+    font-family: degular-variable, degular-fallback, sans-serif;
     text-align: center;
     font-feature-settings: 'onum';
     @include degular($wght: 400, $opsz: 16);
