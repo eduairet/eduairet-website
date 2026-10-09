@@ -33,6 +33,7 @@ const ICON_EXPORTS: Record<string, string> = {
   sentry: 'siSentry',
   claudecode: 'siClaudecode',
   netlify: 'siNetlify',
+  vercel: 'siVercel',
 };
 
 // Listed by name: their owners don't allow logo use without permission.
