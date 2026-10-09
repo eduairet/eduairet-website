@@ -4,6 +4,7 @@ import { LanguageProvider } from '@/store/LanguageProvider';
 import ThemeButton from '@/components/ui/Buttons/ThemeButton/ThemeButton';
 import HomeSubtitle from '@/app/[locale]/components/HomeSubtitle/HomeSubtitle';
 import Spinner from '@/components/ui/Spinner/Spinner';
+import { THEME_INIT_SCRIPT } from '@/utils/constants';
 
 vi.mock('next/navigation', () => ({
   useParams: () => ({ locale: 'en' }),
@@ -32,6 +33,27 @@ describe('Theme toggle', () => {
       screen.getByRole('button', { name: 'Switch to dark theme' })
     ).toBeTruthy();
     expect(document.body.getAttribute('data-theme')).toBe('light');
+  });
+});
+
+describe('Theme before first paint', () => {
+  const runScript = (prefersLight: boolean) => {
+    window.matchMedia = vi.fn(() => ({
+      matches: prefersLight,
+    })) as unknown as typeof window.matchMedia;
+    document.body.removeAttribute('data-theme');
+    new Function(THEME_INIT_SCRIPT)();
+    return document.body.getAttribute('data-theme');
+  };
+
+  test('uses the saved theme', () => {
+    localStorage.setItem('theme', 'light');
+    expect(runScript(false)).toBe('light');
+  });
+
+  test('falls back to the OS preference', () => {
+    expect(runScript(true)).toBe('light');
+    expect(runScript(false)).toBe('dark');
   });
 });
 
