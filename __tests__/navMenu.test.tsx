@@ -3,17 +3,20 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import StoreProvider from '@/store/StoreProvider';
 import NavMainMenu from '@/components/ui/Nav/NavMainMenu';
 import NavLangMenu from '@/components/ui/Nav/NavLangMenu';
+import { Dictionary, EnContent, EsContent, type Lang } from '@/models';
 
 const nav = vi.hoisted(() => ({ locale: 'en', pathname: '/en' }));
 
 vi.mock('next/navigation', () => ({
-  useParams: () => ({ locale: nav.locale }),
   usePathname: () => nav.pathname,
 }));
 
 const renderMenus = () =>
   render(
-    <StoreProvider>
+    <StoreProvider
+      locale={nav.locale as Lang}
+      content={new Dictionary(nav.locale === 'es' ? EsContent : EnContent)}
+    >
       <nav>
         <NavMainMenu />
         <NavLangMenu />

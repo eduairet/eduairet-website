@@ -1,0 +1,46 @@
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'abstracts/index' as *;
+
+$ascent: map.get($degular-metrics, ascent);
+$descent: map.get($degular-metrics, descent);
+
+@mixin fallback-face($family, $fonts, $weight, $scale) {
+  $src: ();
+  @each $font in $fonts {
+    $src: list.append($src, local($font), comma);
+  }
+  @font-face {
+    font-family: $family;
+    src: $src;
+    font-weight: $weight;
+    size-adjust: math.percentage($scale);
+    // Divided by the scale, because size-adjust also scales the overrides.
+    ascent-override: math.percentage(math.div($ascent, $scale));
+    descent-override: math.percentage(math.div($descent, $scale));
+    line-gap-override: 0%;
+  }
+}
+
+@each $name, $fallback in $degular-fallbacks {
+  $scales: map.get($fallback, scales);
+  @include fallback-face(
+    'degular-fallback-#{$name}',
+    map.get($fallback, regular),
+    100 599,
+    map.get($scales, regular)
+  );
+  @include fallback-face(
+    'degular-fallback-#{$name}',
+    map.get($fallback, bold),
+    600 900,
+    map.get($scales, bold)
+  );
+  @include fallback-face(
+    'degular-title-fallback-#{$name}',
+    map.get($fallback, bold),
+    600 900,
+    map.get($scales, title)
+  );
+}

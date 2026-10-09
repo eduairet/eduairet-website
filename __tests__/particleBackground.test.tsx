@@ -1,7 +1,6 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { act, cleanup, render } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
-import ParticleBackground from '@/components/art/ParticleBackground/ParticleBackground';
 import { MAX_LIFE } from '@/components/art/ParticleBackground/particleShaders';
 
 // jsdom has no WebGL, so three.js is stubbed.
@@ -122,13 +121,26 @@ vi.mock('three/addons/misc/GPUComputationRenderer.js', () => ({
 }));
 
 let reducedMotion = false;
+let webglRenderer = 'ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Direct3D11)';
+let majorPerformanceCaveat = false;
+// The component keeps module state (visitor seen, renderer probed), so each
+// test gets a fresh copy.
+let ParticleBackground: typeof import('@/components/art/ParticleBackground/ParticleBackground').default;
 
-beforeEach(() => {
+const visit = () => act(() => window.dispatchEvent(new Event('scroll')));
+
+beforeEach(async () => {
+  vi.resetModules();
+  ParticleBackground = (
+    await import('@/components/art/ParticleBackground/ParticleBackground')
+  ).default;
   vi.useFakeTimers();
   three.renderers.length = 0;
   three.computes.length = 0;
   three.onRenderer = null;
   reducedMotion = false;
+  webglRenderer = 'ANGLE (NVIDIA, NVIDIA GeForce RTX 4060 Direct3D11)';
+  majorPerformanceCaveat = false;
   // jsdom has no requestIdleCallback, matchMedia or canvas contexts.
   window.matchMedia = vi.fn(() => ({
     matches: reducedMotion,
@@ -136,14 +148,22 @@ beforeEach(() => {
     removeEventListener: vi.fn(),
   })) as unknown as typeof window.matchMedia;
   vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(((
-    type: string
-  ) =>
-    type === 'webgl2'
-      ? {
-          getExtension: (name: string) =>
-            name === 'EXT_color_buffer_float' ? {} : null,
-        }
-      : { fillText: vi.fn() }) as unknown as HTMLCanvasElement['getContext']);
+    type: string,
+    options?: { failIfMajorPerformanceCaveat?: boolean }
+  ) => {
+    if (type !== 'webgl2') return { fillText: vi.fn() };
+    if (options?.failIfMajorPerformanceCaveat && majorPerformanceCaveat)
+      return null;
+    return {
+      RENDERER: 0x1f01,
+      getParameter: (name: number) =>
+        name === 0x1f01 ? 'WebKit WebGL' : webglRenderer,
+      getExtension: (name: string) =>
+        ['EXT_color_buffer_float', 'WEBGL_debug_renderer_info'].includes(name)
+          ? { UNMASKED_RENDERER_WEBGL: 0x9246 }
+          : null,
+    };
+  }) as unknown as HTMLCanvasElement['getContext']);
 });
 
 afterEach(async () => {
@@ -176,10 +196,42 @@ describe('Particle background', () => {
     expect(html).not.toContain('canvas');
   });
 
-  test('mounts one canvas after idle and starts the loop', async () => {
+  test('waits for the first scroll, pointer or key input', async () => {
+    const { container } = render(<ParticleBackground />);
+    await act(() => vi.advanceTimersByTimeAsync(5000));
+    expect(three.renderers).toHaveLength(0);
+
+    await visit();
+    await startScene();
+
+    expect(container.querySelectorAll('canvas')).toHaveLength(1);
+  });
+
+  test('stays off when WebGL runs in software', async () => {
+    webglRenderer =
+      'ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero)), SwiftShader driver)';
+    const { container } = render(<ParticleBackground />);
+    await visit();
+    await act(() => vi.advanceTimersByTimeAsync(5000));
+
+    expect(three.renderers).toHaveLength(0);
+    expect(container.querySelector('canvas')).toBeNull();
+  });
+
+  test('stays off when the browser reports a major performance caveat', async () => {
+    majorPerformanceCaveat = true;
+    render(<ParticleBackground />);
+    await visit();
+    await act(() => vi.advanceTimersByTimeAsync(5000));
+
+    expect(three.renderers).toHaveLength(0);
+  });
+
+  test('mounts one canvas after a visit and starts the loop', async () => {
     const { container } = render(<ParticleBackground />);
     expect(container.querySelector('canvas')).toBeNull();
 
+    await visit();
     await startScene();
 
     expect(container.querySelectorAll('canvas')).toHaveLength(1);
@@ -190,6 +242,7 @@ describe('Particle background', () => {
 
   test('cleanup disposes of the renderer and removes the canvas', async () => {
     const { container, unmount } = render(<ParticleBackground />);
+    await visit();
     await startScene();
     const [renderer] = three.renderers;
 
@@ -206,6 +259,7 @@ describe('Particle background', () => {
 
   test('a remount right after unmount keeps the same renderer', async () => {
     const first = render(<ParticleBackground />);
+    await visit();
     await startScene();
     const [renderer] = three.renderers;
 
@@ -222,6 +276,7 @@ describe('Particle background', () => {
     // Load the module first so the import resolves right away.
     await import('@/components/art/ParticleBackground/particleScene');
     const { unmount } = render(<ParticleBackground />);
+    await visit();
 
     // Start the import, then unmount before it resolves.
     vi.advanceTimersByTime(250);
@@ -234,6 +289,7 @@ describe('Particle background', () => {
 
   test('unmounting halfway through setup disposes of the new scene', async () => {
     const { unmount } = render(<ParticleBackground />);
+    await visit();
     // Unmount once the renderer exists, before the canvas is attached.
     three.onRenderer = () => unmount();
     await vi.waitFor(() => expect(three.renderers).toHaveLength(1), {
@@ -252,6 +308,7 @@ describe('Particle background', () => {
   test('with reduced motion it renders one frame and never starts the loop', async () => {
     reducedMotion = true;
     render(<ParticleBackground />);
+    await visit();
     await startScene();
     await act(() => vi.advanceTimersByTimeAsync(3000));
     const [renderer] = three.renderers;

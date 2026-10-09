@@ -32,7 +32,7 @@ html {
   }
 
   * {
-    font-family: degular-variable, sans-serif;
+    font-family: $degular-stack;
     text-align: center;
     font-feature-settings: 'onum';
     @include degular($wght: 400, $opsz: 16);
@@ -94,7 +94,7 @@ h1 {
 
 h2 {
   font-size: clamp(1.75rem, 4vw, 2rem);
-  margin-bottom: clamp(0.5rem, 1.5vw, 0.75rem);
+  margin-bottom: $h2-margin-bottom;
 }
 
 h3 {

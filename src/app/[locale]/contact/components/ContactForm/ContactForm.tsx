@@ -1,6 +1,13 @@
 'use client';
 
-import { useState, useContext, useReducer, memo, FormEvent } from 'react';
+import {
+  useState,
+  useContext,
+  useReducer,
+  useRef,
+  memo,
+  FormEvent,
+} from 'react';
 import styles from './ContactForm.module.scss';
 import { LanguageContext } from '@/store/LanguageProvider';
 import {
@@ -57,7 +64,7 @@ const fieldTypes: Record<ContactFormField, TextInputType> = {
 
 function ContactForm() {
   const { locale, content } = useContext(LanguageContext);
-  const { getRecaptchaToken } = useRecaptcha();
+  const { getRecaptchaToken, loadRecaptcha } = useRecaptcha();
   const [isSending, setIsSending] = useState(false);
   const [formError, setFormError] = useState(false);
   const [submitMessage, setSubmitMessage] = useState('');
@@ -72,6 +79,14 @@ function ContactForm() {
           .replace('{min}', String(min))
           .replace('{max}', String(max))
       : undefined;
+
+  // Starts loading on the first focus; a failed load is retried at submit.
+  const recaptchaRequested = useRef(false);
+  const preloadRecaptcha = () => {
+    if (recaptchaRequested.current) return;
+    recaptchaRequested.current = true;
+    loadRecaptcha().catch(() => {});
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -165,6 +180,7 @@ function ContactForm() {
   return (
     <FormWrapper
       onSubmit={handleSubmit}
+      onFocus={preloadRecaptcha}
       error={formError}
       submitMessage={submitMessage}
     >

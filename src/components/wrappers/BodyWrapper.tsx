@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import ParticleBackground from '@/components/art/ParticleBackground/ParticleBackground';
+import ThemeScript from '@/components/metadata/ThemeScript';
 
 interface IProps {
   children: ReactNode;
@@ -7,7 +8,8 @@ interface IProps {
 
 export default function BodyWrapper({ children }: IProps) {
   return (
-    <body>
+    <body suppressHydrationWarning>
+      <ThemeScript />
       <ParticleBackground />
       {children}
     </body>

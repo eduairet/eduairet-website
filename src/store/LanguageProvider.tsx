@@ -1,30 +1,26 @@
 'use client';
 
 import { createContext, ReactNode } from 'react';
-import useLanguage from '@/hooks/useLanguage';
-import { Dictionary, Lang } from '@/models';
+import { Dictionary, Lang, UiContent } from '@/models';
 
 interface LanguageContextProps {
   locale: Lang;
-  isLoading: boolean;
-  content: Dictionary;
+  content: UiContent;
 }
 
 export const LanguageContext = createContext<LanguageContextProps>({
   locale: 'en',
-  isLoading: false,
   content: new Dictionary(),
 });
 
-interface IProps {
+interface IProps extends LanguageContextProps {
   children: ReactNode;
 }
-export const LanguageProvider = ({ children }: IProps) => {
-  const { locale, isLoading, content } = useLanguage();
 
-  return (
-    <LanguageContext.Provider value={{ locale, isLoading, content }}>
-      {children}
-    </LanguageContext.Provider>
-  );
-};
+// The layout passes the current locale's UI strings, so neither dictionary
+// is bundled into client code.
+export const LanguageProvider = ({ locale, content, children }: IProps) => (
+  <LanguageContext.Provider value={{ locale, content }}>
+    {children}
+  </LanguageContext.Provider>
+);

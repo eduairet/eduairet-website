@@ -1,13 +1,15 @@
+@use 'sass:map';
 @use '@/styles/abstracts/index' as *;
 
 .subtitle {
   text-align: left;
   font-size: clamp(2.5rem, 10vw, 3rem);
-  line-height: clamp(2.5rem, 10vw, 3rem);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
+  // Inline words, spaced and wrapped like the old flex items with a 0.5rem gap.
+  line-height: calc(1em + 0.5rem);
+  word-spacing: calc(0.5rem - #{map.get($degular-metrics, space)});
+  margin-top: -0.25rem;
+  margin-bottom: calc(#{$h2-margin-bottom} - 0.25rem);
+  text-wrap: wrap;
   @include degular($wght: 200, $opsz: 72);
 
   .area {

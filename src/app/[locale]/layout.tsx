@@ -2,7 +2,8 @@ import { ReactNode } from 'react';
 import { preconnect } from 'react-dom';
 import localFont from 'next/font/local';
 import '@/styles/main.scss';
-import { Lang } from '@/models';
+import { Lang, toUiContent } from '@/models';
+import TypekitStylesheet from '@/components/metadata/TypekitStylesheet';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import StoreProvider from '@/store/StoreProvider';
 import MainWrapper from '@/components/wrappers/MainWrapper/MainWrapper';
@@ -45,9 +46,9 @@ export default async function RootLayout({ children, params }: IProps) {
       data-scroll-behavior='smooth'
     >
       <head>
-        <link rel='stylesheet' href={process.env.NEXT_PUBLIC_TYPEKIT} />
+        <TypekitStylesheet />
       </head>
-      <StoreProvider>
+      <StoreProvider locale={locale as Lang} content={toUiContent(content)}>
         <BodyWrapper>
           <a className='skip-link' href='#main'>
             {content.nav.skip}

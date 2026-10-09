@@ -58,6 +58,26 @@ test('titles lead with the name on home and end with it elsewhere', async () => 
   );
 });
 
+test('home titles and descriptions say the same thing in both languages', async () => {
+  const en = await buildPageMetadata('en', 'home');
+  const es = await buildPageMetadata('es', 'home');
+
+  expect(en.title).toBe(
+    'Eduardo Aire Torres | Design Engineer & Product Engineer'
+  );
+  expect(es.title).toBe('Eduardo Aire Torres | Ingeniero de Diseño y Producto');
+  expect(en.description).toBe(
+    'Design and typography, together with full-stack web applications in React, Next.js, TypeScript, and .NET.'
+  );
+  expect(es.description).toBe(
+    'Diseño y tipografía, junto con aplicaciones web full-stack en React, Next.js, TypeScript y .NET.'
+  );
+  // Titles stay short enough that Google has no reason to rewrite them.
+  for (const title of [en.title, es.title]) {
+    expect(String(title).length).toBeLessThanOrEqual(60);
+  }
+});
+
 test('og and X images use the locale image with a localized alt', async () => {
   const metadata = await buildPageMetadata('es', 'home');
   const image = {

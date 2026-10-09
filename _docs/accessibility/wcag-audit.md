@@ -10,6 +10,8 @@
 
 **Update (2026-10-08, branch `feat/seo-audit`): no criterion changes.** The logo now fades into a photo on hover, keyboard focus, and press. The photo has `alt=""`, so the link is still named "Home", and with reduced motion it swaps without fading. reCAPTCHA now loads only on the contact page, and the page loading spinner is gone (see F-19).
 
+**Update (2026-10-08, branch `perf/lighthouse`): no criterion changes.** The particle background now starts on the first scroll, pointer or key input and stays off with software WebGL; with reduced motion it still draws one still frame. Pages no longer fade in, the theme is set before the first paint, and the card, theme and menu animations moved from framer-motion to CSS with the same timing and the same reduced-motion behavior. axe: 0 violations on all pages and the 404, both themes, menus open and closed.
+
 Severity counts as found on 2026-10-05:
 
 | Severity     | Count  |

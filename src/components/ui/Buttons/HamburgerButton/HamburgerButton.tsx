@@ -1,14 +1,14 @@
 'use client';
 
-import { memo, useContext } from 'react';
-import { motion } from 'framer-motion';
+import { memo, useContext, useRef } from 'react';
 import styles from './HamburgerButton.module.scss';
 import IconButtonScreenTitle from '@/components/ui/Buttons/IconButton/IconButtonScreenTitle';
 import { LanguageContext } from '@/store/LanguageProvider';
+import usePathTween from './usePathTween';
 
 const paths = {
-  top: { open: { d: 'M5 5L25 25' }, closed: { d: 'M5 8L25 8' } },
-  bottom: { open: { d: 'M5 25L25 5' }, closed: { d: 'M5 22L25 22' } },
+  top: { open: 'M5 5L25 25', closed: 'M5 8L25 8' },
+  bottom: { open: 'M5 25L25 5', closed: 'M5 22L25 22' },
 };
 
 interface IProps {
@@ -19,6 +19,16 @@ interface IProps {
 
 function HamburgerButton({ isActive, controls, onClick }: IProps) {
   const { content } = useContext(LanguageContext);
+  const topRef = useRef<SVGPathElement>(null);
+  const bottomRef = useRef<SVGPathElement>(null);
+  const topD = usePathTween(
+    topRef,
+    isActive ? paths.top.open : paths.top.closed
+  );
+  const bottomD = usePathTween(
+    bottomRef,
+    isActive ? paths.bottom.open : paths.bottom.closed
+  );
 
   return (
     <button
@@ -37,26 +47,9 @@ function HamburgerButton({ isActive, controls, onClick }: IProps) {
         xmlSpace='preserve'
         aria-hidden
       >
-        <motion.path
-          d={isActive ? paths.top.open.d : paths.top.closed.d}
-          initial={false}
-          animate={isActive ? 'open' : 'closed'}
-          variants={paths.top}
-        />
-        <motion.path
-          d='M5 15L25 15'
-          animate={isActive ? 'open' : 'closed'}
-          variants={{
-            open: { opacity: 0 },
-            closed: { opacity: 1 },
-          }}
-        />
-        <motion.path
-          d={isActive ? paths.bottom.open.d : paths.bottom.closed.d}
-          initial={false}
-          animate={isActive ? 'open' : 'closed'}
-          variants={paths.bottom}
-        />
+        <path ref={topRef} d={topD} />
+        <path className={styles.middle} d='M5 15L25 15' />
+        <path ref={bottomRef} d={bottomD} />
       </svg>
       <IconButtonScreenTitle title={content.nav.menu} />
     </button>

@@ -14,6 +14,11 @@ Every indexable page is prerendered with its metadata in `<head>`: a self-refere
 | Sitemap has no `lastmod`, `priority`, or `changefreq`                     | Google ignores the last two and needs `lastmod` to be accurate ([sitemaps](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)).                                                                |
 | `favicon.ico` stays next to `icon.svg`                                    | Google doesn't support SVG favicons ([favicon](https://developers.google.com/search/docs/appearance/favicon-in-search)).                                                                                                        |
 | `not-found.tsx` keeps its `<title>` element                               | Only the root `app/not-found` can export metadata ([not-found](https://nextjs.org/docs/app/api-reference/file-conventions/not-found)).                                                                                          |
+| Home descriptions are the pre-#31 text in both languages                  | Both results should say the same thing; Google showed the English one ([snippets](https://developers.google.com/search/docs/appearance/snippet)).                                                                               |
+| Spanish home title is "Eduardo Aire Torres                                | Ingeniero de Diseño y Producto"                                                                                                                                                                                                 | 52 characters; the 65-character title was rewritten from the subtitle ([title links](https://developers.google.com/search/docs/appearance/title-link)). |
+| The home subtitle is inline text, not flex items                          | As flex items each word rendered as its own block, and Google joined them as "Ingeniero - de - Diseño".                                                                                                                         |
+| Unmatched URLs get `app/global-not-found.tsx` (experimental flag)         | A full server-rendered 404 with `lang` and h1. `notFound()` calls and one-segment paths like `/wp-login.php` still use the layout 404.                                                                                          |
+| The `/` redirect sends `Vary: Accept-Language`                            | Its target depends on that header ([RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html#name-vary)).                                                                                                                          |
 
 ## Search Console baseline (2026-10-07)
 
@@ -22,21 +27,17 @@ Every indexable page is prerendered with its metadata in `<head>`: a self-refere
 - 404: `/indoctrinated-hound`, `/36days-of-type-2019` (now 308 to eduairet.myportfolio.com).
 - Crawl stats, 90 days: 1,011 requests, 2.3% discovery, no 429s.
 
-## PageSpeed baseline (production, 2026-10-08, before this branch)
+## PageSpeed
 
-| Page       | Perf | A11y | Best practices | SEO | LCP   | TBT       |
-| ---------- | ---- | ---- | -------------- | --- | ----- | --------- |
-| /en mobile | 27   | 100  | 96             | 100 | 9.3 s | 23,460 ms |
-| /es mobile | 39   | 100  | 96             | 100 | 9.2 s | 14,540 ms |
-
-Desktop runs time out (`RPC::DEADLINE_EXCEEDED`) on both pages. Best practices loses points to a reCAPTCHA console error, which this branch removes from the home pages.
+Before PR #31 (production, 2026-10-08): /en mobile 27, /es mobile 39, desktop timed out. Before `perf/lighthouse` (PSI, median of 3): mobile 48 on the home pages and 27 on contact, desktop 62 to 64 or timed out. Details, the final local numbers, and how to re-measure are in [lighthouse.md](../performance/lighthouse.md).
 
 ## How to check
 
 On a production build:
 
 - Fetch each route as a browser, Googlebot, facebookexternalhit, and Slackbot; metadata must be in `<head>`.
-- `/en/does-not-exist` and `/en/resources` return 404, not 200. A client Suspense boundary around page content turns them into 200s.
+- `/en/does-not-exist`, `/es/does-not-exist`, `/en/resources` and `/wp-login.php` return 404 with noindex, not 200. A client Suspense boundary around page content turns them into 200s.
+- `/` returns 302 with `Vary: Accept-Language`.
 - For every URL in `/sitemap.xml`: 200, no noindex, self canonical, and the same hreflang set as the sitemap.
 - POST the rendered `/en` and `/es` HTML to `https://validator.schema.org/validate`: 0 errors, 0 warnings.
 - `pnpm test run` covers metadata, sitemap, robots, manifest, and JSON-LD.

@@ -8,20 +8,27 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
+import { Dictionary, EnContent } from '@/models';
+
 import ContactForm from '@/app/[locale]/contact/components/ContactForm/ContactForm';
+
+const en = new Dictionary(EnContent);
 
 const mocks = vi.hoisted(() => ({
   getRecaptchaToken: vi.fn(),
+  loadRecaptcha: vi.fn(),
   fetchData: vi.fn(),
 }));
 
 vi.mock('next/navigation', () => ({
-  useParams: () => ({ locale: 'en' }),
   usePathname: () => '/en/contact',
 }));
 
 vi.mock('@/hooks/useRecaptcha', () => ({
-  default: () => ({ getRecaptchaToken: mocks.getRecaptchaToken }),
+  default: () => ({
+    getRecaptchaToken: mocks.getRecaptchaToken,
+    loadRecaptcha: mocks.loadRecaptcha,
+  }),
 }));
 
 vi.mock('@/utils/client', async (importOriginal) => ({
@@ -31,7 +38,7 @@ vi.mock('@/utils/client', async (importOriginal) => ({
 
 const renderForm = () =>
   render(
-    <LanguageProvider>
+    <LanguageProvider locale='en' content={en}>
       <ContactForm />
     </LanguageProvider>
   );
@@ -57,12 +64,24 @@ const fillValid = () => {
 beforeEach(() => {
   mocks.getRecaptchaToken.mockResolvedValue('fresh-token');
   mocks.fetchData.mockResolvedValue({ success: true });
+  mocks.loadRecaptcha.mockResolvedValue(undefined);
 });
 
 afterEach(() => {
   cleanup();
   vi.clearAllMocks();
   vi.useRealTimers();
+});
+
+describe('ContactForm reCAPTCHA', () => {
+  test('loads reCAPTCHA on the first focus, not on render', () => {
+    renderForm();
+    expect(mocks.loadRecaptcha).not.toHaveBeenCalled();
+
+    fireEvent.focus(screen.getByRole('textbox', { name: 'Name' }));
+
+    expect(mocks.loadRecaptcha).toHaveBeenCalled();
+  });
 });
 
 describe('ContactForm accessibility', () => {

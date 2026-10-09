@@ -17,8 +17,21 @@
     stroke-linecap: round;
     @include merge-transitions((stroke));
 
+    // Same timing as usePathTween, which moves the other two lines.
+    .middle {
+      @include merge-transitions(
+        (opacity),
+        0.3s,
+        cubic-bezier(0.25, 0.1, 0.35, 1)
+      );
+    }
+
     &.active {
       stroke: $accent;
+
+      .middle {
+        opacity: 0;
+      }
     }
   }
 

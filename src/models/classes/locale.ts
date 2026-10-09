@@ -210,3 +210,19 @@ export class Dictionary {
     };
   }
 }
+
+// The part of the dictionary that client components read. Long page copy
+// stays on the server, so the browser gets one small set of UI strings.
+const UI_KEYS = [
+  'meta',
+  'nav',
+  'buttons',
+  'home',
+  'notFound',
+  'contact',
+] as const;
+
+export type UiContent = Pick<Dictionary, (typeof UI_KEYS)[number]>;
+
+export const toUiContent = (content: Dictionary) =>
+  Object.fromEntries(UI_KEYS.map((key) => [key, content[key]])) as UiContent;

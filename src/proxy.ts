@@ -8,7 +8,8 @@ export async function proxy(request: NextRequest) {
 
   if (
     pathname.startsWith('/_next') ||
-    pathname.includes('/api') ||
+    pathname === '/api' ||
+    pathname.startsWith('/api/') ||
     PUBLIC_FILE.test(pathname)
   ) {
     return;
@@ -19,10 +20,12 @@ export async function proxy(request: NextRequest) {
   );
   if (pathnameHasLocale) return;
 
-  // 302, not 308: the target depends on Accept-Language.
+  // 302, not 308, and Vary: the target depends on Accept-Language.
   const locale = getLocale(request);
   request.nextUrl.pathname = `/${locale}${pathname}`;
-  return NextResponse.redirect(request.nextUrl, 302);
+  const response = NextResponse.redirect(request.nextUrl, 302);
+  response.headers.set('Vary', 'Accept-Language');
+  return response;
 }
 
 export const config = {

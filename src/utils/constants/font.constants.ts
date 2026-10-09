@@ -12,3 +12,11 @@ export const degular = {
     max: 1,
   },
 };
+
+export const TYPEKIT_URL = process.env.NEXT_PUBLIC_TYPEKIT ?? '';
+
+// Adds the Adobe Fonts stylesheet from a script, so it never blocks the
+// first paint; the Degular fallback keeps the text in place until it loads.
+export const TYPEKIT_LOADER = `(function(){var l=document.createElement('link');l.rel='stylesheet';l.href=${JSON.stringify(
+  TYPEKIT_URL
+).replace(/</g, '\\u003c')};document.head.appendChild(l)})()`;
