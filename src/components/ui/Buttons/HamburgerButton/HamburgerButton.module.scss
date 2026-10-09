@@ -17,8 +17,17 @@
     stroke-linecap: round;
     @include merge-transitions((stroke));
 
+    // framer-motion's default tween, matched by usePathTween for the lines.
+    .middle {
+      transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.35, 1);
+    }
+
     &.active {
       stroke: $accent;
+
+      .middle {
+        opacity: 0;
+      }
     }
   }
 
