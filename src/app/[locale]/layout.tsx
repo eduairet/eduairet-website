@@ -25,9 +25,6 @@ interface IProps {
   }>;
 }
 
-// Only en and es; any other first segment is an unmatched URL.
-export const dynamicParams = false;
-
 export {
   generateLocaleParams as generateStaticParams,
   siteMetadata as metadata,
