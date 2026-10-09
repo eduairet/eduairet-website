@@ -12,6 +12,21 @@ let retained: {
   timer: ReturnType<typeof setTimeout>;
 } | null = null;
 
+const VISITOR_EVENTS = [
+  'pointermove',
+  'pointerdown',
+  'wheel',
+  'touchstart',
+  'keydown',
+  'scroll',
+] as const;
+let visitorActive = false;
+
+// Software renderers run the GPU work on the CPU, which can pin a core.
+const SOFTWARE_RENDERER =
+  /swiftshader|llvmpipe|softpipe|lavapipe|software|basic render driver/i;
+let hardwareWebGL: boolean | undefined;
+
 function whenIdle(callback: () => void) {
   if (typeof window.requestIdleCallback === 'function') {
     const id = window.requestIdleCallback(callback, { timeout: 2000 });
@@ -21,6 +36,45 @@ function whenIdle(callback: () => void) {
   return () => window.clearTimeout(id);
 }
 
+// Waits for the first scroll, pointer or key input, so the scene never
+// competes with the page load.
+function whenVisitorActive(callback: () => void) {
+  if (visitorActive) {
+    callback();
+    return () => {};
+  }
+  const listeners = new AbortController();
+  const onActive = () => {
+    visitorActive = true;
+    listeners.abort();
+    callback();
+  };
+  VISITOR_EVENTS.forEach((type) =>
+    window.addEventListener(type, onActive, {
+      passive: true,
+      signal: listeners.signal,
+    })
+  );
+  return () => listeners.abort();
+}
+
+function hasHardwareWebGL() {
+  if (hardwareWebGL !== undefined) return hardwareWebGL;
+  const gl = document
+    .createElement('canvas')
+    .getContext('webgl2', { failIfMajorPerformanceCaveat: true });
+  if (!gl) return (hardwareWebGL = false);
+  // Chrome and Safari mask RENDERER; the debug extension has the real name.
+  let renderer = String(gl.getParameter(gl.RENDERER));
+  const debugInfo = /webkit webgl/i.test(renderer)
+    ? gl.getExtension('WEBGL_debug_renderer_info')
+    : null;
+  if (debugInfo)
+    renderer = String(gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL));
+  gl.getExtension('WEBGL_lose_context')?.loseContext();
+  return (hardwareWebGL = !SOFTWARE_RENDERER.test(renderer));
+}
+
 export default function ParticleBackground() {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -28,6 +82,7 @@ export default function ParticleBackground() {
     let cancelled = false;
     let scene: ParticleScene | null = null;
     let cancelIdle = () => {};
+    let cancelWait = () => {};
 
     if (retained && containerRef.current) {
       clearTimeout(retained.timer);
@@ -36,6 +91,7 @@ export default function ParticleBackground() {
       scene.attach(containerRef.current);
     } else {
       const start = async () => {
+        if (!hasHardwareWebGL()) return;
         const { createParticleScene } = await import('./particleScene');
         if (cancelled) return;
         // Pause between loading three.js and building the scene; both are
@@ -48,14 +104,17 @@ export default function ParticleBackground() {
         if (cancelled) created?.dispose();
         else scene = created;
       };
-      cancelIdle = whenIdle(() => {
-        // If three.js fails to load, the page simply has no background.
-        start().catch(() => {});
+      cancelWait = whenVisitorActive(() => {
+        cancelIdle = whenIdle(() => {
+          // If three.js fails to load, the page simply has no background.
+          start().catch(() => {});
+        });
       });
     }
 
     return () => {
       cancelled = true;
+      cancelWait();
       cancelIdle();
       if (!scene) return;
       const kept = scene;
