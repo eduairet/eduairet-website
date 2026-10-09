@@ -34,6 +34,19 @@ Local, production build, median of 3. "Software" is the PSI-like setup below.
 
 Tried and dropped: starting the particles after a delay (scored like "off" only because Lighthouse stops measuring first), and pacing the particle loop with a timer (halved its speed under CPU throttling).
 
+## After deploy (PageSpeed Insights, production, 2026-10-08)
+
+Lighthouse 13.5.0, median of 3, 10:38 to 11:01 PM CST, after PR #33 went live.
+
+| Page        | Mobile   | Desktop  | Mobile TBT     | Mobile LCP  | A11y | BP       | SEO |
+| ----------- | -------- | -------- | -------------- | ----------- | ---- | -------- | --- |
+| /en         | 48 → 94  | 64 → 100 | 20,750 → 40 ms | 3.6 → 2.4 s | 100  | 100      | 100 |
+| /es         | 48 → 90  | 64 → 100 | 29,510 → 40 ms | 3.5 → 3.0 s | 100  | 100      | 100 |
+| /en/contact | 27 → 96  | 62 → 100 | 23,890 → 30 ms | 8.7 → 2.3 s | 100  | 96 → 100 | 100 |
+| /es/contact | 27 → 100 | 63 → 100 | 30,040 → 20 ms | 8.7 → 1.4 s | 100  | 96 → 100 | 100 |
+
+All 12 desktop runs finished (5 had timed out or failed before). Mobile varies by a few points between runs (/en: 94, 90, 100).
+
 ## Final (local, production build, 2026-10-08)
 
 Median of 3, before → after. GPU: host Chrome 154 with an RTX 4060. Software: Linux headless Chromium, llvmpipe WebGL, one CPU.
