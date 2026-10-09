@@ -85,7 +85,7 @@ describe('ContactForm reCAPTCHA', () => {
 });
 
 describe('ContactForm accessibility', () => {
-  test('labels exclude the asterisk and fields are linked to their hints', () => {
+  test('fields are named by their labels and linked to their hints', () => {
     renderForm();
     const name = screen.getByRole('textbox', { name: 'Name' });
 
@@ -96,7 +96,7 @@ describe('ContactForm accessibility', () => {
         .getAttribute('autocomplete')
     ).toBe('email');
     expect(describedText(name)).toBe('3 to 100 characters');
-    expect(screen.getByText('Fields marked * are required.')).toBeTruthy();
+    expect(screen.getByText('Please fill in all the fields.')).toBeTruthy();
   });
 
   test('submitting empty shows linked errors and focuses the first field', () => {

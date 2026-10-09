@@ -111,7 +111,7 @@ export class Dictionary {
       submit: string;
       success: string;
       sending: string;
-      required: string;
+      instructions: string;
       lengthHint: string;
       recaptcha: {
         text: string;
@@ -194,7 +194,7 @@ export class Dictionary {
         submit: data.contact?.form?.submit || '',
         success: data.contact?.form?.success || '',
         sending: data.contact?.form?.sending || '',
-        required: data.contact?.form?.required || '',
+        instructions: data.contact?.form?.instructions || '',
         lengthHint: data.contact?.form?.lengthHint || '',
         recaptcha: {
           text: data.contact?.form?.recaptcha?.text || '',

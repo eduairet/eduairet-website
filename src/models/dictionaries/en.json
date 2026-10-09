@@ -213,7 +213,7 @@
         }
       },
       "sending": "Sending…",
-      "required": "Fields marked * are required.",
+      "instructions": "Please fill in all the fields.",
       "lengthHint": "{min} to {max} characters",
       "recaptcha": {
         "text": "This site is protected by reCAPTCHA and the Google {privacy} and {terms} apply.",

@@ -184,7 +184,7 @@ function ContactForm() {
       error={formError}
       submitMessage={submitMessage}
     >
-      <p className={styles.required}>{content.contact.form.required}</p>
+      <p className={styles.instructions}>{content.contact.form.instructions}</p>
       {inputFields.map((field) => (
         <TextInput
           key={field.id}

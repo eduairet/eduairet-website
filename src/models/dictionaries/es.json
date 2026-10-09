@@ -213,7 +213,7 @@
         }
       },
       "sending": "Enviando…",
-      "required": "Los campos con * son obligatorios.",
+      "instructions": "Llena todos los campos, por favor.",
       "lengthHint": "De {min} a {max} caracteres",
       "recaptcha": {
         "text": "Este sitio está protegido por reCAPTCHA y se aplican la {privacy} y los {terms} de Google.",
