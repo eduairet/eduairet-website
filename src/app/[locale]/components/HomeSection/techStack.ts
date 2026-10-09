@@ -32,6 +32,7 @@ const ICON_EXPORTS: Record<string, string> = {
   wordpress: 'siWordpress',
   sentry: 'siSentry',
   claudecode: 'siClaudecode',
+  netlify: 'siNetlify',
 };
 
 // Listed by name: their owners don't allow logo use without permission.
