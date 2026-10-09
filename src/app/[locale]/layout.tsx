@@ -3,7 +3,7 @@ import { preconnect } from 'react-dom';
 import localFont from 'next/font/local';
 import '@/styles/main.scss';
 import { Lang, toUiContent } from '@/models';
-import { TYPEKIT_LOADER, TYPEKIT_URL } from '@/utils/constants';
+import TypekitStylesheet from '@/components/metadata/TypekitStylesheet';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import StoreProvider from '@/store/StoreProvider';
 import MainWrapper from '@/components/wrappers/MainWrapper/MainWrapper';
@@ -46,11 +46,7 @@ export default async function RootLayout({ children, params }: IProps) {
       data-scroll-behavior='smooth'
     >
       <head>
-        <link rel='preload' as='style' href={TYPEKIT_URL} />
-        <script dangerouslySetInnerHTML={{ __html: TYPEKIT_LOADER }} />
-        <noscript>
-          <link rel='stylesheet' href={TYPEKIT_URL} />
-        </noscript>
+        <TypekitStylesheet />
       </head>
       <StoreProvider locale={locale as Lang} content={toUiContent(content)}>
         <BodyWrapper>

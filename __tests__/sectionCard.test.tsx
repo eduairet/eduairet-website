@@ -3,13 +3,10 @@ import { act, cleanup, render, screen } from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
 import { Dictionary, EnContent } from '@/models';
 
-const en = new Dictionary(EnContent);
 import SectionCard from '@/app/[locale]/components/HomeSection/SectionCard';
 import styles from '@/app/[locale]/components/HomeSection/HomeSection.module.scss';
 
-vi.mock('next/navigation', () => ({
-  useParams: () => ({ locale: 'en' }),
-}));
+const en = new Dictionary(EnContent);
 
 // eslint-disable-next-line no-unused-vars
 let notify: (isIntersecting: boolean) => void = () => {};
@@ -20,15 +17,18 @@ beforeEach(() => {
     'IntersectionObserver',
     class {
       constructor(
-        // eslint-disable-next-line no-unused-vars
-        callback: (entries: { isIntersecting: boolean }[]) => void,
+        callback: (
+          // eslint-disable-next-line no-unused-vars
+          entries: { isIntersecting: boolean; target: Element }[]
+        ) => void,
         init?: { threshold?: number }
       ) {
         options = init;
-        notify = (isIntersecting) => callback([{ isIntersecting }]);
+        notify = (isIntersecting) =>
+          callback([{ isIntersecting, target: screen.getByRole('listitem') }]);
       }
       observe() {}
-      disconnect() {}
+      unobserve() {}
     }
   );
 });

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useSyncExternalStore } from 'react';
-import { THEME_STORAGE_KEY } from '@/utils/constants';
+import { THEME_STORAGE_KEY, resolveTheme } from '@/utils/constants';
 
 export type Theme = 'dark' | 'light';
 
@@ -20,14 +20,7 @@ function emit() {
   listeners.forEach((listener) => listener());
 }
 
-function getTheme(): Theme {
-  const theme = localStorage.getItem(THEME_STORAGE_KEY);
-  if (theme === 'light' || theme === 'dark') return theme;
-  const prefersLightMode =
-    window.matchMedia &&
-    window.matchMedia('(prefers-color-scheme: light)').matches;
-  return prefersLightMode ? 'light' : 'dark';
-}
+const getTheme = (): Theme => resolveTheme(THEME_STORAGE_KEY);
 
 function applyTheme(theme: Theme) {
   localStorage.setItem(THEME_STORAGE_KEY, theme);

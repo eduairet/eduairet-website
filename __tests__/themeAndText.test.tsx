@@ -3,14 +3,14 @@ import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
 import { Dictionary, EnContent } from '@/models';
 
-const en = new Dictionary(EnContent);
 import ThemeButton from '@/components/ui/Buttons/ThemeButton/ThemeButton';
 import HomeSubtitle from '@/app/[locale]/components/HomeSubtitle/HomeSubtitle';
 import Spinner from '@/components/ui/Spinner/Spinner';
 import { THEME_INIT_SCRIPT } from '@/utils/constants';
 
+const en = new Dictionary(EnContent);
+
 vi.mock('next/navigation', () => ({
-  useParams: () => ({ locale: 'en' }),
   usePathname: () => '/en',
 }));
 

@@ -3,9 +3,8 @@
 @use 'sass:math';
 @use 'abstracts/index' as *;
 
-// Degular's ascent and descent, in em.
-$ascent: 0.927;
-$descent: 0.237;
+$ascent: map.get($degular-metrics, ascent);
+$descent: map.get($degular-metrics, descent);
 
 @mixin fallback-face($family, $fonts, $weight, $scale) {
   $src: ();

@@ -1,12 +1,23 @@
 'use client';
 
-import { useContext, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import styles from './HomeSection.module.scss';
 import { SectionEntry } from '@/models';
 import { LanguageContext } from '@/store/LanguageProvider';
-import useInView from '@/hooks/useInView';
 import TechIcon from './TechIcon';
 import type { TechIconData } from './techStack';
+
+// One observer for every card. It toggles the class itself, so scrolling
+// never re-renders a card; a card shows while 30% of it crosses into view.
+let observer: IntersectionObserver | undefined;
+const cardObserver = () =>
+  (observer ??= new IntersectionObserver(
+    (entries) =>
+      entries.forEach((entry) =>
+        entry.target.classList.toggle(styles.inView, entry.isIntersecting)
+      ),
+    { threshold: 0.3 }
+  ));
 
 interface IProps {
   entry: SectionEntry;
@@ -16,13 +27,16 @@ interface IProps {
 export default function SectionCard({ entry, icons }: IProps) {
   const { content } = useContext(LanguageContext);
   const cardRef = useRef<HTMLLIElement>(null);
-  const inView = useInView(cardRef, 0.3);
+
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card) return;
+    cardObserver().observe(card);
+    return () => cardObserver().unobserve(card);
+  }, []);
 
   return (
-    <li
-      ref={cardRef}
-      className={inView ? `${styles.card} ${styles.inView}` : styles.card}
-    >
+    <li ref={cardRef} className={styles.card}>
       <div className={styles.content}>
         <p className={styles.period}>{entry.period}</p>
         <h3 className={styles.roleTitle}>

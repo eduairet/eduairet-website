@@ -3,12 +3,9 @@ import { act, cleanup, render } from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
 import { Dictionary, EnContent } from '@/models';
 
-const en = new Dictionary(EnContent);
 import HamburgerButton from '@/components/ui/Buttons/HamburgerButton/HamburgerButton';
 
-vi.mock('next/navigation', () => ({
-  useParams: () => ({ locale: 'en' }),
-}));
+const en = new Dictionary(EnContent);
 
 let frames: Parameters<typeof requestAnimationFrame>[0][] = [];
 const runFrame = (time: number) => {

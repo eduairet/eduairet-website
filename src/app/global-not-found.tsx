@@ -2,12 +2,9 @@ import type { Metadata } from 'next';
 import '@/styles/main.scss';
 import styles from './global-not-found.module.scss';
 import { Dictionary, EnContent, EsContent } from '@/models';
-import {
-  PageUrls,
-  THEME_INIT_SCRIPT,
-  TYPEKIT_LOADER,
-  TYPEKIT_URL,
-} from '@/utils/constants';
+import { PageUrls } from '@/utils/constants';
+import TypekitStylesheet from '@/components/metadata/TypekitStylesheet';
+import ThemeScript from '@/components/metadata/ThemeScript';
 
 const en = new Dictionary(EnContent);
 const es = new Dictionary(EsContent);
@@ -22,11 +19,10 @@ export default function GlobalNotFound() {
   return (
     <html lang='en'>
       <head>
-        <link rel='preload' as='style' href={TYPEKIT_URL} />
-        <script dangerouslySetInnerHTML={{ __html: TYPEKIT_LOADER }} />
+        <TypekitStylesheet />
       </head>
       <body suppressHydrationWarning>
-        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+        <ThemeScript />
         <main id='main' className={styles.page}>
           <h1>{en.notFound.title}</h1>
           <p lang='es'>{es.notFound.title}</p>

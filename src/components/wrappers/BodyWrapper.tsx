@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import ParticleBackground from '@/components/art/ParticleBackground/ParticleBackground';
-import { THEME_INIT_SCRIPT } from '@/utils/constants';
+import ThemeScript from '@/components/metadata/ThemeScript';
 
 interface IProps {
   children: ReactNode;
@@ -8,9 +8,8 @@ interface IProps {
 
 export default function BodyWrapper({ children }: IProps) {
   return (
-    // The script sets data-theme before React hydrates.
     <body suppressHydrationWarning>
-      <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      <ThemeScript />
       <ParticleBackground />
       {children}
     </body>

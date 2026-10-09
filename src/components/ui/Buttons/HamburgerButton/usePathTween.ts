@@ -3,14 +3,13 @@
 import { RefObject, useEffect, useRef, useState } from 'react';
 import { cubicBezier, lerp } from '@/utils';
 
-// framer-motion's default tween for non-transform values.
+// Same timing as the middle line's CSS transition.
 const DURATION_MS = 300;
 const ease = cubicBezier(0.25, 0.1, 0.35, 1);
 
 const NUMBER = /-?\d*\.?\d+/g;
 const numbersIn = (d: string) => (d.match(NUMBER) ?? []).map(Number);
-const round = (n?: number) =>
-  n === undefined ? undefined : Math.round(n * 1e5) / 1e5;
+const round = (n: number) => Math.round(n * 1e5) / 1e5;
 
 // Morphs an SVG path to `d` from wherever it is now, and returns the `d`
 // to render. Paths must share the same commands, so only their numbers change.
@@ -27,19 +26,15 @@ export default function usePathTween(
     const from = current.current;
     const to = numbersIn(d);
     if (!path || from.every((n, i) => n === to[i])) return;
-    const commands = d.split(NUMBER);
     const start = performance.now();
     let frame = 0;
     const tick = (now: number) => {
       const progress = ease(Math.min((now - start) / DURATION_MS, 1));
       current.current = from.map((n, i) => lerp(n, to[i], progress));
+      let i = 0;
       path.setAttribute(
         'd',
-        commands.reduce(
-          (out, command, i) =>
-            out + command + (round(current.current[i]) ?? ''),
-          ''
-        )
+        d.replace(NUMBER, () => String(round(current.current[i++])))
       );
       if (progress < 1) frame = requestAnimationFrame(tick);
     };

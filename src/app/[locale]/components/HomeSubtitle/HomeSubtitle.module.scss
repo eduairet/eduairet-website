@@ -1,17 +1,14 @@
+@use 'sass:map';
 @use '@/styles/abstracts/index' as *;
 
 .subtitle {
   text-align: left;
   font-size: clamp(2.5rem, 10vw, 3rem);
-  // Inline words read as one line of text (as flex items, search engines saw
-  // separate fragments). Spacing matches the old 0.5rem flex gap: the line
-  // height adds the row gap, the margins take back its outer half, and word
-  // spacing tops up Degular's space (0.1502em) to 0.5rem.
-  line-height: calc(clamp(2.5rem, 10vw, 3rem) + 0.5rem);
-  word-spacing: calc(0.5rem - 0.1502em);
+  // Inline words, spaced and wrapped like the old flex items with a 0.5rem gap.
+  line-height: calc(1em + 0.5rem);
+  word-spacing: calc(0.5rem - #{map.get($degular-metrics, space)});
   margin-top: -0.25rem;
-  margin-bottom: calc(clamp(0.5rem, 1.5vw, 0.75rem) - 0.25rem);
-  // Headings balance their lines; the flex items never did.
+  margin-bottom: calc(#{$h2-margin-bottom} - 0.25rem);
   text-wrap: wrap;
   @include degular($wght: 200, $opsz: 72);
 

@@ -10,8 +10,9 @@ import {
 import { LanguageProvider } from '@/store/LanguageProvider';
 import { Dictionary, EnContent } from '@/models';
 
-const en = new Dictionary(EnContent);
 import ContactForm from '@/app/[locale]/contact/components/ContactForm/ContactForm';
+
+const en = new Dictionary(EnContent);
 
 const mocks = vi.hoisted(() => ({
   getRecaptchaToken: vi.fn(),
@@ -20,7 +21,6 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock('next/navigation', () => ({
-  useParams: () => ({ locale: 'en' }),
   usePathname: () => '/en/contact',
 }));
 

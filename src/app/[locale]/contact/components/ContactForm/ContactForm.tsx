@@ -1,6 +1,13 @@
 'use client';
 
-import { useState, useContext, useReducer, memo, FormEvent } from 'react';
+import {
+  useState,
+  useContext,
+  useReducer,
+  useRef,
+  memo,
+  FormEvent,
+} from 'react';
 import styles from './ContactForm.module.scss';
 import { LanguageContext } from '@/store/LanguageProvider';
 import {
@@ -73,8 +80,13 @@ function ContactForm() {
           .replace('{max}', String(max))
       : undefined;
 
-  // A failed load shows up as the submit error instead.
-  const preloadRecaptcha = () => loadRecaptcha().catch(() => {});
+  // Starts loading on the first focus; a failed load is retried at submit.
+  const recaptchaRequested = useRef(false);
+  const preloadRecaptcha = () => {
+    if (recaptchaRequested.current) return;
+    recaptchaRequested.current = true;
+    loadRecaptcha().catch(() => {});
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

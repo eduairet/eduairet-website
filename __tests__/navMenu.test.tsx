@@ -8,7 +8,6 @@ import { Dictionary, EnContent, EsContent, type Lang } from '@/models';
 const nav = vi.hoisted(() => ({ locale: 'en', pathname: '/en' }));
 
 vi.mock('next/navigation', () => ({
-  useParams: () => ({ locale: nav.locale }),
   usePathname: () => nav.pathname,
 }));
 
