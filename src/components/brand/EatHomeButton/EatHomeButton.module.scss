@@ -10,7 +10,7 @@ $border: 2px;
   border-radius: 50%;
   border: $border solid var(--foreground);
   background-color: var(--foreground);
-  @include merge-transitions((border-color));
+  @include merge-transitions((border-color, background-color));
 
   &::before {
     content: none;
@@ -24,7 +24,6 @@ $border: 2px;
     width: $link-size - $border * 2;
     height: $link-size - $border * 2;
     fill: var(--background);
-    @include merge-transitions((fill));
   }
 
   &:focus-visible {
@@ -32,12 +31,10 @@ $border: 2px;
   }
 
   @media (hover: hover) {
+    // The letters are cut out of the logo, so the background colors them.
     &:hover {
       border-color: $accent;
-
-      & svg {
-        fill: $accent;
-      }
+      background-color: $accent;
     }
   }
 
