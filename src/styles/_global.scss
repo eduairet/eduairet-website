@@ -7,9 +7,9 @@
   font-family: degular-fallback;
   src: local('Arial'), local('ArialMT'), local('Helvetica');
   font-weight: 100 599;
-  size-adjust: 90.5%;
-  ascent-override: 102.43%;
-  descent-override: 26.19%;
+  size-adjust: 91%;
+  ascent-override: 101.87%;
+  descent-override: 26.04%;
   line-gap-override: 0%;
 }
 
@@ -21,6 +21,19 @@
   size-adjust: 82.5%;
   ascent-override: 112.36%;
   descent-override: 28.73%;
+  line-gap-override: 0%;
+}
+
+// The home title mixes heavy and light letters, so it is narrower than
+// Arial Bold at the shared bold scale.
+@font-face {
+  font-family: degular-title-fallback;
+  src:
+    local('Arial Bold'), local('Arial-BoldMT'), local('Helvetica Bold');
+  font-weight: 600 900;
+  size-adjust: 78.6%;
+  ascent-override: 117.94%;
+  descent-override: 30.15%;
   line-gap-override: 0%;
 }
 
