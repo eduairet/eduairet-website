@@ -63,10 +63,11 @@ const RING_FOLLOW_POINTER = 0.35;
 // Right of center, away from the left-aligned text.
 const RING_REST_X = 0.7;
 
-// The light gain keeps the red home subtitle above 3:1 contrast.
+// The light gain keeps the red home subtitle above 3:1 contrast, so light
+// letters are bold to read better without getting darker.
 const THEMES = {
-  dark: { gain: 0.8, light: 1, equation: AddEquation },
-  light: { gain: 0.25, light: 0, equation: MaxEquation },
+  dark: { gain: 0.8, light: 1, equation: AddEquation, weight: 'normal' },
+  light: { gain: 0.25, light: 0, equation: MaxEquation, weight: 'bold' },
 } as const;
 
 let loggedFallback = false;
@@ -77,13 +78,13 @@ function logFallback(reason: string) {
   console.debug(`Particle background disabled: ${reason}`);
 }
 
-function createGlyphAtlas() {
+function createGlyphAtlas(weight: 'normal' | 'bold') {
   const atlas = document.createElement('canvas');
   atlas.width = ATLAS_COLUMNS * ATLAS_CELL;
   atlas.height = ATLAS_COLUMNS * ATLAS_CELL;
   const context = atlas.getContext('2d');
   if (context) {
-    context.font = `${ATLAS_CELL * 0.8}px ${GLYPH_FONT}`;
+    context.font = `${weight} ${ATLAS_CELL * 0.8}px ${GLYPH_FONT}`;
     context.fillStyle = '#fff';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
@@ -208,13 +209,17 @@ export async function createParticleScene(
   geometry.setIndex([0, 1, 2, 0, 2, 3]);
   geometry.instanceCount = stateSize * stateSize;
 
+  const atlases = {
+    normal: createGlyphAtlas('normal'),
+    bold: createGlyphAtlas('bold'),
+  };
   const draw = {
     uState: { value: null as Texture | null },
     uFrame: update.uFrame,
     uViewport: update.uViewport,
     uGain: { value: 0 },
     uLight: { value: 0 },
-    uAtlas: { value: createGlyphAtlas() },
+    uAtlas: { value: atlases.normal },
   };
   const material = new ShaderMaterial({
     uniforms: draw,
@@ -256,6 +261,7 @@ export async function createParticleScene(
     const settings = THEMES[theme];
     draw.uGain.value = settings.gain;
     draw.uLight.value = settings.light;
+    draw.uAtlas.value = atlases[settings.weight];
     material.blendEquation = settings.equation;
     material.blendEquationAlpha = settings.equation;
   };
@@ -433,7 +439,8 @@ export async function createParticleScene(
       compute.dispose();
       geometry.dispose();
       material.dispose();
-      draw.uAtlas.value.dispose();
+      atlases.normal.dispose();
+      atlases.bold.dispose();
       renderer.dispose();
       renderer.forceContextLoss();
     },
