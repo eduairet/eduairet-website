@@ -34,6 +34,7 @@ const ICON_EXPORTS: Record<string, string> = {
   claudecode: 'siClaudecode',
   netlify: 'siNetlify',
   vercel: 'siVercel',
+  graphql: 'siGraphql',
 };
 
 // Listed by name: their owners don't allow logo use without permission.
@@ -48,6 +49,7 @@ const TOOL_NAMES: Record<string, string> = {
   mssql: 'Microsoft SQL Server',
   aws: 'AWS',
   codex: 'OpenAI Codex',
+  thegraph: 'The Graph',
 };
 
 const icons = simpleIcons as unknown as Record<string, SimpleIcon | undefined>;

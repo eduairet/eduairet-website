@@ -197,7 +197,14 @@
         "meta": "",
         "period": "Sep 2022 – Apr 2023",
         "description": "A decentralized marketplace for fonts that I co-designed. It reached the ETHOnline 2022 finals and joined the Women Build Web3 accelerator. I shaped the interface and the data behind it.",
-        "stack": ["react", "ethereum", "tailwind", "vercel"]
+        "stack": [
+          "react",
+          "ethereum",
+          "tailwind",
+          "vercel",
+          "graphql",
+          "thegraph"
+        ]
       }
     ]
   },

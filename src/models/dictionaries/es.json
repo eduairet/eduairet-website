@@ -197,7 +197,14 @@
         "meta": "",
         "period": "Sep 2022 – Abr 2023",
         "description": "Un marketplace descentralizado de fuentes que codiseñé. Llegó a la final de ETHOnline 2022 y entró a la aceleradora Women Build Web3. Di forma a la interfaz y a los datos detrás de ella.",
-        "stack": ["react", "ethereum", "tailwind", "vercel"]
+        "stack": [
+          "react",
+          "ethereum",
+          "tailwind",
+          "vercel",
+          "graphql",
+          "thegraph"
+        ]
       }
     ]
   },
