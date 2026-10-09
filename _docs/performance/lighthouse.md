@@ -60,6 +60,15 @@ Median of 3, before → after. GPU: host Chrome 154 with an RTX 4060. Software: 
 
 All pages: Accessibility, Best Practices and SEO 100; axe 0 violations in both themes with menus open and closed.
 
+## After branch `feat/ui-polish` (local, production build, 2026-10-09)
+
+GPU setup below, median of 3, `main` → branch. The LCP element did not change (the hero summary; the subtitle on /es mobile), and CLS stayed the same.
+
+| Page | Mobile  | Desktop   | Mobile LCP  | CLS   |
+| ---- | ------- | --------- | ----------- | ----- |
+| /en  | 94 → 95 | 100 → 100 | 2.5 → 2.3 s | 0.002 |
+| /es  | 95 → 95 | 100 → 100 | 2.3 → 2.3 s | 0.002 |
+
 ## How to re-measure
 
 PageSpeed Insights is the reference: run https://pagespeed.web.dev on each page three times and compare medians.
