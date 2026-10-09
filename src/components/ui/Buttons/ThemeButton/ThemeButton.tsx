@@ -1,7 +1,6 @@
 'use client';
 
 import { useContext } from 'react';
-import { motion } from 'framer-motion';
 import styles from './ThemeButton.module.scss';
 import useDarkMode from '@/hooks/useDarkMode';
 import { LanguageContext } from '@/store/LanguageProvider';
@@ -26,16 +25,15 @@ export default function ThemeButton() {
       className={styles['icon-button']}
       onClick={toggleTheme}
     >
-      <motion.span
+      <span
         aria-hidden='true'
         className={styles.bulb}
-        animate={{
+        style={{
           fontVariationSettings: darkMode ? "'wght' 100" : "'wght' 900",
-          transition: { duration: 0.25 },
         }}
       >
         💡
-      </motion.span>
+      </span>
     </button>
   );
 }
