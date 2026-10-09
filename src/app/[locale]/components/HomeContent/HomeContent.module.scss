@@ -10,11 +10,21 @@
 
 .hero {
   position: relative;
-  min-height: calc(100svh - #{$header-height} - 4rem);
+  // Ends above the fixed footer, so the scroll cue never sits under it.
+  min-height: calc(100svh - #{$header-height} - #{$footer-height});
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 2rem;
+
+  @media (width >= $breakpoint-md) {
+    min-height: calc(100svh - #{$header-height} - #{$footer-height-md});
+  }
+
+  // The footer isn't fixed here.
+  @media (height <= $breakpoint-short-height) {
+    min-height: calc(100svh - #{$header-height} - 4rem);
+  }
 }
 
 .heroText {
