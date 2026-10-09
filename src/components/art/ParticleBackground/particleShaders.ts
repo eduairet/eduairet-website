@@ -143,6 +143,7 @@ uniform float uRadius;
 uniform float uStep;
 uniform vec3 uPointer;
 uniform float uPointerRadius;
+uniform float uBurst;
 
 ${simplexNoise3D}
 ${lifeCycle}
@@ -185,6 +186,15 @@ void main() {
     float turn = atan(sin(target - heading), cos(target - heading));
     heading += turn * pull * 0.3;
     speed += pull * 1.5;
+  }
+
+  // A click bursts the ring: particles turn away from its center and speed up.
+  if (uBurst > 0.0) {
+    vec2 fromCenter = position - uCenter;
+    float target = atan(fromCenter.x, fromCenter.y);
+    float turn = atan(sin(target - heading), cos(target - heading));
+    heading += turn * uBurst;
+    speed += uBurst * 6.0;
   }
 
   speed = (speed + flow * 0.5 + 0.5) * 0.9;

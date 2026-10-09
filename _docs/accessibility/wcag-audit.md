@@ -21,6 +21,7 @@
 - A credit line closes every page. Its links are underlined and say they open in a new tab.
 - Card tech icons wrap under the text. Tools with no usable logo are listed by name, at 7.69:1 contrast or more.
 - On phones too short to fit it above the footer, the hero scroll arrow is hidden.
+- A click, a right click, or Enter or Space on a link or button bursts the particle ring outward; it re-forms in about 1.5 s. With reduced motion there is no burst, and the opacity cap keeps it from flashing (F-23).
 - No page scrolls sideways at any tested size, 320 to 1920 wide (1.4.10). Before, desktop pages scrolled sideways by the scrollbar's width, and some phone layouts were wider than the screen.
 - Evidence: axe 4.11.0 found 0 violations in 48 runs (4 pages, both themes, menus closed and open, 1280 and 375 wide). A Tab walk forward and back on /en, /es and /en/contact at 4 sizes found no focus stop entirely hidden (772 stops). With reduced motion, nothing new moves.
 
@@ -364,6 +365,7 @@ Severity counts as found on 2026-10-05:
   - **Reduced motion:** with `prefers-reduced-motion: reduce`, the scene draws one still frame and never starts its loop (1 draw in 3 s). Turning the setting off while the page is open starts the loop (30 frames/s); turning it on again stops it at once. Test: `particleBackground.test.tsx`.
   - **Hidden tab:** the loop stops while the tab is hidden (draws stayed at 265 for 3 s with another tab in front) and resumes when it is shown again.
   - **Soft and low contrast:** the canvas is drawn at 20% opacity over the solid page background. In the dark theme, no background pixel can be brighter than 20% gray (worst measured: relative luminance 0.033). In the light theme, a particle darkens the page by at most about 5%. Since 2026-10-09 its letters are bold and slightly stronger (worst measured: 0.753 against 0.846 for the plain background).
+  - **Click burst (since 2026-10-09):** a click or keyboard activation sends the particles outward for about a second. It never runs with reduced motion, since the loop is off then, and the caps below still apply.
   - **No flashing (2.3.1):** a flash needs opposing luminance changes of at least 0.10. The 20% opacity caps the change at 0.033 in the dark theme and below 0.10 in the light theme (0.094 measured on 2026-10-09), so the background cannot flash, at any rate.
   - **Contrast (1.4.3):** text was hidden and the background behind every text run sampled 10 times over 10 s, on /en, /es, /en/contact and the 404 page in both themes. 0 failures. Lowest values: body text 14.40:1 (dark) and 16.67:1 (light); headings 10.79:1; the red home subtitle (large text) 3.16:1 (dark) and 3.06:1 (light, re-measured on 2026-10-09 with the pointer over it). The nav, footer and form sit on opaque surfaces and are unchanged (17.78:1 or more).
   - **Out of the way:** the canvas is `aria-hidden`, has `pointer-events: none`, and is not focusable. A mouse and keyboard run of the nav menu, language links, contact form, theme button, skip link and Escape passed with the canvas in place.

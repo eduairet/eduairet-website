@@ -60,6 +60,7 @@ const POINTER_IDLE_MS = 600;
 const POINTER_DAMPING = 4;
 const RING_DAMPING = 1;
 const RING_FOLLOW_POINTER = 0.35;
+const BURST_DAMPING = 3;
 // Right of center, away from the left-aligned text.
 const RING_REST_X = 0.7;
 
@@ -182,6 +183,7 @@ export async function createParticleScene(
     uStep: { value: 0 },
     uPointer: { value: pointer },
     uPointerRadius: { value: 0 },
+    uBurst: { value: 0 },
   };
   Object.assign(state.material.uniforms, update);
 
@@ -280,6 +282,13 @@ export async function createParticleScene(
     center.x = MathUtils.damp(center.x, targetX, RING_DAMPING, STEP_SECONDS);
     center.y = MathUtils.damp(center.y, targetY, RING_DAMPING, STEP_SECONDS);
 
+    update.uBurst.value = MathUtils.damp(
+      update.uBurst.value,
+      0,
+      BURST_DAMPING,
+      STEP_SECONDS
+    );
+
     update.uFrame.value += 1;
     update.uTime.value += STEP_SECONDS;
     compute.compute();
@@ -362,6 +371,11 @@ export async function createParticleScene(
   const onPointerLeave = () => {
     pointerActive = false;
   };
+  // Left and right clicks, and Enter or Space on a link or button. The loop
+  // never runs with reduced motion, so there is no burst then.
+  const onBurst = () => {
+    if (running) update.uBurst.value = 1;
+  };
   const onVisibility = () => {
     if (document.hidden) stop();
     else start();
@@ -382,6 +396,8 @@ export async function createParticleScene(
   window.addEventListener('pointerup', onPointerEnd, passive);
   window.addEventListener('pointercancel', onPointerEnd, passive);
   window.addEventListener('resize', onResize, passive);
+  window.addEventListener('click', onBurst, passive);
+  window.addEventListener('contextmenu', onBurst, passive);
   window.addEventListener('blur', onPointerLeave, { signal });
   document.documentElement.addEventListener('pointerleave', onPointerLeave, {
     signal,
