@@ -10,6 +10,7 @@ import MainWrapper from '@/components/wrappers/MainWrapper/MainWrapper';
 import BodyWrapper from '@/components/wrappers/BodyWrapper';
 import NavBar from '@/components/ui/Nav/NavBar/NavBar';
 import Footer from '@/components/ui/Footer/Footer';
+import Credits from '@/components/ui/Credits/Credits';
 
 const eatIconsVF = localFont({
   src: '/fonts/EatIconsVF.woff2',
@@ -56,7 +57,10 @@ export default async function RootLayout({ children, params }: IProps) {
           <header>
             <NavBar locale={locale as Lang} />
           </header>
-          <MainWrapper>{children}</MainWrapper>
+          <MainWrapper>
+            {children}
+            <Credits lang={locale as Lang} />
+          </MainWrapper>
           <Footer lang={locale as Lang} />
         </BodyWrapper>
       </StoreProvider>

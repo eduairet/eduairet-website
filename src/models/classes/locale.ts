@@ -76,6 +76,7 @@ export class Dictionary {
     theme: {
       text: string;
     };
+    credits: string;
   };
   buttons: {
     langsButton: Button;
@@ -152,6 +153,7 @@ export class Dictionary {
       theme: {
         text: data.footer?.theme?.text || '',
       },
+      credits: data.footer?.credits || '',
     };
     this.buttons = {
       langsButton: {

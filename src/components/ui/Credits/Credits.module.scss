@@ -1,0 +1,17 @@
+.credits {
+  max-width: 40rem;
+  margin: 2rem auto 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--foreground);
+
+  a {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+
+    &::before {
+      content: none;
+    }
+  }
+}

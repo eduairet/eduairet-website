@@ -35,7 +35,8 @@
     },
     "theme": {
       "text": "Tema"
-    }
+    },
+    "credits": "Diseñado y desarrollado por {name} con Next.js, React, TypeScript, Sass y three.js, escrito con Claude Code y Cursor, y alojado en Vercel. Tipografía: {font} de James Edmondson ({foundry})."
   },
   "buttons": {
     "langsButton": {

@@ -35,7 +35,8 @@
     },
     "theme": {
       "text": "Theme"
-    }
+    },
+    "credits": "Designed and built by {name} with Next.js, React, TypeScript, Sass and three.js, written with Claude Code and Cursor, and hosted on Vercel. Set in {font} by James Edmondson ({foundry})."
   },
   "buttons": {
     "langsButton": {

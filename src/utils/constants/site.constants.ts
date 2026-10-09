@@ -23,6 +23,11 @@ export const SocialUrls = {
   email: 'mailto:hola@eduairet.com',
 };
 
+export const FontUrls = {
+  degular: 'https://ohnotype.co/fonts/degular',
+  foundry: 'https://ohnotype.co',
+};
+
 export const SAME_AS = [
   SocialUrls.github,
   SocialUrls.linkedin,
