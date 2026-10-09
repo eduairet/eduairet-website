@@ -7,6 +7,25 @@
   gap: 1.5rem;
   padding-block: clamp(3rem, 8vw, 5rem);
 
+  // Top and bottom lines run the full screen width, past the content column.
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    width: 100vw;
+    transform: translateX(-50%);
+    border-top: 2px solid var(--foreground);
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
+
   // Lines the photo up with the text inside the cards below.
   @media (width >= $breakpoint-md) {
     flex-direction: row;
