@@ -15,6 +15,7 @@ const runTest = async (language: string, expectedLocation: string) => {
 
   expect(res?.status).toBe(302);
   expect(res?.headers.get('location')).toEqual(expectedLocation);
+  expect(res?.headers.get('vary')).toBe('Accept-Language');
 };
 
 for (const testCase of testCases) {
