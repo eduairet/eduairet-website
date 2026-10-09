@@ -22,9 +22,10 @@ const cardObserver = () =>
 interface IProps {
   entry: SectionEntry;
   icons: TechIconData[];
+  tools: string[];
 }
 
-export default function SectionCard({ entry, icons }: IProps) {
+export default function SectionCard({ entry, icons, tools }: IProps) {
   const { content } = useContext(LanguageContext);
   const cardRef = useRef<HTMLLIElement>(null);
 
@@ -72,16 +73,21 @@ export default function SectionCard({ entry, icons }: IProps) {
           </p>
         )}
         <p className={styles.description}>{entry.description}</p>
+        {icons.length > 0 && (
+          <ul className={styles.stack} aria-label={content.home.techStack}>
+            {icons.map((icon) => (
+              <li key={icon.title}>
+                <TechIcon icon={icon} />
+              </li>
+            ))}
+          </ul>
+        )}
+        {tools.length > 0 && (
+          <p className={styles.tools}>
+            {content.home.otherTools} {tools.join(', ')}
+          </p>
+        )}
       </div>
-      {icons.length > 0 && (
-        <ul className={styles.stack} aria-label={content.home.techStack}>
-          {icons.map((icon) => (
-            <li key={icon.title}>
-              <TechIcon icon={icon} />
-            </li>
-          ))}
-        </ul>
-      )}
     </li>
   );
 }

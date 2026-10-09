@@ -54,7 +54,8 @@
     "summary": "Seis años creando aplicaciones web de principio a fin, sobre más de 10 años en diseño y tipografía.",
     "scrollCue": "Conoce más sobre mí",
     "techStack": "Tecnologías",
-    "newTab": "(se abre en otra pestaña)"
+    "newTab": "(se abre en otra pestaña)",
+    "otherTools": "También:"
   },
   "about": {
     "title": "Sobre mí",
@@ -70,7 +71,24 @@
         "meta": "Contrato · Remoto",
         "period": "Ene 2026 – Presente",
         "description": "Trabajo en una plataforma de medios de cinco marcas, con .NET y Next.js, de la base de datos a la pantalla. Rediseñé la búsqueda de PressRelease para que, en pruebas locales, pasara de segundos a milisegundos, construí Nombase Funding de principio a fin e implementé Sentry en 7 servicios.",
-        "stack": ["dotnet", "nextjs", "typescript", "react", "docker"]
+        "stack": [
+          "dotnet",
+          "nextjs",
+          "typescript",
+          "react",
+          "docker",
+          "mysql",
+          "wordpress",
+          "javascript",
+          "html",
+          "css",
+          "sass",
+          "mssql",
+          "aws",
+          "sentry",
+          "claudecode",
+          "codex"
+        ]
       },
       {
         "role": "Desarrollador Frontend",
@@ -79,7 +97,19 @@
         "meta": "Contrato · Remoto",
         "period": "May 2023 – Ene 2026",
         "description": "Llevé diseños a interfaces de producción para nombase.com y las marcas de BevNET, cuidando los detalles del diseño al código. Pasé del front-end al full-stack, con APIs, bases de datos, migraciones y pruebas, y de ahí al ascenso a Ingeniero de Software.",
-        "stack": ["nextjs", "typescript", "react"]
+        "stack": [
+          "nextjs",
+          "typescript",
+          "react",
+          "dotnet",
+          "mysql",
+          "wordpress",
+          "javascript",
+          "html",
+          "css",
+          "sass",
+          "mssql"
+        ]
       },
       {
         "role": "Font Engineer y Diseñador Tipográfico",
@@ -88,7 +118,15 @@
         "meta": "Contrato · Remoto",
         "period": "Abr 2021 – Jun 2022",
         "description": "Diseñé tipografías y construí las herramientas de producción detrás de las fuentes, con scripts en Python y plugins de Glyphs. También creé el Branding System Generator y lo presenté en Typographics TypeLab 2022.",
-        "stack": ["python"]
+        "stack": [
+          "python",
+          "robofont",
+          "drawbot",
+          "glyphs",
+          "indesign",
+          "illustrator",
+          "react"
+        ]
       },
       {
         "role": "Desarrollador Frontend y Creative Coder",
@@ -97,7 +135,15 @@
         "meta": "Autónomo · Híbrido",
         "period": "Abr 2020 – Abr 2023",
         "description": "Aquí fue donde el arte, el diseño y el código se juntaron para mí. Desarrollé interfaces interactivas con arte generativo y animación, y automaticé el diseño editorial conectando Python y Pandas con InDesign.",
-        "stack": ["javascript", "python"]
+        "stack": [
+          "javascript",
+          "python",
+          "react",
+          "html",
+          "css",
+          "p5",
+          "drawbot"
+        ]
       },
       {
         "role": "Diseñador Gráfico Senior",
@@ -106,7 +152,17 @@
         "meta": "Presencial",
         "period": "Ene 2017 – Mar 2020",
         "description": "Renové el lenguaje visual de las comunicaciones del departamento y armé sistemas de branding para eventos, del merchandising y el motion al editorial, la tipografía, la web y la señalética. El trabajo repetitivo, como diplomas e invitaciones animadas, fue lo que me llevó a escribir Python y JavaScript, y de ahí al software.",
-        "stack": ["python", "javascript"]
+        "stack": [
+          "python",
+          "javascript",
+          "glyphs",
+          "robofont",
+          "drawbot",
+          "illustrator",
+          "photoshop",
+          "indesign",
+          "aftereffects"
+        ]
       },
       {
         "role": "Archivo de Diseño y Arte",

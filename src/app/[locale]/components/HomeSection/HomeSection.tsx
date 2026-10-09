@@ -17,7 +17,7 @@ export default function HomeSection({ id, section }: IProps) {
           <SectionCard
             key={`${id}-${i.toString().padStart(2, '0')}`}
             entry={entry}
-            icons={resolveStack(entry.stack)}
+            {...resolveStack(entry.stack)}
           />
         ))}
       </ul>

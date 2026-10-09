@@ -95,11 +95,9 @@
   flex-direction: column;
   width: 100%;
   max-width: 32rem;
-  padding-bottom: 3rem;
 
   @media (width >= $breakpoint-md) {
     max-width: 50%;
-    padding-bottom: 0;
   }
 }
 
@@ -151,14 +149,21 @@
 }
 
 .stack {
-  position: absolute;
-  right: clamp(1.5rem, 4vw, 2.75rem);
-  bottom: clamp(1.5rem, 4vw, 2.75rem);
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
+  margin-top: 1.5rem;
   list-style: none;
-  // Match the card text color; the corner stays dominated by the top-left tone.
   color: inherit;
+}
+
+.tools {
+  text-align: left;
+  color: inherit;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-top: 0.75rem;
+  @include degular($wght: 400, $opsz: 14);
 }
 
 .techIcon {
