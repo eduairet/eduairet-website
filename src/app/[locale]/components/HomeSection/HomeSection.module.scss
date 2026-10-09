@@ -13,22 +13,17 @@
 }
 
 .title {
+  @extend %pill;
   position: sticky;
   top: $header-height;
   // Below the header, so the open nav menus stay on top of it.
   z-index: 1;
   align-self: center;
-  height: $pill-height;
-  display: flex;
-  align-items: center;
   padding: 0 2rem;
   margin: 1rem 0 1.5rem;
   color: var(--foreground);
-  background-color: var(--background);
   font-size: 1.5rem;
   line-height: 1;
-  @include border($weight: 2px);
-  @include rounded-corners($radius: 3rem);
   @include degular($wght: 700, $opsz: 60);
 
   // Docks in the header, level with the nav pill.

@@ -21,17 +21,15 @@ html {
   // Keep focused elements clear of the fixed header, the sticky section
   // titles and the fixed footer (WCAG 2.4.11, technique C43).
   scroll-padding-top: calc(#{$header-height} + #{$pill-height} + 1rem);
-  scroll-padding-bottom: calc(#{$footer-height} + 1rem);
+  @include footer-clearance(scroll-padding-bottom);
 
   // From here up, the section titles stick inside the header.
   @media (width >= $breakpoint-md) {
     scroll-padding-top: calc(#{$header-height} + 1rem);
-    scroll-padding-bottom: calc(#{$footer-height-md} + 1rem);
   }
 
   @media (height <= $breakpoint-short-height) {
     scroll-padding-top: 1rem;
-    scroll-padding-bottom: 1rem;
   }
 
   * {

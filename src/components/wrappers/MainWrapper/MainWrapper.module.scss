@@ -9,14 +9,6 @@
   justify-content: stretch;
   padding-left: 1rem;
   padding-right: 1rem;
-  padding-bottom: calc(#{$footer-height} + 1rem);
   gap: 2rem;
-
-  @media (width >= $breakpoint-md) {
-    padding-bottom: calc(#{$footer-height-md} + 1rem);
-  }
-
-  @media (height <= $breakpoint-short-height) {
-    padding-bottom: 1rem;
-  }
+  @include footer-clearance(padding-bottom);
 }

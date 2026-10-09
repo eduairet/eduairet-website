@@ -8,7 +8,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
-import { Dictionary, EnContent, EsContent } from '@/models';
+import { Dictionary, EnContent, EsContent, type Lang } from '@/models';
 
 import ContactForm from '@/app/[locale]/contact/components/ContactForm/ContactForm';
 
@@ -36,9 +36,9 @@ vi.mock('@/utils/client', async (importOriginal) => ({
   fetchData: mocks.fetchData,
 }));
 
-const renderForm = () =>
+const renderForm = (locale: Lang = 'en', content = en) =>
   render(
-    <LanguageProvider locale='en' content={en}>
+    <LanguageProvider locale={locale} content={content}>
       <ContactForm />
     </LanguageProvider>
   );
@@ -91,11 +91,7 @@ describe('ContactForm accessibility', () => {
   ] as const)(
     '%s asks for every field once, before the fields',
     (locale, data, instructions) => {
-      render(
-        <LanguageProvider locale={locale} content={new Dictionary(data)}>
-          <ContactForm />
-        </LanguageProvider>
-      );
+      renderForm(locale, new Dictionary(data));
       const fields = screen.getAllByRole('textbox');
       const instruction = screen.getByText(instructions);
 

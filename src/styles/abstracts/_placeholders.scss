@@ -10,6 +10,16 @@
   overflow: hidden;
 }
 
+// The outlined pill shared by the nav and the sticky section titles.
+%pill {
+  height: $pill-height;
+  display: flex;
+  align-items: center;
+  background-color: var(--background);
+  @include border($weight: 2px);
+  @include rounded-corners($radius: 3rem);
+}
+
 %icon-button {
   cursor: pointer;
   width: $icon-button-size;
