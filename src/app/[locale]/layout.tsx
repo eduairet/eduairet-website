@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { preconnect } from 'react-dom';
 import localFont from 'next/font/local';
 import '@/styles/main.scss';
-import { Lang } from '@/models';
+import { Lang, toUiContent } from '@/models';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import StoreProvider from '@/store/StoreProvider';
 import MainWrapper from '@/components/wrappers/MainWrapper/MainWrapper';
@@ -58,7 +58,7 @@ export default async function RootLayout({ children, params }: IProps) {
           <link rel='stylesheet' href={typekit} />
         </noscript>
       </head>
-      <StoreProvider>
+      <StoreProvider locale={locale as Lang} content={toUiContent(content)}>
         <BodyWrapper>
           <a className='skip-link' href='#main'>
             {content.nav.skip}

@@ -210,3 +210,26 @@ export class Dictionary {
     };
   }
 }
+
+// The part of the dictionary that client components read. Long page copy
+// stays on the server, so the browser gets one small set of UI strings.
+export type UiContent = Pick<
+  Dictionary,
+  'meta' | 'nav' | 'buttons' | 'home' | 'notFound' | 'contact'
+>;
+
+export const toUiContent = ({
+  meta,
+  nav,
+  buttons,
+  home,
+  notFound,
+  contact,
+}: Dictionary): UiContent => ({
+  meta,
+  nav,
+  buttons,
+  home,
+  notFound,
+  contact,
+});

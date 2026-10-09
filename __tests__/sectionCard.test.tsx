@@ -1,6 +1,9 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { act, cleanup, render, screen } from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
+import { Dictionary, EnContent } from '@/models';
+
+const en = new Dictionary(EnContent);
 import SectionCard from '@/app/[locale]/components/HomeSection/SectionCard';
 import styles from '@/app/[locale]/components/HomeSection/HomeSection.module.scss';
 
@@ -8,23 +11,21 @@ vi.mock('next/navigation', () => ({
   useParams: () => ({ locale: 'en' }),
 }));
 
+// eslint-disable-next-line no-unused-vars
 let notify: (isIntersecting: boolean) => void = () => {};
-let options: IntersectionObserverInit | undefined;
+let options: { threshold?: number } | undefined;
 
 beforeEach(() => {
   vi.stubGlobal(
     'IntersectionObserver',
     class {
       constructor(
-        callback: IntersectionObserverCallback,
-        init?: IntersectionObserverInit
+        // eslint-disable-next-line no-unused-vars
+        callback: (entries: { isIntersecting: boolean }[]) => void,
+        init?: { threshold?: number }
       ) {
         options = init;
-        notify = (isIntersecting) =>
-          callback(
-            [{ isIntersecting } as IntersectionObserverEntry],
-            this as unknown as IntersectionObserver
-          );
+        notify = (isIntersecting) => callback([{ isIntersecting }]);
       }
       observe() {}
       disconnect() {}
@@ -50,7 +51,7 @@ const entry = {
 describe('SectionCard', () => {
   test('shows each time it enters the viewport and hides when it leaves', () => {
     render(
-      <LanguageProvider>
+      <LanguageProvider locale='en' content={en}>
         <SectionCard entry={entry} icons={[]} />
       </LanguageProvider>
     );

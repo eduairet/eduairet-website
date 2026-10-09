@@ -1,6 +1,9 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
+import { Dictionary, EnContent } from '@/models';
+
+const en = new Dictionary(EnContent);
 import ThemeButton from '@/components/ui/Buttons/ThemeButton/ThemeButton';
 import HomeSubtitle from '@/app/[locale]/components/HomeSubtitle/HomeSubtitle';
 import Spinner from '@/components/ui/Spinner/Spinner';
@@ -20,7 +23,7 @@ describe('Theme toggle', () => {
   test('its name says what it will do and updates after toggling', () => {
     localStorage.setItem('theme', 'dark');
     render(
-      <LanguageProvider>
+      <LanguageProvider locale='en' content={en}>
         <ThemeButton />
       </LanguageProvider>
     );

@@ -8,6 +8,9 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
+import { Dictionary, EnContent } from '@/models';
+
+const en = new Dictionary(EnContent);
 import ContactForm from '@/app/[locale]/contact/components/ContactForm/ContactForm';
 
 const mocks = vi.hoisted(() => ({
@@ -35,7 +38,7 @@ vi.mock('@/utils/client', async (importOriginal) => ({
 
 const renderForm = () =>
   render(
-    <LanguageProvider>
+    <LanguageProvider locale='en' content={en}>
       <ContactForm />
     </LanguageProvider>
   );
