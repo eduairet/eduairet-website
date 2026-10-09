@@ -23,9 +23,19 @@ export const SocialUrls = {
   email: 'mailto:hola@eduairet.com',
 };
 
-export const FontUrls = {
-  degular: 'https://ohnotype.co/fonts/degular',
-  foundry: 'https://ohnotype.co',
+// Names the footer credit line links, keyed by its {placeholders}.
+export const CreditLinks: Record<string, { label: string; href: string }> = {
+  name: { label: SITE_NAME, href: SocialUrls.github },
+  nextjs: { label: 'Next.js', href: 'https://nextjs.org' },
+  react: { label: 'React', href: 'https://react.dev' },
+  typescript: { label: 'TypeScript', href: 'https://www.typescriptlang.org' },
+  sass: { label: 'Sass', href: 'https://sass-lang.com' },
+  threejs: { label: 'three.js', href: 'https://threejs.org' },
+  vercel: { label: 'Vercel', href: 'https://vercel.com' },
+  claudecode: { label: 'Claude Code', href: 'https://claude.com/claude-code' },
+  cursor: { label: 'Cursor', href: 'https://cursor.com' },
+  font: { label: 'Degular', href: 'https://ohnotype.co/fonts/degular' },
+  foundry: { label: 'OH no Type Co.', href: 'https://ohnotype.co' },
 };
 
 export const SAME_AS = [
