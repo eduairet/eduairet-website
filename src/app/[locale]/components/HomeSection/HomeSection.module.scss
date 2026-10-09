@@ -69,6 +69,12 @@
   justify-content: flex-start;
   overflow: hidden;
   color: $white;
+  // Fades and slides in each time it scrolls into view (see SectionCard).
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.6s ease-in-out,
+    transform 0.6s ease-in-out;
   background: radial-gradient(
     170% 170% at 0% 0%,
     #{$black} 0%,
@@ -76,6 +82,15 @@
     #{$white} 135%
   );
   @include rounded-corners($radius: $border-radius);
+
+  &.inView {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: opacity 0.6s ease-in-out;
+  }
 
   &:nth-child(even) {
     color: $black;

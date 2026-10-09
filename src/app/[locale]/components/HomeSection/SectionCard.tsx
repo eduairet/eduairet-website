@@ -1,10 +1,10 @@
 'use client';
 
-import { useContext } from 'react';
-import { motion } from 'framer-motion';
+import { useContext, useRef } from 'react';
 import styles from './HomeSection.module.scss';
 import { SectionEntry } from '@/models';
 import { LanguageContext } from '@/store/LanguageProvider';
+import useInView from '@/hooks/useInView';
 import TechIcon from './TechIcon';
 import type { TechIconData } from './techStack';
 
@@ -15,16 +15,13 @@ interface IProps {
 
 export default function SectionCard({ entry, icons }: IProps) {
   const { content } = useContext(LanguageContext);
+  const cardRef = useRef<HTMLLIElement>(null);
+  const inView = useInView(cardRef, 0.3);
 
-  // Same props on server and client; MotionConfig (template.tsx) drops the
-  // slide for users who prefer reduced motion.
   return (
-    <motion.li
-      className={styles.card}
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.3 }}
-      transition={{ ease: 'easeInOut', duration: 0.6 }}
+    <li
+      ref={cardRef}
+      className={inView ? `${styles.card} ${styles.inView}` : styles.card}
     >
       <div className={styles.content}>
         <p className={styles.period}>{entry.period}</p>
@@ -71,6 +68,6 @@ export default function SectionCard({ entry, icons }: IProps) {
           ))}
         </ul>
       )}
-    </motion.li>
+    </li>
   );
 }
