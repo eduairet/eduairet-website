@@ -67,7 +67,7 @@ const RING_REST_X = 0.7;
 // letters are bold to read better without getting darker.
 const THEMES = {
   dark: { gain: 0.8, light: 1, equation: AddEquation, weight: 'normal' },
-  light: { gain: 0.25, light: 0, equation: MaxEquation, weight: 'bold' },
+  light: { gain: 0.265, light: 0, equation: MaxEquation, weight: 'bold' },
 } as const;
 
 let loggedFallback = false;
