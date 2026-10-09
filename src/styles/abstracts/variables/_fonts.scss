@@ -1,0 +1,73 @@
+@use 'sass:list';
+@use 'sass:map';
+
+// System fonts that stand in for Degular until it loads, each scaled to match
+// its line breaks (see _font-fallbacks.scss). The title mixes heavy and light
+// letters, so it has its own scale. Order: most common first.
+$degular-fallbacks: (
+  'arial': (
+    regular: (
+      'Arial',
+      'ArialMT',
+      'Helvetica',
+      'Liberation Sans',
+      'Arimo',
+    ),
+    bold: (
+      'Arial Bold',
+      'Arial-BoldMT',
+      'Helvetica Bold',
+      'Liberation Sans Bold',
+      'Arimo Bold',
+    ),
+    scales: (
+      regular: 0.91,
+      bold: 0.825,
+      title: 0.786,
+    ),
+  ),
+  'roboto': (
+    regular: (
+      'Roboto',
+      'Roboto Regular',
+    ),
+    bold: ('Roboto Bold'),
+    scales: (
+      regular: 0.92,
+      bold: 0.88,
+      title: 0.835,
+    ),
+  ),
+  'open-sans': (
+    regular: (
+      'Open Sans Regular',
+      'Open Sans',
+    ),
+    bold: ('Open Sans Bold'),
+    scales: (
+      regular: 0.86,
+      bold: 0.79,
+      title: 0.76,
+    ),
+  ),
+  'dejavu': (
+    regular: ('DejaVu Sans'),
+    bold: ('DejaVu Sans Bold'),
+    scales: (
+      regular: 0.8,
+      bold: 0.695,
+      title: 0.665,
+    ),
+  ),
+);
+
+@function -degular-stack($prefix) {
+  $stack: (degular-variable);
+  @each $name, $fallback in $degular-fallbacks {
+    $stack: list.append($stack, '#{$prefix}-#{$name}', comma);
+  }
+  @return list.append($stack, sans-serif, comma);
+}
+
+$degular-stack: -degular-stack('degular-fallback');
+$degular-title-stack: -degular-stack('degular-title-fallback');

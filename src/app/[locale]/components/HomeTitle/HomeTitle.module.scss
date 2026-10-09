@@ -9,6 +9,6 @@
   // The letter spans take the global font-family, so set it on them too.
   &,
   span {
-    font-family: degular-variable, degular-title-fallback, sans-serif;
+    font-family: $degular-title-stack;
   }
 }
