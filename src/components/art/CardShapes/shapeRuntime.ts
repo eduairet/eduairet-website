@@ -18,7 +18,7 @@ const BEHIND_OPACITY = 0.15;
 // Center distance from the right and bottom edges, in radii.
 const INSET = 0.62;
 const TEXT_GAP = 16;
-const STROKE = 2;
+const STROKE = 1;
 const MAX_PIXEL_RATIO = 2;
 
 interface Motion {
