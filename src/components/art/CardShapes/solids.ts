@@ -237,8 +237,7 @@ function sphere(latitudes: number, meridians: number) {
 // Samples per ring around the hole, and per small circle around the tube.
 const TORUS_RING_STEPS = 64;
 const TORUS_TUBE_STEPS = 32;
-// The march toward the viewer: first step, step count, smallest step, and
-// how far inside the tube counts as a hit.
+// The short march toward the viewer for points near the hole.
 const MARCH = { start: 0.03, steps: 12, minStep: 0.05, hit: -1e-3 };
 
 // A grid of rings around the hole and around the tube, with its back hidden.

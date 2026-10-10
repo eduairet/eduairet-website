@@ -62,7 +62,7 @@ describe('card solids', () => {
   });
 
   test('the torus draws its front and hides what the tube covers', () => {
-    // Every sample of the 12 by 24 grid, counted from a see-through trace.
+    // Every sample of the 12 by 24 grid; each circle repeats its first point.
     const all = 12 * 65 + 24 * 33;
     const share = (x: number) =>
       lines(SOLIDS.torus, poseMatrix(x, 0, 0)).flat().length / all;
