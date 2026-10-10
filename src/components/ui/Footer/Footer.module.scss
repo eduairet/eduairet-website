@@ -37,11 +37,8 @@
   }
 
   .section + .section {
-    border: 2px solid var(--foreground);
-    background-color: var(--background);
+    @extend %pill;
     padding: 0 1.5rem;
-    height: 50px;
-    border-radius: 25px;
 
     @media (width < $breakpoint-sm) {
       background: none;
