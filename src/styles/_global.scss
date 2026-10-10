@@ -20,6 +20,7 @@
   --foreground-50: #{get-color($white, 0.5)};
   --accent-text: #{$accent};
   --valid: #{$valid};
+  @include footer-clearance(--footer-clearance);
 }
 
 // The page scrollbar and the page background read their colors from <html>.

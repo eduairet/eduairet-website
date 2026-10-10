@@ -161,12 +161,12 @@ $stack-item-size: 34px;
   display: flex;
   align-items: center;
   height: $stack-item-size;
-  border: 2px solid currentColor;
+  @include border($weight: 2px, $color: currentColor);
 }
 
 .toolPill {
   padding: 0 0.875rem;
-  border-radius: calc(#{$stack-item-size} / 2);
+  @include rounded-corners($radius: calc(#{$stack-item-size} / 2));
   font-size: 0.875rem;
   line-height: 1;
   white-space: nowrap;

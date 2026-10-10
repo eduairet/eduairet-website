@@ -23,12 +23,8 @@
     // The scroll cue shows only while it fits fully above the fixed footer.
     @supports (animation-timeline: view()) {
       animation: cue-fits linear both;
-      animation-timeline: view(block auto calc(#{$footer-height} + 1rem));
+      animation-timeline: view(block auto var(--footer-clearance));
       animation-range: entry 0% entry 100%;
-
-      @media (width >= $breakpoint-md) {
-        animation-timeline: view(block auto calc(#{$footer-height-md} + 1rem));
-      }
 
       @media (height <= $breakpoint-short-height) {
         animation: none;
