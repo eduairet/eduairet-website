@@ -90,7 +90,9 @@ Local, production build, median of 3, `main` → branch in one Chrome session. "
 | /en  | 98 → 94 | 99 → 99              | 100 → 100 | 1.59 → 1.15 s | 1.92 → 1.89 s | 0 → 0      |
 | /es  | 97 → 94 | 97 → 99              | 100 → 100 | 1.57 → 1.21 s | 1.92 → 1.88 s | 0 → 0.002  |
 
-- At the default 4x CPU, Total Blocking Time rose from about 100 ms to 220 to 270 ms. The page does the same work, but the earlier paint moves the first layout task into the TBT window. At PSI-like CPU, TBT stayed at 12 to 16 ms.
+- At the default 4x CPU, Total Blocking Time rose from about 100 ms to 220 to 270 ms. The page does the same work, but the earlier paint moves the first layout task into the TBT window. At PSI-like CPU, TBT stayed at 12 to 16 ms. At 4x it varies a lot between runs (54 to 418 ms on one build).
+- That first layout task is mostly the fallback fonts. A `local()` face plus a different `font-variation-settings` on many elements (19 weights in the home title alone) cost about 280 ms of layout at 4x CPU in a Chrome trace: 686 → 405 ms with the settings held back. Holding them until Degular loads would change nothing with Arial or Helvetica, but on a device whose fallback font has a weight axis, the waiting text would change weight. Not shipped; it needs real-device testing first.
+- Nav links and the logo prefetch their page on hover, focus or touch, not when they render. Prefetching on render preloaded the other page's CSS, and Chrome warned on every load that it went unused.
 - The LCP element did not change: the hero summary, or the subtitle on /es.
 - If Adobe Fonts fails fast (`ERR_TIMED_OUT`), Chrome logs the error, and Best Practices drops on PSI. Page code can't prevent that. DevTools URL blocking logs nothing, so test this with a failed request instead (CDP `Fetch.failRequest`).
 
