@@ -32,13 +32,25 @@ test.each([
   }
 );
 
+test('the photo comes in the sizes it is shown at', () => {
+  render(<AboutSection id='about' about={new Dictionary(EnContent).about} />);
+  const photo = screen.getByRole('img');
+
+  expect(photo.getAttribute('srcset')).toBe(
+    '/eduardo-aire-torres-160.webp 160w, /eduardo-aire-torres-256.webp 256w, /eduardo-aire-torres.webp 400w'
+  );
+  expect(photo.getAttribute('sizes')).toBe('(min-width: 768px) 160px, 128px');
+});
+
 test('Person.image is the photo the About section shows', async () => {
   const content = new Dictionary(EnContent);
   render(<AboutSection id='about' about={content.about} />);
-  const src = screen.getByRole('img').getAttribute('src');
+  const photo = screen.getByRole('img');
+  const src = photo.getAttribute('src');
   const { mainEntity } = (await buildHomeStructuredData('en'))['@graph'][1];
 
   expect(mainEntity.image).toBe(`https://www.eduairet.com${src}`);
+  expect(photo.getAttribute('srcset')).toContain(`${src} 400w`);
   expect(mainEntity.description).toBe(content.about.text);
 });
 
