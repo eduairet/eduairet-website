@@ -87,7 +87,6 @@ export class Dictionary {
     summary: string;
     scrollCue: string;
     techStack: string;
-    otherTools: string;
     newTab: string;
   };
   about: {
@@ -172,7 +171,6 @@ export class Dictionary {
       summary: data.home?.summary || '',
       scrollCue: data.home?.scrollCue || '',
       techStack: data.home?.techStack || '',
-      otherTools: data.home?.otherTools || '',
       newTab: data.home?.newTab || '',
     };
     this.about = {

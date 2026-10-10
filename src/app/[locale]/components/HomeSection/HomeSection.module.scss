@@ -1,5 +1,7 @@
 @use '@/styles/abstracts/index' as *;
 
+$stack-item-size: 34px;
+
 .section {
   width: 100%;
   display: flex;
@@ -153,22 +155,27 @@
   list-style: none;
 }
 
-.tools {
-  text-align: left;
+.toolPill,
+.techIcon {
+  display: flex;
+  align-items: center;
+  height: $stack-item-size;
+  border: 2px solid currentColor;
+}
+
+.toolPill {
+  padding: 0 0.875rem;
+  border-radius: calc(#{$stack-item-size} / 2);
   font-size: 0.875rem;
-  line-height: 1.5;
-  margin-top: 0.75rem;
+  line-height: 1;
+  white-space: nowrap;
   @include degular($wght: 400, $opsz: 14);
 }
 
 .techIcon {
-  display: flex;
-  align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  width: $stack-item-size;
   border-radius: 50%;
-  border: 2px solid currentColor;
   @include merge-transitions((color, border-color));
 
   svg {

@@ -66,7 +66,7 @@ describe('SectionCard', () => {
     expect(card.className).not.toContain(styles.inView);
   });
 
-  test('names each tech icon and lists the other tools', () => {
+  test('lists the icons by name, then the other tools as text', () => {
     render(
       <LanguageProvider locale='en' content={en}>
         <SectionCard
@@ -85,6 +85,13 @@ describe('SectionCard', () => {
     for (const icon of icons) {
       expect(icon.querySelector('path')?.getAttribute('d')).toBeTruthy();
     }
-    expect(screen.getByText(`${en.home.otherTools} Glyphs, AWS`)).toBeTruthy();
+    const items = within(stack).getAllByRole('listitem');
+    expect(
+      items.map(
+        (item) =>
+          item.querySelector('[role="img"]')?.getAttribute('aria-label') ??
+          item.textContent
+      )
+    ).toEqual(['Next.js', 'Claude Code', 'Glyphs', 'AWS']);
   });
 });

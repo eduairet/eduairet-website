@@ -70,19 +70,19 @@ export default function SectionCard({ entry, icons, tools }: IProps) {
           </p>
         )}
         <p className={styles.description}>{entry.description}</p>
-        {icons.length > 0 && (
+        {icons.length + tools.length > 0 && (
           <ul className={styles.stack} aria-label={content.home.techStack}>
             {icons.map((tool) => (
               <li key={tool}>
                 <TechIcon tool={tool} />
               </li>
             ))}
+            {tools.map((tool) => (
+              <li key={tool} className={styles.toolPill}>
+                {tool}
+              </li>
+            ))}
           </ul>
-        )}
-        {tools.length > 0 && (
-          <p className={styles.tools}>
-            {content.home.otherTools} {tools.join(', ')}
-          </p>
         )}
       </div>
     </li>
