@@ -41,6 +41,8 @@
     padding: 0 1.5rem;
 
     @media (width < $breakpoint-sm) {
+      height: auto;
+      flex-direction: column;
       background: none;
       border: none;
     }
@@ -54,10 +56,6 @@
 
     p button {
       transform: scale(0.8);
-    }
-
-    @media (width < $breakpoint-sm) {
-      flex-direction: column;
     }
   }
 }
