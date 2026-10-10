@@ -30,11 +30,15 @@ describe('card solids', () => {
   });
 
   test('every solid stays inside the unit circle at any pose', () => {
-    for (const solid of Object.values(SOLIDS))
+    // One check per solid; an expect per point is slow when the suite is busy.
+    for (const [name, solid] of Object.entries(SOLIDS)) {
+      let farthest = 0;
       for (const m of poses)
         for (const line of lines(solid, m))
           for (const [x, y] of line)
-            expect(Math.hypot(x, y)).toBeLessThanOrEqual(1 + 1e-9);
+            farthest = Math.max(farthest, Math.hypot(x, y));
+      expect(farthest, name).toBeLessThanOrEqual(1 + 1e-9);
+    }
   });
 
   test('every edge is drawn, front or back, except on the torus', () => {
