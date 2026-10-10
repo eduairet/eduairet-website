@@ -127,7 +127,7 @@ Options compared as prototypes (2px lines), with 2 cards in view:
 
 The overlay also had to redraw at the display rate to follow scrolling, and its square scissor let lines poke past the rounded corners.
 
-**Load.** Local, production build, median of 3, `main` → branch in one Chrome session. "PSI-like CPU" uses `--throttling.cpuSlowdownMultiplier=1.8`. Measured with 2px lines; after the change to 1px lines and rounder corners, one run of each setup scored the same (PSI-like CPU 99, desktop 100).
+**Load.** Local, production build, median of 3, `main` → branch in one Chrome session. "PSI-like CPU" uses `--throttling.cpuSlowdownMultiplier=1.8`. Measured with 2px lines. On the final build, one run of each setup on a quiet machine scored 98 to 99 on mobile and 100 on desktop, with TBT 0 to 76 ms, and again loaded no shapes code.
 
 | Page | Mobile  | Mobile, PSI-like CPU | Desktop   | Mobile FCP    | Mobile LCP    | Mobile CLS    |
 | ---- | ------- | -------------------- | --------- | ------------- | ------------- | ------------- |
@@ -138,14 +138,16 @@ The overlay also had to redraw at the display rate to follow scrolling, and its 
 - The LCP element did not change. Home HTML stayed at 27.8 KB gzipped.
 - JS before any input: 9 scripts, 156.3 → 156.7 KB. The shapes chunk (3.8 KB) never appeared in a Lighthouse run's network log, since Lighthouse never scrolls.
 
-**Runtime.** 1280×900, particles running, two traces per side, with 2px lines.
+**Runtime.** Final build, 1280×900, particles running, three traces per side on a quiet machine.
 
-| Case                   | Main thread ms/s | GPU ms/s          | Shape draws/s |
-| ---------------------- | ---------------- | ----------------- | ------------- |
-| Idle, 2 cards in view  | 79–94 → 88–107   | 32–36 → 77–87     | 0 → 60        |
-| Scrolling all 12 cards | 99–103 → 109–133 | 102–104 → 197–254 | 0 → 74        |
-| Idle, no card in view  | 78–94 → 68–91    | 35 → 33–36        | 0 → 0         |
-| Tab hidden             | 0.2 → 0.1–0.4    | 1.7 → 1.4–2.0     | 0 → 0         |
+| Case                   | Main thread ms/s  | GPU ms/s                   | Shape draws/s |
+| ---------------------- | ----------------- | -------------------------- | ------------- |
+| Idle, 2 cards in view  | 49–56 → 53–57     | 24–27 → 59–126 (median 60) | 0 → 60        |
+| Scrolling all 12 cards | 67–68 → 68–70     | 73–76 → 114–132            | 0 → 76        |
+| Idle, no card in view  | 48–56 → 49–55     | 24–28 → 24–27              | 0 → 0         |
+| Tab hidden             | 0.3–0.6 → 0.2–0.3 | 1.0–1.4 → 1.4–1.7          | 0 → 0         |
+
+Before the last cleanup (fewer allocations, paths traced from points computed once), scrolling cost 95 to 150 GPU ms/s over `main` on a busier machine; now it costs 40 to 55.
 
 The page holds one live WebGL context before and after, including after three locale switches. With reduced motion, or when WebGL runs in software or is missing, each shape is drawn once as its card scrolls into view and never animates.
 
