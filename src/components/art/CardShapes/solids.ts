@@ -234,20 +234,64 @@ function sphere(latitudes: number, meridians: number) {
   };
 }
 
-// Outer, inner, top and bottom circles.
-function torus(ring = 0.68, tube = 0.32) {
+// A grid of rings around the hole and around the tube, with its back hidden.
+function torus(parallels: number, meridians: number, ring = 0.68, tube = 0.32) {
   const scale = 1 / (ring + tube);
   const [R, r] = [ring * scale, tube * scale];
-  const loops = [0, Math.PI, Math.PI / 2, -Math.PI / 2].map((v) =>
-    loop((u): Vec => [
+  const sample = (u: number, v: number) => ({
+    point: [
       (R + r * Math.cos(v)) * Math.cos(u),
       r * Math.sin(v),
       (R + r * Math.cos(v)) * Math.sin(u),
-    ])
-  );
+    ] as Vec,
+    normal: [
+      Math.cos(v) * Math.cos(u),
+      Math.sin(v),
+      Math.cos(v) * Math.sin(u),
+    ] as Vec,
+    // Only points near the hole can sit behind another part of the tube.
+    nearHole: Math.cos(v) < 0.2,
+  });
+  const circle = (
+    steps: number,
+    // eslint-disable-next-line no-unused-vars
+    at: (angle: number) => ReturnType<typeof sample>
+  ) => Array.from({ length: steps + 1 }, (_, k) => at((k / steps) * TAU));
+  const loops = [
+    ...Array.from({ length: parallels }, (_, i) =>
+      circle(64, (u) => sample(u, (i / parallels) * TAU))
+    ),
+    ...Array.from({ length: meridians }, (_, j) =>
+      circle(32, (v) => sample((j / meridians) * TAU, v))
+    ),
+  ];
+  const distance = ([x, y, z]: Vec) => Math.hypot(Math.hypot(x, z) - R, y) - r;
+  // A few steps toward the viewer: inside the tube means hidden.
+  const blocked = ([x, y, z]: Vec, [dx, dy, dz]: Vec) => {
+    let t = 0.03;
+    for (let i = 0; i < 12 && t < 2.2; i++) {
+      const d = distance([x + dx * t, y + dy * t, z + dz * t]);
+      if (d < -1e-3) return true;
+      t += Math.max(Math.abs(d), 0.05);
+    }
+    return false;
+  };
   return {
     family: 'round' as const,
-    trace: (m: Matrix, pen: Pen) => traceLoops(m, loops, pen),
+    trace(m: Matrix, pen: Pen) {
+      // The viewer's direction in the torus's own space.
+      const view: Vec = [m[6], m[7], m[8]];
+      for (const loop of loops) {
+        let drawing = false;
+        for (const { point, normal, nearHole } of loop) {
+          const shown =
+            view[0] * normal[0] + view[1] * normal[1] + view[2] * normal[2] >
+              0 && !(nearHole && blocked(point, view));
+          if (shown) step(m, point, pen, !drawing);
+          drawing = shown;
+        }
+      }
+    },
   };
 }
 
@@ -263,7 +307,7 @@ export const SOLIDS = {
   pentagonalPyramid: pyramid(5, 0.9, 1.2),
   octahedron: octahedron(),
   sphere: sphere(7, 8),
-  torus: torus(),
+  torus: torus(12, 24),
   cylinder: revolution([
     { y: -0.8, r: 0.6 },
     { y: 0.8, r: 0.6 },

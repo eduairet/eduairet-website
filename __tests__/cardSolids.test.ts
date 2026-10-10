@@ -37,7 +37,7 @@ describe('card solids', () => {
             expect(Math.hypot(x, y)).toBeLessThanOrEqual(1 + 1e-9);
   });
 
-  test('every edge is drawn, front or back', () => {
+  test('every edge is drawn, front or back, except on the torus', () => {
     const m = poseMatrix(0.2, 0.7, 0.1);
     expect(lines(SOLIDS.cube, m)).toHaveLength(12);
     expect(lines(SOLIDS.hexagonalPrism, m)).toHaveLength(18);
@@ -46,7 +46,6 @@ describe('card solids', () => {
     expect(lines(SOLIDS.cylinder, m)).toHaveLength(4);
     // Outline plus 7 latitudes and 8 meridian circles.
     expect(lines(SOLIDS.sphere, m)).toHaveLength(16);
-    expect(lines(SOLIDS.torus, m)).toHaveLength(4);
   });
 
   test('a positive y angle turns the front to the right', () => {
@@ -56,5 +55,15 @@ describe('card solids', () => {
       return m[0] * 0 + m[1] * 0 + m[2] * 1;
     };
     expect(front(0.3)).toBeGreaterThan(front(0));
+  });
+
+  test('the torus draws its front and hides its back', () => {
+    // 12 rings of 65 samples and 24 tube circles of 33.
+    const all = 12 * 65 + 24 * 33;
+    for (const m of poses) {
+      const drawn = lines(SOLIDS.torus, m).flat().length;
+      expect(drawn).toBeGreaterThan(all * 0.25);
+      expect(drawn).toBeLessThan(all * 0.7);
+    }
   });
 });
