@@ -65,6 +65,7 @@ $stack-item-size: 34px;
     #{$black} 50%,
     #{$white} 135%
   );
+  @include border($weight: 2px);
   @include rounded-corners($radius: $border-radius);
 
   &.inView {
