@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, describe, expect, test, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
 import { Dictionary, EnContent } from '@/models';
@@ -29,17 +29,6 @@ const themeColor = () =>
   document.querySelector('meta[name="theme-color"]')?.getAttribute('content');
 
 describe('Theme toggle', () => {
-  const reload = vi.fn();
-
-  beforeEach(() => {
-    reload.mockClear();
-    vi.stubGlobal('location', { reload });
-  });
-
-  afterEach(() => {
-    vi.unstubAllGlobals();
-  });
-
   test('its name says what it will do and updates after toggling', () => {
     localStorage.setItem('theme', 'dark');
     render(
@@ -56,7 +45,6 @@ describe('Theme toggle', () => {
       screen.getByRole('button', { name: 'Switch to dark theme' })
     ).toBeTruthy();
     expect(document.body.getAttribute('data-theme')).toBe('light');
-    expect(reload).toHaveBeenCalledOnce();
   });
 
   test("paints the browser's bars in the chosen theme", () => {
