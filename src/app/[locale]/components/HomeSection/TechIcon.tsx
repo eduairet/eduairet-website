@@ -6,8 +6,8 @@ interface IProps {
 }
 
 export default function TechIcon({ tool }: IProps) {
-  const { name, Icon } = TOOLS[tool] ?? {};
-  if (!name || !Icon) return null;
+  const { name, Icon } = TOOLS[tool];
+  if (!Icon) return null;
 
   return (
     <span className={styles.techIcon} role='img' aria-label={name} title={name}>

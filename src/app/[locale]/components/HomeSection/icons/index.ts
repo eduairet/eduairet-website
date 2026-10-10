@@ -4,7 +4,6 @@ export { default as TypeScriptIcon } from './TypeScriptIcon';
 export { default as JavaScriptIcon } from './JavaScriptIcon';
 export { default as ReactIcon } from './ReactIcon';
 export { default as DockerIcon } from './DockerIcon';
-export { default as NodejsIcon } from './NodejsIcon';
 export { default as PythonIcon } from './PythonIcon';
 export { default as AngularIcon } from './AngularIcon';
 export { default as SassIcon } from './SassIcon';

@@ -10,7 +10,6 @@ export const TOOLS: Record<string, { name: string; Icon?: ComponentType }> = {
   javascript: { name: 'JavaScript', Icon: icons.JavaScriptIcon },
   react: { name: 'React', Icon: icons.ReactIcon },
   docker: { name: 'Docker', Icon: icons.DockerIcon },
-  node: { name: 'Node.js', Icon: icons.NodejsIcon },
   python: { name: 'Python', Icon: icons.PythonIcon },
   angular: { name: 'Angular', Icon: icons.AngularIcon },
   sass: { name: 'Sass', Icon: icons.SassIcon },
