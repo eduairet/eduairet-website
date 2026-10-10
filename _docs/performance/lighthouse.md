@@ -111,6 +111,44 @@ Lighthouse 13.5.0, median of 3 with `?psi=N` cache busters, after PR #37 went li
 - Mobile FCP was 0.9 s in 11 of 12 runs (1.5 s in the other). After #36, runs where the kit loaded had FCP 2.6 to 2.7 s.
 - Mobile TBT was 0 to 30 ms and CLS 0.001 to 0.002.
 
+## Branch `feat/card-shapes` (2026-10-10)
+
+Each card in Experience, Projects and Education gets a turning wireframe solid in its bottom right corner.
+
+**Approach.** The 3D math runs on the CPU, and the lines are drawn into a small 2D canvas in each card. There is no WebGL, so the page keeps its single WebGL context, the particle background's. Chrome allows 16 active contexts on desktop and 8 on Android ([`webgraphicscontext3d_provider_impl.cc`](https://chromium.googlesource.com/chromium/src/+/HEAD/content/renderer/webgraphicscontext3d_provider_impl.cc)), so one context per card could have cost the particles theirs. The code loads only after the first visitor input and an idle moment, through the particle background's gate (`src/components/art/startGate.ts`).
+
+Tried and dropped, with 2 cards in view:
+
+| Option                                           | Extra WebGL contexts | Shape JS ms/s | GPU ms/s added |
+| ------------------------------------------------ | -------------------- | ------------- | -------------- |
+| 2D canvas per card (shipped)                     | 0                    | 3.9           | about 47       |
+| One WebGL renderer, copied into each card        | 1                    | 44            | about 132      |
+| One full-screen WebGL overlay with scissor rects | 1                    | 99            | about 282      |
+
+The overlay also had to redraw at the display rate to follow scrolling, and its square scissor let lines poke past the rounded corners.
+
+**Load.** Local, production build, median of 3, `main` → branch in one Chrome session. "PSI-like CPU" uses `--throttling.cpuSlowdownMultiplier=1.8`.
+
+| Page | Mobile  | Mobile, PSI-like CPU | Desktop   | Mobile FCP    | Mobile LCP    | Mobile CLS    |
+| ---- | ------- | -------------------- | --------- | ------------- | ------------- | ------------- |
+| /en  | 95 → 96 | 98 → 99              | 100 → 100 | 1.07 → 1.15 s | 2.41 → 2.42 s | 0.002 → 0.002 |
+| /es  | 92 → 91 | 99 → 98              | 100 → 100 | 1.07 → 1.07 s | 2.42 → 2.41 s | 0 → 0         |
+
+- The machine was busier than in earlier sections (benchmark index about 2,000, not 3,300), so 4x CPU scores sit a few points lower on both sides. TBT at 4x was 147 to 379 ms on both. At PSI-like CPU it was 7 to 54 ms.
+- The LCP element did not change. Home HTML stayed at 27.8 KB gzipped.
+- JS before any input: 9 scripts, 156.3 → 156.7 KB. The shapes chunk (3.8 KB) never appeared in a Lighthouse run's network log, since Lighthouse never scrolls.
+
+**Runtime.** 1280×900, particles running, two traces per side.
+
+| Case                   | Main thread ms/s | GPU ms/s          | Shape draws/s |
+| ---------------------- | ---------------- | ----------------- | ------------- |
+| Idle, 2 cards in view  | 79–94 → 88–107   | 32–36 → 77–87     | 0 → 60        |
+| Scrolling all 12 cards | 99–103 → 109–133 | 102–104 → 197–254 | 0 → 74        |
+| Idle, no card in view  | 78–94 → 68–91    | 35 → 33–36        | 0 → 0         |
+| Tab hidden             | 0.2 → 0.1–0.4    | 1.7 → 1.4–2.0     | 0 → 0         |
+
+The page holds one live WebGL context before and after, including after three locale switches. With reduced motion, or when WebGL runs in software or is missing, each shape is drawn once as its card scrolls into view and never animates.
+
 ## How to re-measure
 
 PageSpeed Insights is the reference: run https://pagespeed.web.dev on each page three times and compare medians.
