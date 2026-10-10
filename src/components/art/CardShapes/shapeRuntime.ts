@@ -33,7 +33,10 @@ interface Entry {
   canvas?: HTMLCanvasElement;
   context?: CanvasRenderingContext2D | null;
   radius: number;
-  half: number;
+  // Shape center, in px from the right and bottom edges.
+  center: number;
+  width: number;
+  height: number;
   alpha: number;
   pixelRatio: number;
   color: string;
@@ -136,16 +139,21 @@ export function createShapeRuntime({
     const beside = large >= SMALL * short;
     entry.radius = beside ? large : SMALL * short;
     entry.alpha = beside ? 1 : BEHIND_OPACITY;
-    entry.half = Math.ceil(entry.radius) + STROKE;
+    // Only the part inside the card: the rest would be cropped anyway.
+    entry.center = entry.radius * INSET;
+    const reach = Math.ceil(entry.radius + STROKE + entry.center);
+    const cssWidth = Math.min(reach, width);
+    const cssHeight = Math.min(reach, card.clientHeight);
     entry.pixelRatio = Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO);
-    const size = entry.half * 2;
-    canvas.width = canvas.height = Math.ceil(size * entry.pixelRatio);
-    const offset = `${entry.radius * INSET - entry.half}px`;
+    canvas.width = Math.ceil(cssWidth * entry.pixelRatio);
+    canvas.height = Math.ceil(cssHeight * entry.pixelRatio);
+    entry.width = cssWidth;
+    entry.height = cssHeight;
     Object.assign(canvas.style, {
-      width: `${size}px`,
-      height: `${size}px`,
-      right: offset,
-      bottom: offset,
+      width: `${cssWidth}px`,
+      height: `${cssHeight}px`,
+      right: '0',
+      bottom: '0',
     });
   };
 
@@ -158,7 +166,9 @@ export function createShapeRuntime({
     const lines = solid.lines(
       poseMatrix(swayX(motion.time), motion.y, swayZ(motion.time))
     );
-    const { half, radius, pixelRatio } = entry;
+    const { radius, pixelRatio } = entry;
+    const cx = entry.width - entry.center;
+    const cy = entry.height - entry.center;
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
@@ -170,7 +180,7 @@ export function createShapeRuntime({
     context.beginPath();
     for (const line of lines)
       line.forEach(([x, y], i) => {
-        const [px, py] = [half + x * radius, half - y * radius];
+        const [px, py] = [cx + x * radius, cy - y * radius];
         if (i) context.lineTo(px, py);
         else context.moveTo(px, py);
       });
@@ -272,7 +282,9 @@ export function createShapeRuntime({
         card,
         className,
         radius: 0,
-        half: 0,
+        center: 0,
+        width: 0,
+        height: 0,
         alpha: 1,
         pixelRatio: 1,
         color: '',
