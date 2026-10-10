@@ -40,7 +40,6 @@
     @extend %pill;
     padding: 0 1.5rem;
 
-    // Stacked on phones, so it grows past the pill's fixed height.
     @media (width < $breakpoint-sm) {
       height: auto;
       flex-direction: column;
