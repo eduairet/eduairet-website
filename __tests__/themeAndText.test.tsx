@@ -17,7 +17,20 @@ vi.mock('next/navigation', () => ({
 afterEach(() => {
   cleanup();
   localStorage.clear();
+  document.head.innerHTML = '';
 });
+
+// The two tags Next renders from the viewport's themeColor.
+const addThemeColorTags = () => {
+  document.head.innerHTML = `
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ededed">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">`;
+};
+
+const themeColors = () =>
+  [...document.querySelectorAll('meta[name="theme-color"]')].map((meta) =>
+    meta.getAttribute('content')
+  );
 
 describe('Theme toggle', () => {
   test('its name says what it will do and updates after toggling', () => {
@@ -36,6 +49,22 @@ describe('Theme toggle', () => {
       screen.getByRole('button', { name: 'Switch to dark theme' })
     ).toBeTruthy();
     expect(document.body.getAttribute('data-theme')).toBe('light');
+  });
+
+  test("paints the browser's bars in the chosen theme", () => {
+    addThemeColorTags();
+    localStorage.setItem('theme', 'dark');
+    render(
+      <LanguageProvider locale='en' content={en}>
+        <ThemeButton />
+      </LanguageProvider>
+    );
+    expect(themeColors()).toEqual(['#000', '#000']);
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Switch to light theme' })
+    );
+    expect(themeColors()).toEqual(['#ededed', '#ededed']);
   });
 });
 
@@ -57,6 +86,13 @@ describe('Theme before first paint', () => {
   test('falls back to the OS preference', () => {
     expect(runScript(true)).toBe('light');
     expect(runScript(false)).toBe('dark');
+  });
+
+  test("paints the browser's bars in the saved theme", () => {
+    addThemeColorTags();
+    localStorage.setItem('theme', 'light');
+    runScript(false);
+    expect(themeColors()).toEqual(['#ededed', '#ededed']);
   });
 });
 
