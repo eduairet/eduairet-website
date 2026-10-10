@@ -5,8 +5,7 @@ import {
 } from '@/components/art/startGate';
 import type { ShapeRuntime } from './shapeRuntime';
 
-// Cards register here as they mount. The drawing code loads only after the
-// first visitor input and an idle moment, and stops when no card is left.
+// Loads the drawing code after the first input; stops when no card is left.
 const cards = new Map<HTMLElement, string>();
 let runtime: ShapeRuntime | null = null;
 let generation = 0;

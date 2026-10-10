@@ -1,5 +1,4 @@
-// Wireframe solids drawn with every edge showing. Each solid fits in a sphere
-// of radius 1 and returns 2D polylines (y up) for an orthographic view.
+// Wireframes in a unit sphere, as 2D polylines (y up) for an orthographic view.
 
 export type Family = 'boxes' | 'prisms' | 'pyramids' | 'round';
 export type Point = [number, number];
@@ -41,8 +40,7 @@ const project = (m: Matrix, [x, y, z]: Vec): Point => [
   m[3] * x + m[4] * y + m[5] * z,
 ];
 
-// The camera looks down a little; the base tilt keeps faces from lining up
-// with the view when the angles are zero.
+// The base tilt keeps faces from lining up with the view at zero angles.
 const VIEW = rotateX(0.45);
 const BASE = multiply(rotateZ(0.3), rotateX(0.2));
 

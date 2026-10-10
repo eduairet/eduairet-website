@@ -1,5 +1,4 @@
-// Shared start-up checks for the decorative canvases, so none of them
-// competes with the page load or runs on a software renderer.
+// Start-up checks shared by the decorative canvases.
 
 const VISITOR_EVENTS = [
   'pointermove',

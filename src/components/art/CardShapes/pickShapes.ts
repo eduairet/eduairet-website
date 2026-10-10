@@ -3,8 +3,7 @@ import { SOLIDS, type SolidName } from './solids';
 const MIN_PER_FAMILY = 2;
 const MAX_TRIES = 50;
 
-// One shape per card in page order: no repeats, the torus always in, no two
-// neighbors from the same family, and every family at least twice.
+// Page order: no repeats, torus in, no same-family neighbors, 2+ per family.
 export function pickShapes(count: number, random = Math.random): SolidName[] {
   const names = Object.keys(SOLIDS) as SolidName[];
   const familyOf = (name: SolidName) => SOLIDS[name].family;

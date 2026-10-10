@@ -9,11 +9,10 @@ const SWAY_X = { angle: 0.35, seconds: 11 };
 const SWAY_Z = { angle: 0.3, seconds: 17 };
 const MAX_STEP_SECONDS = 0.1;
 
-// Radius as a share of the card's shorter side. The large size is used only
-// when it fits beside the text; otherwise the small one sits behind it.
+// Share of the card's shorter side; large only where it fits beside the text.
 const LARGE = 0.8;
 const SMALL = 0.6;
-// Keeps text over the lines at 4.5:1 or more (see wcag-audit.md, F-23).
+// Keeps text over the lines readable (see wcag-audit.md, F-23).
 const BEHIND_OPACITY = 0.15;
 // Center distance from the right and bottom edges, in radii.
 const INSET = 0.62;
@@ -43,8 +42,7 @@ interface Entry {
   blackCard: boolean;
 }
 
-// Kept for the whole visit, so a locale switch shows the same shapes in the
-// same poses.
+// Kept for the visit, so a locale switch keeps each card's shape and pose.
 let picks: SolidName[] = [];
 const motions: Motion[] = [];
 
