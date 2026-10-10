@@ -28,6 +28,10 @@ pnpm test run
 npx prettier --check . --end-of-line auto
 ```
 
+## Credits
+
+The PHP logo on the experience cards is by Colin Viebrock, licensed under [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) ([source](https://www.php.net/download-logos.php)). It is changed to one color, using the path from [Simple Icons](https://simpleicons.org), and `PhpIcon.tsx` is shared under the same license.
+
 ## Docs
 
 - [Accessibility audit (WCAG 2.2 AA)](_docs/accessibility/wcag-audit.md)

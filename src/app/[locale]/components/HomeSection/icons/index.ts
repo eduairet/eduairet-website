@@ -13,6 +13,7 @@ export { default as EthereumIcon } from './EthereumIcon';
 export { default as Html5Icon } from './Html5Icon';
 export { default as CssIcon } from './CssIcon';
 export { default as P5jsIcon } from './P5jsIcon';
+export { default as PhpIcon } from './PhpIcon';
 export { default as MySqlIcon } from './MySqlIcon';
 export { default as WordPressIcon } from './WordPressIcon';
 export { default as SentryIcon } from './SentryIcon';

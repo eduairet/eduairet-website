@@ -19,6 +19,7 @@ export const TOOLS: Record<string, { name: string; Icon?: ComponentType }> = {
   html: { name: 'HTML5', Icon: icons.Html5Icon },
   css: { name: 'CSS', Icon: icons.CssIcon },
   p5: { name: 'p5.js', Icon: icons.P5jsIcon },
+  php: { name: 'PHP', Icon: icons.PhpIcon },
   mysql: { name: 'MySQL', Icon: icons.MySqlIcon },
   wordpress: { name: 'WordPress', Icon: icons.WordPressIcon },
   sentry: { name: 'Sentry', Icon: icons.SentryIcon },
