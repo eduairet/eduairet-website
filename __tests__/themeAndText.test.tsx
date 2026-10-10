@@ -30,6 +30,7 @@ const themeColor = () =>
 
 describe('Theme toggle', () => {
   test('its name says what it will do and updates after toggling', () => {
+    addThemeColorTag();
     localStorage.setItem('theme', 'dark');
     render(
       <LanguageProvider locale='en' content={en}>
@@ -45,21 +46,6 @@ describe('Theme toggle', () => {
       screen.getByRole('button', { name: 'Switch to dark theme' })
     ).toBeTruthy();
     expect(document.body.getAttribute('data-theme')).toBe('light');
-  });
-
-  test("paints the browser's bars in the chosen theme", () => {
-    addThemeColorTag();
-    localStorage.setItem('theme', 'dark');
-    render(
-      <LanguageProvider locale='en' content={en}>
-        <ThemeButton />
-      </LanguageProvider>
-    );
-    expect(themeColor()).toBe(THEME_COLORS.dark);
-
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Switch to light theme' })
-    );
     expect(themeColor()).toBe(THEME_COLORS.light);
   });
 });
@@ -75,20 +61,15 @@ describe('Theme before first paint', () => {
   };
 
   test('uses the saved theme', () => {
+    addThemeColorTag();
     localStorage.setItem('theme', 'light');
     expect(runScript(false)).toBe('light');
+    expect(themeColor()).toBe(THEME_COLORS.light);
   });
 
   test('falls back to the OS preference', () => {
     expect(runScript(true)).toBe('light');
     expect(runScript(false)).toBe('dark');
-  });
-
-  test("paints the browser's bars in the saved theme", () => {
-    addThemeColorTag();
-    localStorage.setItem('theme', 'light');
-    runScript(false);
-    expect(themeColor()).toBe(THEME_COLORS.light);
   });
 });
 

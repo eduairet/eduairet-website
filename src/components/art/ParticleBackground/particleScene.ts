@@ -28,7 +28,8 @@ import {
   type TextureDataType,
 } from 'three';
 import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js';
-import { readTheme, type Theme } from '@/hooks/useDarkMode';
+import { readTheme } from '@/hooks/useDarkMode';
+import type { Theme } from '@/utils/constants';
 import {
   ATLAS_COLUMNS,
   GLYPHS,

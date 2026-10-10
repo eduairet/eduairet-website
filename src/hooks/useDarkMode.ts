@@ -9,8 +9,6 @@ import {
   resolveTheme,
 } from '@/utils/constants';
 
-export type { Theme };
-
 const listeners = new Set<() => void>();
 
 function subscribe(onStoreChange: () => void) {
@@ -34,7 +32,7 @@ export const readTheme = (): Theme =>
 
 function applyTheme(theme: Theme) {
   localStorage.setItem(THEME_STORAGE_KEY, theme);
-  document.body.setAttribute('data-theme', theme);
+  applyThemeToPage(theme, THEME_COLORS);
   emit();
 }
 
