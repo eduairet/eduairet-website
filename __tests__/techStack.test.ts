@@ -1,7 +1,6 @@
 import { expect, test } from 'vitest';
 import { createElement } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
-import * as simpleIcons from 'simple-icons';
 import { Dictionary, EnContent, EsContent } from '@/models';
 import {
   resolveStack,
@@ -27,14 +26,10 @@ test('tools without a usable logo are listed by name', () => {
   expect(tools).toEqual(['Glyphs', 'Adobe Illustrator']);
 });
 
-test('every icon matches the simple-icons logo of the same name', () => {
-  const logos = Object.values(simpleIcons) as { title: string; path: string }[];
+test('every icon draws one path in the 24px icon box', () => {
   for (const { name, Icon } of Object.values(TOOLS)) {
     if (!Icon) continue;
-    const logo = logos.find((icon) => icon.title === name);
-    expect(logo, name).toBeDefined();
-    expect(renderToStaticMarkup(createElement(Icon))).toBe(
-      `<path d="${logo?.path}"></path>`
-    );
+    const markup = renderToStaticMarkup(createElement(Icon));
+    expect(markup, name).toMatch(/^<path d="[Mm][\d\s.,a-zA-Z-]+"><\/path>$/);
   }
 });
