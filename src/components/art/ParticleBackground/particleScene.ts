@@ -28,7 +28,7 @@ import {
   type TextureDataType,
 } from 'three';
 import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js';
-import type { Theme } from '@/hooks/useDarkMode';
+import { readTheme, type Theme } from '@/hooks/useDarkMode';
 import {
   ATLAS_COLUMNS,
   GLYPHS,
@@ -112,12 +112,6 @@ function stateSizeFor(width: number) {
 // Splits setup so it never blocks a slow phone for 50 ms or more.
 function nextTask() {
   return new Promise((resolve) => setTimeout(resolve, 0));
-}
-
-function readTheme(): Theme {
-  return document.body.getAttribute('data-theme') === 'light'
-    ? 'light'
-    : 'dark';
 }
 
 export async function createParticleScene(

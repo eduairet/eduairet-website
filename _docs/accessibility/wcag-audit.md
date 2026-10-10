@@ -33,6 +33,10 @@
 - The open menus stay above the sticky titles at 375, 768 and 1280 wide.
 - Evidence: axe 4.11.0 found 0 violations in 16 runs (4 pages, both themes, menus closed and open), again on the final build.
 
+**Update (2026-10-10, branch `feat/card-shapes`): the 2.2.2 deviation now covers the card shapes too.** Each card shows a slowly turning wireframe solid, accepted by the site owner under F-23. Cards have rounder corners. No other criterion changes.
+
+- Evidence: axe 4.11.0 found 0 violations in 16 runs (4 pages, both themes, 1280 and 375 wide, every card's shape drawn). The 12 canvases are `aria-hidden`, not focusable, take no pointer events, and are missing from the accessibility tree.
+
 Severity counts as found on 2026-10-05:
 
 | Severity     | Count  |
@@ -377,7 +381,12 @@ Severity counts as found on 2026-10-05:
   - **No flashing (2.3.1):** a flash needs opposing luminance changes of at least 0.10. The 20% opacity caps the change at 0.033 in the dark theme and below 0.10 in the light theme (0.094 measured on 2026-10-09), so the background cannot flash, at any rate.
   - **Contrast (1.4.3):** text was hidden and the background behind every text run sampled 10 times over 10 s, on /en, /es, /en/contact and the 404 page in both themes. 0 failures. Lowest values: body text 14.40:1 (dark) and 16.67:1 (light); headings 10.79:1; the red home subtitle (large text) 3.16:1 (dark) and 3.06:1 (light, re-measured on 2026-10-09 with the pointer over it). The nav, footer and form sit on opaque surfaces and are unchanged (17.78:1 or more).
   - **Out of the way:** the canvas is `aria-hidden`, has `pointer-events: none`, and is not focusable. A mouse and keyboard run of the nav menu, language links, contact form, theme button, skip link and Escape passed with the canvas in place.
-- Status: Accepted (2026-10-06), as a known deviation. To meet 2.2.2 later, add a visible pause button that stops the loop and stores the choice.
+- **Card shapes (since 2026-10-10):** each card in Experience, Projects and Education shows a 1px wireframe solid that turns once every 24 s while the card is in view (`src/components/art/CardShapes/`). It has no pause control either; the site owner accepted it under this finding. Verified in Chrome 154 over CDP, production build:
+  - With reduced motion, or when WebGL runs in software or is missing, each shape is drawn once as its card scrolls in (2 draws for 2 cards, then 0 in 3 s). Turning reduced motion off starts the turning; turning it on stops it at once. Tests: `shapeRuntime.test.ts`, `cardShapes.test.ts`.
+  - Nothing is drawn for cards out of view or while the tab is hidden (0 draws/s in both).
+  - Where a shape fits beside the text, it is full strength. Where it doesn't (phones, and tall cards near 768 wide), a smaller one sits behind the text at 15% opacity. With text hidden, the worst pixel behind each text run and icon was sampled on all 12 cards: at 375 wide, other text 6.55:1 and icons 9.47:1 or more; the red date (4.68:1) is never crossed. At 768 and 1280 wide, nothing changes against `main`.
+  - Thin lines that turn slowly don't flash (2.3.1). The canvases are `aria-hidden`, not focusable, and take no pointer events; the menus, sticky titles and footer stay above them.
+- Status: Accepted (2026-10-06), as a known deviation; widened to the card shapes on 2026-10-10. To meet 2.2.2 later, add a visible pause button that stops both and stores the choice.
 
 ---
 
@@ -409,7 +418,7 @@ Severity counts as found on 2026-10-05:
 | 2.1.2 No Keyboard Trap                          | A     | Pass   | Tab cycles through to the end on every page                                                                             |
 | 2.1.4 Character Key Shortcuts                   | A     | N/A    | No shortcuts                                                                                                            |
 | 2.2.1 Timing Adjustable                         | A     | Pass   | F-02, F-13 fixed                                                                                                        |
-| 2.2.2 Pause, Stop, Hide                         | A     | Fail   | F-14 fixed; F-23 accepted deviation: particle background has no pause control                                           |
+| 2.2.2 Pause, Stop, Hide                         | A     | Fail   | F-14 fixed; F-23 accepted deviation: particle background and card shapes have no pause control                          |
 | 2.3.1 Three Flashes or Below Threshold          | A     | Pass   | Nothing flashes; F-23 background luminance changes stay under 0.10                                                      |
 | 2.4.1 Bypass Blocks                             | A     | Pass   | Landmarks, plus a skip link added 2026-10-06                                                                            |
 | 2.4.2 Page Titled                               | A     | Pass   | F-15 fixed                                                                                                              |

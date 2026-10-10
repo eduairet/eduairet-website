@@ -22,6 +22,10 @@ function emit() {
 
 const getTheme = (): Theme => resolveTheme(THEME_STORAGE_KEY);
 
+// The theme as applied to the page, for code outside React.
+export const readTheme = (): Theme =>
+  document.body.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+
 function applyTheme(theme: Theme) {
   localStorage.setItem(THEME_STORAGE_KEY, theme);
   document.body.setAttribute('data-theme', theme);
