@@ -1,4 +1,4 @@
-// Wireframes in a unit sphere, as 2D polylines (y up) for an orthographic view.
+// Wireframes in a unit sphere, traced as 2D paths (y up) for an orthographic view.
 
 export type Family = 'boxes' | 'prisms' | 'pyramids' | 'round';
 export type Point = [number, number];
@@ -6,23 +6,32 @@ type Vec = [number, number, number];
 // Row-major 3x3 rotation.
 export type Matrix = number[];
 
+// A canvas context works as a pen.
+export interface Pen {
+  // eslint-disable-next-line no-unused-vars
+  moveTo: (x: number, y: number) => void;
+  // eslint-disable-next-line no-unused-vars
+  lineTo: (x: number, y: number) => void;
+}
+
 interface Solid {
   family: Family;
   // eslint-disable-next-line no-unused-vars
-  lines: (m: Matrix) => Point[][];
+  trace: (m: Matrix, pen: Pen) => void;
 }
 
 const TAU = Math.PI * 2;
 const RING_STEPS = 96;
 
-const multiply = (a: Matrix, b: Matrix): Matrix => {
-  const out = new Array<number>(9);
-  for (let i = 0; i < 3; i++)
-    for (let j = 0; j < 3; j++)
-      out[i * 3 + j] =
-        a[i * 3] * b[j] + a[i * 3 + 1] * b[3 + j] + a[i * 3 + 2] * b[6 + j];
-  return out;
-};
+const multiply = (...matrices: Matrix[]): Matrix =>
+  matrices.reduce((a, b) => {
+    const out = new Array<number>(9);
+    for (let i = 0; i < 3; i++)
+      for (let j = 0; j < 3; j++)
+        out[i * 3 + j] =
+          a[i * 3] * b[j] + a[i * 3 + 1] * b[3 + j] + a[i * 3 + 2] * b[6 + j];
+    return out;
+  });
 const rotateX = (t: number): Matrix => {
   const [c, s] = [Math.cos(t), Math.sin(t)];
   return [1, 0, 0, 0, c, -s, 0, s, c];
@@ -35,10 +44,6 @@ const rotateZ = (t: number): Matrix => {
   const [c, s] = [Math.cos(t), Math.sin(t)];
   return [c, -s, 0, s, c, 0, 0, 0, 1];
 };
-const project = (m: Matrix, [x, y, z]: Vec): Point => [
-  m[0] * x + m[1] * y + m[2] * z,
-  m[3] * x + m[4] * y + m[5] * z,
-];
 
 // The base tilt keeps faces from lining up with the view at zero angles.
 const VIEW = rotateX(0.45);
@@ -46,11 +51,26 @@ const BASE = multiply(rotateZ(0.3), rotateX(0.2));
 
 // A positive y turns the shape's front to the right.
 export function poseMatrix(x: number, y: number, z: number): Matrix {
-  return multiply(
-    VIEW,
-    multiply(rotateY(y), multiply(rotateX(x), multiply(rotateZ(z), BASE)))
-  );
+  return multiply(VIEW, rotateY(y), rotateX(x), rotateZ(z), BASE);
 }
+
+const step = (m: Matrix, [x, y, z]: Vec, pen: Pen, first: boolean) => {
+  const px = m[0] * x + m[1] * y + m[2] * z;
+  const py = m[3] * x + m[4] * y + m[5] * z;
+  if (first) pen.moveTo(px, py);
+  else pen.lineTo(px, py);
+};
+
+const traceLoops = (m: Matrix, loops: Vec[][], pen: Pen) => {
+  for (const loop of loops)
+    for (let i = 0; i < loop.length; i++) step(m, loop[i], pen, i === 0);
+};
+
+// eslint-disable-next-line no-unused-vars
+const loop = (point: (angle: number) => Vec) =>
+  Array.from({ length: RING_STEPS + 1 }, (_, k) =>
+    point((k / RING_STEPS) * TAU)
+  );
 
 function fitToUnit(points: Vec[]) {
   const count = points.length;
@@ -66,17 +86,16 @@ function fitToUnit(points: Vec[]) {
 
 function polyhedron(family: Family, vertices: Vec[], faces: number[][]) {
   const points = fitToUnit(vertices);
-  const edges = new Map<string, [number, number]>();
+  const edges = new Map<string, Vec[]>();
   for (const face of faces)
     face.forEach((a, i) => {
       const b = face[(i + 1) % face.length];
-      edges.set(a < b ? `${a},${b}` : `${b},${a}`, [a, b]);
+      edges.set(a < b ? `${a},${b}` : `${b},${a}`, [points[a], points[b]]);
     });
-  const pairs = [...edges.values()];
+  const segments = [...edges.values()];
   return {
     family,
-    lines: (m: Matrix) =>
-      pairs.map(([a, b]) => [project(m, points[a]), project(m, points[b])]),
+    trace: (m: Matrix, pen: Pen) => traceLoops(m, segments, pen),
   };
 }
 
@@ -148,14 +167,6 @@ function octahedron() {
   return polyhedron('pyramids', vertices, faces);
 }
 
-// eslint-disable-next-line no-unused-vars
-type Curve = (angle: number) => Vec;
-
-const circle = (point: Curve, m: Matrix) =>
-  Array.from({ length: RING_STEPS + 1 }, (_, k) =>
-    project(m, point((k / RING_STEPS) * TAU))
-  );
-
 // A solid of revolution about its own y axis, from bottom to top ring.
 function revolution(rings: { y: number; r: number }[]) {
   const scale = 1 / Math.max(...rings.map(({ y, r }) => Math.hypot(y, r)));
@@ -165,12 +176,13 @@ function revolution(rings: { y: number; r: number }[]) {
     ring.y,
     ring.r * Math.sin(phi),
   ];
+  const rims = fitted
+    .filter((ring) => ring.r > 0)
+    .map((ring) => loop((phi) => at(ring, phi)));
   return {
     family: 'round' as const,
-    lines(m: Matrix) {
-      const out = fitted
-        .filter((ring) => ring.r > 0)
-        .map((ring) => circle((phi) => at(ring, phi), m));
+    trace(m: Matrix, pen: Pen) {
+      traceLoops(m, rims, pen);
       // Outline: where the side's normal is square to the view direction.
       for (let i = 0; i < fitted.length - 1; i++) {
         const [a, b] = [fitted[i], fitted[i + 1]];
@@ -182,52 +194,43 @@ function revolution(rings: { y: number; r: number }[]) {
         if (size < 1e-9 || Math.abs(d) > size) continue;
         const base = Math.atan2(q, p);
         const spread = Math.acos(-d / size);
-        for (const phi of [base + spread, base - spread])
-          out.push([project(m, at(a, phi)), project(m, at(b, phi))]);
+        for (const phi of [base + spread, base - spread]) {
+          step(m, at(a, phi), pen, true);
+          step(m, at(b, phi), pen, false);
+        }
       }
-      return out;
     },
   };
 }
 
 function sphere(latitudes: number, meridians: number) {
-  const outline = Array.from({ length: RING_STEPS + 1 }, (_, k): Point => {
-    const t = (k / RING_STEPS) * TAU;
-    return [Math.cos(t), Math.sin(t)];
-  });
-  const lats = Array.from(
-    { length: latitudes },
-    (_, i) => -Math.PI / 2 + ((i + 1) * Math.PI) / (latitudes + 1)
-  );
-  const longs = Array.from(
-    { length: meridians },
-    (_, i) => (i / meridians) * Math.PI
-  );
+  const loops = [
+    ...Array.from({ length: latitudes }, (_, i) => {
+      const lat = -Math.PI / 2 + ((i + 1) * Math.PI) / (latitudes + 1);
+      return loop((u): Vec => [
+        Math.cos(lat) * Math.cos(u),
+        Math.sin(lat),
+        Math.cos(lat) * Math.sin(u),
+      ]);
+    }),
+    ...Array.from({ length: meridians }, (_, i) => {
+      const long = (i / meridians) * Math.PI;
+      return loop((v): Vec => [
+        Math.cos(v) * Math.cos(long),
+        Math.sin(v),
+        Math.cos(v) * Math.sin(long),
+      ]);
+    }),
+  ];
+  // The outline is a circle in view space, whatever the pose.
+  const outline = [loop((t): Vec => [Math.cos(t), Math.sin(t), 0])];
+  const identity = [1, 0, 0, 0, 1, 0, 0, 0, 1];
   return {
     family: 'round' as const,
-    lines: (m: Matrix) => [
-      outline,
-      ...lats.map((lat) =>
-        circle(
-          (u) => [
-            Math.cos(lat) * Math.cos(u),
-            Math.sin(lat),
-            Math.cos(lat) * Math.sin(u),
-          ],
-          m
-        )
-      ),
-      ...longs.map((long) =>
-        circle(
-          (v) => [
-            Math.cos(v) * Math.cos(long),
-            Math.sin(v),
-            Math.cos(v) * Math.sin(long),
-          ],
-          m
-        )
-      ),
-    ],
+    trace(m: Matrix, pen: Pen) {
+      traceLoops(identity, outline, pen);
+      traceLoops(m, loops, pen);
+    },
   };
 }
 
@@ -235,17 +238,16 @@ function sphere(latitudes: number, meridians: number) {
 function torus(ring = 0.68, tube = 0.32) {
   const scale = 1 / (ring + tube);
   const [R, r] = [ring * scale, tube * scale];
-  const circles = [0, Math.PI, Math.PI / 2, -Math.PI / 2].map(
-    (v) => (u: number) =>
-      [
-        (R + r * Math.cos(v)) * Math.cos(u),
-        r * Math.sin(v),
-        (R + r * Math.cos(v)) * Math.sin(u),
-      ] as Vec
+  const loops = [0, Math.PI, Math.PI / 2, -Math.PI / 2].map((v) =>
+    loop((u): Vec => [
+      (R + r * Math.cos(v)) * Math.cos(u),
+      r * Math.sin(v),
+      (R + r * Math.cos(v)) * Math.sin(u),
+    ])
   );
   return {
     family: 'round' as const,
-    lines: (m: Matrix) => circles.map((point) => circle(point, m)),
+    trace: (m: Matrix, pen: Pen) => traceLoops(m, loops, pen),
   };
 }
 
@@ -277,3 +279,13 @@ export const SOLIDS = {
 } satisfies Record<string, Solid>;
 
 export type SolidName = keyof typeof SOLIDS;
+
+// The same paths as polylines, for tests.
+export function lines(solid: Solid, m: Matrix): Point[][] {
+  const out: Point[][] = [];
+  solid.trace(m, {
+    moveTo: (x, y) => out.push([[x, y]]),
+    lineTo: (x, y) => out[out.length - 1].push([x, y]),
+  });
+  return out;
+}

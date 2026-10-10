@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { stubWebGLRenderer } from './helpers/webgl';
 
 // The gate keeps module state (visitor seen, renderer probed).
 let gate: typeof import('@/components/art/startGate');
@@ -47,13 +48,7 @@ describe('start gate', () => {
   });
 
   test('probes the renderer once and treats SwiftShader as software', () => {
-    const getContext = vi
-      .spyOn(HTMLCanvasElement.prototype, 'getContext')
-      .mockImplementation((() => ({
-        RENDERER: 1,
-        getParameter: () => 'Google SwiftShader',
-        getExtension: () => null,
-      })) as unknown as HTMLCanvasElement['getContext']);
+    const getContext = stubWebGLRenderer('Google SwiftShader');
 
     expect(gate.hasHardwareWebGL()).toBe(false);
     expect(gate.hasHardwareWebGL()).toBe(false);

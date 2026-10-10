@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { stubWebGLRenderer } from './helpers/webgl';
 
 const runtime = vi.hoisted(() => ({
   created: 0,
@@ -39,11 +40,17 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
+const card = () => ({
+  card: document.createElement('li'),
+  content: null,
+  className: 'shape',
+});
+
 const settle = () => vi.advanceTimersByTimeAsync(2000);
 
 describe('card shapes registry', () => {
   test('loads nothing before the first visitor input', async () => {
-    showCardShape(document.createElement('li'), 'shape');
+    showCardShape(card());
     await settle();
     expect(runtime.created).toBe(0);
 
@@ -51,25 +58,24 @@ describe('card shapes registry', () => {
     await settle();
     await vi.waitFor(() => expect(runtime.created).toBe(1));
     expect(runtime.add).toHaveBeenCalledWith(
-      expect.any(HTMLLIElement),
-      'shape'
+      expect.objectContaining({ className: 'shape' })
     );
   });
 
   test('cards added later join the same runtime', async () => {
-    showCardShape(document.createElement('li'), 'shape');
+    showCardShape(card());
     window.dispatchEvent(new Event('scroll'));
     await settle();
     await vi.waitFor(() => expect(runtime.created).toBe(1));
 
-    showCardShape(document.createElement('li'), 'shape');
+    showCardShape(card());
     expect(runtime.created).toBe(1);
     expect(runtime.add).toHaveBeenCalledTimes(2);
   });
 
   test('releasing the last card disposes of the runtime', async () => {
-    const releaseA = showCardShape(document.createElement('li'), 'shape');
-    const releaseB = showCardShape(document.createElement('li'), 'shape');
+    const releaseA = showCardShape(card());
+    const releaseB = showCardShape(card());
     window.dispatchEvent(new Event('scroll'));
     await settle();
     await vi.waitFor(() => expect(runtime.created).toBe(1));
@@ -81,7 +87,7 @@ describe('card shapes registry', () => {
   });
 
   test('leaving before the first input never loads the runtime', async () => {
-    const release = showCardShape(document.createElement('li'), 'shape');
+    const release = showCardShape(card());
     release();
     window.dispatchEvent(new Event('scroll'));
     await settle();
@@ -89,14 +95,8 @@ describe('card shapes registry', () => {
   });
 
   test('holds the shapes still without a hardware GPU', async () => {
-    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(
-      (() => ({
-        RENDERER: 1,
-        getParameter: () => 'Google SwiftShader',
-        getExtension: () => null,
-      })) as unknown as HTMLCanvasElement['getContext']
-    );
-    showCardShape(document.createElement('li'), 'shape');
+    stubWebGLRenderer('Google SwiftShader');
+    showCardShape(card());
     window.dispatchEvent(new Event('scroll'));
     await settle();
     await vi.waitFor(() => expect(runtime.created).toBe(1));
@@ -104,14 +104,8 @@ describe('card shapes registry', () => {
   });
 
   test('animates with a hardware GPU', async () => {
-    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(
-      (() => ({
-        RENDERER: 1,
-        getParameter: () => 'ANGLE (NVIDIA GeForce RTX 4060)',
-        getExtension: () => null,
-      })) as unknown as HTMLCanvasElement['getContext']
-    );
-    showCardShape(document.createElement('li'), 'shape');
+    stubWebGLRenderer('ANGLE (NVIDIA GeForce RTX 4060)');
+    showCardShape(card());
     window.dispatchEvent(new Event('scroll'));
     await settle();
     await vi.waitFor(() => expect(runtime.created).toBe(1));

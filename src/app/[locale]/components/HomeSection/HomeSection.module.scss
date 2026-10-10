@@ -95,10 +95,12 @@ $stack-item-size: 34px;
   }
 }
 
-// Drawn by CardShapes; its size and offsets are set inline.
+// Drawn by CardShapes behind the content; its size is set inline.
 .shape {
   position: absolute;
-  z-index: $z-background;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
   pointer-events: none;
 }
 

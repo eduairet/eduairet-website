@@ -1,6 +1,7 @@
 import { SOLIDS, type SolidName } from './solids';
 
 const MIN_PER_FAMILY = 2;
+const FAMILY_COUNT = new Set(Object.values(SOLIDS).map((s) => s.family)).size;
 const MAX_TRIES = 50;
 
 // Page order: no repeats, torus in, no same-family neighbors, 2+ per family.
@@ -16,6 +17,7 @@ export function pickShapes(count: number, random = Math.random): SolidName[] {
     return list;
   };
 
+  const needsSpread = count >= FAMILY_COUNT * MIN_PER_FAMILY;
   let picks: (SolidName | null)[] = [];
   for (let attempt = 0; attempt < MAX_TRIES; attempt++) {
     picks = Array<SolidName | null>(count).fill(null);
@@ -44,11 +46,12 @@ export function pickShapes(count: number, random = Math.random): SolidName[] {
     for (const name of picks as SolidName[])
       counts.set(familyOf(name), (counts.get(familyOf(name)) ?? 0) + 1);
     if (
-      count < 4 * MIN_PER_FAMILY ||
-      (counts.size === 4 &&
+      !needsSpread ||
+      (counts.size === FAMILY_COUNT &&
         [...counts.values()].every((n) => n >= MIN_PER_FAMILY))
     )
       break;
   }
+  // Only past one card per solid does a slot stay empty; repeat then.
   return picks.map((name, i) => name ?? names[i % names.length]);
 }

@@ -29,12 +29,17 @@ interface IProps {
 export default function SectionCard({ entry, icons, tools }: IProps) {
   const { content } = useContext(LanguageContext);
   const cardRef = useRef<HTMLLIElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const card = cardRef.current;
     if (!card) return;
     cardObserver().observe(card);
-    const hideShape = showCardShape(card, styles.shape);
+    const hideShape = showCardShape({
+      card,
+      content: contentRef.current,
+      className: styles.shape,
+    });
     return () => {
       cardObserver().unobserve(card);
       hideShape();
@@ -43,7 +48,7 @@ export default function SectionCard({ entry, icons, tools }: IProps) {
 
   return (
     <li ref={cardRef} className={styles.card}>
-      <div className={styles.content}>
+      <div ref={contentRef} className={styles.content}>
         <p className={styles.period}>{entry.period}</p>
         <h3 className={styles.roleTitle}>
           {entry.roleUrl ? (

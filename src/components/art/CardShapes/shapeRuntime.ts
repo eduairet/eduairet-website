@@ -1,4 +1,4 @@
-import type { Theme } from '@/hooks/useDarkMode';
+import { readTheme, type Theme } from '@/hooks/useDarkMode';
 import { pickShapes } from './pickShapes';
 import { SOLIDS, poseMatrix, type SolidName } from './solids';
 
@@ -26,20 +26,29 @@ interface Motion {
   velocity: number;
 }
 
-interface Entry {
+export interface ShapeCard {
   card: HTMLElement;
+  // The text block the shape must not cover at full strength.
+  content: HTMLElement | null;
   className: string;
-  canvas?: HTMLCanvasElement;
-  context?: CanvasRenderingContext2D | null;
-  radius: number;
-  // Shape center, in px from the right and bottom edges.
-  center: number;
-  width: number;
-  height: number;
-  alpha: number;
-  pixelRatio: number;
+}
+
+// A mounted canvas; exists only while its card has been in view.
+interface View {
+  canvas: HTMLCanvasElement;
+  context: CanvasRenderingContext2D;
   color: string;
   blackCard: boolean;
+  radius: number;
+  alpha: number;
+  width: number;
+  height: number;
+  pixelRatio: number;
+  turn?: number;
+}
+
+interface Entry extends ShapeCard {
+  view?: View;
 }
 
 // Kept for the visit, so a locale switch keeps each card's shape and pose.
@@ -48,7 +57,7 @@ const motions: Motion[] = [];
 
 export interface ShapeRuntime {
   // eslint-disable-next-line no-unused-vars
-  add: (card: HTMLElement, className: string) => void;
+  add: (shape: ShapeCard) => void;
   // eslint-disable-next-line no-unused-vars
   remove: (card: HTMLElement) => void;
   dispose: () => void;
@@ -58,9 +67,6 @@ export interface ShapeRuntime {
 export function turnDirection(blackCard: boolean, theme: Theme): 1 | -1 {
   return blackCard === (theme === 'dark') ? 1 : -1;
 }
-
-const readTheme = (): Theme =>
-  document.body.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
 
 // Light text means a black card.
 const isLight = (color: string) => {
@@ -84,16 +90,8 @@ const swayX = (time: number) =>
 const swayZ = (time: number) =>
   SWAY_Z.angle * Math.cos((TAU * time) / SWAY_Z.seconds);
 
-interface Options {
-  // Draw each shape once and never animate, as without a hardware GPU.
-  still?: boolean;
-  random?: () => number;
-}
-
-export function createShapeRuntime({
-  still = false,
-  random = Math.random,
-}: Options = {}): ShapeRuntime {
+// With `still`, each shape is drawn once and never animates.
+export function createShapeRuntime({ still = false } = {}): ShapeRuntime {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const isStill = () => still || reducedMotion.matches;
   const entries = new Map<HTMLElement, Entry>();
@@ -110,102 +108,104 @@ export function createShapeRuntime({
 
   const motionAt = (index: number, target: number) =>
     (motions[index] ??= {
-      y: random() * TAU,
-      time: random() * SWAY_Z.seconds,
+      y: Math.random() * TAU,
+      time: Math.random() * SWAY_Z.seconds,
       velocity: target,
     });
-  const targetOf = (entry: Entry, theme = readTheme()) =>
-    turnDirection(entry.blackCard, theme);
 
   const shapeAt = (index: number) => {
     if (picks.length <= index) {
-      const extra = pickShapes(Math.max(entries.size, index + 1), random);
+      const extra = pickShapes(Math.max(entries.size, index + 1));
       picks = [...picks, ...extra.slice(picks.length)];
     }
     return picks[index];
   };
 
-  const layout = (entry: Entry) => {
-    const { card, canvas } = entry;
-    if (!canvas) return;
+  const layout = ({ card, content }: Entry, view: View) => {
     const width = card.clientWidth;
-    const short = Math.min(width, card.clientHeight);
-    const content = card.firstElementChild as HTMLElement | null;
+    const height = card.clientHeight;
+    const short = Math.min(width, height);
     const textRight = content ? content.offsetLeft + content.offsetWidth : 0;
     const fits = (width - textRight - TEXT_GAP) / (1 + INSET);
     const large = Math.min(LARGE * short, fits);
     const beside = large >= SMALL * short;
-    entry.radius = beside ? large : SMALL * short;
-    entry.alpha = beside ? 1 : BEHIND_OPACITY;
+    view.radius = beside ? large : SMALL * short;
+    view.alpha = beside ? 1 : BEHIND_OPACITY;
     // Only the part inside the card: the rest would be cropped anyway.
-    entry.center = entry.radius * INSET;
-    const reach = Math.ceil(entry.radius + STROKE + entry.center);
-    const cssWidth = Math.min(reach, width);
-    const cssHeight = Math.min(reach, card.clientHeight);
-    entry.pixelRatio = Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO);
-    canvas.width = Math.ceil(cssWidth * entry.pixelRatio);
-    canvas.height = Math.ceil(cssHeight * entry.pixelRatio);
-    entry.width = cssWidth;
-    entry.height = cssHeight;
-    Object.assign(canvas.style, {
-      width: `${cssWidth}px`,
-      height: `${cssHeight}px`,
-      right: '0',
-      bottom: '0',
-    });
+    const reach = Math.ceil(view.radius * (1 + INSET) + STROKE);
+    view.width = Math.min(reach, width);
+    view.height = Math.min(reach, height);
+    view.pixelRatio = Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO);
+    const pixelWidth = Math.ceil(view.width * view.pixelRatio);
+    const pixelHeight = Math.ceil(view.height * view.pixelRatio);
+    // Resizing a canvas reallocates it, so skip it when nothing changed.
+    if (view.canvas.width !== pixelWidth) view.canvas.width = pixelWidth;
+    if (view.canvas.height !== pixelHeight) view.canvas.height = pixelHeight;
+    view.canvas.style.width = `${view.width}px`;
+    view.canvas.style.height = `${view.height}px`;
   };
 
-  const draw = (entry: Entry) => {
-    const { canvas, context } = entry;
-    if (!canvas || !context) return;
+  const draw = (entry: Entry, view: View, target: number) => {
     const index = indexOf(entry.card);
-    const motion = motionAt(index, targetOf(entry));
-    const solid = SOLIDS[shapeAt(index)];
-    const lines = solid.lines(
-      poseMatrix(swayX(motion.time), motion.y, swayZ(motion.time))
-    );
-    const { radius, pixelRatio } = entry;
-    const cx = entry.width - entry.center;
-    const cy = entry.height - entry.center;
+    const motion = motionAt(index, target);
+    const { canvas, context, radius, pixelRatio } = view;
+    const center = radius * INSET;
+    const scale = radius * pixelRatio;
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.clearRect(0, 0, canvas.width, canvas.height);
-    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    context.globalAlpha = entry.alpha;
-    context.strokeStyle = entry.color;
-    context.lineWidth = STROKE;
+    // Unit coordinates, y up, centered on the shape.
+    context.setTransform(
+      scale,
+      0,
+      0,
+      -scale,
+      (view.width - center) * pixelRatio,
+      (view.height - center) * pixelRatio
+    );
+    context.globalAlpha = view.alpha;
+    context.strokeStyle = view.color;
+    context.lineWidth = STROKE / radius;
     context.lineCap = 'round';
     context.lineJoin = 'round';
     context.beginPath();
-    for (const line of lines)
-      line.forEach(([x, y], i) => {
-        const [px, py] = [cx + x * radius, cy - y * radius];
-        if (i) context.lineTo(px, py);
-        else context.moveTo(px, py);
-      });
+    SOLIDS[shapeAt(index)].trace(
+      poseMatrix(swayX(motion.time), motion.y, swayZ(motion.time)),
+      context
+    );
     context.stroke();
   };
 
   const mount = (entry: Entry) => {
-    if (entry.canvas) return;
+    if (entry.view) return entry.view;
     const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    if (!context) return;
     canvas.className = entry.className;
     canvas.setAttribute('aria-hidden', 'true');
-    entry.canvas = canvas;
-    entry.context = canvas.getContext('2d');
-    entry.color = getComputedStyle(entry.card).color;
-    entry.blackCard = isLight(entry.color);
     canvas.dataset.shape = shapeAt(indexOf(entry.card));
+    const color = getComputedStyle(entry.card).color;
+    const view: View = {
+      canvas,
+      context,
+      color,
+      blackCard: isLight(color),
+      radius: 0,
+      alpha: 1,
+      width: 0,
+      height: 0,
+      pixelRatio: 1,
+    };
     entry.card.append(canvas);
-    layout(entry);
+    layout(entry, view);
+    return (entry.view = view);
   };
 
   const unmount = (entry: Entry) => {
-    if (!entry.canvas) return;
+    if (!entry.view) return;
     // Frees the backing store now, not at garbage collection.
-    entry.canvas.width = entry.canvas.height = 0;
-    entry.canvas.remove();
-    entry.canvas = undefined;
-    entry.context = undefined;
+    entry.view.canvas.width = entry.view.canvas.height = 0;
+    entry.view.canvas.remove();
+    entry.view = undefined;
   };
 
   const tick = (now: number) => {
@@ -222,12 +222,16 @@ export function createShapeRuntime({
     const theme = readTheme();
     for (const card of visible) {
       const entry = entries.get(card);
-      if (!entry?.canvas) continue;
-      const target = targetOf(entry, theme);
+      const view = entry?.view;
+      if (!entry || !view) continue;
+      const target = turnDirection(view.blackCard, theme);
       // Eases through a stop into the new direction after a theme switch.
       stepMotion(motionAt(indexOf(card), target), seconds, target);
-      entry.canvas.dataset.turn = target > 0 ? 'right' : 'left';
-      draw(entry);
+      if (view.turn !== target) {
+        view.turn = target;
+        view.canvas.dataset.turn = target > 0 ? 'right' : 'left';
+      }
+      draw(entry, view, target);
     }
   };
 
@@ -238,24 +242,29 @@ export function createShapeRuntime({
   };
 
   const viewport = new IntersectionObserver((records) => {
+    const theme = readTheme();
     for (const { target, isIntersecting } of records) {
       const entry = entries.get(target as HTMLElement);
       if (!entry) continue;
-      if (isIntersecting) {
-        mount(entry);
-        draw(entry);
-        visible.add(entry.card);
-      } else visible.delete(entry.card);
+      if (!isIntersecting) {
+        visible.delete(entry.card);
+        continue;
+      }
+      const view = mount(entry);
+      if (!view) continue;
+      draw(entry, view, turnDirection(view.blackCard, theme));
+      visible.add(entry.card);
     }
     wake();
   });
 
   const sizes = new ResizeObserver((records) => {
+    const theme = readTheme();
     for (const { target } of records) {
       const entry = entries.get(target as HTMLElement);
-      if (!entry?.canvas) continue;
-      layout(entry);
-      draw(entry);
+      if (!entry?.view) continue;
+      layout(entry, entry.view);
+      draw(entry, entry.view, turnDirection(entry.view.blackCard, theme));
     }
   });
 
@@ -274,23 +283,12 @@ export function createShapeRuntime({
   );
 
   return {
-    add(card, className) {
-      if (entries.has(card)) return;
-      entries.set(card, {
-        card,
-        className,
-        radius: 0,
-        center: 0,
-        width: 0,
-        height: 0,
-        alpha: 1,
-        pixelRatio: 1,
-        color: '',
-        blackCard: false,
-      });
+    add(shape) {
+      if (entries.has(shape.card)) return;
+      entries.set(shape.card, { ...shape });
       order = null;
-      viewport.observe(card);
-      sizes.observe(card);
+      viewport.observe(shape.card);
+      sizes.observe(shape.card);
     },
     remove(card) {
       const entry = entries.get(card);

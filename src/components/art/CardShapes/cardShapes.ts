@@ -3,53 +3,52 @@ import {
   whenIdle,
   whenVisitorActive,
 } from '@/components/art/startGate';
-import type { ShapeRuntime } from './shapeRuntime';
+import type { ShapeCard, ShapeRuntime } from './shapeRuntime';
 
 // Loads the drawing code after the first input; stops when no card is left.
-const cards = new Map<HTMLElement, string>();
+const cards = new Map<HTMLElement, ShapeCard>();
 let runtime: ShapeRuntime | null = null;
-let generation = 0;
 let cancelStart: (() => void) | null = null;
 
 function start() {
   if (cancelStart || runtime) return;
-  const current = ++generation;
+  let cancelled = false;
   let cancelIdle = () => {};
   const cancelWait = whenVisitorActive(() => {
     cancelIdle = whenIdle(() => {
       import('./shapeRuntime')
         .then(({ createShapeRuntime }) => {
-          if (current !== generation) return;
+          if (cancelled) return;
           cancelStart = null;
           // Without a hardware GPU the canvas draws on the CPU, so hold still.
           runtime = createShapeRuntime({ still: !hasHardwareWebGL() });
-          cards.forEach((className, card) => runtime?.add(card, className));
+          cards.forEach((shape) => runtime?.add(shape));
         })
         // If the chunk fails to load, the cards simply have no shapes.
         .catch(() => {});
     });
   });
   cancelStart = () => {
+    cancelled = true;
     cancelWait();
     cancelIdle();
   };
 }
 
 function stop() {
-  generation++;
   cancelStart?.();
   cancelStart = null;
   runtime?.dispose();
   runtime = null;
 }
 
-export function showCardShape(card: HTMLElement, className: string) {
-  cards.set(card, className);
-  if (runtime) runtime.add(card, className);
+export function showCardShape(shape: ShapeCard) {
+  cards.set(shape.card, shape);
+  if (runtime) runtime.add(shape);
   else start();
   return () => {
-    cards.delete(card);
-    runtime?.remove(card);
+    cards.delete(shape.card);
+    runtime?.remove(shape.card);
     if (!cards.size) stop();
   };
 }

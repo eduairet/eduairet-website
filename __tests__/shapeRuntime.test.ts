@@ -126,7 +126,13 @@ afterEach(() => {
 
 const start = (cards: HTMLElement[]): Runtime => {
   const runtime = createShapeRuntime();
-  cards.forEach((card) => runtime.add(card, 'shape'));
+  cards.forEach((card) =>
+    runtime.add({
+      card,
+      content: card.firstElementChild as HTMLElement,
+      className: 'shape',
+    })
+  );
   return runtime;
 };
 
@@ -281,7 +287,11 @@ describe('card shape runtime', () => {
   test('the still option draws once and never animates', () => {
     const [card] = makeCards(1);
     const runtime = createShapeRuntime({ still: true });
-    runtime.add(card, 'shape');
+    runtime.add({
+      card,
+      content: card.firstElementChild as HTMLElement,
+      className: 'shape',
+    });
     show(card);
     runFrames(30);
     expect(strokes).toBe(1);
