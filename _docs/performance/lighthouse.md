@@ -77,13 +77,14 @@ GPU setup below, median of 3, `main` → branch, both measured in one Chrome ses
 
 **Why the first paint waited for Adobe Fonts on PSI.** Lighthouse estimates mobile timing from a fast, unthrottled load. Any request at top priority that finished before that load's first paint counts as render-blocking, and font files are always top priority. When the kit answered quickly, its CSS, `p.css`, and the font were replayed at mobile speed before the first paint: FCP 2.3 s locally, 2.6 s on PSI. When the kit timed out, they were skipped, and FCP was under 1 s. The preload and the preconnects were not the cause: without them, FCP stayed at 2.30 and 2.32 s. A real throttled browser painted at 1.9 s, before the font arrived at 3.3 s.
 
-| Change                                                                         | Effect                                                                                                                                                          |
-| ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Adobe Fonts stylesheet added after the first contentful paint, with no preload | Local mobile FCP 1.57 → 1.07 s. On a slow phone the fallback font shows about 0.9 s longer (one throttled trace).                                               |
-| Each card icon is its own `.tsx` component, sent to the cards as a key         | /en HTML 41.1 → 27.8 KB and /es 41.9 → 28.9 KB gzipped. Before, each path was in the HTML and again in the hydration data. Home JS grew 11 KB gzipped (cached). |
-| About photo `srcset`: 160, 256 and 400 px                                      | PSI's phone gets the 5.0 KiB file instead of 12.8 KiB; 1x desktop gets 2.6 KiB.                                                                                 |
+| Change                                                                                    | Effect                                                                                                                                                                |
+| ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Adobe Fonts stylesheet added after the first contentful paint, with no preload            | Local mobile FCP 1.57 → 1.07 s. On a slow phone the fallback font shows about 0.9 s longer (one throttled trace).                                                     |
+| Each card icon is its own `.tsx` component, sent to the cards as a key                    | /en HTML 41.1 → 27.8 KB and /es 41.9 → 28.9 KB gzipped. Before, each path was in the HTML and again in the hydration data. Home JS grew about 10 KB gzipped (cached). |
+| About photo `srcset`: 160, 256 and 400 px                                                 | PSI's phone gets the 5.0 KiB file instead of 12.8 KiB; 1x desktop gets 2.6 KiB.                                                                                       |
+| Nav links and the logo prefetch their page on hover, focus or touch, not when they render | No background prefetches at load. Before, the other page's CSS was preloaded and Chrome warned on every load that it went unused.                                     |
 
-Local, production build, median of 3, `main` → branch in one Chrome session. "PSI-like CPU" uses `--throttling.cpuSlowdownMultiplier=1.8` on this machine (benchmark index about 1,800); see below.
+Local, production build, median of 3, `main` → branch in one Chrome session, measured before the card outline and the prefetch change. "PSI-like CPU" uses `--throttling.cpuSlowdownMultiplier=1.8` on this machine (benchmark index about 1,800); see below.
 
 | Page | Mobile  | Mobile, PSI-like CPU | Desktop   | Mobile FCP    | Mobile LCP    | Mobile CLS |
 | ---- | ------- | -------------------- | --------- | ------------- | ------------- | ---------- |
@@ -92,7 +93,6 @@ Local, production build, median of 3, `main` → branch in one Chrome session. "
 
 - At the default 4x CPU, Total Blocking Time rose from about 100 ms to 220 to 270 ms. The page does the same work, but the earlier paint moves the first layout task into the TBT window. At PSI-like CPU, TBT stayed at 12 to 16 ms. At 4x it varies a lot between runs (54 to 418 ms on one build).
 - That first layout task is mostly the fallback fonts. A `local()` face plus a different `font-variation-settings` on many elements (19 weights in the home title alone) cost about 280 ms of layout at 4x CPU in a Chrome trace: 686 → 405 ms with the settings held back. Holding them until Degular loads would change nothing with Arial or Helvetica, but on a device whose fallback font has a weight axis, the waiting text would change weight. Not shipped; it needs real-device testing first.
-- Nav links and the logo prefetch their page on hover, focus or touch, not when they render. Prefetching on render preloaded the other page's CSS, and Chrome warned on every load that it went unused.
 - The LCP element did not change: the hero summary, or the subtitle on /es.
 - If Adobe Fonts fails fast (`ERR_TIMED_OUT`), Chrome logs the error, and Best Practices drops on PSI. Page code can't prevent that. DevTools URL blocking logs nothing, so test this with a failed request instead (CDP `Fetch.failRequest`).
 

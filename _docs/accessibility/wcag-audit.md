@@ -31,7 +31,7 @@
 - Cards have a 2px outline, like the section titles.
 - The hero scroll arrow shows only while it fits fully above the fixed footer. It never touched the footer or the hero text at 34 sizes in both languages, also with a 50% longer summary: 320×568, 360×640, 360×740, 360×800, 375×667, 375×812, 390×844, 393×852, 412×915, 414×896, 430×932, 375×600, 360×560, 320×480, 375×520, 390×560, 412×600, 360×680, 375×700, 414×720, 568×320, 667×375, 740×360, 812×375, 844×390, 915×412, 932×430, 768×1024, 1024×768, 1280×800, 1280×900, 1366×768, 1440×900, 1920×1080. Browsers without scroll timelines keep the old 700px rule.
 - The open menus stay above the sticky titles at 375, 768 and 1280 wide.
-- Evidence: axe 4.11.0 found 0 violations in 16 runs (4 pages, both themes, menus closed and open), and 8 more on the home pages after the outline.
+- Evidence: axe 4.11.0 found 0 violations in 16 runs (4 pages, both themes, menus closed and open), again on the final build.
 
 Severity counts as found on 2026-10-05:
 
