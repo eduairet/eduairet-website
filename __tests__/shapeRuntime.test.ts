@@ -19,6 +19,7 @@ let frames: Map<number, Frame>;
 let nextFrame: number;
 let strokes: number;
 let now: number;
+let reducedMotion: { matches: boolean; onChange?: () => void };
 
 const show = (card: Element, isIntersecting = true) => {
   const viewport = viewports[viewports.length - 1];
@@ -61,6 +62,15 @@ beforeEach(async () => {
   nextFrame = 1;
   strokes = 0;
   now = 0;
+  reducedMotion = { matches: false };
+  vi.stubGlobal('matchMedia', () => ({
+    get matches() {
+      return reducedMotion.matches;
+    },
+    addEventListener: (_: string, listener: () => void) => {
+      reducedMotion.onChange = listener;
+    },
+  }));
   vi.stubGlobal(
     'IntersectionObserver',
     class {
@@ -244,5 +254,37 @@ describe('card shape runtime', () => {
       expect(speeds[i - 1] - speeds[i]).toBeLessThan(0.2);
     }
     expect(speeds.at(-1)).toBeLessThan(-0.9);
+  });
+
+  test('with reduced motion it draws each card once and never animates', () => {
+    reducedMotion.matches = true;
+    const cards = makeCards(2);
+    start(cards);
+    cards.forEach((card) => show(card));
+    runFrames(30);
+    expect(strokes).toBe(2);
+    expect(frames.size).toBe(0);
+
+    // Turning the setting off while the page is open starts the turning.
+    reducedMotion.matches = false;
+    reducedMotion.onChange?.();
+    runFrames(10);
+    expect(strokes).toBeGreaterThan(2);
+
+    reducedMotion.matches = true;
+    reducedMotion.onChange?.();
+    strokes = 0;
+    runFrames(10);
+    expect(strokes).toBe(0);
+  });
+
+  test('the still option draws once and never animates', () => {
+    const [card] = makeCards(1);
+    const runtime = createShapeRuntime({ still: true });
+    runtime.add(card, 'shape');
+    show(card);
+    runFrames(30);
+    expect(strokes).toBe(1);
+    expect(frames.size).toBe(0);
   });
 });

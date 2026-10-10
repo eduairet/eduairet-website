@@ -2,14 +2,16 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 const runtime = vi.hoisted(() => ({
   created: 0,
+  options: [] as unknown[],
   add: vi.fn(),
   remove: vi.fn(),
   dispose: vi.fn(),
 }));
 
 vi.mock('@/components/art/CardShapes/shapeRuntime', () => ({
-  createShapeRuntime: () => {
+  createShapeRuntime: (options: unknown) => {
     runtime.created++;
+    runtime.options.push(options);
     return {
       add: runtime.add,
       remove: runtime.remove,
@@ -26,12 +28,14 @@ beforeEach(async () => {
   ({ showCardShape } = await import('@/components/art/CardShapes/cardShapes'));
   vi.useFakeTimers();
   runtime.created = 0;
+  runtime.options = [];
   runtime.add.mockClear();
   runtime.remove.mockClear();
   runtime.dispose.mockClear();
 });
 
 afterEach(() => {
+  vi.restoreAllMocks();
   vi.useRealTimers();
 });
 
@@ -82,5 +86,35 @@ describe('card shapes registry', () => {
     window.dispatchEvent(new Event('scroll'));
     await settle();
     expect(runtime.created).toBe(0);
+  });
+
+  test('holds the shapes still without a hardware GPU', async () => {
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(
+      (() => ({
+        RENDERER: 1,
+        getParameter: () => 'Google SwiftShader',
+        getExtension: () => null,
+      })) as unknown as HTMLCanvasElement['getContext']
+    );
+    showCardShape(document.createElement('li'), 'shape');
+    window.dispatchEvent(new Event('scroll'));
+    await settle();
+    await vi.waitFor(() => expect(runtime.created).toBe(1));
+    expect(runtime.options).toEqual([{ still: true }]);
+  });
+
+  test('animates with a hardware GPU', async () => {
+    vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockImplementation(
+      (() => ({
+        RENDERER: 1,
+        getParameter: () => 'ANGLE (NVIDIA GeForce RTX 4060)',
+        getExtension: () => null,
+      })) as unknown as HTMLCanvasElement['getContext']
+    );
+    showCardShape(document.createElement('li'), 'shape');
+    window.dispatchEvent(new Event('scroll'));
+    await settle();
+    await vi.waitFor(() => expect(runtime.created).toBe(1));
+    expect(runtime.options).toEqual([{ still: false }]);
   });
 });

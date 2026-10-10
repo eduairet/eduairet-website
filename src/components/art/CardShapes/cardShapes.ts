@@ -1,4 +1,8 @@
-import { whenIdle, whenVisitorActive } from '@/components/art/startGate';
+import {
+  hasHardwareWebGL,
+  whenIdle,
+  whenVisitorActive,
+} from '@/components/art/startGate';
 import type { ShapeRuntime } from './shapeRuntime';
 
 // Cards register here as they mount. The drawing code loads only after the
@@ -18,7 +22,8 @@ function start() {
         .then(({ createShapeRuntime }) => {
           if (current !== generation) return;
           cancelStart = null;
-          runtime = createShapeRuntime();
+          // Without a hardware GPU the canvas draws on the CPU, so hold still.
+          runtime = createShapeRuntime({ still: !hasHardwareWebGL() });
           cards.forEach((className, card) => runtime?.add(card, className));
         })
         // If the chunk fails to load, the cards simply have no shapes.

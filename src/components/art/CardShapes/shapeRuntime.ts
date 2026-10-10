@@ -83,7 +83,18 @@ const swayX = (time: number) =>
 const swayZ = (time: number) =>
   SWAY_Z.angle * Math.cos((TAU * time) / SWAY_Z.seconds);
 
-export function createShapeRuntime(random = Math.random): ShapeRuntime {
+interface Options {
+  // Draw each shape once and never animate, as without a hardware GPU.
+  still?: boolean;
+  random?: () => number;
+}
+
+export function createShapeRuntime({
+  still = false,
+  random = Math.random,
+}: Options = {}): ShapeRuntime {
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const isStill = () => still || reducedMotion.matches;
   const entries = new Map<HTMLElement, Entry>();
   const visible = new Set<HTMLElement>();
   let frame = 0;
@@ -213,7 +224,7 @@ export function createShapeRuntime(random = Math.random): ShapeRuntime {
   };
 
   const wake = () => {
-    if (frame || !visible.size || document.hidden) return;
+    if (frame || !visible.size || document.hidden || isStill()) return;
     lastTime = 0;
     frame = requestAnimationFrame(tick);
   };
@@ -244,6 +255,15 @@ export function createShapeRuntime(random = Math.random): ShapeRuntime {
   document.addEventListener('visibilitychange', wake, {
     signal: listeners.signal,
   });
+  reducedMotion.addEventListener(
+    'change',
+    () => {
+      if (!isStill()) return wake();
+      cancelAnimationFrame(frame);
+      frame = 0;
+    },
+    { signal: listeners.signal }
+  );
 
   return {
     add(card, className) {
