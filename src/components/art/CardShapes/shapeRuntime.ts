@@ -1,3 +1,4 @@
+import type { Theme } from '@/hooks/useDarkMode';
 import { pickShapes } from './pickShapes';
 import { SOLIDS, poseMatrix, type SolidName } from './solids';
 
@@ -36,6 +37,7 @@ interface Entry {
   alpha: number;
   pixelRatio: number;
   color: string;
+  blackCard: boolean;
 }
 
 // Kept for the whole visit, so a locale switch shows the same shapes in the
@@ -50,6 +52,20 @@ export interface ShapeRuntime {
   remove: (card: HTMLElement) => void;
   dispose: () => void;
 }
+
+// Dark theme: black cards turn right and white cards left; light flips it.
+export function turnDirection(blackCard: boolean, theme: Theme): 1 | -1 {
+  return blackCard === (theme === 'dark') ? 1 : -1;
+}
+
+const readTheme = (): Theme =>
+  document.body.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+
+// Light text means a black card.
+const isLight = (color: string) => {
+  const [r, g, b] = (color.match(/[\d.]+/g) ?? []).map(Number);
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b > 127;
+};
 
 export function stepMotion(
   motion: Motion,
@@ -80,12 +96,14 @@ export function createShapeRuntime(random = Math.random): ShapeRuntime {
       a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1
     )).indexOf(card);
 
-  const motionAt = (index: number) =>
+  const motionAt = (index: number, target: number) =>
     (motions[index] ??= {
       y: random() * TAU,
       time: random() * SWAY_Z.seconds,
-      velocity: 1,
+      velocity: target,
     });
+  const targetOf = (entry: Entry, theme = readTheme()) =>
+    turnDirection(entry.blackCard, theme);
 
   const shapeAt = (index: number) => {
     if (picks.length <= index) {
@@ -124,7 +142,7 @@ export function createShapeRuntime(random = Math.random): ShapeRuntime {
     const { canvas, context } = entry;
     if (!canvas || !context) return;
     const index = indexOf(entry.card);
-    const motion = motionAt(index);
+    const motion = motionAt(index, targetOf(entry));
     const solid = SOLIDS[shapeAt(index)];
     const lines = solid.lines(
       poseMatrix(swayX(motion.time), motion.y, swayZ(motion.time))
@@ -156,6 +174,7 @@ export function createShapeRuntime(random = Math.random): ShapeRuntime {
     entry.canvas = canvas;
     entry.context = canvas.getContext('2d');
     entry.color = getComputedStyle(entry.card).color;
+    entry.blackCard = isLight(entry.color);
     canvas.dataset.shape = shapeAt(indexOf(entry.card));
     entry.card.append(canvas);
     layout(entry);
@@ -181,10 +200,14 @@ export function createShapeRuntime(random = Math.random): ShapeRuntime {
       (now - (lastTime || now)) / 1000
     );
     lastStep = lastTime = now;
+    const theme = readTheme();
     for (const card of visible) {
       const entry = entries.get(card);
-      if (!entry) continue;
-      stepMotion(motionAt(indexOf(card)), seconds, 1);
+      if (!entry?.canvas) continue;
+      const target = targetOf(entry, theme);
+      // Eases through a stop into the new direction after a theme switch.
+      stepMotion(motionAt(indexOf(card), target), seconds, target);
+      entry.canvas.dataset.turn = target > 0 ? 'right' : 'left';
       draw(entry);
     }
   };
@@ -233,6 +256,7 @@ export function createShapeRuntime(random = Math.random): ShapeRuntime {
         alpha: 1,
         pixelRatio: 1,
         color: '',
+        blackCard: false,
       });
       order = null;
       viewport.observe(card);

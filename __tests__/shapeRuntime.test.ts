@@ -4,6 +4,7 @@ type Runtime = import('@/components/art/CardShapes/shapeRuntime').ShapeRuntime;
 
 // jsdom has no 2D canvas, observers or frames, so all four are stubbed.
 let createShapeRuntime: typeof import('@/components/art/CardShapes/shapeRuntime').createShapeRuntime;
+let runtimeModule: typeof import('@/components/art/CardShapes/shapeRuntime');
 // eslint-disable-next-line no-unused-vars
 type Notify = (records: IntersectionObserverEntry[]) => void;
 // eslint-disable-next-line no-unused-vars
@@ -52,8 +53,9 @@ const makeCards = (count: number) => {
 
 beforeEach(async () => {
   vi.resetModules();
-  ({ createShapeRuntime } =
-    await import('@/components/art/CardShapes/shapeRuntime'));
+  runtimeModule = await import('@/components/art/CardShapes/shapeRuntime');
+  ({ createShapeRuntime } = runtimeModule);
+  document.body.setAttribute('data-theme', 'dark');
   viewports = [];
   frames = new Map();
   nextFrame = 1;
@@ -202,5 +204,45 @@ describe('card shape runtime', () => {
     }
     expect(viewports[0].disconnected).toBe(true);
     expect(frames.size).toBe(0);
+  });
+
+  test('turns by card color and theme', () => {
+    const { turnDirection } = runtimeModule;
+    // 1 turns the front to the right, -1 to the left.
+    expect(turnDirection(true, 'dark')).toBe(1);
+    expect(turnDirection(false, 'dark')).toBe(-1);
+    expect(turnDirection(true, 'light')).toBe(-1);
+    expect(turnDirection(false, 'light')).toBe(1);
+  });
+
+  test('flips direction when data-theme changes', () => {
+    // Card 0 has white text (a black card), card 1 black text.
+    const [black, white] = makeCards(2);
+    start([black, white]);
+    show(black);
+    show(white);
+    runFrames(3);
+    const turn = (card: HTMLElement) =>
+      card.querySelector('canvas')?.dataset.turn;
+    expect([turn(black), turn(white)]).toEqual(['right', 'left']);
+
+    document.body.setAttribute('data-theme', 'light');
+    runFrames(3);
+    expect([turn(black), turn(white)]).toEqual(['left', 'right']);
+  });
+
+  test('eases into a reversal without a jump', () => {
+    const motion = { y: 0, time: 0, velocity: 1 };
+    const speeds: number[] = [1];
+    for (let i = 0; i < 60; i++) {
+      runtimeModule.stepMotion(motion, 1 / 30, -1);
+      speeds.push(motion.velocity);
+    }
+    // Slows down, passes through a stop, then speeds up the other way.
+    for (let i = 1; i < speeds.length; i++) {
+      expect(speeds[i]).toBeLessThan(speeds[i - 1]);
+      expect(speeds[i - 1] - speeds[i]).toBeLessThan(0.2);
+    }
+    expect(speeds.at(-1)).toBeLessThan(-0.9);
   });
 });
