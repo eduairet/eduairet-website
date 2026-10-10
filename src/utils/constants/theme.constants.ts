@@ -1,12 +1,17 @@
 import { Colors } from './color.constants';
 
+export type Theme = 'dark' | 'light';
+
 export const THEME_STORAGE_KEY = 'theme';
 
-export const THEME_COLORS = { dark: Colors.black, light: Colors.white };
+export const THEME_COLORS: Record<Theme, string> = {
+  dark: Colors.black,
+  light: Colors.white,
+};
 
 // The saved choice, else the OS preference. Self-contained, because it is
 // also inlined as a script that runs before the body paints.
-export function resolveTheme(storageKey: string): 'dark' | 'light' {
+export function resolveTheme(storageKey: string): Theme {
   try {
     const saved = localStorage.getItem(storageKey);
     if (saved === 'light' || saved === 'dark') return saved;
@@ -18,17 +23,15 @@ export function resolveTheme(storageKey: string): 'dark' | 'light' {
   }
 }
 
-// The theme-color tags follow the OS theme; Safari tints its bars from them.
-// Self-contained for the same reason as resolveTheme.
-export function applyThemeColor(
-  theme: 'dark' | 'light',
-  colors: Record<'dark' | 'light', string>
-) {
+// Chrome on Android tints its bar from theme-color. Self-contained for the
+// same reason as resolveTheme.
+export function applyThemeToPage(theme: Theme, colors: Record<Theme, string>) {
+  document.body.setAttribute('data-theme', theme);
   document
-    .querySelectorAll('meta[name="theme-color"]')
-    .forEach((meta) => meta.setAttribute('content', colors[theme]));
+    .querySelector('meta[name="theme-color"]')
+    ?.setAttribute('content', colors[theme]);
 }
 
-export const THEME_INIT_SCRIPT = `(function(t){document.body.setAttribute('data-theme',t);(${applyThemeColor})(t,${JSON.stringify(
-  THEME_COLORS
-)})})((${resolveTheme})(${JSON.stringify(THEME_STORAGE_KEY)}))`;
+export const THEME_INIT_SCRIPT = `(${applyThemeToPage})((${resolveTheme})(${JSON.stringify(
+  THEME_STORAGE_KEY
+)}),${JSON.stringify(THEME_COLORS)})`;

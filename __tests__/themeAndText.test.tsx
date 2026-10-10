@@ -6,7 +6,7 @@ import { Dictionary, EnContent } from '@/models';
 import ThemeButton from '@/components/ui/Buttons/ThemeButton/ThemeButton';
 import HomeSubtitle from '@/app/[locale]/components/HomeSubtitle/HomeSubtitle';
 import Spinner from '@/components/ui/Spinner/Spinner';
-import { THEME_INIT_SCRIPT } from '@/utils/constants';
+import { THEME_COLORS, THEME_INIT_SCRIPT } from '@/utils/constants';
 
 const en = new Dictionary(EnContent);
 
@@ -20,17 +20,13 @@ afterEach(() => {
   document.head.innerHTML = '';
 });
 
-// The two tags Next renders from the viewport's themeColor.
-const addThemeColorTags = () => {
-  document.head.innerHTML = `
-    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#ededed">
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000">`;
+// The tag Next renders from the viewport's themeColor.
+const addThemeColorTag = () => {
+  document.head.innerHTML = `<meta name="theme-color" content="${THEME_COLORS.dark}">`;
 };
 
-const themeColors = () =>
-  [...document.querySelectorAll('meta[name="theme-color"]')].map((meta) =>
-    meta.getAttribute('content')
-  );
+const themeColor = () =>
+  document.querySelector('meta[name="theme-color"]')?.getAttribute('content');
 
 describe('Theme toggle', () => {
   test('its name says what it will do and updates after toggling', () => {
@@ -52,19 +48,19 @@ describe('Theme toggle', () => {
   });
 
   test("paints the browser's bars in the chosen theme", () => {
-    addThemeColorTags();
+    addThemeColorTag();
     localStorage.setItem('theme', 'dark');
     render(
       <LanguageProvider locale='en' content={en}>
         <ThemeButton />
       </LanguageProvider>
     );
-    expect(themeColors()).toEqual(['#000', '#000']);
+    expect(themeColor()).toBe(THEME_COLORS.dark);
 
     fireEvent.click(
       screen.getByRole('button', { name: 'Switch to light theme' })
     );
-    expect(themeColors()).toEqual(['#ededed', '#ededed']);
+    expect(themeColor()).toBe(THEME_COLORS.light);
   });
 });
 
@@ -89,10 +85,10 @@ describe('Theme before first paint', () => {
   });
 
   test("paints the browser's bars in the saved theme", () => {
-    addThemeColorTags();
+    addThemeColorTag();
     localStorage.setItem('theme', 'light');
     runScript(false);
-    expect(themeColors()).toEqual(['#ededed', '#ededed']);
+    expect(themeColor()).toBe(THEME_COLORS.light);
   });
 });
 

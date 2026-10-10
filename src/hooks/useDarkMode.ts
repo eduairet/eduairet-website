@@ -4,11 +4,12 @@ import { useEffect, useSyncExternalStore } from 'react';
 import {
   THEME_COLORS,
   THEME_STORAGE_KEY,
-  applyThemeColor,
+  type Theme,
+  applyThemeToPage,
   resolveTheme,
 } from '@/utils/constants';
 
-export type Theme = 'dark' | 'light';
+export type { Theme };
 
 const listeners = new Set<() => void>();
 
@@ -46,8 +47,7 @@ export default function useDarkMode() {
 
   useEffect(() => {
     const resolved = getTheme();
-    document.body.setAttribute('data-theme', resolved);
-    applyThemeColor(resolved, THEME_COLORS);
+    applyThemeToPage(resolved, THEME_COLORS);
     if (!localStorage.getItem(THEME_STORAGE_KEY))
       localStorage.setItem(THEME_STORAGE_KEY, resolved);
   }, [theme]);
