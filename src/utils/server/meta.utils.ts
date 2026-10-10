@@ -88,6 +88,6 @@ export const siteMetadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // The theme script switches it to the chosen theme before paint.
+  // Dark is the default theme; the theme script switches it before paint.
   themeColor: THEME_COLORS.dark,
 };

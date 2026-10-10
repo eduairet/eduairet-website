@@ -23,8 +23,8 @@ export function resolveTheme(storageKey: string): Theme {
   }
 }
 
-// Chrome on Android tints its bar from theme-color. Self-contained for the
-// same reason as resolveTheme.
+// Chrome on Android tints its bar from theme-color; iOS Safari ignores it.
+// Self-contained for the same reason as resolveTheme.
 export function applyThemeToPage(theme: Theme, colors: Record<Theme, string>) {
   document.body.setAttribute('data-theme', theme);
   document
