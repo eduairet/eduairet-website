@@ -69,7 +69,7 @@ $stack-item-size: 34px;
     #{$white} 135%
   );
   @include border($weight: 2px);
-  @include rounded-corners($radius: $border-radius);
+  @include rounded-corners($radius: $card-radius);
 
   &.inView {
     opacity: 1;
