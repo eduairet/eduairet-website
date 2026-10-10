@@ -166,6 +166,18 @@ Lighthouse 13.5.0, median of 3 with `?psi=N` cache busters, after PRs #39 (card 
 - LCP moved by 0.2 s each way, within the run-to-run range (1.1 to 1.8 s on both pages). PSI never scrolls, so the shapes' code never loads in these runs.
 - In the live site, after a scroll, the shapes draw in the cards in view and load the same 3.8 KB chunk as the local build.
 
+## After deploy (PageSpeed Insights, production, 2026-10-10, torus)
+
+Same setup, after PR #42 (the torus as a grid with its back hidden) went live. Baseline: the section above.
+
+| Page | Mobile (before → now)    | Mobile FCP | Mobile LCP  | Mobile TBT      | Desktop   | A11y, SEO |
+| ---- | ------------------------ | ---------- | ----------- | --------------- | --------- | --------- |
+| /en  | 100 → 100 (99, 100, 100) | 0.9 s      | 1.2 → 1.4 s | 0 ms (0, 0, 20) | 100 → 100 | 100       |
+| /es  | 100 → 100 (100, 99, 100) | 0.9 s      | 1.4 → 1.2 s | 0 ms (0, 0, 30) | 100 → 100 | 100       |
+
+- CLS was 0.002 or less in all 12 reports. LCP again moved 0.2 s each way, within the run-to-run range (1.2 to 2.0 s).
+- Best Practices was 100 in 10 of 12 reports. In the other two (/en mobile, then /en desktop), Adobe Fonts timed out on PSI's side (`p.typekit.net`, then `use.typekit.net`, `net::ERR_TIMED_OUT`), Chrome logged it, and Best Practices dropped to 96. Page code can't prevent this (see "Branch `perf/page-weight-fonts`").
+
 ## How to re-measure
 
 PageSpeed Insights is the reference: run https://pagespeed.web.dev on each page three times and compare medians.
