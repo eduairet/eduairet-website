@@ -35,6 +35,9 @@
 }
 
 html {
+  font-family: $degular-stack;
+  font-feature-settings: 'onum';
+  @include degular($wght: 400, $opsz: 16);
   scroll-behavior: smooth;
   // Keep focused elements clear of the fixed header, the sticky section
   // titles and the fixed footer (WCAG 2.4.11, technique C43).
@@ -51,10 +54,7 @@ html {
   }
 
   * {
-    font-family: $degular-stack;
     text-align: center;
-    font-feature-settings: 'onum';
-    @include degular($wght: 400, $opsz: 16);
   }
 }
 
@@ -134,7 +134,6 @@ a {
   position: relative;
   color: currentColor;
   text-decoration: none;
-  @include degular($wght: 400, $opsz: 16);
 
   &::before {
     content: '';
@@ -196,6 +195,16 @@ button {
   &:focus-visible {
     @include accessibility-outline;
   }
+}
+
+// Browsers give form controls their own font instead of inheriting it.
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
 }
 
 ::-webkit-scrollbar {

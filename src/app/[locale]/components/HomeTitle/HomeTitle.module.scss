@@ -4,11 +4,6 @@
   text-align: left;
   font-size: clamp(4rem, 10vw, 9rem);
   line-height: clamp(4rem, 10vw, 9rem);
+  font-family: $degular-title-stack;
   @include degular($wght: 700, $opsz: 72);
-
-  // The letter spans take the global font-family, so set it on them too.
-  &,
-  span {
-    font-family: $degular-title-stack;
-  }
 }

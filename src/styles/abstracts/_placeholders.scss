@@ -19,12 +19,11 @@
   @include rounded-corners($radius: 3rem);
 }
 
-// Underlined links in running text, at the weight of their line.
+// Underlined links in running text.
 %text-link {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
-  font-variation-settings: inherit;
 }
 
 %icon-button {
