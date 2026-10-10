@@ -1,11 +1,12 @@
-import { ReactNode } from 'react';
+import { MouseEvent, ReactNode } from 'react';
 import styles from './NavDropdown.module.scss';
 
 interface IProps {
   id: string;
   children: ReactNode;
   isOpen: boolean;
-  onClick?: () => void;
+  // eslint-disable-next-line no-unused-vars
+  onClick?: (e: MouseEvent) => void;
 }
 
 export default function NavDropdown({ id, children, isOpen, onClick }: IProps) {
