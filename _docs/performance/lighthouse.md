@@ -151,6 +151,19 @@ Before the last cleanup (fewer allocations, paths traced from points computed on
 
 The page holds one live WebGL context before and after, including after three locale switches. With reduced motion, or when WebGL runs in software or is missing, each shape is drawn once as its card scrolls into view and never animates.
 
+## After deploy (PageSpeed Insights, production, 2026-10-10)
+
+Lighthouse 13.5.0, median of 3 with `?psi=N` cache busters, after PRs #39 (card shapes) and #40 (menu focus ring) went live. Baseline: after PR #37.
+
+| Page | Mobile (after #37 → now) | Mobile FCP | Mobile LCP  | Mobile TBT        | Desktop   | A11y, BP, SEO |
+| ---- | ------------------------ | ---------- | ----------- | ----------------- | --------- | ------------- |
+| /en  | 100 → 100 (99, 100, 100) | 0.9 s      | 1.4 → 1.2 s | 0 ms (0, 0, 20)   | 100 → 100 | 100           |
+| /es  | 100 → 100 (100, 99, 100) | 0.9 s      | 1.2 → 1.4 s | 10 ms (0, 70, 10) | 100 → 100 | 100           |
+
+- Mobile CLS was 0.002 and desktop CLS 0.002 in all 12 reports.
+- LCP moved by 0.2 s each way, within the run-to-run range (1.1 to 1.8 s on both pages). PSI never scrolls, so the shapes' code never loads in these runs.
+- In the live site, after a scroll, the shapes draw in the cards in view and load the same 3.8 KB chunk as the local build.
+
 ## How to re-measure
 
 PageSpeed Insights is the reference: run https://pagespeed.web.dev on each page three times and compare medians.
