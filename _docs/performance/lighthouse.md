@@ -96,6 +96,21 @@ Local, production build, median of 3, `main` → branch in one Chrome session, m
 - The LCP element did not change: the hero summary, or the subtitle on /es.
 - If Adobe Fonts fails fast (`ERR_TIMED_OUT`), Chrome logs the error, and Best Practices drops on PSI. Page code can't prevent that. DevTools URL blocking logs nothing, so test this with a failed request instead (CDP `Fetch.failRequest`).
 
+## After deploy (PageSpeed Insights, production, 2026-10-10)
+
+Lighthouse 13.5.0, median of 3 with `?psi=N` cache busters, after PR #37 went live. Baselines: before #36 (2026-10-08) and right after #36 (2026-10-09).
+
+| Page        | Mobile (before #36 → after #36 → now) | Mobile FCP          | Mobile LCP        | Desktop | A11y, BP, SEO |
+| ----------- | ------------------------------------- | ------------------- | ----------------- | ------- | ------------- |
+| /en         | 94 → 100 → 100 (runs 97, 100, 100)    | 0.9 s               | 2.4 → 1.5 → 1.4 s | 100     | 100           |
+| /es         | 90 → 89 → 100                         | 2.6 s (#36) → 0.9 s | 3.0 → 3.2 → 1.2 s | 100     | 100           |
+| /en/contact | 96 → not run → 100                    | 0.9 s               | 2.3 → 0.9 s       | 100     | 100           |
+| /es/contact | 100 → not run → 100                   | 0.9 s               | 1.4 → 1.1 s       | 100     | 100           |
+
+- No run logged console errors (no Adobe Fonts timeouts), and Best Practices was 100 in all 24 reports.
+- Mobile FCP was 0.9 s in 11 of 12 runs (1.5 s in the other). After #36, runs where the kit loaded had FCP 2.6 to 2.7 s.
+- Mobile TBT was 0 to 30 ms and CLS 0.001 to 0.002.
+
 ## How to re-measure
 
 PageSpeed Insights is the reference: run https://pagespeed.web.dev on each page three times and compare medians.

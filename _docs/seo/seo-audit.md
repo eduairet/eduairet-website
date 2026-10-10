@@ -29,7 +29,7 @@ Every indexable page is prerendered with its metadata in `<head>`: a self-refere
 
 ## PageSpeed
 
-Before PR #31 (production, 2026-10-08): /en mobile 27, /es mobile 39, desktop timed out. Before `perf/lighthouse` (PSI, median of 3): mobile 48 on the home pages and 27 on contact, desktop 62 to 64 or timed out. After `perf/lighthouse` went live (PSI, median of 3): mobile 94 and 90 on the home pages, 96 and 100 on contact; desktop 100 on every page; Accessibility, Best Practices and SEO 100 everywhere. After PR #36 (2026-10-09): mobile /en 100 and /es 89, with Best Practices 96 on /en when Adobe Fonts timed out. Details, the final local numbers, and how to re-measure are in [lighthouse.md](../performance/lighthouse.md).
+Before PR #31 (production, 2026-10-08): /en mobile 27, /es mobile 39, desktop timed out. Before `perf/lighthouse` (PSI, median of 3): mobile 48 on the home pages and 27 on contact, desktop 62 to 64 or timed out. After `perf/lighthouse` went live (PSI, median of 3): mobile 94 and 90 on the home pages, 96 and 100 on contact; desktop 100 on every page; Accessibility, Best Practices and SEO 100 everywhere. After PR #36 (2026-10-09): mobile /en 100 and /es 89, with Best Practices 96 on /en when Adobe Fonts timed out. After PR #37 (2026-10-10): mobile and desktop 100 on all four pages, with Accessibility, Best Practices and SEO 100. Details, the final local numbers, and how to re-measure are in [lighthouse.md](../performance/lighthouse.md).
 
 ## How to check
 
