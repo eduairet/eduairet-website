@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
-import { act, cleanup, render, screen } from '@testing-library/react';
+import { act, cleanup, render, screen, within } from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
 import { Dictionary, EnContent } from '@/models';
 
@@ -64,5 +64,27 @@ describe('SectionCard', () => {
 
     act(() => notify(false));
     expect(card.className).not.toContain(styles.inView);
+  });
+
+  test('names each tech icon and lists the other tools', () => {
+    render(
+      <LanguageProvider locale='en' content={en}>
+        <SectionCard
+          entry={entry}
+          icons={['nextjs', 'claudecode']}
+          tools={['Glyphs', 'AWS']}
+        />
+      </LanguageProvider>
+    );
+    const stack = screen.getByRole('list', { name: en.home.techStack });
+    const icons = within(stack).getAllByRole('img');
+    expect(icons.map((icon) => icon.getAttribute('aria-label'))).toEqual([
+      'Next.js',
+      'Claude Code',
+    ]);
+    for (const icon of icons) {
+      expect(icon.querySelector('path')?.getAttribute('d')).toBeTruthy();
+    }
+    expect(screen.getByText(`${en.home.otherTools} Glyphs, AWS`)).toBeTruthy();
   });
 });

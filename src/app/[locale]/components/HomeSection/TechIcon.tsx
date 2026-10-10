@@ -1,25 +1,23 @@
 import styles from './HomeSection.module.scss';
-import type { TechIconData } from './techStack';
+import { TOOLS } from './techStack';
 
 interface IProps {
-  icon: TechIconData;
+  tool: string;
 }
 
-export default function TechIcon({ icon }: IProps) {
+export default function TechIcon({ tool }: IProps) {
+  const { name, Icon } = TOOLS[tool] ?? {};
+  if (!name || !Icon) return null;
+
   return (
-    <span
-      className={styles.techIcon}
-      role='img'
-      aria-label={icon.title}
-      title={icon.title}
-    >
+    <span className={styles.techIcon} role='img' aria-label={name} title={name}>
       <svg
         viewBox='0 0 24 24'
         xmlns='http://www.w3.org/2000/svg'
         aria-hidden='true'
         focusable='false'
       >
-        <path d={icon.path} />
+        <Icon />
       </svg>
     </span>
   );

@@ -6,7 +6,6 @@ import { SectionEntry } from '@/models';
 import { LanguageContext } from '@/store/LanguageProvider';
 import TechIcon from './TechIcon';
 import ExternalLink from '@/components/ui/ExternalLink/ExternalLink';
-import type { TechIconData } from './techStack';
 
 // One observer for every card. It toggles the class itself, so scrolling
 // never re-renders a card; a card shows while 30% of it crosses into view.
@@ -22,7 +21,7 @@ const cardObserver = () =>
 
 interface IProps {
   entry: SectionEntry;
-  icons: TechIconData[];
+  icons: string[];
   tools: string[];
 }
 
@@ -73,9 +72,9 @@ export default function SectionCard({ entry, icons, tools }: IProps) {
         <p className={styles.description}>{entry.description}</p>
         {icons.length > 0 && (
           <ul className={styles.stack} aria-label={content.home.techStack}>
-            {icons.map((icon) => (
-              <li key={icon.title}>
-                <TechIcon icon={icon} />
+            {icons.map((tool) => (
+              <li key={tool}>
+                <TechIcon tool={tool} />
               </li>
             ))}
           </ul>
