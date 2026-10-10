@@ -12,6 +12,19 @@
 
 **Update (2026-10-08, branch `perf/lighthouse`): no criterion changes.** The particle background now starts on the first scroll, pointer or key input and stays off with software WebGL; with reduced motion it still draws one still frame. Pages no longer fade in, the theme is set before the first paint, and the card, theme and menu animations moved from framer-motion to CSS with the same timing and the same reduced-motion behavior. axe: 0 violations on all pages and the 404, both themes, menus open and closed.
 
+**Update (2026-10-09, branch `feat/ui-polish`): no criterion changes.**
+
+- Section titles are sticky outlined pills. From 768px up they dock in the header; below that they sit under it, so the open menus stay on top.
+- The photo moved from the logo to a new About section.
+- The form asks for every field once, with no asterisks (F-17).
+- Field focus is one ring in the border's color (F-04).
+- A credit line closes every page. Its links are underlined and say they open in a new tab.
+- Card tech icons wrap under the text. Tools with no usable logo are listed by name, at 7.69:1 contrast or more.
+- On phones too short to fit it above the footer, the hero scroll arrow is hidden.
+- A click, a right click, or Enter or Space on a link or button bursts the particle ring outward; it re-forms in about 1.5 s. With reduced motion there is no burst, and the opacity cap keeps it from flashing (F-23).
+- No page scrolls sideways at any tested size, 320 to 1920 wide (1.4.10). Before, desktop pages scrolled sideways by the scrollbar's width, and some phone layouts were wider than the screen.
+- Evidence: axe 4.11.0 found 0 violations in 48 runs (4 pages, both themes, menus closed and open, 1280 and 375 wide). A Tab walk forward and back on /en, /es and /en/contact at 4 sizes found no focus stop entirely hidden (772 stops). With reduced motion, nothing new moves.
+
 Severity counts as found on 2026-10-05:
 
 | Severity     | Count  |
@@ -57,13 +70,13 @@ Severity counts as found on 2026-10-05:
 **What changed visually or in behavior** (the smallest change that passes in each case):
 
 - **Light theme:** red text is `#d40000` instead of `#f00`, as are the date labels on light cards. Dark theme reds are unchanged.
-- **Form fields:** they show the same red focus ring as the rest of the site.
+- **Form fields:** they show a focus ring (since 2026-10-09, in the border's color; see F-04).
 - **Card links:** links inside cards have a thin underline.
 - **Scroll chevron:** it bounces 3 times, then stops.
 - **Menus:** Escape and moving focus away close them. The language links read "English"/"Español".
 - **Contact form:**
   - Submit is always enabled.
-  - "Fields marked * are required." sits above the fields.
+  - One line above the fields asks for every field (since 2026-10-09; see F-17).
   - Hints read "3 to 100 characters".
   - Error messages are friendlier and say how to fix the input.
   - The reCAPTCHA notice sits under the button.
@@ -122,6 +135,7 @@ Severity counts as found on 2026-10-05:
 - Who is affected: keyboard users and people with low vision cannot tell which field they are typing in.
 - Fix: add `&:focus-visible { @include accessibility-outline; }` to `.input` and `.textarea`. The red 3px outline with a 3px offset is 3.42:1 on light and 5.25:1 on black, and it shows in every state because it sits outside the border. This adds the site-wide focus ring to fields (visible style change).
 - Status: Fixed. `.input` and `.textarea` get `@include accessibility-outline` on `:focus-visible`. Evidence: the Tab walk shows the 3px red outline on every field; screenshot `v-form-invalid-en-light` shows the focused invalid field ringed, while the other invalid fields are not.
+- Update (2026-10-09): the outline now sits on the border (2px, no offset) in the border's color, so focus reads as one thicker border. It is `--valid` without an error (`#00ffc3` dark, `#008566` light) and `#f00` with one. Pixel-sampled against the field and the page: green 16.09:1 (dark) and 3.95:1 (light), red 5.25:1 and 3.42:1. A focused field with an error goes from a 2px to a 4px red border; its error text and `aria-invalid` keep the error from relying on color (1.4.1).
 
 ### F-05 Nav menus: hidden links take focus, the buttons don't say whether the menu is open, and Escape does nothing
 
@@ -147,7 +161,7 @@ Severity counts as found on 2026-10-05:
 - Evidence: at 375×700, tabbing forward to "See my experience", "InterplanetaryFonts", "Women Build Web3", "Alchemy University", and "Cooper Union" scrolls each link to the bottom edge, 100% under the footer (footer covers y 551–700). Screenshot `m-focus-fwd-women`: no part of the link or its focus ring is visible. At 1280×900 the same links sit under the transparent top of the footer gradient and stay visible, so desktop passes. Going backwards, links scroll under the header gradient, which is see-through enough to pass.
 - Who is affected: keyboard users on phones, tablets, and zoomed desktops cannot see where focus is.
 - Fix: add `scroll-padding-top` (header height, 120px) and `scroll-padding-bottom` (footer height: 152px below 768px, 88px above) on `html`. This is technique C43 in the 2.4.11 Understanding doc. No visual change.
-- Status: Fixed. `html` has `scroll-padding-top` (header plus sticky section title) and `scroll-padding-bottom` (footer height). Evidence: the obscured-focus script, forwards and backwards at 1280×900, 375×700, 320×568 and 320×256, found 0 focused elements covered.
+- Status: Fixed. `html` has `scroll-padding-top` (header, plus the sticky section title below 768px) and `scroll-padding-bottom` (footer height). Evidence: the obscured-focus script, forwards and backwards at 1280×900, 375×700, 320×568 and 320×256, found 0 focused elements covered.
 
 ### F-07 Form errors are not tied to their fields, and the disabled Submit button hides why the form can't be sent
 
@@ -283,6 +297,7 @@ Severity counts as found on 2026-10-05:
 - Who is affected: people with cognitive disabilities and screen reader users, who hear "Name star" and don't get the length limits.
 - Fix: add one line above the form, "Fields marked * are required" / "Los campos con * son obligatorios". Hide the "*" from the accessible name (`aria-hidden`), since `required` already announces it. Turn the hint into words ("3 to 100 characters") and link it with `aria-describedby`.
 - Status: Fixed. "Fields marked * are required." / "Los campos con * son obligatorios." appears above the fields; the `*` is `aria-hidden`; the hint reads "3 to 100 characters" / "De 3 a 100 caracteres" and is linked with `aria-describedby`. Evidence: accessibility tree `textbox:"Nombre" desc="De 3 a 100 caracteres"`.
+- Update (2026-10-09): every field is required, so the asterisks are gone. One line before the fields reads "Please fill in all the fields." / "Llena todos los campos, por favor." Labels plus an instruction at the top of the form meet [3.3.2](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions) (G131 with [G184](https://www.w3.org/WAI/WCAG22/Techniques/general/G184)); `aria-required` is only advisory there (ARIA2), and native `required` already exposes the state. Evidence: accessibility tree `textbox:"Nombre" required desc="De 3 a 100 caracteres"`.
 
 ### F-18 The theme toggle doesn't expose its state, and the footer misuses `aria-label`
 
@@ -349,9 +364,10 @@ Severity counts as found on 2026-10-05:
 - Mitigations (all verified in Chrome 154 over CDP, dev build):
   - **Reduced motion:** with `prefers-reduced-motion: reduce`, the scene draws one still frame and never starts its loop (1 draw in 3 s). Turning the setting off while the page is open starts the loop (30 frames/s); turning it on again stops it at once. Test: `particleBackground.test.tsx`.
   - **Hidden tab:** the loop stops while the tab is hidden (draws stayed at 265 for 3 s with another tab in front) and resumes when it is shown again.
-  - **Soft and low contrast:** the canvas is drawn at 20% opacity over the solid page background. In the dark theme, no background pixel can be brighter than 20% gray (worst measured: relative luminance 0.033). In the light theme, a particle darkens the page by at most 5% (worst measured: 0.768 against 0.846 for the plain background).
-  - **No flashing (2.3.1):** a flash needs opposing luminance changes of at least 0.10. The 20% opacity caps the change at 0.033 in the dark theme and 0.093 in the light theme (0.08 measured), so the background cannot flash, at any rate.
-  - **Contrast (1.4.3):** text was hidden and the background behind every text run sampled 10 times over 10 s, on /en, /es, /en/contact and the 404 page in both themes. 0 failures. Lowest values: body text 14.40:1 (dark) and 16.67:1 (light); headings 10.79:1; the red home subtitle (large text) 3.16:1 (dark) and 3.12:1 (light). The nav, footer and form sit on opaque surfaces and are unchanged (17.78:1 or more).
+  - **Soft and low contrast:** the canvas is drawn at 20% opacity over the solid page background. In the dark theme, no background pixel can be brighter than 20% gray (worst measured: relative luminance 0.033). In the light theme, a particle darkens the page by at most about 5%. Since 2026-10-09 its letters are bold and slightly stronger (worst measured: 0.753 against 0.846 for the plain background).
+  - **Click burst (since 2026-10-09):** a click or keyboard activation sends the particles outward for about a second. It never runs with reduced motion, since the loop is off then, and the caps below still apply.
+  - **No flashing (2.3.1):** a flash needs opposing luminance changes of at least 0.10. The 20% opacity caps the change at 0.033 in the dark theme and below 0.10 in the light theme (0.094 measured on 2026-10-09), so the background cannot flash, at any rate.
+  - **Contrast (1.4.3):** text was hidden and the background behind every text run sampled 10 times over 10 s, on /en, /es, /en/contact and the 404 page in both themes. 0 failures. Lowest values: body text 14.40:1 (dark) and 16.67:1 (light); headings 10.79:1; the red home subtitle (large text) 3.16:1 (dark) and 3.06:1 (light, re-measured on 2026-10-09 with the pointer over it). The nav, footer and form sit on opaque surfaces and are unchanged (17.78:1 or more).
   - **Out of the way:** the canvas is `aria-hidden`, has `pointer-events: none`, and is not focusable. A mouse and keyboard run of the nav menu, language links, contact form, theme button, skip link and Escape passed with the canvas in place.
 - Status: Accepted (2026-10-06), as a known deviation. To meet 2.2.2 later, add a visible pause button that stops the loop and stores the choice.
 
@@ -455,8 +471,8 @@ AAA items and best practices (not required for AA):
 - **Done 2026-10-06, 3.2.5 Change on Request (AAA) / G201:** 14 card links and 4 social links open a new tab without warning. Add "(opens in a new tab)" / "(se abre en otra pestaña)" as visually hidden text.
 - **404 pages without JavaScript:** the server sends an empty document (no `lang`, no heading) and React builds the 404 page in the browser. The status (404) and `noindex` are correct. Next.js does this for `notFound()` when the root layout sits under `[locale]`; its experimental `global-not-found.js` is the documented way out.
 - **Content is hidden without JavaScript:** the server HTML ships every page's content at `opacity: 0` (`template.tsx`), so if JS is slow or fails, the page stays blank.
-- **New, short screens:** at 320×256 the scroll chevron (absolutely positioned at the bottom of the hero) overlaps two words of the summary. It was hidden under the fixed header before. Not fixed, because it's out of scope.
-- **Mobile overlap:** at 375px the sticky section titles ("Experience") slide over the logo button in the header.
+- **Done 2026-10-09, short screens:** at 320×256 the scroll chevron (absolutely positioned at the bottom of the hero) overlapped two words of the summary. It now sits in the flow under the text, and on phones too short to fit it above the footer it is hidden.
+- **Done 2026-10-09, mobile overlap:** at 375px the sticky section titles ("Experience") slid over the logo button in the header. Below 768px they now pass under the header.
 - **Done 2026-10-06, Third party, reCAPTCHA badge:** it is hidden with `visibility: hidden` in `_normalize.scss`, which is fine for accessibility (it leaves the accessibility tree). Google's terms ask for the notice text ("This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.") to be shown when the badge is hidden. Add it under the form, in both languages.
 - **Third party, Typekit:** Degular loads and passed the text-spacing test. Nothing to fix.
 

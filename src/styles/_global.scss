@@ -1,12 +1,31 @@
 @use 'abstracts/index' as *;
 
+@mixin light-theme {
+  --background: #{$white};
+  --background-80: #{get-color($white, 0.8)};
+  --background-50: #{get-color($white, 0.5)};
+  --background-00: #{get-color($white, 0)};
+  --foreground: #{$black};
+  --foreground-50: #{get-color($black, 0.5)};
+  --accent-text: #{$accent-on-light};
+  --valid: #{$valid-on-light};
+}
+
 :root {
   --background: #{$black};
   --background-80: #{get-color($black, 0.8)};
   --background-50: #{get-color($black, 0.5)};
   --background-00: #{get-color($black, 0)};
   --foreground: #{$white};
+  --foreground-50: #{get-color($white, 0.5)};
   --accent-text: #{$accent};
+  --valid: #{$valid};
+}
+
+// The page scrollbar and the page background read their colors from <html>.
+// A separate rule, so browsers without :has() still theme the body.
+:root:has(> body[data-theme='light']) {
+  @include light-theme;
 }
 
 * {
@@ -19,16 +38,16 @@ html {
   scroll-behavior: smooth;
   // Keep focused elements clear of the fixed header, the sticky section
   // titles and the fixed footer (WCAG 2.4.11, technique C43).
-  scroll-padding-top: calc(#{$header-height} + 7.5rem);
-  scroll-padding-bottom: calc(#{$footer-height} + 1rem);
+  scroll-padding-top: calc(#{$header-height} + #{$pill-height} + 1rem);
+  @include footer-clearance(scroll-padding-bottom);
 
+  // From here up, the section titles stick inside the header.
   @media (width >= $breakpoint-md) {
-    scroll-padding-bottom: calc(#{$footer-height-md} + 1rem);
+    scroll-padding-top: calc(#{$header-height} + 1rem);
   }
 
   @media (height <= $breakpoint-short-height) {
     scroll-padding-top: 1rem;
-    scroll-padding-bottom: 1rem;
   }
 
   * {
@@ -53,7 +72,8 @@ body {
 }
 
 body {
-  width: 100vw;
+  // 100%, not 100vw: vw includes the scrollbar and would scroll sideways.
+  width: 100%;
   overflow-x: clip;
   // Lets the particle background (z-index -1) sit above the body background.
   isolation: isolate;
@@ -63,18 +83,13 @@ body {
   justify-content: flex-start;
 
   &[data-theme='light'] {
-    --background: #{$white};
-    --background-80: #{get-color($white, 0.8)};
-    --background-50: #{get-color($white, 0.5)};
-    --background-00: #{get-color($white, 0)};
-    --foreground: #{$black};
-    --accent-text: #{$accent-on-light};
+    @include light-theme;
   }
 }
 
 header {
   height: $header-height;
-  width: 100vw;
+  width: 100%;
 }
 
 h1,
@@ -191,7 +206,7 @@ button {
   }
 
   &-thumb {
-    background-color: var(--foreground);
+    background-color: var(--foreground-50);
     background-clip: content-box;
     @include border($weight: 2px, $color: transparent);
     @include rounded-corners($radius: 10px);
@@ -200,5 +215,13 @@ button {
     &:hover {
       background-color: $accent;
     }
+  }
+}
+
+// Firefox has no ::-webkit-scrollbar; give its scrollbars the same colors.
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--foreground-50) transparent;
   }
 }

@@ -25,6 +25,8 @@ import FormWrapper from '@/components/wrappers/FormWrapper/FormWrapper';
 import TextInput from '@/components/ui/TextInput/TextInput';
 import ButtonWrapper from '@/components/wrappers/ButtonWrapper/ButtonWrapper';
 import Spinner from '@/components/ui/Spinner/Spinner';
+import ExternalLink from '@/components/ui/ExternalLink/ExternalLink';
+import { fillTemplate } from '@/utils/template.utils';
 
 interface IReducerAction {
   type: ContactFormField | 'RESET';
@@ -173,9 +175,17 @@ function ContactForm() {
     },
   ];
 
-  const [recaptchaBefore, recaptchaRest = ''] =
-    content.contact.form.recaptcha.text.split('{privacy}');
-  const [recaptchaMiddle, recaptchaAfter = ''] = recaptchaRest.split('{terms}');
+  const { recaptcha } = content.contact.form;
+  const recaptchaLinks: Record<string, { href: string; label: string }> = {
+    privacy: {
+      href: 'https://policies.google.com/privacy',
+      label: recaptcha.privacy,
+    },
+    terms: {
+      href: 'https://policies.google.com/terms',
+      label: recaptcha.terms,
+    },
+  };
 
   return (
     <FormWrapper
@@ -184,7 +194,7 @@ function ContactForm() {
       error={formError}
       submitMessage={submitMessage}
     >
-      <p className={styles.required}>{content.contact.form.required}</p>
+      <p className={styles.instructions}>{content.contact.form.instructions}</p>
       {inputFields.map((field) => (
         <TextInput
           key={field.id}
@@ -220,25 +230,14 @@ function ContactForm() {
         )}
       </ButtonWrapper>
       <p className={styles.recaptcha}>
-        {recaptchaBefore}
-        <a
-          href='https://policies.google.com/privacy'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          {content.contact.form.recaptcha.privacy}
-          <span className='visually-hidden'> {content.home.newTab}</span>
-        </a>
-        {recaptchaMiddle}
-        <a
-          href='https://policies.google.com/terms'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          {content.contact.form.recaptcha.terms}
-          <span className='visually-hidden'> {content.home.newTab}</span>
-        </a>
-        {recaptchaAfter}
+        {fillTemplate(recaptcha.text, (key) => (
+          <ExternalLink
+            href={recaptchaLinks[key].href}
+            newTab={content.home.newTab}
+          >
+            {recaptchaLinks[key].label}
+          </ExternalLink>
+        ))}
       </p>
     </FormWrapper>
   );

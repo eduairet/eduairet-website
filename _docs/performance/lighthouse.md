@@ -60,6 +60,19 @@ Median of 3, before → after. GPU: host Chrome 154 with an RTX 4060. Software: 
 
 All pages: Accessibility, Best Practices and SEO 100; axe 0 violations in both themes with menus open and closed.
 
+## After branch `feat/ui-polish` (local, production build, 2026-10-09)
+
+GPU setup below, median of 3, `main` → branch, both measured in one Chrome session after the branch's last change.
+
+| Page | Mobile  | Desktop   | Mobile LCP  | Mobile CLS    |
+| ---- | ------- | --------- | ----------- | ------------- |
+| /en  | 99 → 98 | 100 → 100 | 1.9 → 2.3 s | 0.002 → 0.002 |
+| /es  | 99 → 98 | 100 → 100 | 1.9 → 2.2 s | 0 → 0.002     |
+
+- The LCP element did not change: the hero summary, or the subtitle on /es mobile.
+- The home HTML grew from 23 to 40 KB gzipped, mostly from the added tool icons. Each icon's SVG path is sent twice: in the HTML and in the data React uses to start the page.
+- Mobile LCP was 0.35 s slower in this session, but only 0.05 s slower in an earlier one, and the run ranges overlap. Not resolved. Serving the icons from one cached sprite file would remove most of the added bytes.
+
 ## How to re-measure
 
 PageSpeed Insights is the reference: run https://pagespeed.web.dev on each page three times and compare medians.

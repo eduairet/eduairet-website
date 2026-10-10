@@ -30,18 +30,21 @@
   outline: none;
   border-radius: 5px;
   width: 100%;
-  @include merge-transitions((border-color));
+  @include merge-transitions((border-color, outline-color));
 
-  &:focus {
-    border-color: $valid;
-  }
-
+  // No offset, so the outline and the border read as one thicker border.
   &:focus-visible {
-    @include accessibility-outline;
+    border-color: var(--valid);
+    @include accessibility-outline(
+      $color: var(--valid),
+      $offset: 0,
+      $width: 2px
+    );
   }
 
   &.invalid {
     border-color: $invalid;
+    outline-color: $invalid;
   }
 }
 

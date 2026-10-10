@@ -5,6 +5,7 @@ import styles from './HomeSection.module.scss';
 import { SectionEntry } from '@/models';
 import { LanguageContext } from '@/store/LanguageProvider';
 import TechIcon from './TechIcon';
+import ExternalLink from '@/components/ui/ExternalLink/ExternalLink';
 import type { TechIconData } from './techStack';
 
 // One observer for every card. It toggles the class itself, so scrolling
@@ -22,9 +23,10 @@ const cardObserver = () =>
 interface IProps {
   entry: SectionEntry;
   icons: TechIconData[];
+  tools: string[];
 }
 
-export default function SectionCard({ entry, icons }: IProps) {
+export default function SectionCard({ entry, icons, tools }: IProps) {
   const { content } = useContext(LanguageContext);
   const cardRef = useRef<HTMLLIElement>(null);
 
@@ -41,10 +43,9 @@ export default function SectionCard({ entry, icons }: IProps) {
         <p className={styles.period}>{entry.period}</p>
         <h3 className={styles.roleTitle}>
           {entry.roleUrl ? (
-            <a href={entry.roleUrl} target='_blank' rel='noopener noreferrer'>
+            <ExternalLink href={entry.roleUrl} newTab={content.home.newTab}>
               {entry.role}
-              <span className='visually-hidden'> {content.home.newTab}</span>
-            </a>
+            </ExternalLink>
           ) : (
             entry.role
           )}
@@ -52,14 +53,12 @@ export default function SectionCard({ entry, icons }: IProps) {
         {(entry.company || entry.meta) && (
           <p className={styles.company}>
             {entry.companyUrl ? (
-              <a
+              <ExternalLink
                 href={entry.companyUrl}
-                target='_blank'
-                rel='noopener noreferrer'
+                newTab={content.home.newTab}
               >
                 {entry.company}
-                <span className='visually-hidden'> {content.home.newTab}</span>
-              </a>
+              </ExternalLink>
             ) : (
               entry.company
             )}
@@ -72,16 +71,21 @@ export default function SectionCard({ entry, icons }: IProps) {
           </p>
         )}
         <p className={styles.description}>{entry.description}</p>
+        {icons.length > 0 && (
+          <ul className={styles.stack} aria-label={content.home.techStack}>
+            {icons.map((icon) => (
+              <li key={icon.title}>
+                <TechIcon icon={icon} />
+              </li>
+            ))}
+          </ul>
+        )}
+        {tools.length > 0 && (
+          <p className={styles.tools}>
+            {content.home.otherTools} {tools.join(', ')}
+          </p>
+        )}
       </div>
-      {icons.length > 0 && (
-        <ul className={styles.stack} aria-label={content.home.techStack}>
-          {icons.map((icon) => (
-            <li key={icon.title}>
-              <TechIcon icon={icon} />
-            </li>
-          ))}
-        </ul>
-      )}
     </li>
   );
 }

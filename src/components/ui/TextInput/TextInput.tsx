@@ -85,7 +85,6 @@ export default function TextInput({
           htmlFor={id}
         >
           {label}
-          {required && <span aria-hidden='true'>*</span>}
         </label>
         {hint && (
           <span

@@ -2,7 +2,7 @@ import type { Lang } from '@/models';
 import { getDictionary, toLang } from '@/app/[locale]/dictionaries';
 import {
   PERSON_HANDLE,
-  ProfilePhoto,
+  PROFILE_PHOTO,
   SAME_AS,
   SITE_NAME,
   SITE_SHORT_NAME,
@@ -78,8 +78,8 @@ export async function buildHomeStructuredData(
           name: SITE_NAME,
           alternateName: PERSON_HANDLE,
           jobTitle: content.home.subtitle.split(' · '),
-          description: content.home.summary,
-          image: `${SITE_URL}${ProfilePhoto.full}`,
+          description: content.about.text,
+          image: `${SITE_URL}${PROFILE_PHOTO}`,
           url: SITE_ROOT,
           sameAs: SAME_AS,
         },

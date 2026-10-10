@@ -8,7 +8,7 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
-import { Dictionary, EnContent } from '@/models';
+import { Dictionary, EnContent, EsContent, type Lang } from '@/models';
 
 import ContactForm from '@/app/[locale]/contact/components/ContactForm/ContactForm';
 
@@ -36,9 +36,9 @@ vi.mock('@/utils/client', async (importOriginal) => ({
   fetchData: mocks.fetchData,
 }));
 
-const renderForm = () =>
+const renderForm = (locale: Lang = 'en', content = en) =>
   render(
-    <LanguageProvider locale='en' content={en}>
+    <LanguageProvider locale={locale} content={content}>
       <ContactForm />
     </LanguageProvider>
   );
@@ -85,7 +85,29 @@ describe('ContactForm reCAPTCHA', () => {
 });
 
 describe('ContactForm accessibility', () => {
-  test('labels exclude the asterisk and fields are linked to their hints', () => {
+  test.each([
+    ['en', EnContent, 'Please fill in all the fields.'],
+    ['es', EsContent, 'Llena todos los campos, por favor.'],
+  ] as const)(
+    '%s asks for every field once, before the fields',
+    (locale, data, instructions) => {
+      renderForm(locale, new Dictionary(data));
+      const fields = screen.getAllByRole('textbox');
+      const instruction = screen.getByText(instructions);
+
+      expect(fields).toHaveLength(3);
+      expect(
+        instruction.compareDocumentPosition(fields[0]) &
+          Node.DOCUMENT_POSITION_FOLLOWING
+      ).toBeTruthy();
+      fields.forEach((field) =>
+        expect(field.hasAttribute('required')).toBe(true)
+      );
+      expect(document.querySelector('form')?.textContent).not.toContain('*');
+    }
+  );
+
+  test('fields are named by their labels and linked to their hints', () => {
     renderForm();
     const name = screen.getByRole('textbox', { name: 'Name' });
 
@@ -96,7 +118,7 @@ describe('ContactForm accessibility', () => {
         .getAttribute('autocomplete')
     ).toBe('email');
     expect(describedText(name)).toBe('3 to 100 characters');
-    expect(screen.getByText('Fields marked * are required.')).toBeTruthy();
+    expect(screen.getByText('Please fill in all the fields.')).toBeTruthy();
   });
 
   test('submitting empty shows linked errors and focuses the first field', () => {

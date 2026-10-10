@@ -1,0 +1,62 @@
+@use '@/styles/abstracts/index' as *;
+
+.about {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+  padding-block: clamp(3rem, 8vw, 5rem);
+
+  // Top and bottom lines run the full screen width, past the content column.
+  // The shadow paints them out to the edges without adding scrollable width.
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--foreground);
+    box-shadow: 0 0 0 100vmax var(--foreground);
+    clip-path: inset(0 -100vmax);
+  }
+
+  &::before {
+    top: 0;
+  }
+
+  &::after {
+    bottom: 0;
+  }
+
+  // Lines the photo up with the text inside the cards below.
+  @media (width >= $breakpoint-md) {
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    padding-inline: clamp(1.5rem, 4vw, 2.75rem);
+  }
+}
+
+.photo {
+  width: 128px;
+  height: 128px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 50%;
+  @include border($weight: 2px);
+
+  @media (width >= $breakpoint-md) {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+.text {
+  text-align: left;
+  max-width: 40rem;
+  font-size: clamp(1.125rem, 3vw, 1.375rem);
+  line-height: 1.45;
+  color: var(--foreground);
+  @include degular($wght: 300, $opsz: 24);
+}

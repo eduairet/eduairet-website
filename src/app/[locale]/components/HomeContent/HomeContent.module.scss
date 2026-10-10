@@ -9,22 +9,26 @@
 }
 
 .hero {
-  position: relative;
-  min-height: calc(100svh - #{$header-height} - 4rem);
+  // Fills the first screen, so the next section starts below the fold.
+  min-height: calc(100svh - #{$header-height});
   display: flex;
   flex-direction: column;
-  justify-content: center;
   gap: 2rem;
+  // Keeps the scroll cue above the fixed footer.
+  @include footer-clearance(padding-bottom);
+
+  > a {
+    align-self: center;
+
+    // No room for the scroll cue above the fixed footer.
+    @media (width < $breakpoint-md) and ($breakpoint-short-height < height < $breakpoint-short-phone-height) {
+      display: none;
+    }
+  }
 }
 
 .heroText {
   display: flex;
   flex-direction: column;
-}
-
-.hero > a {
-  position: absolute;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
+  margin-block: auto;
 }

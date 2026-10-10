@@ -5,4 +5,6 @@ $accent: #f00;
 // #f00 is 3.42:1 on $white; this darker red reaches 4.72:1 for small text.
 $accent-on-light: #d40000;
 $valid: #00ffc3;
+// $valid is too light for a focus ring on $white (wcag-audit.md, F-04).
+$valid-on-light: #008566;
 $invalid: $accent;

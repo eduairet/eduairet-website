@@ -50,7 +50,7 @@ test('Person text comes from what the page shows', async () => {
     'Ingeniero de Diseño',
     'Ingeniero de Producto',
   ]);
-  expect(mainEntity.description).toMatch(/^Seis años/);
+  expect(mainEntity.description).toMatch(/^Soy ingeniero de diseño/);
 });
 
 test('both locales share the same WebSite node', async () => {

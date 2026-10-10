@@ -52,7 +52,7 @@ describe('SectionCard', () => {
   test('shows each time it enters the viewport and hides when it leaves', () => {
     render(
       <LanguageProvider locale='en' content={en}>
-        <SectionCard entry={entry} icons={[]} />
+        <SectionCard entry={entry} icons={[]} tools={[]} />
       </LanguageProvider>
     );
     const card = screen.getByRole('listitem');

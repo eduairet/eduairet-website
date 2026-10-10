@@ -1,0 +1,19 @@
+@use '@/styles/abstracts/index' as *;
+
+.credits {
+  max-width: 40rem;
+  // Takes the free space above it, so on short pages it sits at the bottom.
+  margin: auto auto 0;
+  padding-top: 2rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--foreground);
+
+  a {
+    @extend %text-link;
+
+    &::before {
+      content: none;
+    }
+  }
+}

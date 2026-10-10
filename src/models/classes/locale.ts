@@ -76,6 +76,7 @@ export class Dictionary {
     theme: {
       text: string;
     };
+    credits: string;
   };
   buttons: {
     langsButton: Button;
@@ -86,7 +87,12 @@ export class Dictionary {
     summary: string;
     scrollCue: string;
     techStack: string;
+    otherTools: string;
     newTab: string;
+  };
+  about: {
+    title: string;
+    text: string;
   };
   experience: Section;
   projects: Section;
@@ -107,7 +113,7 @@ export class Dictionary {
       submit: string;
       success: string;
       sending: string;
-      required: string;
+      instructions: string;
       lengthHint: string;
       recaptcha: {
         text: string;
@@ -148,6 +154,7 @@ export class Dictionary {
       theme: {
         text: data.footer?.theme?.text || '',
       },
+      credits: data.footer?.credits || '',
     };
     this.buttons = {
       langsButton: {
@@ -165,7 +172,12 @@ export class Dictionary {
       summary: data.home?.summary || '',
       scrollCue: data.home?.scrollCue || '',
       techStack: data.home?.techStack || '',
+      otherTools: data.home?.otherTools || '',
       newTab: data.home?.newTab || '',
+    };
+    this.about = {
+      title: data.about?.title || '',
+      text: data.about?.text || '',
     };
     this.experience = toSection(data.experience);
     this.projects = toSection(data.projects);
@@ -186,7 +198,7 @@ export class Dictionary {
         submit: data.contact?.form?.submit || '',
         success: data.contact?.form?.success || '',
         sending: data.contact?.form?.sending || '',
-        required: data.contact?.form?.required || '',
+        instructions: data.contact?.form?.instructions || '',
         lengthHint: data.contact?.form?.lengthHint || '',
         recaptcha: {
           text: data.contact?.form?.recaptcha?.text || '',

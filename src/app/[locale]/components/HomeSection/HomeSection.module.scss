@@ -13,39 +13,24 @@
 }
 
 .title {
+  @extend %pill;
   position: sticky;
   top: $header-height;
-  z-index: 2;
-  text-align: left;
+  // Below the header, so the open nav menus stay on top of it.
+  z-index: 1;
+  align-self: center;
+  padding: 0 2rem;
+  margin: 1rem 0 1.5rem;
   color: var(--foreground);
-  font-size: clamp(2rem, 8vw, 3rem);
+  font-size: 1.5rem;
   line-height: 1;
-  padding: 2rem 0;
-  background: linear-gradient(
-    180deg,
-    var(--background-00) 0%,
-    var(--background-50) 25%,
-    var(--background-50) 75%,
-    var(--background-00) 100%
-  );
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  // Fade the blur (and its hard box edge) along with the gradient.
-  mask-image: linear-gradient(
-    180deg,
-    transparent 0%,
-    #000 25%,
-    #000 75%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    180deg,
-    transparent 0%,
-    #000 25%,
-    #000 75%,
-    transparent 100%
-  );
   @include degular($wght: 700, $opsz: 60);
+
+  // Docks in the header, level with the nav pill.
+  @media (width >= $breakpoint-md) {
+    top: calc((#{$header-height} - #{$pill-height}) / 2);
+    z-index: 2;
+  }
 
   @media (height <= $breakpoint-short-height) {
     position: static;
@@ -60,7 +45,6 @@
 }
 
 .card {
-  position: relative;
   width: 100%;
   min-height: clamp(16rem, 42vh, 22rem);
   padding: clamp(1.5rem, 4vw, 2.75rem);
@@ -110,11 +94,9 @@
   flex-direction: column;
   width: 100%;
   max-width: 32rem;
-  padding-bottom: 3rem;
 
   @media (width >= $breakpoint-md) {
     max-width: 50%;
-    padding-bottom: 0;
   }
 }
 
@@ -152,9 +134,7 @@
 // Links in cards are underlined so they don't rely on lightness alone.
 .roleTitle a,
 .company a {
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.2em;
+  @extend %text-link;
 }
 
 .description {
@@ -166,14 +146,19 @@
 }
 
 .stack {
-  position: absolute;
-  right: clamp(1.5rem, 4vw, 2.75rem);
-  bottom: clamp(1.5rem, 4vw, 2.75rem);
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
+  margin-top: 1.5rem;
   list-style: none;
-  // Match the card text color; the corner stays dominated by the top-left tone.
-  color: inherit;
+}
+
+.tools {
+  text-align: left;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-top: 0.75rem;
+  @include degular($wght: 400, $opsz: 14);
 }
 
 .techIcon {

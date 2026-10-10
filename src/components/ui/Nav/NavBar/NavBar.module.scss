@@ -20,24 +20,21 @@
       var(--background) 100%
     );
 
+    // In the page flow here, so 100vw would add the scrollbar's width.
     @media (height <= $breakpoint-short-height) {
       position: absolute;
+      width: 100%;
     }
   }
 
+  @extend %pill;
   z-index: 2;
-  background-color: var(--background);
-  height: 50px;
   width: 100%;
   max-width: 150px;
   padding-left: 2rem;
   padding-right: 1.75rem;
-  display: flex;
   justify-content: space-between;
-  align-items: center;
   gap: 1rem;
-  @include border($weight: 2px);
-  @include rounded-corners($radius: 3rem);
 
   li {
     list-style-type: none;

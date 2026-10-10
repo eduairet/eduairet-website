@@ -1,7 +1,9 @@
 @use '@/styles/abstracts/index' as *;
 
 .main {
-  width: 100vw;
+  // Fills the screen below the header, so short pages reach the footer.
+  flex-grow: 1;
+  width: 100%;
   max-width: $max-width;
   display: flex;
   flex-direction: column;
@@ -9,14 +11,6 @@
   justify-content: stretch;
   padding-left: 1rem;
   padding-right: 1rem;
-  padding-bottom: calc(#{$footer-height} + 1rem);
   gap: 2rem;
-
-  @media (width >= $breakpoint-md) {
-    padding-bottom: calc(#{$footer-height-md} + 1rem);
-  }
-
-  @media (height <= $breakpoint-short-height) {
-    padding-bottom: 1rem;
-  }
+  @include footer-clearance(padding-bottom);
 }

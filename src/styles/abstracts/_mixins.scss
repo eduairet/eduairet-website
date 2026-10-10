@@ -1,9 +1,22 @@
 @use 'variables' as *;
 @use 'sass:list';
 
-@mixin accessibility-outline {
-  outline: 3px solid $accent;
-  outline-offset: 3px;
+@mixin accessibility-outline($color: $accent, $offset: 3px, $width: 3px) {
+  outline: $width solid $color;
+  outline-offset: $offset;
+}
+
+// Room for the fixed footer, which stops being fixed on short screens.
+@mixin footer-clearance($property) {
+  #{$property}: calc(#{$footer-height} + 1rem);
+
+  @media (width >= $breakpoint-md) {
+    #{$property}: calc(#{$footer-height-md} + 1rem);
+  }
+
+  @media (height <= $breakpoint-short-height) {
+    #{$property}: 1rem;
+  }
 }
 
 @mixin merge-transitions(

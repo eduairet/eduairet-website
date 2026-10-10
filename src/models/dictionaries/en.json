@@ -35,7 +35,8 @@
     },
     "theme": {
       "text": "Theme"
-    }
+    },
+    "credits": "Designed and built by {name} with {nextjs}, {react}, {typescript}, {sass} and {threejs}, and hosted on {vercel}. Recent updates were made with help from {claudecode} and {cursor}. Set in {font} by James Edmondson ({foundry})."
   },
   "buttons": {
     "langsButton": {
@@ -51,9 +52,14 @@
   "home": {
     "subtitle": "Design Engineer · Product Engineer",
     "summary": "Six years building web applications end to end, on over ten years of design and typography.",
-    "scrollCue": "See my experience",
+    "scrollCue": "See more about me",
     "techStack": "Tech stack",
-    "newTab": "(opens in a new tab)"
+    "newTab": "(opens in a new tab)",
+    "otherTools": "Also:"
+  },
+  "about": {
+    "title": "About",
+    "text": "I'm a design engineer. I started out in graphic design and typography, and later moved into building web apps, from the interface down to the database. I still care as much about how a product feels as how it works. That's where I help most: I turn design ideas into code without losing the details, and I make product choices with people in mind. On the side, I design typefaces and try out new ideas."
   },
   "experience": {
     "title": "Experience",
@@ -65,7 +71,24 @@
         "meta": "Contract · Remote",
         "period": "Jan 2026 – Present",
         "description": "I build across a five-brand media platform on .NET and Next.js, from the database to the screen. I reworked PressRelease search so lookups went from seconds to milliseconds in local testing, built Nombase Funding end to end, and set up Sentry across 7 services.",
-        "stack": ["dotnet", "nextjs", "typescript", "react", "docker"]
+        "stack": [
+          "dotnet",
+          "nextjs",
+          "typescript",
+          "react",
+          "docker",
+          "mysql",
+          "wordpress",
+          "javascript",
+          "html",
+          "css",
+          "sass",
+          "mssql",
+          "aws",
+          "sentry",
+          "claudecode",
+          "codex"
+        ]
       },
       {
         "role": "Frontend Developer",
@@ -74,7 +97,19 @@
         "meta": "Contract · Remote",
         "period": "May 2023 – Jan 2026",
         "description": "I turned designs into production UI for nombase.com and the BevNET brands, keeping the details intact from design to code. The work grew from the front end into APIs, databases, migrations, and testing, which led to my promotion to Software Engineer.",
-        "stack": ["nextjs", "typescript", "react"]
+        "stack": [
+          "nextjs",
+          "typescript",
+          "react",
+          "dotnet",
+          "mysql",
+          "wordpress",
+          "javascript",
+          "html",
+          "css",
+          "sass",
+          "mssql"
+        ]
       },
       {
         "role": "Font Engineer and Type Designer",
@@ -83,7 +118,15 @@
         "meta": "Contract · Remote",
         "period": "Apr 2021 – Jun 2022",
         "description": "I designed type and built the production tooling behind the typefaces, with Python scripts and Glyphs plugins. I also built the Branding System Generator and presented it at Typographics TypeLab 2022.",
-        "stack": ["python"]
+        "stack": [
+          "python",
+          "robofont",
+          "drawbot",
+          "glyphs",
+          "indesign",
+          "illustrator",
+          "react"
+        ]
       },
       {
         "role": "Frontend Developer & Creative Coder",
@@ -92,7 +135,16 @@
         "meta": "Freelance · Hybrid",
         "period": "Apr 2020 – Apr 2023",
         "description": "This is where art, design, and code came together for me. I built interactive front ends with generative art and animation, and automated editorial design by connecting Python and Pandas to InDesign.",
-        "stack": ["javascript", "python"]
+        "stack": [
+          "javascript",
+          "python",
+          "react",
+          "html",
+          "css",
+          "p5",
+          "drawbot",
+          "netlify"
+        ]
       },
       {
         "role": "Senior Graphic Designer",
@@ -101,7 +153,17 @@
         "meta": "On-site",
         "period": "Jan 2017 – Mar 2020",
         "description": "I refreshed the visual language of the department's communications and built event branding systems, from merchandise and motion to editorial, type, web, and signage. Repetitive work like diplomas and animated invitations is what got me writing Python and JavaScript, and into software.",
-        "stack": ["python", "javascript"]
+        "stack": [
+          "python",
+          "javascript",
+          "glyphs",
+          "robofont",
+          "drawbot",
+          "illustrator",
+          "photoshop",
+          "indesign",
+          "aftereffects"
+        ]
       },
       {
         "role": "Design & Art Archive",
@@ -135,7 +197,14 @@
         "meta": "",
         "period": "Sep 2022 – Apr 2023",
         "description": "A decentralized marketplace for fonts that I co-designed. It reached the ETHOnline 2022 finals and joined the Women Build Web3 accelerator. I shaped the interface and the data behind it.",
-        "stack": ["react", "ethereum", "tailwind"]
+        "stack": [
+          "react",
+          "ethereum",
+          "tailwind",
+          "vercel",
+          "graphql",
+          "thegraph"
+        ]
       }
     ]
   },
@@ -209,7 +278,7 @@
         }
       },
       "sending": "Sending…",
-      "required": "Fields marked * are required.",
+      "instructions": "Please fill in all the fields.",
       "lengthHint": "{min} to {max} characters",
       "recaptcha": {
         "text": "This site is protected by reCAPTCHA and the Google {privacy} and {terms} apply.",
