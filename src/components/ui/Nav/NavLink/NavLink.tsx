@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import styles from './NavLink.module.scss';
 import { LanguageContext } from '@/store/LanguageProvider';
+import usePrefetchOnIntent from '@/hooks/usePrefetchOnIntent';
 
 interface IProps {
   href: string;
@@ -23,12 +24,16 @@ function NavLink({ href, text, lang, isLangLink = false }: IProps) {
   };
 
   const hrefState = isLangLink
-    ? `${href}${pathname.replace(locale, '').replace(/\/{2,}/g, '/')}`
+    ? `${href}${pathname.replace(locale, '')}`
+        .replace(/\/{2,}/g, '/')
+        .replace(/(.)\/$/, '$1')
     : href;
+  const prefetchOnIntent = usePrefetchOnIntent(hrefState);
 
   return (
     <li className={styles['nav-link']}>
       <Link
+        {...prefetchOnIntent}
         className={isActive() ? styles.active : ''}
         href={hrefState}
         lang={lang}

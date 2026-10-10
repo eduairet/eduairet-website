@@ -9,6 +9,7 @@ import { PageUrls } from '@/utils/constants';
 import EatLogo from '@/components/brand/EatLogo';
 import IconButtonScreenTitle from '@/components/ui/Buttons/IconButton/IconButtonScreenTitle';
 import { LanguageContext } from '@/store/LanguageProvider';
+import usePrefetchOnIntent from '@/hooks/usePrefetchOnIntent';
 
 interface IProps {
   locale: Lang;
@@ -19,6 +20,7 @@ export default function EatHomeButton({ locale }: IProps) {
   const { content } = useContext(LanguageContext);
 
   const isActive = pathname === PageUrls.home_(locale);
+  const prefetchOnIntent = usePrefetchOnIntent(PageUrls.home_(locale));
 
   const stayOnCurrentHome = (e: MouseEvent) => {
     if (isActive) e.preventDefault();
@@ -26,6 +28,7 @@ export default function EatHomeButton({ locale }: IProps) {
 
   return (
     <Link
+      {...prefetchOnIntent}
       className={[styles['eat-home'], isActive && styles.active]
         .filter(Boolean)
         .join(' ')}

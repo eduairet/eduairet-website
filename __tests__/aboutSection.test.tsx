@@ -9,6 +9,7 @@ import EatHomeButton from '@/components/brand/EatHomeButton/EatHomeButton';
 
 vi.mock('next/navigation', () => ({
   usePathname: () => '/en/contact',
+  useRouter: () => ({ prefetch: () => {} }),
 }));
 
 afterEach(cleanup);
