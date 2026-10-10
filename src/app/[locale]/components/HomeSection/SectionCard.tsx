@@ -6,6 +6,7 @@ import { SectionEntry } from '@/models';
 import { LanguageContext } from '@/store/LanguageProvider';
 import TechIcon from './TechIcon';
 import ExternalLink from '@/components/ui/ExternalLink/ExternalLink';
+import { showCardShape } from '@/components/art/CardShapes/cardShapes';
 
 // One observer for every card. It toggles the class itself, so scrolling
 // never re-renders a card; a card shows while 30% of it crosses into view.
@@ -33,7 +34,11 @@ export default function SectionCard({ entry, icons, tools }: IProps) {
     const card = cardRef.current;
     if (!card) return;
     cardObserver().observe(card);
-    return () => cardObserver().unobserve(card);
+    const hideShape = showCardShape(card, styles.shape);
+    return () => {
+      cardObserver().unobserve(card);
+      hideShape();
+    };
   }, []);
 
   return (

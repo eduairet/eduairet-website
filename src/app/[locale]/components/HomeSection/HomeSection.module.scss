@@ -47,6 +47,9 @@ $stack-item-size: 34px;
 }
 
 .card {
+  position: relative;
+  // Lets the shape sit between the card background and its content.
+  isolation: isolate;
   width: 100%;
   min-height: clamp(16rem, 42vh, 22rem);
   padding: clamp(1.5rem, 4vw, 2.75rem);
@@ -90,6 +93,13 @@ $stack-item-size: 34px;
       color: $accent-on-light;
     }
   }
+}
+
+// Drawn by CardShapes; its size and offsets are set inline.
+.shape {
+  position: absolute;
+  z-index: $z-background;
+  pointer-events: none;
 }
 
 .content {
