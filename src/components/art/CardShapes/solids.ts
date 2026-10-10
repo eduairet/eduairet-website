@@ -1,4 +1,4 @@
-// Wireframes in a unit sphere, traced as 2D paths (y up) for an orthographic view.
+// Unit-sphere wireframes, traced as 2D paths (y up) in an orthographic view.
 
 export type Family = 'boxes' | 'prisms' | 'pyramids' | 'round';
 export type Point = [number, number];

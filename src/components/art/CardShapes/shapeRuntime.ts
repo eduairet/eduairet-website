@@ -33,7 +33,7 @@ export interface ShapeCard {
   className: string;
 }
 
-// A mounted canvas; exists only while its card has been in view.
+// A card's canvas, made the first time the card scrolls into view.
 interface View {
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;

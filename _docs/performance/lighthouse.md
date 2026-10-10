@@ -117,7 +117,7 @@ Each card in Experience, Projects and Education gets a turning wireframe solid i
 
 **Approach.** The 3D math runs on the CPU, and the lines are drawn into a small 2D canvas in each card. There is no WebGL, so the page keeps its single WebGL context, the particle background's. Chrome allows 16 active contexts on desktop and 8 on Android ([`webgraphicscontext3d_provider_impl.cc`](https://chromium.googlesource.com/chromium/src/+/HEAD/content/renderer/webgraphicscontext3d_provider_impl.cc)), so one context per card could have cost the particles theirs. The code loads only after the first visitor input and an idle moment, through the particle background's gate (`src/components/art/startGate.ts`).
 
-Tried and dropped, with 2 cards in view:
+Options compared as prototypes (2px lines), with 2 cards in view:
 
 | Option                                           | Extra WebGL contexts | Shape JS ms/s | GPU ms/s added |
 | ------------------------------------------------ | -------------------- | ------------- | -------------- |
@@ -127,18 +127,18 @@ Tried and dropped, with 2 cards in view:
 
 The overlay also had to redraw at the display rate to follow scrolling, and its square scissor let lines poke past the rounded corners.
 
-**Load.** Local, production build, median of 3, `main` → branch in one Chrome session. "PSI-like CPU" uses `--throttling.cpuSlowdownMultiplier=1.8`.
+**Load.** Local, production build, median of 3, `main` → branch in one Chrome session. "PSI-like CPU" uses `--throttling.cpuSlowdownMultiplier=1.8`. Measured with 2px lines; after the change to 1px lines and rounder corners, one run of each setup scored the same (PSI-like CPU 99, desktop 100).
 
 | Page | Mobile  | Mobile, PSI-like CPU | Desktop   | Mobile FCP    | Mobile LCP    | Mobile CLS    |
 | ---- | ------- | -------------------- | --------- | ------------- | ------------- | ------------- |
 | /en  | 95 → 96 | 98 → 99              | 100 → 100 | 1.07 → 1.15 s | 2.41 → 2.42 s | 0.002 → 0.002 |
 | /es  | 92 → 91 | 99 → 98              | 100 → 100 | 1.07 → 1.07 s | 2.42 → 2.41 s | 0 → 0         |
 
-- The machine was busier than in earlier sections (benchmark index about 2,000, not 3,300), so 4x CPU scores sit a few points lower on both sides. TBT at 4x was 147 to 379 ms on both. At PSI-like CPU it was 7 to 54 ms.
+- The machine was busier than in this branch's first baseline (benchmark index about 2,000, not 3,300), so 4x CPU scores sit a few points lower on both sides. TBT at 4x was 147 to 379 ms on both. At PSI-like CPU it was 7 to 54 ms.
 - The LCP element did not change. Home HTML stayed at 27.8 KB gzipped.
 - JS before any input: 9 scripts, 156.3 → 156.7 KB. The shapes chunk (3.8 KB) never appeared in a Lighthouse run's network log, since Lighthouse never scrolls.
 
-**Runtime.** 1280×900, particles running, two traces per side.
+**Runtime.** 1280×900, particles running, two traces per side, with 2px lines.
 
 | Case                   | Main thread ms/s | GPU ms/s          | Shape draws/s |
 | ---------------------- | ---------------- | ----------------- | ------------- |

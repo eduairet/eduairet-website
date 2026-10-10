@@ -4,7 +4,7 @@ const MIN_PER_FAMILY = 2;
 const FAMILY_COUNT = new Set(Object.values(SOLIDS).map((s) => s.family)).size;
 const MAX_TRIES = 50;
 
-// Page order: no repeats, torus in, no same-family neighbors, 2+ per family.
+// No repeats, the torus always in, no same-family neighbors, each family twice.
 export function pickShapes(count: number, random = Math.random): SolidName[] {
   const names = Object.keys(SOLIDS) as SolidName[];
   const familyOf = (name: SolidName) => SOLIDS[name].family;
@@ -52,6 +52,6 @@ export function pickShapes(count: number, random = Math.random): SolidName[] {
     )
       break;
   }
-  // Only past one card per solid does a slot stay empty; repeat then.
+  // A slot stays empty only with more cards than solids; reuse a shape then.
   return picks.map((name, i) => name ?? names[i % names.length]);
 }
