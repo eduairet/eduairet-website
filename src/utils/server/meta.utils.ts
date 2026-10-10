@@ -2,13 +2,13 @@ import type { Metadata, Viewport } from 'next';
 import type { Lang } from '@/models';
 import { getDictionary, toLang } from '@/app/[locale]/dictionaries';
 import {
-  Colors,
   OG_IMAGE_SIZE,
   OpenGraphLocales,
   PagePaths,
   RESOURCES_PUBLISHED,
   SITE_NAME,
   SITE_URL,
+  THEME_COLORS,
   X_HANDLE,
   type SitePage,
 } from '@/utils/constants';
@@ -88,8 +88,6 @@ export const siteMetadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: Colors.white },
-    { media: '(prefers-color-scheme: dark)', color: Colors.black },
-  ],
+  // Dark is the default theme; the theme script switches it before paint.
+  themeColor: THEME_COLORS.dark,
 };

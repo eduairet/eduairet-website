@@ -1,9 +1,13 @@
 'use client';
 
 import { useEffect, useSyncExternalStore } from 'react';
-import { THEME_STORAGE_KEY, resolveTheme } from '@/utils/constants';
-
-export type Theme = 'dark' | 'light';
+import {
+  THEME_COLORS,
+  THEME_STORAGE_KEY,
+  type Theme,
+  applyThemeToPage,
+  resolveTheme,
+} from '@/utils/constants';
 
 const listeners = new Set<() => void>();
 
@@ -28,7 +32,7 @@ export const readTheme = (): Theme =>
 
 function applyTheme(theme: Theme) {
   localStorage.setItem(THEME_STORAGE_KEY, theme);
-  document.body.setAttribute('data-theme', theme);
+  applyThemeToPage(theme, THEME_COLORS);
   emit();
 }
 
@@ -41,7 +45,7 @@ export default function useDarkMode() {
 
   useEffect(() => {
     const resolved = getTheme();
-    document.body.setAttribute('data-theme', resolved);
+    applyThemeToPage(resolved, THEME_COLORS);
     if (!localStorage.getItem(THEME_STORAGE_KEY))
       localStorage.setItem(THEME_STORAGE_KEY, resolved);
   }, [theme]);

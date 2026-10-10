@@ -6,7 +6,7 @@ import { Dictionary, EnContent } from '@/models';
 import ThemeButton from '@/components/ui/Buttons/ThemeButton/ThemeButton';
 import HomeSubtitle from '@/app/[locale]/components/HomeSubtitle/HomeSubtitle';
 import Spinner from '@/components/ui/Spinner/Spinner';
-import { THEME_INIT_SCRIPT } from '@/utils/constants';
+import { THEME_COLORS, THEME_INIT_SCRIPT } from '@/utils/constants';
 
 const en = new Dictionary(EnContent);
 
@@ -17,10 +17,20 @@ vi.mock('next/navigation', () => ({
 afterEach(() => {
   cleanup();
   localStorage.clear();
+  document.head.innerHTML = '';
 });
+
+// The tag Next renders from the viewport's themeColor.
+const addThemeColorTag = () => {
+  document.head.innerHTML = `<meta name="theme-color" content="${THEME_COLORS.dark}">`;
+};
+
+const themeColor = () =>
+  document.querySelector('meta[name="theme-color"]')?.getAttribute('content');
 
 describe('Theme toggle', () => {
   test('its name says what it will do and updates after toggling', () => {
+    addThemeColorTag();
     localStorage.setItem('theme', 'dark');
     render(
       <LanguageProvider locale='en' content={en}>
@@ -36,6 +46,7 @@ describe('Theme toggle', () => {
       screen.getByRole('button', { name: 'Switch to dark theme' })
     ).toBeTruthy();
     expect(document.body.getAttribute('data-theme')).toBe('light');
+    expect(themeColor()).toBe(THEME_COLORS.light);
   });
 });
 
@@ -50,8 +61,10 @@ describe('Theme before first paint', () => {
   };
 
   test('uses the saved theme', () => {
+    addThemeColorTag();
     localStorage.setItem('theme', 'light');
     expect(runScript(false)).toBe('light');
+    expect(themeColor()).toBe(THEME_COLORS.light);
   });
 
   test('falls back to the OS preference', () => {
