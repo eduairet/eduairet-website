@@ -88,6 +88,37 @@ describe('Nav menus (disclosure pattern)', () => {
     expect(document.activeElement).toBe(button);
   });
 
+  test('a tap or click on a link moves focus back without the focus ring', () => {
+    renderMenus();
+    const button = screen.getByRole('button', { name: 'Language' });
+    fireEvent.click(button);
+    const focus = vi.spyOn(button, 'focus');
+
+    fireEvent.click(screen.getByRole('link', { name: 'Español' }), {
+      detail: 1,
+    });
+
+    expect(focus).toHaveBeenCalledWith({ focusVisible: false });
+  });
+
+  test('Enter on a link or Escape moves focus back with the focus ring', () => {
+    renderMenus();
+    const button = screen.getByRole('button', { name: 'Menu' });
+    const focus = vi.spyOn(button, 'focus');
+
+    fireEvent.click(button);
+    fireEvent.click(screen.getByRole('link', { name: 'Contact' }), {
+      detail: 0,
+    });
+    expect(focus).toHaveBeenLastCalledWith({ focusVisible: true });
+
+    fireEvent.click(button);
+    const link = screen.getByRole('link', { name: 'Contact' });
+    link.focus();
+    fireEvent.keyDown(link, { key: 'Escape' });
+    expect(focus).toHaveBeenLastCalledWith({ focusVisible: true });
+  });
+
   test('language links name their language in that language', () => {
     renderMenus();
     const english = screen.getByRole('link', { name: 'English' });
