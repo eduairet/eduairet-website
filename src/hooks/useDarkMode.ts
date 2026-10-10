@@ -36,6 +36,8 @@ function applyTheme(theme: Theme) {
   localStorage.setItem(THEME_STORAGE_KEY, theme);
   document.body.setAttribute('data-theme', theme);
   emit();
+  // iOS Safari picks its bar colors only when the page loads.
+  location.reload();
 }
 
 export default function useDarkMode() {
