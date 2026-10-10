@@ -61,13 +61,24 @@ describe('card solids', () => {
     expect(front(0.3)).toBeGreaterThan(front(0));
   });
 
-  test('the torus draws its front and hides its back', () => {
-    // 12 rings of 65 samples and 24 tube circles of 33.
+  test('the torus draws its front and hides what the tube covers', () => {
+    // Every sample of the 12 by 24 grid, counted from a see-through trace.
     const all = 12 * 65 + 24 * 33;
-    for (const m of poses) {
-      const drawn = lines(SOLIDS.torus, m).flat().length;
-      expect(drawn).toBeGreaterThan(all * 0.25);
-      expect(drawn).toBeLessThan(all * 0.7);
-    }
+    const share = (x: number) =>
+      lines(SOLIDS.torus, poseMatrix(x, 0, 0)).flat().length / all;
+    // The x tilts that put the torus's axis square to the view, and along it.
+    const tilts = Array.from({ length: 629 }, (_, k) => (k - 314) / 100);
+    const axisToViewer = (x: number) => Math.abs(poseMatrix(x, 0, 0)[7]);
+    const edgeOn = tilts.reduce((a, b) =>
+      axisToViewer(b) < axisToViewer(a) ? b : a
+    );
+    const topDown = tilts.reduce((a, b) =>
+      axisToViewer(b) > axisToViewer(a) ? b : a
+    );
+
+    // From above, the tube hides nothing: the half facing the viewer shows.
+    expect(share(topDown)).toBeCloseTo(0.5, 1);
+    // Edge-on, the near tube also covers the far side of the hole.
+    expect(share(edgeOn)).toBeLessThan(0.4);
   });
 });

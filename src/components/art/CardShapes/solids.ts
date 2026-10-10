@@ -67,10 +67,10 @@ const traceLoops = (m: Matrix, loops: Vec[][], pen: Pen) => {
 };
 
 // eslint-disable-next-line no-unused-vars
-const loop = (point: (angle: number) => Vec) =>
-  Array.from({ length: RING_STEPS + 1 }, (_, k) =>
-    point((k / RING_STEPS) * TAU)
-  );
+const loop = <T = Vec>(point: (angle: number) => T, steps = RING_STEPS) =>
+  Array.from({ length: steps + 1 }, (_, k) => point((k / steps) * TAU));
+
+const dot = (a: Vec, b: Vec) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 
 function fitToUnit(points: Vec[]) {
   const count = points.length;
@@ -234,6 +234,13 @@ function sphere(latitudes: number, meridians: number) {
   };
 }
 
+// Samples per ring around the hole, and per small circle around the tube.
+const TORUS_RING_STEPS = 64;
+const TORUS_TUBE_STEPS = 32;
+// The march toward the viewer: first step, step count, smallest step, and
+// how far inside the tube counts as a hit.
+const MARCH = { start: 0.03, steps: 12, minStep: 0.05, hit: -1e-3 };
+
 // A grid of rings around the hole and around the tube, with its back hidden.
 function torus(parallels: number, meridians: number, ring = 0.68, tube = 0.32) {
   const scale = 1 / (ring + tube);
@@ -252,27 +259,27 @@ function torus(parallels: number, meridians: number, ring = 0.68, tube = 0.32) {
     // Only points near the hole can sit behind another part of the tube.
     nearHole: Math.cos(v) < 0.2,
   });
-  const circle = (
-    steps: number,
-    // eslint-disable-next-line no-unused-vars
-    at: (angle: number) => ReturnType<typeof sample>
-  ) => Array.from({ length: steps + 1 }, (_, k) => at((k / steps) * TAU));
   const loops = [
     ...Array.from({ length: parallels }, (_, i) =>
-      circle(64, (u) => sample(u, (i / parallels) * TAU))
+      loop((u) => sample(u, (i / parallels) * TAU), TORUS_RING_STEPS)
     ),
     ...Array.from({ length: meridians }, (_, j) =>
-      circle(32, (v) => sample((j / meridians) * TAU, v))
+      loop((v) => sample((j / meridians) * TAU, v), TORUS_TUBE_STEPS)
     ),
   ];
-  const distance = ([x, y, z]: Vec) => Math.hypot(Math.hypot(x, z) - R, y) - r;
-  // A few steps toward the viewer: inside the tube means hidden.
-  const blocked = ([x, y, z]: Vec, [dx, dy, dz]: Vec) => {
-    let t = 0.03;
-    for (let i = 0; i < 12 && t < 2.2; i++) {
-      const d = distance([x + dx * t, y + dy * t, z + dz * t]);
-      if (d < -1e-3) return true;
-      t += Math.max(Math.abs(d), 0.05);
+  // Past this distance the ray has left the unit-sized torus.
+  const reach = 2 * (R + r) + MARCH.start;
+  // Inside the tube on the way to the viewer means hidden.
+  const blocked = ([x, y, z]: Vec, [vx, vy, vz]: Vec) => {
+    let t = MARCH.start;
+    for (let i = 0; i < MARCH.steps && t < reach; i++) {
+      const px = x + vx * t;
+      const py = y + vy * t;
+      const pz = z + vz * t;
+      const fromRing = Math.sqrt(px * px + pz * pz) - R;
+      const d = Math.sqrt(fromRing * fromRing + py * py) - r;
+      if (d < MARCH.hit) return true;
+      t += Math.max(Math.abs(d), MARCH.minStep);
     }
     return false;
   };
@@ -281,12 +288,11 @@ function torus(parallels: number, meridians: number, ring = 0.68, tube = 0.32) {
     trace(m: Matrix, pen: Pen) {
       // The viewer's direction in the torus's own space.
       const view: Vec = [m[6], m[7], m[8]];
-      for (const loop of loops) {
+      for (const samples of loops) {
         let drawing = false;
-        for (const { point, normal, nearHole } of loop) {
+        for (const { point, normal, nearHole } of samples) {
           const shown =
-            view[0] * normal[0] + view[1] * normal[1] + view[2] * normal[2] >
-              0 && !(nearHole && blocked(point, view));
+            dot(view, normal) > 0 && !(nearHole && blocked(point, view));
           if (shown) step(m, point, pen, !drawing);
           drawing = shown;
         }
