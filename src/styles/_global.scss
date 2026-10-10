@@ -75,7 +75,7 @@ body {
   // 100%, not 100vw: vw includes the scrollbar and would scroll sideways.
   width: 100%;
   overflow-x: clip;
-  // Lets the particle background (z-index -1) sit above the body background.
+  // Lets the particle background ($z-background) sit above the body background.
   isolation: isolate;
   display: flex;
   flex-direction: column;
@@ -172,7 +172,7 @@ a {
 
 .skip-link {
   position: fixed;
-  z-index: 3;
+  z-index: $z-skip-link;
   top: 1rem;
   left: 1rem;
   padding: 0.5rem 1rem;

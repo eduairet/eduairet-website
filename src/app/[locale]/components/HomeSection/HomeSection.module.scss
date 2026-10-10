@@ -17,7 +17,7 @@
   position: sticky;
   top: $header-height;
   // Below the header, so the open nav menus stay on top of it.
-  z-index: 1;
+  z-index: $z-sticky;
   align-self: center;
   padding: 0 2rem;
   margin: 1rem 0 1.5rem;
@@ -29,7 +29,7 @@
   // Docks in the header, level with the nav pill.
   @media (width >= $breakpoint-md) {
     top: calc((#{$header-height} - #{$pill-height}) / 2);
-    z-index: 2;
+    z-index: $z-docked;
   }
 
   @media (height <= $breakpoint-short-height) {

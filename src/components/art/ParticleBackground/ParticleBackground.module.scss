@@ -1,8 +1,10 @@
+@use '@/styles/abstracts/index' as *;
+
 .background {
   position: fixed;
   inset: 0;
   // Needs `isolation: isolate` on body to stay above the page background.
-  z-index: -1;
+  z-index: $z-background;
   pointer-events: none;
   overflow: hidden;
   // Keeps text legible (see wcag-audit.md, F-23).
