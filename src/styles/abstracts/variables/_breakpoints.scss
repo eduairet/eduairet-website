@@ -6,5 +6,5 @@ $breakpoint-xl: 1200px;
 // Below this viewport height the fixed header and footer stop being fixed,
 // so zoomed or landscape screens keep room for content.
 $breakpoint-short-height: 500px;
-// Below this height, a phone's hero text fills the space above the footer.
+// Hides the hero scroll cue on short phones without scroll timelines.
 $breakpoint-short-phone-height: 700px;

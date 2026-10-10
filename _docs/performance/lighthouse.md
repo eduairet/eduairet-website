@@ -71,7 +71,30 @@ GPU setup below, median of 3, `main` → branch, both measured in one Chrome ses
 
 - The LCP element did not change: the hero summary, or the subtitle on /es mobile.
 - The home HTML grew from 23 to 40 KB gzipped, mostly from the added tool icons. Each icon's SVG path is sent twice: in the HTML and in the data React uses to start the page.
-- Mobile LCP was 0.35 s slower in this session, but only 0.05 s slower in an earlier one, and the run ranges overlap. Not resolved. Serving the icons from one cached sprite file would remove most of the added bytes.
+- PageSpeed Insights after the branch went live (mobile, three runs each): /en scored 87, 100 and 100 (LCP 3.1, 1.5 and 1.1 s), with Best Practices 96 in all three because `use.typekit.net` requests timed out. /es scored 89, 89 and 90 (FCP 2.6 to 2.7 s, LCP 3.2 s), with Best Practices 100. Desktop scored 100 in every category. The slow mobile runs were the ones where Adobe Fonts loaded; the next section explains why.
+
+## Branch `perf/page-weight-fonts` (2026-10-09)
+
+**Why the first paint waited for Adobe Fonts on PSI.** Lighthouse estimates mobile timing from a fast, unthrottled load. Any request at top priority that finished before that load's first paint counts as render-blocking, and font files are always top priority. When the kit answered quickly, its CSS, `p.css`, and the font were replayed at mobile speed before the first paint: FCP 2.3 s locally, 2.6 s on PSI. When the kit timed out, they were skipped, and FCP was under 1 s. The preload and the preconnects were not the cause: without them, FCP stayed at 2.30 and 2.32 s. A real throttled browser painted at 1.9 s, before the font arrived at 3.3 s.
+
+| Change                                                                                    | Effect                                                                                                                                                                |
+| ----------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Adobe Fonts stylesheet added after the first contentful paint, with no preload            | Local mobile FCP 1.57 → 1.07 s. On a slow phone the fallback font shows about 0.9 s longer (one throttled trace).                                                     |
+| Each card icon is its own `.tsx` component, sent to the cards as a key                    | /en HTML 41.1 → 27.8 KB and /es 41.9 → 28.9 KB gzipped. Before, each path was in the HTML and again in the hydration data. Home JS grew about 10 KB gzipped (cached). |
+| About photo `srcset`: 160, 256 and 400 px                                                 | PSI's phone gets the 5.0 KiB file instead of 12.8 KiB; 1x desktop gets 2.6 KiB.                                                                                       |
+| Nav links and the logo prefetch their page on hover, focus or touch, not when they render | No background prefetches at load. Before, the other page's CSS was preloaded and Chrome warned on every load that it went unused.                                     |
+
+Local, production build, median of 3, `main` → branch in one Chrome session, measured before the card outline and the prefetch change. "PSI-like CPU" uses `--throttling.cpuSlowdownMultiplier=1.8` on this machine (benchmark index about 1,800); see below.
+
+| Page | Mobile  | Mobile, PSI-like CPU | Desktop   | Mobile FCP    | Mobile LCP    | Mobile CLS |
+| ---- | ------- | -------------------- | --------- | ------------- | ------------- | ---------- |
+| /en  | 98 → 94 | 99 → 99              | 100 → 100 | 1.59 → 1.15 s | 1.92 → 1.89 s | 0 → 0      |
+| /es  | 97 → 94 | 97 → 99              | 100 → 100 | 1.57 → 1.21 s | 1.92 → 1.88 s | 0 → 0.002  |
+
+- At the default 4x CPU, Total Blocking Time rose from about 100 ms to 220 to 270 ms. The page does the same work, but the earlier paint moves the first layout task into the TBT window. At PSI-like CPU, TBT stayed at 12 to 16 ms. At 4x it varies a lot between runs (54 to 418 ms on one build).
+- That first layout task is mostly the fallback fonts. A `local()` face plus a different `font-variation-settings` on many elements (19 weights in the home title alone) cost about 280 ms of layout at 4x CPU in a Chrome trace: 686 → 405 ms with the settings held back. Holding them until Degular loads would change nothing with Arial or Helvetica, but on a device whose fallback font has a weight axis, the waiting text would change weight. Not shipped; it needs real-device testing first.
+- The LCP element did not change: the hero summary, or the subtitle on /es.
+- If Adobe Fonts fails fast (`ERR_TIMED_OUT`), Chrome logs the error, and Best Practices drops on PSI. Page code can't prevent that. DevTools URL blocking logs nothing, so test this with a failed request instead (CDP `Fetch.failRequest`).
 
 ## How to re-measure
 
@@ -82,4 +105,4 @@ Locally, on a production build in the container (`docker compose run --rm fronte
 - **GPU:** start Chrome with `--remote-debugging-port=9222` and a scratch `--user-data-dir`, then run `lighthouse http://localhost:3000/en --port=9222` from the container (devDependency, same version as PSI). Chrome only accepts `Host: localhost`, so forward 127.0.0.1:9222 inside the container to `host.docker.internal:9222`.
 - **Software WebGL (close to PSI):** a throwaway image on top of the project image with `apk add chromium mesa-egl mesa-gles mesa-dri-gallium font-liberation font-roboto`, run with `--cpus=1`, and Lighthouse's `--chrome-flags="--headless=new --no-sandbox --use-gl=angle --use-angle=gl-egl --ignore-gpu-blocklist"`. Serve the site to it as `localhost`, or the HTTPS audits fail.
 
-PSI throttles mobile CPU by 1.2x on a machine that benchmarks about 1,200; local runs use Lighthouse's default 4x, so local mobile scores in the software setup are harsher than PSI.
+PSI throttles mobile CPU by 1.2x on a machine that benchmarks about 1,200; local runs use Lighthouse's default 4x, so local mobile scores in the software setup are harsher than PSI. To get close to PSI on a fast machine, pass `--throttling.cpuSlowdownMultiplier` equal to the run's `benchmarkIndex` divided by 1,000.

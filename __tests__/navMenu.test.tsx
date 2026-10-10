@@ -5,10 +5,15 @@ import NavMainMenu from '@/components/ui/Nav/NavMainMenu';
 import NavLangMenu from '@/components/ui/Nav/NavLangMenu';
 import { Dictionary, EnContent, EsContent, type Lang } from '@/models';
 
-const nav = vi.hoisted(() => ({ locale: 'en', pathname: '/en' }));
+const nav = vi.hoisted(() => ({
+  locale: 'en',
+  pathname: '/en',
+  prefetch: vi.fn(),
+}));
 
 vi.mock('next/navigation', () => ({
   usePathname: () => nav.pathname,
+  useRouter: () => ({ prefetch: nav.prefetch }),
 }));
 
 const renderMenus = () =>
@@ -27,6 +32,7 @@ const renderMenus = () =>
 
 afterEach(() => {
   cleanup();
+  nav.prefetch.mockClear();
   nav.locale = 'en';
   nav.pathname = '/en';
 });
@@ -90,6 +96,19 @@ describe('Nav menus (disclosure pattern)', () => {
     expect(english.getAttribute('lang')).toBe('en');
     expect(spanish.getAttribute('lang')).toBe('es');
     expect(english.getAttribute('aria-current')).toBe('page');
+  });
+
+  test('nav links prefetch their page when pointed at or focused', () => {
+    renderMenus();
+    const contact = screen.getByRole('link', { name: 'Contact' });
+    const spanish = screen.getByRole('link', { name: 'Español' });
+    fireEvent.mouseEnter(contact);
+    fireEvent.focus(spanish);
+
+    expect(nav.prefetch.mock.calls).toEqual([
+      [contact.getAttribute('href')],
+      [spanish.getAttribute('href')],
+    ]);
   });
 
   test('Spanish pages expose Spanish names', () => {

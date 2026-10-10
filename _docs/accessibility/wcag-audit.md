@@ -25,6 +25,14 @@
 - No page scrolls sideways at any tested size, 320 to 1920 wide (1.4.10). Before, desktop pages scrolled sideways by the scrollbar's width, and some phone layouts were wider than the screen.
 - Evidence: axe 4.11.0 found 0 violations in 48 runs (4 pages, both themes, menus closed and open, 1280 and 375 wide). A Tab walk forward and back on /en, /es and /en/contact at 4 sizes found no focus stop entirely hidden (772 stops). With reduced motion, nothing new moves.
 
+**Update (2026-10-09, branch `perf/page-weight-fonts`): no criterion changes.**
+
+- Tools with no usable logo are text pills in the same tech stack list as the icons, in the same text color as before. All 44 icons keep their names in the accessibility tree.
+- Cards have a 2px outline, like the section titles.
+- The hero scroll arrow shows only while it fits fully above the fixed footer. It never touched the footer or the hero text at 34 sizes in both languages, also with a 50% longer summary: 320×568, 360×640, 360×740, 360×800, 375×667, 375×812, 390×844, 393×852, 412×915, 414×896, 430×932, 375×600, 360×560, 320×480, 375×520, 390×560, 412×600, 360×680, 375×700, 414×720, 568×320, 667×375, 740×360, 812×375, 844×390, 915×412, 932×430, 768×1024, 1024×768, 1280×800, 1280×900, 1366×768, 1440×900, 1920×1080. Browsers without scroll timelines keep the old 700px rule.
+- The open menus stay above the sticky titles at 375, 768 and 1280 wide.
+- Evidence: axe 4.11.0 found 0 violations in 16 runs (4 pages, both themes, menus closed and open), again on the final build.
+
 Severity counts as found on 2026-10-05:
 
 | Severity     | Count  |
@@ -471,7 +479,7 @@ AAA items and best practices (not required for AA):
 - **Done 2026-10-06, 3.2.5 Change on Request (AAA) / G201:** 14 card links and 4 social links open a new tab without warning. Add "(opens in a new tab)" / "(se abre en otra pestaña)" as visually hidden text.
 - **404 pages without JavaScript:** the server sends an empty document (no `lang`, no heading) and React builds the 404 page in the browser. The status (404) and `noindex` are correct. Next.js does this for `notFound()` when the root layout sits under `[locale]`; its experimental `global-not-found.js` is the documented way out.
 - **Content is hidden without JavaScript:** the server HTML ships every page's content at `opacity: 0` (`template.tsx`), so if JS is slow or fails, the page stays blank.
-- **Done 2026-10-09, short screens:** at 320×256 the scroll chevron (absolutely positioned at the bottom of the hero) overlapped two words of the summary. It now sits in the flow under the text, and on phones too short to fit it above the footer it is hidden.
+- **Done 2026-10-09, short screens:** at 320×256 the scroll chevron (absolutely positioned at the bottom of the hero) overlapped two words of the summary. It now sits in the flow under the text, and it shows only while it fits above the footer.
 - **Done 2026-10-09, mobile overlap:** at 375px the sticky section titles ("Experience") slid over the logo button in the header. Below 768px they now pass under the header.
 - **Done 2026-10-06, Third party, reCAPTCHA badge:** it is hidden with `visibility: hidden` in `_normalize.scss`, which is fine for accessibility (it leaves the accessibility tree). Google's terms ask for the notice text ("This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.") to be shown when the badge is hidden. Add it under the form, in both languages.
 - **Third party, Typekit:** Degular loads and passed the text-spacing test. Nothing to fix.

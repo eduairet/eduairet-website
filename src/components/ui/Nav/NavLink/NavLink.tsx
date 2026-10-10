@@ -2,9 +2,9 @@
 
 import { memo, useContext } from 'react';
 import { usePathname } from 'next/navigation';
-import Link from 'next/link';
 import styles from './NavLink.module.scss';
 import { LanguageContext } from '@/store/LanguageProvider';
+import IntentLink from '@/components/ui/IntentLink/IntentLink';
 
 interface IProps {
   href: string;
@@ -22,13 +22,14 @@ function NavLink({ href, text, lang, isLangLink = false }: IProps) {
     return pathname == href;
   };
 
+  // The same page in the other language: swap the /{locale} prefix.
   const hrefState = isLangLink
-    ? `${href}${pathname.replace(locale, '').replace(/\/{2,}/g, '/')}`
+    ? `${href}${pathname.slice(locale.length + 1)}`
     : href;
 
   return (
     <li className={styles['nav-link']}>
-      <Link
+      <IntentLink
         className={isActive() ? styles.active : ''}
         href={hrefState}
         lang={lang}
@@ -36,7 +37,7 @@ function NavLink({ href, text, lang, isLangLink = false }: IProps) {
         aria-current={isActive() ? 'page' : undefined}
       >
         {text}
-      </Link>
+      </IntentLink>
     </li>
   );
 }

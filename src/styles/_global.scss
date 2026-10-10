@@ -20,6 +20,7 @@
   --foreground-50: #{get-color($white, 0.5)};
   --accent-text: #{$accent};
   --valid: #{$valid};
+  @include footer-clearance(--footer-clearance);
 }
 
 // The page scrollbar and the page background read their colors from <html>.
@@ -35,6 +36,9 @@
 }
 
 html {
+  font-family: $degular-stack;
+  font-feature-settings: 'onum';
+  @include degular($wght: 400, $opsz: 16);
   scroll-behavior: smooth;
   // Keep focused elements clear of the fixed header, the sticky section
   // titles and the fixed footer (WCAG 2.4.11, technique C43).
@@ -51,10 +55,7 @@ html {
   }
 
   * {
-    font-family: $degular-stack;
     text-align: center;
-    font-feature-settings: 'onum';
-    @include degular($wght: 400, $opsz: 16);
   }
 }
 
@@ -75,7 +76,7 @@ body {
   // 100%, not 100vw: vw includes the scrollbar and would scroll sideways.
   width: 100%;
   overflow-x: clip;
-  // Lets the particle background (z-index -1) sit above the body background.
+  // Lets the particle background ($z-background) sit above the body background.
   isolation: isolate;
   display: flex;
   flex-direction: column;
@@ -98,7 +99,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-feature-settings: off;
+  font-feature-settings: normal;
   @include degular($wght: 700, $opsz: 36);
 }
 
@@ -134,7 +135,6 @@ a {
   position: relative;
   color: currentColor;
   text-decoration: none;
-  @include degular($wght: 400, $opsz: 16);
 
   &::before {
     content: '';
@@ -173,7 +173,7 @@ a {
 
 .skip-link {
   position: fixed;
-  z-index: 3;
+  z-index: $z-skip-link;
   top: 1rem;
   left: 1rem;
   padding: 0.5rem 1rem;
@@ -196,6 +196,16 @@ button {
   &:focus-visible {
     @include accessibility-outline;
   }
+}
+
+// Browsers give form controls their own font instead of inheriting it.
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
 }
 
 ::-webkit-scrollbar {

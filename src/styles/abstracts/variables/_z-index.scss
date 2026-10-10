@@ -1,0 +1,8 @@
+// Page layers, back to front. Each value is unique, so page order never decides.
+$z-background: -1;
+$z-backdrop: 1;
+$z-sticky: 2;
+$z-header: 3;
+$z-docked: 4;
+$z-footer: 5;
+$z-skip-link: 6;

@@ -7,6 +7,11 @@ export const PERSON_HANDLE = 'eduairet';
 export const X_HANDLE = `@${PERSON_HANDLE}`;
 
 export const PROFILE_PHOTO = '/eduardo-aire-torres.webp';
+export const PROFILE_PHOTO_SRCSET = [
+  '/eduardo-aire-torres-160.webp 160w',
+  '/eduardo-aire-torres-256.webp 256w',
+  `${PROFILE_PHOTO} 400w`,
+].join(', ');
 
 export const OG_IMAGE_SIZE = { width: 1200, height: 630 };
 

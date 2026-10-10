@@ -1,41 +1,31 @@
-import * as simpleIcons from 'simple-icons';
+import type { ComponentType } from 'react';
+import * as icons from './icons';
 
-interface SimpleIcon {
-  title: string;
-  path: string;
-}
-
-export interface TechIconData {
-  title: string;
-  path: string;
-}
-
-// Stack keys to display names and simple-icons exports. A tool without an
-// icon shows by name: its owner doesn't allow logo use without permission.
-// Exports are strings, so a renamed icon falls back to its name too.
-const TOOLS: Record<string, { name: string; icon?: string }> = {
-  dotnet: { name: '.NET', icon: 'siDotnet' },
-  nextjs: { name: 'Next.js', icon: 'siNextdotjs' },
-  typescript: { name: 'TypeScript', icon: 'siTypescript' },
-  javascript: { name: 'JavaScript', icon: 'siJavascript' },
-  react: { name: 'React', icon: 'siReact' },
-  docker: { name: 'Docker', icon: 'siDocker' },
-  node: { name: 'Node.js', icon: 'siNodedotjs' },
-  python: { name: 'Python', icon: 'siPython' },
-  angular: { name: 'Angular', icon: 'siAngular' },
-  sass: { name: 'Sass', icon: 'siSass' },
-  tailwind: { name: 'Tailwind CSS', icon: 'siTailwindcss' },
-  ethereum: { name: 'Ethereum', icon: 'siEthereum' },
-  html: { name: 'HTML5', icon: 'siHtml5' },
-  css: { name: 'CSS', icon: 'siCss' },
-  p5: { name: 'p5.js', icon: 'siP5dotjs' },
-  mysql: { name: 'MySQL', icon: 'siMysql' },
-  wordpress: { name: 'WordPress', icon: 'siWordpress' },
-  sentry: { name: 'Sentry', icon: 'siSentry' },
-  claudecode: { name: 'Claude Code', icon: 'siClaudecode' },
-  netlify: { name: 'Netlify', icon: 'siNetlify' },
-  vercel: { name: 'Vercel', icon: 'siVercel' },
-  graphql: { name: 'GraphQL', icon: 'siGraphql' },
+// Stack keys to display names and icons. A tool without an icon shows as
+// text: its owner forbids logo use or publishes no terms for it.
+export const TOOLS: Record<string, { name: string; Icon?: ComponentType }> = {
+  dotnet: { name: '.NET', Icon: icons.DotNetIcon },
+  nextjs: { name: 'Next.js', Icon: icons.NextjsIcon },
+  typescript: { name: 'TypeScript', Icon: icons.TypeScriptIcon },
+  javascript: { name: 'JavaScript', Icon: icons.JavaScriptIcon },
+  react: { name: 'React', Icon: icons.ReactIcon },
+  docker: { name: 'Docker', Icon: icons.DockerIcon },
+  python: { name: 'Python', Icon: icons.PythonIcon },
+  angular: { name: 'Angular', Icon: icons.AngularIcon },
+  sass: { name: 'Sass', Icon: icons.SassIcon },
+  tailwind: { name: 'Tailwind CSS', Icon: icons.TailwindCssIcon },
+  ethereum: { name: 'Ethereum', Icon: icons.EthereumIcon },
+  html: { name: 'HTML5', Icon: icons.Html5Icon },
+  css: { name: 'CSS', Icon: icons.CssIcon },
+  p5: { name: 'p5.js', Icon: icons.P5jsIcon },
+  php: { name: 'PHP', Icon: icons.PhpIcon },
+  mysql: { name: 'MySQL', Icon: icons.MySqlIcon },
+  wordpress: { name: 'WordPress', Icon: icons.WordPressIcon },
+  sentry: { name: 'Sentry', Icon: icons.SentryIcon },
+  claudecode: { name: 'Claude Code', Icon: icons.ClaudeCodeIcon },
+  netlify: { name: 'Netlify', Icon: icons.NetlifyIcon },
+  vercel: { name: 'Vercel', Icon: icons.VercelIcon },
+  graphql: { name: 'GraphQL', Icon: icons.GraphQlIcon },
   glyphs: { name: 'Glyphs' },
   robofont: { name: 'RoboFont' },
   drawbot: { name: 'DrawBot' },
@@ -49,20 +39,14 @@ const TOOLS: Record<string, { name: string; icon?: string }> = {
   thegraph: { name: 'The Graph' },
 };
 
-const simpleIconSet = simpleIcons as unknown as Record<
-  string,
-  SimpleIcon | undefined
->;
-
-// Resolve on the server so `simple-icons` never reaches the client bundle.
+// Icons go to the cards as keys, so their paths ship in the JS, not the page.
 export function resolveStack(stack: string[]) {
-  const icons: TechIconData[] = [];
+  const icons: string[] = [];
   const tools: string[] = [];
   for (const key of stack) {
     const tool = TOOLS[key];
     if (!tool) continue;
-    const icon = simpleIconSet[tool.icon ?? ''];
-    if (icon) icons.push({ title: icon.title, path: icon.path });
+    if (tool.Icon) icons.push(key);
     else tools.push(tool.name);
   }
   return { icons, tools };

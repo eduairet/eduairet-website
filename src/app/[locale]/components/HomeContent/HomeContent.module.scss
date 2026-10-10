@@ -20,10 +20,29 @@
   > a {
     align-self: center;
 
-    // No room for the scroll cue above the fixed footer.
-    @media (width < $breakpoint-md) and ($breakpoint-short-height < height < $breakpoint-short-phone-height) {
-      display: none;
+    // The scroll cue shows only while it fits fully above the fixed footer.
+    @supports (animation-timeline: view()) {
+      animation: cue-fits linear both;
+      animation-timeline: view(block auto var(--footer-clearance));
+      animation-range: entry 0% entry 100%;
+
+      @media (height <= $breakpoint-short-height) {
+        animation: none;
+      }
     }
+
+    @supports not (animation-timeline: view()) {
+      @media (width < $breakpoint-md) and ($breakpoint-short-height < height < $breakpoint-short-phone-height) {
+        display: none;
+      }
+    }
+  }
+}
+
+@keyframes cue-fits {
+  0%,
+  99.9% {
+    visibility: hidden;
   }
 }
 
