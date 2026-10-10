@@ -149,6 +149,8 @@ The overlay also had to redraw at the display rate to follow scrolling, and its 
 
 Before the last cleanup (fewer allocations, paths traced from points computed once), scrolling cost 95 to 150 GPU ms/s over `main` on a busier machine; now it costs 40 to 55.
 
+The torus is now a 12 by 24 grid that hides its back. While its card is in view it costs 6.5 to 9.6 ms/s of main thread (0.1 to 0.3 ms per draw, two runs), against 1 to 6 ms/s for the other shapes. The runs were noisy, so treat these as a range.
+
 The page holds one live WebGL context before and after, including after three locale switches. With reduced motion, or when WebGL runs in software or is missing, each shape is drawn once as its card scrolls into view and never animates.
 
 ## After deploy (PageSpeed Insights, production, 2026-10-10)

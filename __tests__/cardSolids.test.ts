@@ -30,14 +30,18 @@ describe('card solids', () => {
   });
 
   test('every solid stays inside the unit circle at any pose', () => {
-    for (const solid of Object.values(SOLIDS))
+    // One check per solid; an expect per point is slow when the suite is busy.
+    for (const [name, solid] of Object.entries(SOLIDS)) {
+      let farthest = 0;
       for (const m of poses)
         for (const line of lines(solid, m))
           for (const [x, y] of line)
-            expect(Math.hypot(x, y)).toBeLessThanOrEqual(1 + 1e-9);
+            farthest = Math.max(farthest, Math.hypot(x, y));
+      expect(farthest, name).toBeLessThanOrEqual(1 + 1e-9);
+    }
   });
 
-  test('every edge is drawn, front or back', () => {
+  test('every edge is drawn, front or back, except on the torus', () => {
     const m = poseMatrix(0.2, 0.7, 0.1);
     expect(lines(SOLIDS.cube, m)).toHaveLength(12);
     expect(lines(SOLIDS.hexagonalPrism, m)).toHaveLength(18);
@@ -46,7 +50,6 @@ describe('card solids', () => {
     expect(lines(SOLIDS.cylinder, m)).toHaveLength(4);
     // Outline plus 7 latitudes and 8 meridian circles.
     expect(lines(SOLIDS.sphere, m)).toHaveLength(16);
-    expect(lines(SOLIDS.torus, m)).toHaveLength(4);
   });
 
   test('a positive y angle turns the front to the right', () => {
@@ -56,5 +59,26 @@ describe('card solids', () => {
       return m[0] * 0 + m[1] * 0 + m[2] * 1;
     };
     expect(front(0.3)).toBeGreaterThan(front(0));
+  });
+
+  test('the torus draws its front and hides what the tube covers', () => {
+    // Every sample of the 12 by 24 grid; each circle repeats its first point.
+    const all = 12 * 65 + 24 * 33;
+    const share = (x: number) =>
+      lines(SOLIDS.torus, poseMatrix(x, 0, 0)).flat().length / all;
+    // The x tilts that put the torus's axis square to the view, and along it.
+    const tilts = Array.from({ length: 629 }, (_, k) => (k - 314) / 100);
+    const axisToViewer = (x: number) => Math.abs(poseMatrix(x, 0, 0)[7]);
+    const edgeOn = tilts.reduce((a, b) =>
+      axisToViewer(b) < axisToViewer(a) ? b : a
+    );
+    const topDown = tilts.reduce((a, b) =>
+      axisToViewer(b) > axisToViewer(a) ? b : a
+    );
+
+    // From above, the tube hides nothing: the half facing the viewer shows.
+    expect(share(topDown)).toBeCloseTo(0.5, 1);
+    // Edge-on, the near tube also covers the far side of the hole.
+    expect(share(edgeOn)).toBeLessThan(0.4);
   });
 });

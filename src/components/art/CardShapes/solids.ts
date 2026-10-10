@@ -67,10 +67,10 @@ const traceLoops = (m: Matrix, loops: Vec[][], pen: Pen) => {
 };
 
 // eslint-disable-next-line no-unused-vars
-const loop = (point: (angle: number) => Vec) =>
-  Array.from({ length: RING_STEPS + 1 }, (_, k) =>
-    point((k / RING_STEPS) * TAU)
-  );
+const loop = <T = Vec>(point: (angle: number) => T, steps = RING_STEPS) =>
+  Array.from({ length: steps + 1 }, (_, k) => point((k / steps) * TAU));
+
+const dot = (a: Vec, b: Vec) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
 
 function fitToUnit(points: Vec[]) {
   const count = points.length;
@@ -234,20 +234,69 @@ function sphere(latitudes: number, meridians: number) {
   };
 }
 
-// Outer, inner, top and bottom circles.
-function torus(ring = 0.68, tube = 0.32) {
+// Samples per ring around the hole, and per small circle around the tube.
+const TORUS_RING_STEPS = 64;
+const TORUS_TUBE_STEPS = 32;
+// The short march toward the viewer for points near the hole.
+const MARCH = { start: 0.03, steps: 12, minStep: 0.05, hit: -1e-3 };
+
+// A grid of rings around the hole and around the tube, with its back hidden.
+function torus(parallels: number, meridians: number, ring = 0.68, tube = 0.32) {
   const scale = 1 / (ring + tube);
   const [R, r] = [ring * scale, tube * scale];
-  const loops = [0, Math.PI, Math.PI / 2, -Math.PI / 2].map((v) =>
-    loop((u): Vec => [
+  const sample = (u: number, v: number) => ({
+    point: [
       (R + r * Math.cos(v)) * Math.cos(u),
       r * Math.sin(v),
       (R + r * Math.cos(v)) * Math.sin(u),
-    ])
-  );
+    ] as Vec,
+    normal: [
+      Math.cos(v) * Math.cos(u),
+      Math.sin(v),
+      Math.cos(v) * Math.sin(u),
+    ] as Vec,
+    // Only points near the hole can sit behind another part of the tube.
+    nearHole: Math.cos(v) < 0.2,
+  });
+  const loops = [
+    ...Array.from({ length: parallels }, (_, i) =>
+      loop((u) => sample(u, (i / parallels) * TAU), TORUS_RING_STEPS)
+    ),
+    ...Array.from({ length: meridians }, (_, j) =>
+      loop((v) => sample((j / meridians) * TAU, v), TORUS_TUBE_STEPS)
+    ),
+  ];
+  // Past this distance the ray has left the unit-sized torus.
+  const reach = 2 * (R + r) + MARCH.start;
+  // Inside the tube on the way to the viewer means hidden.
+  const blocked = ([x, y, z]: Vec, [vx, vy, vz]: Vec) => {
+    let t = MARCH.start;
+    for (let i = 0; i < MARCH.steps && t < reach; i++) {
+      const px = x + vx * t;
+      const py = y + vy * t;
+      const pz = z + vz * t;
+      const fromRing = Math.sqrt(px * px + pz * pz) - R;
+      const d = Math.sqrt(fromRing * fromRing + py * py) - r;
+      if (d < MARCH.hit) return true;
+      t += Math.max(Math.abs(d), MARCH.minStep);
+    }
+    return false;
+  };
   return {
     family: 'round' as const,
-    trace: (m: Matrix, pen: Pen) => traceLoops(m, loops, pen),
+    trace(m: Matrix, pen: Pen) {
+      // The viewer's direction in the torus's own space.
+      const view: Vec = [m[6], m[7], m[8]];
+      for (const samples of loops) {
+        let drawing = false;
+        for (const { point, normal, nearHole } of samples) {
+          const shown =
+            dot(view, normal) > 0 && !(nearHole && blocked(point, view));
+          if (shown) step(m, point, pen, !drawing);
+          drawing = shown;
+        }
+      }
+    },
   };
 }
 
@@ -263,7 +312,7 @@ export const SOLIDS = {
   pentagonalPyramid: pyramid(5, 0.9, 1.2),
   octahedron: octahedron(),
   sphere: sphere(7, 8),
-  torus: torus(),
+  torus: torus(12, 24),
   cylinder: revolution([
     { y: -0.8, r: 0.6 },
     { y: 0.8, r: 0.6 },
