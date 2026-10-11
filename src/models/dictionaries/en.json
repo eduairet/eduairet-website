@@ -44,7 +44,6 @@
       "ariaLabel": "Language"
     },
     "themeButton": {
-      "title": "Theme",
       "toLight": "Switch to light theme",
       "toDark": "Switch to dark theme"
     }

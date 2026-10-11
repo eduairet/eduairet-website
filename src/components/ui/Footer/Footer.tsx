@@ -50,7 +50,7 @@ export default async function Footer({ lang }: IProps) {
       </section>
       <section className={styles.section}>
         <p>Eduardo Aire Torres {new Date().getFullYear()}</p>
-        <p className={styles.actions}>
+        <p className={`${styles.actions} ${styles.theme}`}>
           <span>{content.footer.theme.text}</span>
           <ThemeButton />
         </p>

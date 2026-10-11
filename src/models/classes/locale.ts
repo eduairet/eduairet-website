@@ -6,7 +6,6 @@ interface Button {
 }
 
 interface ThemeButton {
-  title: string;
   toLight: string;
   toDark: string;
 }
@@ -161,7 +160,6 @@ export class Dictionary {
         ariaLabel: data.buttons?.langsButton?.ariaLabel || '',
       },
       themeButton: {
-        title: data.buttons?.themeButton?.title || '',
         toLight: data.buttons?.themeButton?.toLight || '',
         toDark: data.buttons?.themeButton?.toDark || '',
       },

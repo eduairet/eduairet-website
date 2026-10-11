@@ -16,22 +16,23 @@ $stack-item-size: 34px;
 
 .title {
   @extend %pill;
+  // Docks in the header, level with the nav pill.
   position: sticky;
-  top: $header-height;
-  // Below the header, so the open nav menus stay on top of it.
-  z-index: $z-sticky;
-  align-self: center;
-  padding: 0 2rem;
-  margin: 1rem 0 1.5rem;
+  top: calc((#{$header-height} - #{$pill-height}) / 2);
+  z-index: $z-docked;
+  // Lines up with the header's side padding, left of the nav pill.
+  align-self: flex-start;
+  padding: 0 1.25rem;
+  margin: 1rem 0 1.5rem 0.5rem;
   color: var(--foreground);
   font-size: 1.5rem;
   line-height: 1;
   @include degular($wght: 700, $opsz: 60);
 
-  // Docks in the header, level with the nav pill.
   @media (width >= $breakpoint-md) {
-    top: calc((#{$header-height} - #{$pill-height}) / 2);
-    z-index: $z-docked;
+    align-self: center;
+    padding: 0 2rem;
+    margin-left: 0;
   }
 
   @media (height <= $breakpoint-short-height) {

@@ -12,9 +12,15 @@ import IntentLink from '@/components/ui/IntentLink/IntentLink';
 
 interface IProps {
   locale: Lang;
+  compact?: boolean;
+  className?: string;
 }
 
-export default function EatHomeButton({ locale }: IProps) {
+export default function EatHomeButton({
+  locale,
+  compact = false,
+  className,
+}: IProps) {
   const pathname = usePathname();
   const { content } = useContext(LanguageContext);
 
@@ -26,7 +32,12 @@ export default function EatHomeButton({ locale }: IProps) {
 
   return (
     <IntentLink
-      className={[styles['eat-home'], isActive && styles.active]
+      className={[
+        styles['eat-home'],
+        isActive && styles.active,
+        compact && styles.compact,
+        className,
+      ]
         .filter(Boolean)
         .join(' ')}
       href={PageUrls.home_(locale)}

@@ -25,6 +25,22 @@
       position: absolute;
       width: 100%;
     }
+
+    @media (width < $breakpoint-md) {
+      justify-content: flex-end;
+    }
+
+    // Above the titles and footer while the phone menu is open or fading out.
+    transition: z-index 0s linear $default-time;
+
+    &:has([aria-modal='true']) {
+      z-index: $z-menu;
+      transition-delay: 0s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   @extend %pill;
@@ -36,9 +52,38 @@
   justify-content: space-between;
   gap: 1rem;
 
+  @media (width < $breakpoint-md) {
+    width: auto;
+    max-width: none;
+    padding-left: 0.75rem;
+    // Centers the logo in the pill's round end.
+    padding-right: calc((#{$pill-height} - #{$logo-size-compact}) / 2 - 2px);
+    gap: 0.75rem;
+  }
+
   li {
     list-style-type: none;
     margin: 0;
     padding: 0;
+  }
+}
+
+// The open phone menu covers the logo; its button stays on top.
+.main-menu {
+  @media (width < $breakpoint-md) {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.phone-only {
+  @media (width >= $breakpoint-md) {
+    display: none;
+  }
+}
+
+.wide-only {
+  @media (width < $breakpoint-md) {
+    display: none;
   }
 }

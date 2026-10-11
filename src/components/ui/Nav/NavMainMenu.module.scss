@@ -1,0 +1,30 @@
+@use '@/styles/abstracts/index' as *;
+
+// Wider screens have the globe menu and the footer's theme toggle instead.
+.languages {
+  margin-top: 1rem;
+
+  ul {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  a {
+    font-size: 1.25rem;
+  }
+
+  @media (width >= $breakpoint-md) {
+    display: none;
+  }
+}
+
+.theme {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+
+  @media (width >= $breakpoint-md) {
+    display: none;
+  }
+}

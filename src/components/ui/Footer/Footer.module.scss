@@ -6,13 +6,13 @@
   bottom: 0;
   left: 0;
   width: 100vw;
-  padding: 1.5rem 0;
+  padding: $footer-padding-y 0;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 1rem;
+  gap: $footer-gap;
   background: linear-gradient(
     180deg,
     var(--background-00) 0%,
@@ -21,13 +21,13 @@
   );
 
   @media (width >= $breakpoint-sm) {
-    gap: 1.5rem;
+    gap: $footer-gap-sm;
   }
 
   @media (width >= $breakpoint-md) {
     flex-direction: row;
     justify-content: space-between;
-    padding: 1rem 1.5rem;
+    padding: $footer-padding-y-md 1.5rem;
   }
 
   // In the page flow here, so 100vw would add the scrollbar's width.
@@ -40,15 +40,24 @@
     @extend %pill;
     padding: 0 1.5rem;
 
-    @media (width < $breakpoint-sm) {
+    @media (width < $breakpoint-md) {
       height: auto;
       flex-direction: column;
       background: none;
       border: none;
+
+      p {
+        line-height: $footer-line-height;
+      }
+
+      // On phones the theme toggle lives in the menu.
+      .theme {
+        display: none;
+      }
     }
 
     p:first-child {
-      @media (width >= $breakpoint-sm) {
+      @media (width >= $breakpoint-md) {
         padding-right: 0.75rem;
         border-right: 2px solid var(--foreground);
       }
@@ -78,5 +87,5 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  min-height: 35px;
+  min-height: $footer-row-height;
 }

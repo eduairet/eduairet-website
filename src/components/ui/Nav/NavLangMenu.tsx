@@ -1,19 +1,20 @@
 'use client';
 
 import { useContext } from 'react';
-import { LanguageContext } from '@/store/LanguageProvider';
 import { BackdropContext } from '@/store/BackdropProvider';
 import { BackdropType } from '@/models';
-import { PageUrls } from '@/utils/constants';
 import useNavMenu from '@/hooks/useNavMenu';
 import GlobeButton from '@/components/ui/Buttons/GlobeButton';
-import NavLink from './NavLink/NavLink';
+import NavLangLinks from './NavLangLinks';
 import NavDropdown from './NavDropdown/NavDropdown';
 
 const MENU_ID = 'nav-lang-menu';
 
-export default function NavLangMenu() {
-  const { content } = useContext(LanguageContext);
+interface IProps {
+  className?: string;
+}
+
+export default function NavLangMenu({ className }: IProps) {
   const {
     backdropState: { navLangBackdrop },
     setBackdrop,
@@ -28,25 +29,14 @@ export default function NavLangMenu() {
   };
 
   return (
-    <div {...wrapperProps}>
+    <div {...wrapperProps} className={className}>
       <GlobeButton
         isActive={navLangBackdrop}
         controls={MENU_ID}
         onClick={toggleLanguages}
       />
       <NavDropdown id={MENU_ID} isOpen={navLangBackdrop} onClick={onLinkClick}>
-        <NavLink
-          href={PageUrls.locale.en}
-          text={content.nav.langs.en}
-          lang='en'
-          isLangLink
-        />
-        <NavLink
-          href={PageUrls.locale.es}
-          text={content.nav.langs.es}
-          lang='es'
-          isLangLink
-        />
+        <NavLangLinks />
       </NavDropdown>
     </div>
   );
