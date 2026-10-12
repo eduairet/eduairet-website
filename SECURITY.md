@@ -26,8 +26,8 @@ deployed version is supported; fixes are applied to `main`.
 - **No install scripts:** the empty `onlyBuiltDependencies` allowlist stops
   any dependency from running `postinstall` or build scripts.
 - **Frozen lockfile:** CI and Docker install only the reviewed tree.
-- **Pinned tooling:** GitHub Actions are pinned to commit SHAs, and pnpm to
-  the `packageManager` version.
+- **Pinned tooling:** GitHub Actions are pinned to commit SHAs, pnpm to
+  the `packageManager` version, and the Vercel CLI to an exact version.
 - **Auditing:** CI fails on any _critical_ advisory in production
   dependencies and reports the rest.
 - **Automated updates:** Dependabot proposes dependency, Action, and Docker
