@@ -15,7 +15,7 @@
   flex-direction: column;
   gap: 2rem;
   // Keeps the scroll cue above the fixed footer.
-  @include footer-clearance(padding-bottom);
+  padding-bottom: var(--footer-clearance);
 
   > a {
     align-self: center;
