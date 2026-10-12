@@ -3,20 +3,8 @@ $border-radius: 5px;
 $card-radius: 24px;
 $header-height: 120px;
 $pill-height: 50px;
-$footer-padding-y: 1.5rem;
 $footer-row-height: 35px;
 $footer-line-height: 1.25rem;
-$footer-gap: 1rem;
-$footer-gap-sm: 1.5rem;
-// Phones stack the social links over the name line.
-$footer-stack: calc(
-  2 * #{$footer-padding-y} + #{$footer-row-height} + #{$footer-line-height}
-);
-$footer-height: calc(#{$footer-stack} + #{$footer-gap});
-$footer-height-sm: calc(#{$footer-stack} + #{$footer-gap-sm});
-// Wider screens put both on one row, as tall as the name pill.
-$footer-padding-y-md: 1rem;
-$footer-height-md: calc(2 * #{$footer-padding-y-md} + #{$pill-height});
 $icon-button-size: 30px;
 $logo-size-compact: 36px;
 $h2-margin-bottom: clamp(0.5rem, 1.5vw, 0.75rem);
