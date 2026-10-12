@@ -10,6 +10,10 @@
 @mixin footer-clearance($property) {
   #{$property}: calc(#{$footer-height} + 1rem);
 
+  @media (width >= $breakpoint-sm) {
+    #{$property}: calc(#{$footer-height-sm} + 1rem);
+  }
+
   @media (width >= $breakpoint-md) {
     #{$property}: calc(#{$footer-height-md} + 1rem);
   }

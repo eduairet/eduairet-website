@@ -178,6 +178,21 @@ Same setup, after PR #42 (the torus as a grid with its back hidden) went live. B
 - CLS was 0.002 or less in all 12 reports. LCP again moved 0.2 s each way, within the run-to-run range (1.2 to 2.0 s).
 - Best Practices was 100 in 10 of 12 reports. In the other two (/en mobile, then /en desktop), Adobe Fonts timed out on PSI's side (`p.typekit.net`, then `use.typekit.net`, `net::ERR_TIMED_OUT`), Chrome logged it, and Best Practices dropped to 96. Page code can't prevent this (see "Branch `perf/page-weight-fonts`").
 
+## Branch `feat/mobile-menu` (2026-10-11)
+
+The phone menu, the logo in the nav pill and the docked phone titles come from CSS, so each width paints its layout first. The server HTML has a second logo, the menu's language links and its theme toggle; CSS hides one copy at each width.
+
+Local, production build, mobile with PSI-like CPU, median of 3, `main` → branch in one Chrome session.
+
+| Page        | Mobile (runs)                           | Mobile LCP    | Mobile CLS    | A11y, BP, SEO |
+| ----------- | --------------------------------------- | ------------- | ------------- | ------------- |
+| /en         | 99 (98, 99, 100) → 98 (99, 98, 98)      | 1.82 → 2.34 s | 0.002 → 0.002 | 100           |
+| /en/contact | 100 (100, 100, 99) → 100 (99, 100, 100) | 1.67 → 1.68 s | 0.001 → 0.001 | 100           |
+
+- LCP on /en swings between about 1.8 and 2.4 s on both sides (main 1.82 to 2.40 s, branch 1.83 to 2.34 s), so the median moved with the runs, not the change. The LCP element did not change: the hero summary, and the reCAPTCHA notice on contact.
+- TBT was 0 to 3 ms in all 12 runs.
+- After the last cleanup, one more run each on the final build scored 99 (/en) and 100 (contact), with the same CLS and LCP elements.
+
 ## How to re-measure
 
 PageSpeed Insights is the reference: run https://pagespeed.web.dev on each page three times and compare medians.

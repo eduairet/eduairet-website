@@ -37,6 +37,14 @@
 
 - Evidence: axe 4.11.0 found 0 violations in 16 runs (4 pages, both themes, 1280 and 375 wide, every card's shape drawn). The 12 canvases are `aria-hidden`, not focusable, take no pointer events, and are missing from the accessibility tree.
 
+**Update (2026-10-11, branch `feat/mobile-menu`): no criterion changes.**
+
+- Below 768px the menu fills the screen and holds Home, Contact, both languages and the theme toggle. It is a modal dialog: focus moves in and wraps, the page behind is inert, scroll is locked, and Escape, a chosen link or the menu button close it and return focus to the button. Open menus close when the window crosses 768px. See F-05.
+- On phones the globe button and the footer's theme toggle are gone; the logo sits in the nav pill next to the menu button. Each control is in the accessibility tree once at every width.
+- On phones section titles dock in the top left corner of the header, so fixed bars cover 239px of a 375×667 screen instead of 334px.
+- From 768px up the menus, logo, titles and footer look the same as on `main`. The footer clearance now matches the real 82px footer instead of 88px, so pages end 6px sooner.
+- Evidence: axe 4.11.0 found 0 violations in 40 runs (4 pages, both themes, menus closed and open, 375 and 1280 wide). Tab walks forward and back on /en, /es and /en/contact at 375×667, 320×568 and 1280×900 found no focus stop hidden (555 stops). No page scrolls sideways at 320×450 or 320×256, menu open or closed.
+
 Severity counts as found on 2026-10-05:
 
 | Severity     | Count  |
@@ -164,6 +172,7 @@ Severity counts as found on 2026-10-05:
 - Who is affected: keyboard users lose track of focus four times on every page. Screen reader users don't know a menu opened or closed.
 - Fix: follow the APG Disclosure pattern. Add `aria-expanded` and `aria-controls` on each toggle button. Hide the closed list with `visibility: hidden` (transitioned together with opacity/transform, so the animation stays) so it leaves the tab order and the accessibility tree. Close on `Escape` and return focus to the button. Close when focus moves outside the menu.
 - Status: Fixed. Closed lists use `visibility: hidden`, which flips after the closing animation, so the animation is kept. The toggles have `aria-expanded` and `aria-controls`. The new `useNavMenu` hook closes the menu on Escape (focus returns to the toggle), when focus leaves the menu, and after a link is chosen (focus returns to the toggle). Evidence: the Tab walk on /en has 24 stops and none is hidden; closed-menu links are gone from the accessibility tree; Escape leaves `aria-expanded="false"` with focus on the toggle; 6 tests in `navMenu.test.tsx`.
+- Update (2026-10-11): below 768px the main menu follows the [APG modal dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/) instead. The dialog holds the menu button, so it can close itself; focus moves to the first link and Tab wraps. Tests in `navMenu.test.tsx`.
 
 ### F-06 On small screens, keyboard focus goes behind the fixed footer
 
@@ -173,7 +182,7 @@ Severity counts as found on 2026-10-05:
 - Evidence: at 375×700, tabbing forward to "See my experience", "InterplanetaryFonts", "Women Build Web3", "Alchemy University", and "Cooper Union" scrolls each link to the bottom edge, 100% under the footer (footer covers y 551–700). Screenshot `m-focus-fwd-women`: no part of the link or its focus ring is visible. At 1280×900 the same links sit under the transparent top of the footer gradient and stay visible, so desktop passes. Going backwards, links scroll under the header gradient, which is see-through enough to pass.
 - Who is affected: keyboard users on phones, tablets, and zoomed desktops cannot see where focus is.
 - Fix: add `scroll-padding-top` (header height, 120px) and `scroll-padding-bottom` (footer height: 152px below 768px, 88px above) on `html`. This is technique C43 in the 2.4.11 Understanding doc. No visual change.
-- Status: Fixed. `html` has `scroll-padding-top` (header, plus the sticky section title below 768px) and `scroll-padding-bottom` (footer height). Evidence: the obscured-focus script, forwards and backwards at 1280×900, 375×700, 320×568 and 320×256, found 0 focused elements covered.
+- Status: Fixed. `html` has `scroll-padding-top` (header; the section titles dock inside it) and `scroll-padding-bottom` (footer height). Since 2026-10-11 the footer heights are computed from the footer's own spacing tokens in `_sizes.scss`, so they can't drift. Evidence: the obscured-focus script, forwards and backwards at 1280×900, 375×700, 320×568 and 320×256, found 0 focused elements covered.
 
 ### F-07 Form errors are not tied to their fields, and the disabled Submit button hides why the form can't be sent
 
@@ -315,7 +324,7 @@ Severity counts as found on 2026-10-05:
 
 - Criterion: 4.1.2 Name, Role, Value (A)
 - Severity: Moderate
-- Where: `src/components/ui/Buttons/ThemeButton/ThemeButton.tsx:19-34`, `src/components/ui/Footer/Footer.tsx:53-59`; every page
+- Where: `src/components/ui/Buttons/ThemeButton/ThemeButton.tsx:19-34`, `src/components/ui/Footer/Footer.tsx:53-59` (below 768px the toggle is in the menu, `NavMainMenu.tsx`); every page
 - Evidence:
   - The button is named "Toggle Theme Button" / "Botón para cambiar de tema", with no `aria-pressed` and no change of name, so screen reader users can't tell which theme is on.
   - `<p aria-label="Theme Section">` triggers axe `aria-prohibited-attr` on all 8 pages. ARIA 1.2 doesn't allow naming a paragraph, so screen readers ignore the label.
@@ -433,7 +442,7 @@ Severity counts as found on 2026-10-05:
 | 2.5.3 Label in Name                             | A     | Pass   | Text controls' names match visible text. Icon-only controls have no visible label (N/A per Understanding doc)           |
 | 2.5.4 Motion Actuation                          | A     | N/A    | No motion input                                                                                                         |
 | 2.5.7 Dragging Movements                        | AA    | N/A    | No dragging                                                                                                             |
-| 2.5.8 Target Size (Minimum)                     | AA    | Pass   | Icon buttons 30×30, theme button 24×24. 16px-tall menu links pass the 24px spacing test. Card links are inline (exempt) |
+| 2.5.8 Target Size (Minimum)                     | AA    | Pass   | Icon buttons 30×30, footer theme 24×24, phone logo 36×36. Menu links pass a 24px spacing test. Inline card links exempt |
 | 3.1.1 Language of Page                          | A     | Pass   | `<html lang="en">` / `lang="es"`; unknown locales redirect                                                              |
 | 3.1.2 Language of Parts                         | AA    | Pass   | F-16 fixed                                                                                                              |
 | 3.2.1 On Focus                                  | A     | Pass   | No context change on focus                                                                                              |
@@ -489,7 +498,7 @@ AAA items and best practices (not required for AA):
 - **404 pages without JavaScript:** the server sends an empty document (no `lang`, no heading) and React builds the 404 page in the browser. The status (404) and `noindex` are correct. Next.js does this for `notFound()` when the root layout sits under `[locale]`; its experimental `global-not-found.js` is the documented way out.
 - **Content is hidden without JavaScript:** the server HTML ships every page's content at `opacity: 0` (`template.tsx`), so if JS is slow or fails, the page stays blank.
 - **Done 2026-10-09, short screens:** at 320×256 the scroll chevron (absolutely positioned at the bottom of the hero) overlapped two words of the summary. It now sits in the flow under the text, and it shows only while it fits above the footer.
-- **Done 2026-10-09, mobile overlap:** at 375px the sticky section titles ("Experience") slid over the logo button in the header. Below 768px they now pass under the header.
+- **Done 2026-10-09, mobile overlap:** at 375px the sticky section titles ("Experience") slid over the logo button in the header. Below 768px they now pass under the header. Since 2026-10-11 the logo is in the nav pill and the titles dock top left instead.
 - **Done 2026-10-06, Third party, reCAPTCHA badge:** it is hidden with `visibility: hidden` in `_normalize.scss`, which is fine for accessibility (it leaves the accessibility tree). Google's terms ask for the notice text ("This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.") to be shown when the badge is hidden. Add it under the form, in both languages.
 - **Third party, Typekit:** Degular loads and passed the text-spacing test. Nothing to fix.
 

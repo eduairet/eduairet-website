@@ -41,4 +41,14 @@ $border: 2px;
   &.active {
     cursor: default;
   }
+
+  &.compact {
+    width: $logo-size-compact;
+    height: $logo-size-compact;
+
+    & svg {
+      width: $logo-size-compact - $border * 2;
+      height: $logo-size-compact - $border * 2;
+    }
+  }
 }

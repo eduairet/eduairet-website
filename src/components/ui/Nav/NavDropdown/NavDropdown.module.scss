@@ -41,6 +41,47 @@
     }
   }
 
+  // Phones: fills the screen, under the menu button.
+  &.full-screen {
+    @media (width < $breakpoint-md) {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      width: auto;
+      padding: $header-height 1.5rem 2.5rem;
+      border: none;
+      border-radius: 0;
+      justify-content: flex-start;
+      gap: 1.5rem;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      // Keeps focused items below the menu button while it scrolls.
+      scroll-padding-top: $header-height;
+      transform: none;
+      transition:
+        opacity $default-time ease-in-out,
+        visibility 0s linear $default-time;
+
+      // Centered when it fits, scrolls from the top when it doesn't.
+      > :first-child {
+        margin-top: auto;
+      }
+
+      > :last-child {
+        margin-bottom: auto;
+      }
+
+      > li > a {
+        font-size: 2rem;
+        @include degular($wght: 700, $opsz: 36);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
+    }
+  }
+
   &.opened {
     transform: scaleY(1);
     opacity: 1;
