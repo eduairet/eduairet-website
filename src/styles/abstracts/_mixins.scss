@@ -78,3 +78,24 @@
     'opsz' $optical,
     'ital' $italic;
 }
+
+// The footer puts its two sections on one row.
+@mixin footer-row {
+  @media (width >= $breakpoint-md) {
+    @content;
+  }
+}
+
+// The footer stacks its sections; the inverse of footer-row.
+@mixin footer-stacked {
+  @media (width < $breakpoint-md) {
+    @content;
+  }
+}
+
+// The footer sits in the page flow instead of fixed to the bottom.
+@mixin footer-static {
+  @media (height <= $breakpoint-short-height) {
+    @content;
+  }
+}

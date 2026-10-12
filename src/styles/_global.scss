@@ -36,13 +36,13 @@
     --footer-gap: 1.5rem;
   }
 
-  // Wider screens put both on one row, as tall as the name pill.
-  @media (width >= $breakpoint-md) {
+  // On one row the footer is as tall as the name pill.
+  @include footer-row {
     --footer-padding-y: 1rem;
     --footer-content: #{$pill-height};
   }
 
-  @media (height <= $breakpoint-short-height) {
+  @include footer-static {
     --footer-clearance: 1rem;
   }
 }
