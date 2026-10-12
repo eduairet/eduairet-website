@@ -56,6 +56,11 @@ describe('Theme toggle', () => {
     expect(themeColor()).toBe(THEME_COLORS.light);
   });
 
+  const saveTheme = (theme: 'dark' | 'light') => {
+    addThemeColorTag();
+    localStorage.setItem('theme', theme);
+  };
+
   const renderTwoButtons = () =>
     render(
       <LanguageProvider locale='en' content={en}>
@@ -78,8 +83,7 @@ describe('Theme toggle', () => {
   };
 
   test('two buttons update together and write the page once per toggle', () => {
-    addThemeColorTag();
-    localStorage.setItem('theme', 'dark');
+    saveTheme('dark');
     renderTwoButtons();
 
     const writes = countThemeWrites();
@@ -92,8 +96,7 @@ describe('Theme toggle', () => {
   });
 
   test('mounting restores the saved theme on the page once', () => {
-    addThemeColorTag();
-    localStorage.setItem('theme', 'light');
+    saveTheme('light');
     document.body.removeAttribute('data-theme');
 
     const writes = countThemeWrites();
@@ -104,8 +107,7 @@ describe('Theme toggle', () => {
   });
 
   test('follows a theme saved in another tab', () => {
-    addThemeColorTag();
-    localStorage.setItem('theme', 'dark');
+    saveTheme('dark');
     renderTwoButtons();
     const fireStorage = (key: string) =>
       act(() => {
