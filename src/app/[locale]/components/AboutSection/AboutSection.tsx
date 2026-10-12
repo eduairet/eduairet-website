@@ -2,6 +2,7 @@ import sectionStyles from '../HomeSection/HomeSection.module.scss';
 import styles from './AboutSection.module.scss';
 import { Dictionary } from '@/models';
 import {
+  Breakpoints,
   PROFILE_PHOTO,
   PROFILE_PHOTO_SRCSET,
   SITE_NAME,
@@ -9,7 +10,7 @@ import {
 
 const PHOTO_SIZE = 160;
 // Matches the photo's CSS size, which drops to 128px below $breakpoint-md.
-const PHOTO_SIZES = '(min-width: 768px) 160px, 128px';
+const PHOTO_SIZES = `(min-width: ${Breakpoints.md}px) 160px, 128px`;
 
 interface IProps {
   id: string;

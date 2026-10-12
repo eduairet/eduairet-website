@@ -1,5 +1,11 @@
 import { afterEach, describe, expect, test, vi } from 'vitest';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {
+  act,
+  cleanup,
+  fireEvent,
+  render,
+  screen,
+} from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
 import { Dictionary, EnContent } from '@/models';
 
@@ -16,6 +22,7 @@ vi.mock('next/navigation', () => ({
 
 afterEach(() => {
   cleanup();
+  vi.restoreAllMocks();
   localStorage.clear();
   document.head.innerHTML = '';
 });
@@ -47,6 +54,75 @@ describe('Theme toggle', () => {
     ).toBeTruthy();
     expect(document.body.getAttribute('data-theme')).toBe('light');
     expect(themeColor()).toBe(THEME_COLORS.light);
+  });
+
+  const saveTheme = (theme: 'dark' | 'light') => {
+    addThemeColorTag();
+    localStorage.setItem('theme', theme);
+  };
+
+  const renderTwoButtons = () =>
+    render(
+      <LanguageProvider locale='en' content={en}>
+        <ThemeButton />
+        <ThemeButton />
+      </LanguageProvider>
+    );
+
+  const countThemeWrites = () => {
+    const spy = vi.spyOn(document.body, 'setAttribute');
+    return () => spy.mock.calls.filter(([n]) => n === 'data-theme').length;
+  };
+
+  const expectLightOnBothButtons = () => {
+    expect(document.body.getAttribute('data-theme')).toBe('light');
+    expect(themeColor()).toBe(THEME_COLORS.light);
+    expect(
+      screen.getAllByRole('button', { name: 'Switch to dark theme' })
+    ).toHaveLength(2);
+  };
+
+  test('two buttons update together and write the page once per toggle', () => {
+    saveTheme('dark');
+    renderTwoButtons();
+
+    const writes = countThemeWrites();
+    fireEvent.click(
+      screen.getAllByRole('button', { name: 'Switch to light theme' })[0]
+    );
+
+    expect(writes()).toBe(1);
+    expectLightOnBothButtons();
+  });
+
+  test('mounting restores the saved theme on the page once', () => {
+    saveTheme('light');
+    document.body.removeAttribute('data-theme');
+
+    const writes = countThemeWrites();
+    renderTwoButtons();
+
+    expect(writes()).toBe(1);
+    expectLightOnBothButtons();
+  });
+
+  test('follows a theme saved in another tab', () => {
+    saveTheme('dark');
+    renderTwoButtons();
+    const fireStorage = (key: string) =>
+      act(() => {
+        window.dispatchEvent(new StorageEvent('storage', { key }));
+      });
+
+    const writes = countThemeWrites();
+    fireStorage('other');
+    expect(writes()).toBe(0);
+
+    localStorage.setItem('theme', 'light');
+    fireStorage('theme');
+
+    expect(writes()).toBe(1);
+    expectLightOnBothButtons();
   });
 });
 

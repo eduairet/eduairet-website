@@ -12,5 +12,5 @@
   padding-left: 1rem;
   padding-right: 1rem;
   gap: 2rem;
-  @include footer-clearance(padding-bottom);
+  padding-bottom: var(--footer-clearance);
 }
