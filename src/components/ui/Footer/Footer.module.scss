@@ -20,14 +20,14 @@
     var(--background) 100%
   );
 
-  @media (width >= $breakpoint-md) {
+  @include footer-row {
     flex-direction: row;
     justify-content: space-between;
     padding-inline: 1.5rem;
   }
 
   // In the page flow here, so 100vw would add the scrollbar's width.
-  @media (height <= $breakpoint-short-height) {
+  @include footer-static {
     position: static;
     width: 100%;
   }
@@ -36,7 +36,7 @@
     @extend %pill;
     padding: 0 1.5rem;
 
-    @media (width < $breakpoint-md) {
+    @include footer-stacked {
       height: auto;
       flex-direction: column;
       background: none;
@@ -53,7 +53,7 @@
     }
 
     p:first-child {
-      @media (width >= $breakpoint-md) {
+      @include footer-row {
         padding-right: 0.75rem;
         border-right: 2px solid var(--foreground);
       }
