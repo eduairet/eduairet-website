@@ -193,6 +193,21 @@ Local, production build, mobile with PSI-like CPU, median of 3, `main` → branc
 - TBT was 0 to 3 ms in all 12 runs.
 - After the last cleanup, one more run each on the final build scored 99 (/en) and 100 (contact), with the same CLS and LCP elements.
 
+## After deploy (PageSpeed Insights, production, 2026-10-11, mobile menu)
+
+Same setup, after PR #47 (the full-screen phone menu) went live. Baselines: the torus section above for the home pages, and the 2026-10-10 section after PR #37 for contact.
+
+| Page        | Mobile (before → now)     | Mobile FCP | Mobile LCP  | Mobile TBT         | Desktop   | A11y, BP, SEO |
+| ----------- | ------------------------- | ---------- | ----------- | ------------------ | --------- | ------------- |
+| /en         | 100 → 98 (98, 98, 100)    | 0.9 s      | 1.4 → 1.8 s | 20 ms (20, 20, 20) | 100 → 100 | 100           |
+| /es         | 100 → 100 (100, 100, 99)  | 0.9 s      | 1.2 → 1.4 s | 10 ms (0, 10, 20)  | 100 → 100 | 100           |
+| /en/contact | 100 → 100 (100, 100, 100) | 0.9 s      | 0.9 → 1.2 s | 0 ms (10, 0, 0)    | 100 → 100 | 100           |
+| /es/contact | 100 → 100 (100, 100, 100) | 0.9 s      | 1.1 → 1.1 s | 10 ms (10, 40, 0)  | 100 → 100 | 100           |
+
+- /en mobile LCP was 1.8 to 1.9 s in all three runs, inside this page's earlier run-to-run range (1.2 to 2.0 s). Local runs before the merge showed the same swing on `main` and the branch, so this reads as noise, not the change.
+- CLS was 0.001 or 0.002 in all 24 reports, as before.
+- Best Practices was 100 in all 24 reports; Adobe Fonts didn't time out.
+
 ## How to re-measure
 
 PageSpeed Insights is the reference: run https://pagespeed.web.dev on each page three times and compare medians.
