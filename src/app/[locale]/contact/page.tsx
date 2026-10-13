@@ -1,7 +1,8 @@
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import ContactForm from '@/app/[locale]/contact/components/ContactForm/ContactForm';
 import SectionWrapper from '@/components/wrappers/SectionWrapper/SectionWrapper';
-import { buildPageMetadata, type LocaleProps } from '@/utils/server';
+import type { LocaleProps } from '@/models';
+import { buildPageMetadata } from '@/utils/server';
 
 export async function generateMetadata({ params }: LocaleProps) {
   return buildPageMetadata((await params).locale, 'contact');

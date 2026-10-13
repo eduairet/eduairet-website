@@ -1,5 +1,5 @@
 import { readTheme } from '@/hooks/useDarkMode';
-import type { Theme } from '@/utils/constants';
+import type { Theme } from '@/models';
 import { pickShapes } from './pickShapes';
 import { SOLIDS, poseMatrix, type SolidName } from './solids';
 

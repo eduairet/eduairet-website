@@ -1,6 +1,5 @@
+import type { Theme } from '@/models';
 import { Colors } from './color.constants';
-
-export type Theme = 'dark' | 'light';
 
 export const THEME_STORAGE_KEY = 'theme';
 

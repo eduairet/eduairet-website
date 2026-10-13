@@ -7,7 +7,7 @@ import {
   screen,
 } from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
-import { Dictionary, EnContent } from '@/models';
+import { Dictionary, EnContent, type Theme } from '@/models';
 
 import ThemeButton from '@/components/ui/Buttons/ThemeButton/ThemeButton';
 import HomeSubtitle from '@/app/[locale]/components/HomeSubtitle/HomeSubtitle';
@@ -56,7 +56,7 @@ describe('Theme toggle', () => {
     expect(themeColor()).toBe(THEME_COLORS.light);
   });
 
-  const saveTheme = (theme: 'dark' | 'light') => {
+  const saveTheme = (theme: Theme) => {
     addThemeColorTag();
     localStorage.setItem('theme', theme);
   };
