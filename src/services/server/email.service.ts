@@ -101,7 +101,8 @@ export const sendEmail = async (
   locale: Lang,
   email: string,
   name: string,
-  message: string
+  message: string,
+  sendConfirmation = false
 ): Promise<MailResponse> => {
   const t = copy[isLang(locale) ? locale : defaultLocale];
   const failed = { success: false, message: t.failed, status: 500 };
@@ -121,7 +122,8 @@ export const sendEmail = async (
   if (!sentToMe) return failed;
 
   // The message already reached me, so a failed confirmation is not an error.
-  await sendSesEmail(config, { to: email, ...t.confirmation });
+  if (sendConfirmation)
+    await sendSesEmail(config, { to: email, ...t.confirmation });
 
   return { success: true, message: t.sent, status: 200 };
 };
