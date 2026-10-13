@@ -46,7 +46,8 @@
     "themeButton": {
       "toLight": "Cambiar a tema claro",
       "toDark": "Cambiar a tema oscuro"
-    }
+    },
+    "closeToast": "Cerrar aviso"
   },
   "home": {
     "subtitle": "Ingeniero de Diseño · Ingeniero de Producto",
@@ -263,7 +264,7 @@
       "email": "Correo",
       "message": "Mensaje",
       "submit": "Enviar",
-      "success": "¡El formulario se ha enviado correctamente!",
+      "success": "¡Gracias! Tu mensaje va en camino. Te responderé pronto.",
       "errors": {
         "submit": "Algo salió mal y tu mensaje no se envió. Inténtalo de nuevo o escríbeme a hola@eduairet.com.",
         "empty": {

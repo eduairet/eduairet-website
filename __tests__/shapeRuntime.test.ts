@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { stubResizeObserver } from './helpers/resizeObserver';
 
 type Runtime = import('@/components/art/CardShapes/shapeRuntime').ShapeRuntime;
 
@@ -93,14 +94,7 @@ beforeEach(async () => {
       }
     }
   );
-  vi.stubGlobal(
-    'ResizeObserver',
-    class {
-      observe() {}
-      unobserve() {}
-      disconnect() {}
-    }
-  );
+  stubResizeObserver();
   vi.stubGlobal('requestAnimationFrame', (callback: Frame) => {
     frames.set(nextFrame, callback);
     return nextFrame++;

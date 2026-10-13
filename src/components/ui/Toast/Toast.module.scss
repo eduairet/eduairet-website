@@ -1,0 +1,50 @@
+@use '@/styles/abstracts/index' as *;
+
+.toast {
+  position: fixed;
+  z-index: $z-toast;
+  top: $header-height;
+  left: 1rem;
+  right: 1rem;
+  margin-inline: auto;
+
+  // The header scrolls away here, so the toast moves up to the top.
+  @media (height <= $breakpoint-short-height) {
+    top: 1rem;
+  }
+
+  // In the header on wide screens; a toast too tall to center grows down.
+  @media (width >= $breakpoint-md) and (height > $breakpoint-short-height) {
+    top: calc(#{$header-height} / 2);
+    translate: 0 max(-50%, calc(1rem - #{$header-height} / 2));
+  }
+
+  &.open {
+    @extend %form-card;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1rem 1rem 1.5rem;
+    animation: toast-in $fade-in-duration ease-out;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+    }
+  }
+
+  button {
+    flex-shrink: 0;
+  }
+}
+
+.message {
+  flex-grow: 1;
+  text-align: left;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.5rem);
+  }
+}

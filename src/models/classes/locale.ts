@@ -80,6 +80,7 @@ export class Dictionary {
   buttons: {
     langsButton: Button;
     themeButton: ThemeButton;
+    closeToast: string;
   };
   home: {
     subtitle: string;
@@ -163,6 +164,7 @@ export class Dictionary {
         toLight: data.buttons?.themeButton?.toLight || '',
         toDark: data.buttons?.themeButton?.toDark || '',
       },
+      closeToast: data.buttons?.closeToast || '',
     };
     this.home = {
       subtitle: data.home?.subtitle || '',
