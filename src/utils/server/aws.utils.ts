@@ -12,6 +12,16 @@ type AwsRequest = {
   date?: Date;
 };
 
+type WebIdentityRole = {
+  region: string;
+  roleArn: string;
+  sessionName: string;
+  webIdentityToken: string;
+};
+
+const STS_TIMEOUT_MS = 10_000;
+const STS_SESSION_SECONDS = '900';
+
 const sha256 = (data: string) =>
   createHash('sha256').update(data).digest('hex');
 
@@ -46,12 +56,11 @@ export const signAwsRequest = ({
   const amzDate = date.toISOString().replace(/[-:]|\.\d{3}/g, '');
   const dateStamp = amzDate.slice(0, 8);
   const scope = `${dateStamp}/${region}/${service}/aws4_request`;
+  const amzHeaders: Record<string, string> = { 'x-amz-date': amzDate };
+  if (credentials.sessionToken)
+    amzHeaders['x-amz-security-token'] = credentials.sessionToken;
 
-  const signed = Object.entries({
-    ...headers,
-    host,
-    'x-amz-date': amzDate,
-  })
+  const signed = Object.entries({ ...headers, host, ...amzHeaders })
     .map(([name, value]) => [
       name.toLowerCase(),
       value.trim().replace(/ +/g, ' '),
@@ -84,7 +93,39 @@ export const signAwsRequest = ({
   // fetch sets Host from the URL, so it is signed but not returned.
   return {
     ...headers,
-    'x-amz-date': amzDate,
+    ...amzHeaders,
     authorization: `AWS4-HMAC-SHA256 Credential=${credentials.accessKeyId}/${scope}, SignedHeaders=${signedHeaders}, Signature=${signature}`,
   };
+};
+
+const xmlField = (xml: string, name: string) =>
+  xml.match(new RegExp(`<${name}>([^<]+)</${name}>`))?.[1];
+
+// The web identity token is the credential here, so the request is not signed.
+export const assumeRoleWithWebIdentity = async ({
+  region,
+  roleArn,
+  sessionName,
+  webIdentityToken,
+}: WebIdentityRole): Promise<AwsCredentials> => {
+  const res = await fetch(`https://sts.${region}.amazonaws.com/`, {
+    method: 'POST',
+    body: new URLSearchParams({
+      Action: 'AssumeRoleWithWebIdentity',
+      Version: '2011-06-15',
+      RoleArn: roleArn,
+      RoleSessionName: sessionName,
+      WebIdentityToken: webIdentityToken,
+      DurationSeconds: STS_SESSION_SECONDS,
+    }),
+    signal: AbortSignal.timeout(STS_TIMEOUT_MS),
+  });
+  const xml = await res.text();
+  const accessKeyId = xmlField(xml, 'AccessKeyId');
+  const secretAccessKey = xmlField(xml, 'SecretAccessKey');
+  const sessionToken = xmlField(xml, 'SessionToken');
+
+  if (!res.ok || !accessKeyId || !secretAccessKey || !sessionToken)
+    throw new Error(`${res.status} ${xmlField(xml, 'Code') ?? ''}`.trim());
+  return { accessKeyId, secretAccessKey, sessionToken };
 };

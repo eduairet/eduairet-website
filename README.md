@@ -19,6 +19,8 @@ docker compose up -d
 
 The site runs at http://localhost:3000/en. The container keeps its own `node_modules`, so after a dependency change run `docker compose down -v && docker compose up -d --build`.
 
+On Vercel, `SES_ROLE_ARN` replaces the two SES keys: the contact route trades Vercel's OIDC token for short-lived credentials for that IAM role.
+
 ## Check it
 
 ```bash

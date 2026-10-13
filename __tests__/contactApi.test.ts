@@ -31,11 +31,12 @@ const sentFields = [
   'Hello from the contact API test.',
 ];
 
-const submit = (body = validBody) =>
+const submit = (body = validBody, headers: Record<string, string> = {}) =>
   POST(
     new Request('https://www.eduairet.com/api/contact', {
       method: 'POST',
       body,
+      headers,
     })
   );
 
@@ -70,7 +71,10 @@ describe('POST /api/contact', () => {
     const res = await submit();
 
     expect(res.status).toBe(200);
-    expect(sendEmail).toHaveBeenCalledWith(...sentFields, true);
+    expect(sendEmail).toHaveBeenCalledWith(
+      ...sentFields,
+      expect.objectContaining({ sendConfirmation: true })
+    );
   });
 
   test('a passing but lower score answers the same, with no confirmation', async () => {
@@ -79,7 +83,20 @@ describe('POST /api/contact', () => {
 
     expect(res.status).toBe(200);
     expect(await res.json()).toBe('Email sent successfully!');
-    expect(sendEmail).toHaveBeenCalledWith(...sentFields, false);
+    expect(sendEmail).toHaveBeenCalledWith(
+      ...sentFields,
+      expect.objectContaining({ sendConfirmation: false })
+    );
+  });
+
+  test("passes Vercel's OIDC token on to the email service", async () => {
+    googleReplies(trusted);
+    await submit(validBody, { 'x-vercel-oidc-token': 'oidc-token' });
+
+    expect(sendEmail).toHaveBeenCalledWith(
+      ...sentFields,
+      expect.objectContaining({ oidcToken: 'oidc-token' })
+    );
   });
 
   test('answers a failed send with 500', async () => {
