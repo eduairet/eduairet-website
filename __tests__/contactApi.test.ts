@@ -66,6 +66,18 @@ describe('POST /api/contact', () => {
     expect(sendEmail).toHaveBeenCalledTimes(1);
   });
 
+  test('answers a failed send with 500', async () => {
+    googleReplies(trusted);
+    vi.mocked(sendEmail).mockResolvedValueOnce({
+      success: false,
+      message: 'There was an error sending the email',
+      status: 500,
+    });
+    const res = await submit();
+
+    expect(res.status).toBe(500);
+  });
+
   test('answers a malformed body with 400', async () => {
     const res = await submit('not json');
 

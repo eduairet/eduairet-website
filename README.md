@@ -11,7 +11,7 @@ Next.js 16 (App Router), React 19, TypeScript, SCSS modules, and three.js. GitHu
 
 ## Run it
 
-Create a `.env` with `NEXT_PUBLIC_TYPEKIT`, `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`, `GMAIL`, and `GMAIL_PASSWORD`, then:
+Create a `.env` with `NEXT_PUBLIC_TYPEKIT`, `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`, `SES_REGION`, `SES_ACCESS_KEY_ID`, `SES_SECRET_ACCESS_KEY`, and `CONTACT_EMAIL`, then:
 
 ```bash
 docker compose up -d
