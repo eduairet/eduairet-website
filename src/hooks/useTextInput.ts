@@ -3,7 +3,7 @@ import { textInputValidations } from '@/utils/client';
 import { LanguageContext } from '@/store/LanguageProvider';
 import { TextInputType } from '@/models';
 
-export type TextInputError = 'empty' | 'invalid' | null;
+type TextInputError = 'empty' | 'invalid' | null;
 
 export function getTextInputError(
   type: TextInputType,

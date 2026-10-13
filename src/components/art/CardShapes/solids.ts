@@ -1,13 +1,13 @@
 // Unit-sphere wireframes, traced as 2D paths (y up) in an orthographic view.
 
-export type Family = 'boxes' | 'prisms' | 'pyramids' | 'round';
-export type Point = [number, number];
+type Family = 'boxes' | 'prisms' | 'pyramids' | 'round';
+type Point = [number, number];
 type Vec = [number, number, number];
 // Row-major 3x3 rotation.
-export type Matrix = number[];
+type Matrix = number[];
 
 // A canvas context works as a pen.
-export interface Pen {
+interface Pen {
   // eslint-disable-next-line no-unused-vars
   moveTo: (x: number, y: number) => void;
   // eslint-disable-next-line no-unused-vars

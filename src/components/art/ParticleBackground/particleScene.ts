@@ -29,7 +29,7 @@ import {
 } from 'three';
 import { GPUComputationRenderer } from 'three/addons/misc/GPUComputationRenderer.js';
 import { readTheme } from '@/hooks/useDarkMode';
-import type { Theme } from '@/utils/constants';
+import type { Theme } from '@/models';
 import {
   ATLAS_COLUMNS,
   GLYPHS,

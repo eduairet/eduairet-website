@@ -14,10 +14,6 @@ import {
 } from '@/utils/constants';
 import { locales } from './localization.utils';
 
-export interface LocaleProps {
-  params: Promise<{ locale: string }>;
-}
-
 export const indexablePages: SitePage[] = [
   'home',
   'contact',

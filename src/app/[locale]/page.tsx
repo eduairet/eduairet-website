@@ -1,11 +1,8 @@
 import { getDictionary } from './dictionaries';
 import HomeContent from '@/app/[locale]/components/HomeContent/HomeContent';
 import JsonLd from '@/components/metadata/JsonLd';
-import {
-  buildHomeStructuredData,
-  buildPageMetadata,
-  type LocaleProps,
-} from '@/utils/server';
+import type { LocaleProps } from '@/models';
+import { buildHomeStructuredData, buildPageMetadata } from '@/utils/server';
 
 export async function generateMetadata({ params }: LocaleProps) {
   return buildPageMetadata((await params).locale, 'home');

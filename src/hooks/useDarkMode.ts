@@ -1,10 +1,10 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
+import type { Theme } from '@/models';
 import {
   THEME_COLORS,
   THEME_STORAGE_KEY,
-  type Theme,
   applyThemeToPage,
   resolveTheme,
 } from '@/utils/constants';

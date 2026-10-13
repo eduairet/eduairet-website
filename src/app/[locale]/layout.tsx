@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 import { preconnect } from 'react-dom';
 import localFont from 'next/font/local';
 import '@/styles/main.scss';
-import { Lang, toUiContent } from '@/models';
+import { Lang, type LocaleProps, toUiContent } from '@/models';
 import TypekitStylesheet from '@/components/metadata/TypekitStylesheet';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import StoreProvider from '@/store/StoreProvider';
@@ -19,11 +19,8 @@ const eatIconsVF = localFont({
   display: 'swap',
 });
 
-interface IProps {
+interface IProps extends LocaleProps {
   children: ReactNode;
-  params: Promise<{
-    locale: string;
-  }>;
 }
 
 export {

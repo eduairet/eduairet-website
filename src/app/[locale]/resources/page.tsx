@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import { RESOURCES_PUBLISHED } from '@/utils/constants';
-import { buildPageMetadata, type LocaleProps } from '@/utils/server';
+import type { LocaleProps } from '@/models';
+import { buildPageMetadata } from '@/utils/server';
 
 export async function generateMetadata({ params }: LocaleProps) {
   return RESOURCES_PUBLISHED
