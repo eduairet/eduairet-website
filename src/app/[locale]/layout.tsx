@@ -10,6 +10,7 @@ import MainWrapper from '@/components/wrappers/MainWrapper/MainWrapper';
 import BodyWrapper from '@/components/wrappers/BodyWrapper';
 import NavBar from '@/components/ui/Nav/NavBar/NavBar';
 import Footer from '@/components/ui/Footer/Footer';
+import Toast from '@/components/ui/Toast/Toast';
 import Credits from '@/components/ui/Credits/Credits';
 
 const eatIconsVF = localFont({
@@ -54,6 +55,7 @@ export default async function RootLayout({ children, params }: IProps) {
           <header>
             <NavBar locale={locale as Lang} />
           </header>
+          <Toast />
           <MainWrapper>
             {children}
             <Credits lang={locale as Lang} />

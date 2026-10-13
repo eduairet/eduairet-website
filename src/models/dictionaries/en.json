@@ -46,7 +46,8 @@
     "themeButton": {
       "toLight": "Switch to light theme",
       "toDark": "Switch to dark theme"
-    }
+    },
+    "closeToast": "Close notice"
   },
   "home": {
     "subtitle": "Design Engineer · Product Engineer",
@@ -263,7 +264,7 @@
       "email": "Email",
       "message": "Message",
       "submit": "Submit",
-      "success": "The form was submitted successfully!",
+      "success": "Thanks! Your message is on its way. I'll write back soon.",
       "errors": {
         "submit": "Something went wrong and your message wasn't sent. Please try again, or email me at hola@eduairet.com.",
         "empty": {

@@ -1,22 +1,16 @@
 @use '@/styles/abstracts/index' as *;
 
 .form {
-  background-color: var(--background);
+  @extend %form-card;
   width: 100%;
-  max-width: 350px;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   padding: 2rem 2rem 3rem;
-  @include border($weight: 3px);
-  @include rounded-corners($radius: 1rem);
 }
 
 .submit-message {
   margin-top: 0.5rem;
   text-align: center;
-}
-
-.error {
   color: var(--accent-text);
 }

@@ -183,6 +183,7 @@ Severity counts as found on 2026-10-05:
 - Who is affected: keyboard users on phones, tablets, and zoomed desktops cannot see where focus is.
 - Fix: add `scroll-padding-top` (header height, 120px) and `scroll-padding-bottom` (footer height: 152px below 768px, 88px above) on `html`. This is technique C43 in the 2.4.11 Understanding doc. No visual change.
 - Status: Fixed. `html` has `scroll-padding-top` (header; the section titles dock inside it) and `scroll-padding-bottom` (footer height). Since 2026-10-11 the footer reads its padding and gap from custom properties on `:root` in `_global.scss`, and the scroll padding adds up the same properties, so the two can't drift. The footer and the clearance also change layout through the same mixins in `_mixins.scss` (`footer-row` for one row, `footer-static` for the page flow), so moving a breakpoint moves both. Evidence: the obscured-focus script, forwards and backwards at 1280×900, 375×700, 320×568 and 320×256, found 0 focused elements covered.
+- Update (2026-10-12): while a toast is open, `scroll-padding-top` clears whichever reaches lower, the header or the toast, so a focused field never scrolls under it. Evidence: Shift+Tab walks with the success toast open at 1280×800, 768×1024 and 375×812, and at 1280×800 with 200% text, found no focused field covered.
 
 ### F-07 Form errors are not tied to their fields, and the disabled Submit button hides why the form can't be sent
 
@@ -230,6 +231,7 @@ Severity counts as found on 2026-10-05:
   - Give `Spinner` an optional label (`role="img"` and `aria-label`, e.g. "Sending…" / "Enviando…"), or keep visually hidden button text while sending.
   - Use `aria-disabled` instead of `disabled` while sending, so focus stays on the button.
 - Status: Fixed. `FormWrapper` always renders a `role="status"` paragraph. While sending, the button uses `aria-disabled` and shows a spinner labeled "Sending…"/"Enviando…". Evidence: in Chrome, focus stayed on the button with name "Sending…" and `aria-disabled="true"`; the success and error messages appeared in the status region, in English and Spanish.
+- Update (2026-10-12): the success message now shows in a toast at the top of the screen (inside the header on wide screens, just below it on phones), in its own always-rendered `role="status"` region. The form's status region holds only errors, so each message is announced once. Focus stays on the button. Evidence: `toast.test.tsx`, `contactForm.test.tsx`, and a Chrome run on /en/contact and /es/contact.
 
 ### F-10 The home subtitle has no spaces between its words
 
@@ -270,6 +272,7 @@ Severity counts as found on 2026-10-05:
 - Who is affected: people who read slowly, look away, or use magnification and are reading another part of the screen.
 - Fix: remove the timeout. Clear the message when the user starts typing again.
 - Status: Fixed. The 10-second timeout is removed; the message clears when the user types again. Evidence: in Chrome the success and error messages were still there after 11 s; the unit test advances 30 s and then checks that typing clears it.
+- Update (2026-10-12): the success message now shows in a toast with no timer. It closes when the visitor closes it (button or Escape) or types in a field. Leaving a field without typing no longer clears the form's error. Evidence: unit tests advance 30 s; Chrome runs in both languages and themes.
 
 ### F-14 The scroll chevron bounces forever
 

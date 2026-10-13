@@ -8,8 +8,11 @@ import {
   waitFor,
 } from '@testing-library/react';
 import { LanguageProvider } from '@/store/LanguageProvider';
+import { ToastProvider } from '@/store/ToastProvider';
+import Toast from '@/components/ui/Toast/Toast';
 import { Dictionary, EnContent, EsContent, type Lang } from '@/models';
 
+import { stubResizeObserver } from './helpers/resizeObserver';
 import ContactForm from '@/app/[locale]/contact/components/ContactForm/ContactForm';
 
 const en = new Dictionary(EnContent);
@@ -39,9 +42,18 @@ vi.mock('@/utils/client', async (importOriginal) => ({
 const renderForm = (locale: Lang = 'en', content = en) =>
   render(
     <LanguageProvider locale={locale} content={content}>
-      <ContactForm />
+      <ToastProvider>
+        <Toast />
+        <ContactForm />
+      </ToastProvider>
     </LanguageProvider>
   );
+
+const SUCCESS = en.contact.form.success;
+
+// The toast's status region comes first, then the form's.
+const toastStatus = () => screen.getAllByRole('status')[0];
+const formStatus = () => screen.getAllByRole('status')[1];
 
 const describedText = (el: HTMLElement) =>
   (el.getAttribute('aria-describedby') ?? '')
@@ -62,6 +74,7 @@ const fillValid = () => {
 };
 
 beforeEach(() => {
+  stubResizeObserver();
   mocks.getRecaptchaToken.mockResolvedValue('fresh-token');
   mocks.fetchData.mockResolvedValue({ success: true });
   mocks.loadRecaptcha.mockResolvedValue(undefined);
@@ -71,6 +84,7 @@ afterEach(() => {
   cleanup();
   vi.clearAllMocks();
   vi.useRealTimers();
+  vi.unstubAllGlobals();
 });
 
 describe('ContactForm reCAPTCHA', () => {
@@ -177,43 +191,73 @@ describe('ContactForm accessibility', () => {
     expect(document.activeElement).toBe(sending);
 
     await act(async () => resolveFetch({ success: true }));
-    expect(screen.getByRole('status').textContent).toBe(
-      'The form was submitted successfully!'
+    expect(toastStatus().textContent).toBe(SUCCESS);
+  });
+
+  test('a successful send shows the toast, clears the fields and keeps focus', async () => {
+    renderForm();
+    fillValid();
+    const submit = screen.getByRole('button', { name: 'Submit' });
+    submit.focus();
+    fireEvent.click(submit);
+
+    await waitFor(() => expect(toastStatus().textContent).toBe(SUCCESS));
+    expect(formStatus().textContent).toBe('');
+    screen
+      .getAllByRole('textbox')
+      .forEach((field) => expect((field as HTMLInputElement).value).toBe(''));
+    expect(document.activeElement).toBe(
+      screen.getByRole('button', { name: 'Submit' })
     );
   });
 
-  test('the success message stays until the user types again', async () => {
+  test('the success toast stays until the user types again', async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     renderForm();
     fillValid();
     fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
-    await waitFor(() =>
-      expect(screen.getByRole('status').textContent).toBe(
-        'The form was submitted successfully!'
-      )
-    );
+    await waitFor(() => expect(toastStatus().textContent).toBe(SUCCESS));
 
     act(() => vi.advanceTimersByTime(30000));
-    expect(screen.getByRole('status').textContent).toBe(
-      'The form was submitted successfully!'
-    );
+    expect(toastStatus().textContent).toBe(SUCCESS);
 
-    fireEvent.change(screen.getByRole('textbox', { name: 'Name' }), {
-      target: { value: 'A' },
-    });
-    expect(screen.getByRole('status').textContent).toBe('');
+    const name = screen.getByRole('textbox', { name: 'Name' });
+    fireEvent.focus(name);
+    fireEvent.blur(name);
+    expect(toastStatus().textContent).toBe(SUCCESS);
+
+    fireEvent.change(name, { target: { value: 'A' } });
+    expect(toastStatus().textContent).toBe('');
   });
 
-  test('a failed send is announced in the status region', async () => {
+  test('a failed send is announced inline, with no toast', async () => {
     mocks.fetchData.mockResolvedValue({ success: false });
     renderForm();
     fillValid();
     fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
 
     await waitFor(() =>
-      expect(screen.getByRole('status').textContent).toContain(
-        "your message wasn't sent"
-      )
+      expect(formStatus().textContent).toContain("your message wasn't sent")
     );
+    expect(toastStatus().textContent).toBe('');
+    expect(screen.queryByRole('button', { name: 'Close notice' })).toBeNull();
+  });
+
+  test('leaving a field without typing keeps the error', async () => {
+    mocks.fetchData.mockResolvedValue({ success: false });
+    renderForm();
+    fillValid();
+    fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+    await waitFor(() =>
+      expect(formStatus().textContent).toContain("your message wasn't sent")
+    );
+
+    const email = screen.getByRole('textbox', { name: 'Email' });
+    fireEvent.focus(email);
+    fireEvent.blur(email);
+    expect(formStatus().textContent).toContain("your message wasn't sent");
+
+    fireEvent.change(email, { target: { value: 'ada@example.com' } });
+    expect(formStatus().textContent).toBe('');
   });
 });

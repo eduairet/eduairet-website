@@ -20,6 +20,7 @@ import {
 import { fetchData } from '@/utils/client';
 import { ApiUrls } from '@/utils/constants';
 import useRecaptcha from '@/hooks/useRecaptcha';
+import useToast from '@/hooks/useToast';
 import { getTextInputError } from '@/hooks/useTextInput';
 import FormWrapper from '@/components/wrappers/FormWrapper/FormWrapper';
 import TextInput from '@/components/ui/TextInput/TextInput';
@@ -67,9 +68,10 @@ const fieldTypes: Record<ContactFormField, TextInputType> = {
 function ContactForm() {
   const { locale, content } = useContext(LanguageContext);
   const { getRecaptchaToken, loadRecaptcha } = useRecaptcha();
+  const { showToast, closeToast } = useToast();
   const [isSending, setIsSending] = useState(false);
-  const [formError, setFormError] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState('');
+  const [submitError, setSubmitError] = useState('');
+  const successToast = useRef(0);
   const [state, dispatch] = useReducer(
     ContactFormReducer,
     new ContactFormModel()
@@ -93,8 +95,7 @@ function ContactForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (isSending) return;
-    setFormError(false);
-    setSubmitMessage('');
+    setSubmitError('');
 
     // Show every field's error and move focus to the first one to fix.
     const fields = Object.values(ContactFormField);
@@ -118,8 +119,7 @@ function ContactForm() {
     setIsSending(true);
     const recaptchaToken = await getRecaptchaToken();
     if (!recaptchaToken) {
-      setFormError(true);
-      setSubmitMessage(content.contact.form.errors.submit);
+      setSubmitError(content.contact.form.errors.submit);
       setIsSending(false);
       return;
     }
@@ -136,14 +136,13 @@ function ContactForm() {
     });
 
     if (!res.success) {
-      setFormError(true);
-      setSubmitMessage(content.contact.form.errors.submit);
+      setSubmitError(content.contact.form.errors.submit);
       setIsSending(false);
       return;
     }
 
-    // The message stays until the user starts typing again.
-    setSubmitMessage(content.contact.form.success);
+    // The toast stays until the visitor closes it or types again.
+    successToast.current = showToast(content.contact.form.success);
     dispatch({ type: 'RESET' });
     setIsSending(false);
   };
@@ -191,8 +190,7 @@ function ContactForm() {
     <FormWrapper
       onSubmit={handleSubmit}
       onFocus={preloadRecaptcha}
-      error={formError}
-      submitMessage={submitMessage}
+      errorMessage={submitError}
     >
       <p className={styles.instructions}>{content.contact.form.instructions}</p>
       {inputFields.map((field) => (
@@ -208,7 +206,11 @@ function ContactForm() {
           autoComplete={field.autoComplete}
           focused={field.focused}
           onChange={(value: string, focused: boolean, isValid: boolean) => {
-            if (submitMessage) setSubmitMessage('');
+            // Fields also report on blur; only a new value clears feedback.
+            if (value !== field.value) {
+              setSubmitError('');
+              closeToast(successToast.current);
+            }
             dispatch({
               type: field.id,
               value,
