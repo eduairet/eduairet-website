@@ -1,11 +1,6 @@
-import { Lang, MailResponse } from '@/models';
+import { AwsCredentials, Lang, MailResponse } from '@/models';
 import { SITE_URL } from '@/utils/constants';
-import {
-  defaultLocale,
-  isLang,
-  signAwsRequest,
-  type AwsCredentials,
-} from '@/utils/server';
+import { defaultLocale, isLang, signAwsRequest } from '@/utils/server';
 
 type SesConfig = { region: string; from: string; credentials: AwsCredentials };
 

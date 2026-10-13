@@ -1,9 +1,5 @@
 import { createHash, createHmac } from 'node:crypto';
-
-export type AwsCredentials = {
-  accessKeyId: string;
-  secretAccessKey: string;
-};
+import { AwsCredentials } from '@/models';
 
 type AwsRequest = {
   method: string;

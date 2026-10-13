@@ -10,3 +10,8 @@ export type MailResponse = {
   message: string;
   status: number;
 };
+
+export type AwsCredentials = {
+  accessKeyId: string;
+  secretAccessKey: string;
+};
