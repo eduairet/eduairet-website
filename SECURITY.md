@@ -32,3 +32,18 @@ deployed version is supported; fixes are applied to `main`.
   dependencies and reports the rest.
 - **Automated updates:** Dependabot proposes dependency, Action, and Docker
   base image updates after a cooldown.
+
+## Contact form abuse
+
+The contact form sends me a copy of each message and may send the visitor a
+fixed "thanks" email. These guards keep it from being used to email people
+who never wrote to me:
+
+- **CAPTCHA:** reCAPTCHA v3 must pass before anything is sent.
+- **Score-gated confirmation:** the visitor's confirmation goes out only for
+  the highest reCAPTCHA scores. Every passing score gets the same response.
+- **Strict input:** every field must be a non-empty string, or the request
+  gets a 400.
+- **Rate limit:** a Vercel Firewall rule limits form sends per IP.
+- **Reputation alarms:** CloudWatch emails me if the email bounce or
+  complaint rate starts to climb, well before Amazon SES would act.

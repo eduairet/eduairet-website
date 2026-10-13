@@ -20,7 +20,7 @@ const visitor = {
 };
 
 const send = (locale: 'en' | 'es' = 'en', name = visitor.name) =>
-  sendEmail(locale, visitor.email, name, visitor.message);
+  sendEmail(locale, visitor.email, name, visitor.message, true);
 
 const sesReplies = (...responses: Response[]) =>
   responses.forEach((res) => fetchMock.mockResolvedValueOnce(res));
@@ -93,6 +93,29 @@ describe('sendEmail', () => {
         },
       },
     });
+  });
+
+  test('without the confirmation flag, only my copy is sent', async () => {
+    sesReplies(ok());
+    const result = await sendEmail(
+      'en',
+      visitor.email,
+      visitor.name,
+      visitor.message
+    );
+
+    expect(result.success).toBe(true);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(sentEmail(0).Destination.ToAddresses).toEqual([env.CONTACT_EMAIL]);
+  });
+
+  test('with the flag, my copy goes first and then the confirmation', async () => {
+    sesReplies(ok(), ok());
+    await send();
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(sentEmail(0).Destination.ToAddresses).toEqual([env.CONTACT_EMAIL]);
+    expect(sentEmail(1).Destination.ToAddresses).toEqual([visitor.email]);
   });
 
   test.each(['en', 'es'] as const)(

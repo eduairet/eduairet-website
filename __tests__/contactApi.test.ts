@@ -24,6 +24,13 @@ const validBody = JSON.stringify({
   recaptchaToken: 'token-123',
 });
 
+const sentFields = [
+  'en',
+  'test@example.test',
+  'Test Person',
+  'Hello from the contact API test.',
+];
+
 const submit = (body = validBody) =>
   POST(
     new Request('https://www.eduairet.com/api/contact', {
@@ -58,12 +65,21 @@ describe('POST /api/contact', () => {
     expect(body.get('response')).toBe('token-123');
   });
 
-  test('sends the email for a trusted token', async () => {
+  test('a high score sends the email with a confirmation', async () => {
     googleReplies(trusted);
     const res = await submit();
 
     expect(res.status).toBe(200);
-    expect(sendEmail).toHaveBeenCalledTimes(1);
+    expect(sendEmail).toHaveBeenCalledWith(...sentFields, true);
+  });
+
+  test('a passing but lower score answers the same, with no confirmation', async () => {
+    googleReplies({ ...trusted, score: 0.7 });
+    const res = await submit();
+
+    expect(res.status).toBe(200);
+    expect(await res.json()).toBe('Email sent successfully!');
+    expect(sendEmail).toHaveBeenCalledWith(...sentFields, false);
   });
 
   test('answers a failed send with 500', async () => {
@@ -84,6 +100,21 @@ describe('POST /api/contact', () => {
     expect(res.status).toBe(400);
     expect(fetchMock).not.toHaveBeenCalled();
   });
+
+  test.each(['locale', 'name', 'email', 'message', 'recaptchaToken'])(
+    'answers a non-string %s with 400',
+    async (field) => {
+      for (const value of [42, ['x'], { x: 1 }, null]) {
+        const body = { ...JSON.parse(validBody), [field]: value };
+        const res = await submit(JSON.stringify(body));
+
+        expect(res.status).toBe(400);
+        expect(await res.text()).toBe('Bad Request');
+      }
+      expect(fetchMock).not.toHaveBeenCalled();
+      expect(sendEmail).not.toHaveBeenCalled();
+    }
+  );
 
   test.each([
     ['a failed check', { success: false }],
