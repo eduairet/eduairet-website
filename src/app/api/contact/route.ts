@@ -24,7 +24,9 @@ export async function POST(req: Request) {
 
     const mailResponse = await sendEmail(locale, email, name, message);
     if (!mailResponse.success)
-      return new Response(mailResponse.message, { status: 400 });
+      return new Response(mailResponse.message, {
+        status: mailResponse.status,
+      });
   } catch {
     return new Response('Internal Server Error', { status: 500 });
   }

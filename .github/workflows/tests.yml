@@ -4,8 +4,6 @@ permissions:
   contents: read
 
 env:
-  GMAIL: ${{ secrets.GMAIL }}
-  GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
   NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
   RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
   NEXT_PUBLIC_TYPEKIT: ${{ secrets.NEXT_PUBLIC_TYPEKIT }}
@@ -30,8 +28,6 @@ jobs:
       - name: Run tests in Docker
         run: |
           docker run --rm \
-            -e GMAIL="$GMAIL" \
-            -e GMAIL_PASSWORD="$GMAIL_PASSWORD" \
             -e NEXT_PUBLIC_RECAPTCHA_SITE_KEY="$NEXT_PUBLIC_RECAPTCHA_SITE_KEY" \
             -e RECAPTCHA_SECRET_KEY="$RECAPTCHA_SECRET_KEY" \
             -e NEXT_PUBLIC_TYPEKIT="$NEXT_PUBLIC_TYPEKIT" \
