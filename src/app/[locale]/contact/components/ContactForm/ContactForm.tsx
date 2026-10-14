@@ -18,7 +18,7 @@ import {
   ContactRequest,
 } from '@/models';
 import { fetchData } from '@/utils/client';
-import { ApiUrls } from '@/utils/constants';
+import { ApiUrls, PageUrls } from '@/utils/constants';
 import useRecaptcha from '@/hooks/useRecaptcha';
 import useToast from '@/hooks/useToast';
 import { getTextInputError } from '@/hooks/useTextInput';
@@ -26,7 +26,8 @@ import FormWrapper from '@/components/wrappers/FormWrapper/FormWrapper';
 import TextInput from '@/components/ui/TextInput/TextInput';
 import ButtonWrapper from '@/components/wrappers/ButtonWrapper/ButtonWrapper';
 import Spinner from '@/components/ui/Spinner/Spinner';
-import ExternalLink from '@/components/ui/ExternalLink/ExternalLink';
+import IntentLink from '@/components/ui/IntentLink/IntentLink';
+import Checkbox from '@/components/ui/Checkbox/Checkbox';
 import { fillTemplate } from '@/utils/template.utils';
 
 interface IReducerAction {
@@ -65,6 +66,8 @@ const fieldTypes: Record<ContactFormField, TextInputType> = {
   [ContactFormField.MESSAGE]: 'textarea',
 };
 
+const PRIVACY_CHECK_ID = 'privacy-read';
+
 function ContactForm() {
   const { locale, content } = useContext(LanguageContext);
   const { getRecaptchaToken, loadRecaptcha } = useRecaptcha();
@@ -72,6 +75,8 @@ function ContactForm() {
   const [isSending, setIsSending] = useState(false);
   const [submitError, setSubmitError] = useState('');
   const successToast = useRef(0);
+  const [privacyRead, setPrivacyRead] = useState(false);
+  const [privacyMissing, setPrivacyMissing] = useState(false);
   const [state, dispatch] = useReducer(
     ContactFormReducer,
     new ContactFormModel()
@@ -111,8 +116,10 @@ function ContactForm() {
         isValid: !invalid.includes(field),
       })
     );
-    if (invalid.length) {
-      document.getElementById(invalid[0])?.focus();
+    setPrivacyMissing(!privacyRead);
+    const toFix = [...invalid, ...(privacyRead ? [] : [PRIVACY_CHECK_ID])];
+    if (toFix.length) {
+      document.getElementById(toFix[0])?.focus();
       return;
     }
 
@@ -144,6 +151,7 @@ function ContactForm() {
     // The toast stays until the visitor closes it or types again.
     successToast.current = showToast(content.contact.form.success);
     dispatch({ type: 'RESET' });
+    setPrivacyRead(false);
     setIsSending(false);
   };
 
@@ -174,17 +182,8 @@ function ContactForm() {
     },
   ];
 
-  const { recaptcha } = content.contact.form;
-  const recaptchaLinks: Record<string, { href: string; label: string }> = {
-    privacy: {
-      href: 'https://policies.google.com/privacy',
-      label: recaptcha.privacy,
-    },
-    terms: {
-      href: 'https://policies.google.com/terms',
-      label: recaptcha.terms,
-    },
-  };
+  const { notice, noticeLink, privacyCheck, recaptcha, errors } =
+    content.contact.form;
 
   return (
     <FormWrapper
@@ -220,6 +219,22 @@ function ContactForm() {
           }}
         />
       ))}
+      <p className={styles.notice}>{notice}</p>
+      <Checkbox
+        id={PRIVACY_CHECK_ID}
+        required
+        checked={privacyRead}
+        error={privacyMissing ? errors.privacy : undefined}
+        onChange={(e) => {
+          setPrivacyRead(e.target.checked);
+          setPrivacyMissing(false);
+          setSubmitError('');
+          closeToast(successToast.current);
+        }}
+        label={fillTemplate(privacyCheck, () => (
+          <IntentLink href={PageUrls.privacy_(locale)}>{noticeLink}</IntentLink>
+        ))}
+      />
       <ButtonWrapper
         type='submit'
         className={styles.submit}
@@ -231,17 +246,7 @@ function ContactForm() {
           content.contact.form.submit
         )}
       </ButtonWrapper>
-      <p className={styles.retention}>{content.contact.form.retention}</p>
-      <p className={styles.recaptcha}>
-        {fillTemplate(recaptcha.text, (key) => (
-          <ExternalLink
-            href={recaptchaLinks[key].href}
-            newTab={content.home.newTab}
-          >
-            {recaptchaLinks[key].label}
-          </ExternalLink>
-        ))}
-      </p>
+      <p className={styles.recaptcha}>{recaptcha}</p>
     </FormWrapper>
   );
 }

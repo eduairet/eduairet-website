@@ -20,12 +20,28 @@ export const OpenGraphLocales: Record<Lang, string> = {
   es: 'es_MX',
 };
 
+export const EMAIL_ADDRESS = 'hola@eduairet.com';
+export const POSTAL_ADDRESS =
+  'Boulevard Manuel Ávila Camacho 571, Col. Periodista, 11220, Miguel Hidalgo, Ciudad de México, México';
+
 export const SocialUrls = {
   github: 'https://github.com/eduairet',
   linkedin: 'https://www.linkedin.com/in/eduairet/',
   x: 'https://x.com/eduairet',
   instagram: 'https://www.instagram.com/eduairet/',
-  email: 'mailto:hola@eduairet.com',
+  email: `mailto:${EMAIL_ADDRESS}`,
+};
+
+export const PRIVACY_UPDATED = '2026-10-14';
+
+// Pages the privacy notice links, keyed by its {placeholders}.
+export const PrivacyLinks: Record<string, string> = {
+  aws: 'https://aws.amazon.com/privacy/',
+  google: 'https://policies.google.com/privacy',
+  adobe: 'https://www.adobe.com/privacy/policies/adobe-fonts.html',
+  vercel: 'https://vercel.com/legal/privacy-policy',
+  sabg: 'https://www.gob.mx/buengobierno',
+  edpb: 'https://www.edpb.europa.eu/about-edpb/about-edpb/members_en',
 };
 
 // Names the footer credit line links, keyed by its {placeholders}.

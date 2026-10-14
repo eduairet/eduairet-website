@@ -7,6 +7,8 @@ import XLink from '@/components/ui/SocialLinks/XLink';
 import InstagramLink from '@/components/ui/SocialLinks/InstagramLink';
 import EmailLink from '@/components/ui/SocialLinks/EmailLink';
 import ThemeButton from '@/components/ui/Buttons/ThemeButton/ThemeButton';
+import IntentLink from '@/components/ui/IntentLink/IntentLink';
+import { PageUrls } from '@/utils/constants';
 
 interface IProps {
   lang: Lang;
@@ -49,7 +51,12 @@ export default async function Footer({ lang }: IProps) {
         </div>
       </section>
       <section className={styles.section}>
-        <p>Eduardo Aire Torres {new Date().getFullYear()}</p>
+        <p>
+          Eduardo Aire Torres {new Date().getFullYear()}
+          <IntentLink className={styles.privacy} href={PageUrls.privacy_(lang)}>
+            {content.footer.privacy}
+          </IntentLink>
+        </p>
         <p className={`${styles.actions} ${styles.theme}`}>
           <span>{content.footer.theme.text}</span>
           <ThemeButton />

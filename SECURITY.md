@@ -42,8 +42,8 @@ who never wrote to me:
 - **CAPTCHA:** reCAPTCHA v3 must pass before anything is sent.
 - **Score-gated confirmation:** the visitor's confirmation goes out only for
   the highest reCAPTCHA scores. Every passing score gets the same response.
-- **Strict input:** every field must be a non-empty string, or the request
-  gets a 400.
+- **Strict input:** every field must be a non-empty string and the privacy
+  notice box must be ticked, or the request gets a 400.
 - **Rate limit:** a Vercel Firewall rule limits form sends per IP.
 - **Reputation alarms:** CloudWatch emails me if the email bounce or
   complaint rate starts to climb, well before Amazon SES would act.
@@ -58,3 +58,9 @@ goes missing. An item holds the name, email, message, language, time and
 Vercel environment, plus an id and its expiry time. It holds no IP address
 and no reCAPTCHA token. DynamoDB deletes it on its own about 90 days later. Logs keep only the status
 and the AWS error type, never what someone wrote.
+
+If a save fails, the site emails me through SES with the same status and
+error type, the time and the Vercel environment, and nothing from the form.
+Runtime logs on Vercel Hobby last only an hour, so this email is how I find
+out. The [privacy notice](https://www.eduairet.com/en/privacy) explains all of
+this to visitors.

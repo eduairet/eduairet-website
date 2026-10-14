@@ -3,7 +3,11 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { after } from 'next/server';
 import { Lang } from '@/models';
 import { sendEmail } from '@/services/server/email.service';
-import { assumeRoleWithWebIdentity, putDynamoDbItem } from '@/utils/server';
+import {
+  assumeRoleWithWebIdentity,
+  AwsResponseError,
+  putDynamoDbItem,
+} from '@/utils/server';
 
 const afterTasks = vi.hoisted(() => [] as (() => unknown)[]);
 
@@ -340,9 +344,9 @@ describe('sendEmail saves a backup of the message', () => {
 
   test('a failed save still sends my email and returns the same response', async () => {
     vi.mocked(putDynamoDbItem).mockRejectedValueOnce(
-      new Error('400 ResourceNotFoundException')
+      new AwsResponseError('400 ResourceNotFoundException')
     );
-    sesReplies(ok(), ok());
+    sesReplies(ok(), ok(), ok());
     const result = await send();
     await finishResponse();
 
@@ -351,7 +355,8 @@ describe('sendEmail saves a backup of the message', () => {
       message: 'Email sent successfully',
       status: 200,
     });
-    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(sentEmail(0).Destination.ToAddresses).toEqual([env.CONTACT_EMAIL]);
+    expect(sentEmail(1).Destination.ToAddresses).toEqual([visitor.email]);
     expect(errorLog).toHaveBeenCalledWith(
       'DynamoDB PutItem failed: 400 ResourceNotFoundException'
     );
@@ -391,9 +396,9 @@ describe('sendEmail saves a backup of the message', () => {
 
   test('logs hold no name, email or message when both fail', async () => {
     vi.mocked(putDynamoDbItem).mockRejectedValueOnce(
-      new Error('400 ValidationException')
+      new AwsResponseError('400 ValidationException')
     );
-    sesReplies(rejected());
+    sesReplies(rejected(), ok());
     await send();
     await finishResponse();
 
@@ -403,5 +408,126 @@ describe('sendEmail saves a backup of the message', () => {
       expect(line).not.toContain(visitor.email);
       expect(line).not.toContain(visitor.message);
     }
+  });
+});
+
+describe('a failed save sends me one alert', () => {
+  const rejectSave = (error: Error) => () =>
+    vi.mocked(putDynamoDbItem).mockRejectedValueOnce(error);
+
+  // A network error's message may name the visitor; only its name is sent.
+  const failures = [
+    [
+      'a missing table name',
+      () => vi.stubEnv('CONTACT_TABLE', ''),
+      'missing CONTACT_TABLE',
+    ],
+    [
+      'an AWS error',
+      rejectSave(new AwsResponseError('400 AccessDeniedException')),
+      '400 AccessDeniedException',
+    ],
+    [
+      'a network error',
+      rejectSave(new TypeError(`fetch failed for ${visitor.email}`)),
+      'TypeError',
+    ],
+    [
+      'a timeout',
+      rejectSave(new DOMException('The operation timed out', 'TimeoutError')),
+      'TimeoutError',
+    ],
+  ] as const;
+
+  test.each(failures)(
+    '%s sends one alert with the reason, time and environment, and nothing personal',
+    async (_, fail, reason) => {
+      fail();
+      sesReplies(ok(), ok(), ok());
+      await send();
+      await finishResponse();
+
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+      const alert = sentEmail(2);
+      expect(alert.Destination.ToAddresses).toEqual([env.CONTACT_EMAIL]);
+      expect(alert.ReplyToAddresses).toBeUndefined();
+      expect(alert.Content.Simple.Subject.Data).toBe(
+        'Contact form backup failed'
+      );
+      const text = alert.Content.Simple.Body.Text.Data;
+      expect(text).toContain(`Reason: ${reason}`);
+      expect(text).toMatch(/^Time: \d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{3}Z$/m);
+      expect(text).toContain('Environment: preview');
+      expect(errorLog).toHaveBeenCalledWith(
+        `DynamoDB PutItem failed: ${reason}`
+      );
+      for (const value of Object.values(visitor))
+        expect(JSON.stringify(alert)).not.toContain(value);
+    }
+  );
+
+  test('the alert waits for the response, so it never changes it or delays my copy', async () => {
+    vi.mocked(putDynamoDbItem).mockRejectedValueOnce(
+      new AwsResponseError('500 InternalServerError')
+    );
+    sesReplies(ok(), ok(), ok());
+    const result = await send();
+
+    expect(result).toEqual({
+      success: true,
+      message: 'Email sent successfully',
+      status: 200,
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(sentEmail(0).Destination.ToAddresses).toEqual([env.CONTACT_EMAIL]);
+
+    await finishResponse();
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+  });
+
+  test('a failed email to me still alerts about the failed save', async () => {
+    vi.stubEnv('CONTACT_TABLE', '');
+    sesReplies(rejected(), ok());
+    const result = await send();
+    await finishResponse();
+
+    expect(result.success).toBe(false);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(sentEmail(1).Content.Simple.Subject.Data).toBe(
+      'Contact form backup failed'
+    );
+  });
+
+  test.each([
+    ['rejected', () => sesReplies(ok(), ok(), rejected())],
+    [
+      'unreachable',
+      () => {
+        sesReplies(ok(), ok());
+        fetchMock.mockRejectedValueOnce(new TypeError('fetch failed'));
+      },
+    ],
+  ])('an alert SES %s is logged and never throws', async (_, reply) => {
+    vi.stubEnv('CONTACT_TABLE', '');
+    reply();
+    await send();
+
+    await expect(finishResponse()).resolves.toBeDefined();
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(errorLog).toHaveBeenLastCalledWith(
+      expect.stringMatching(
+        /^SES SendEmail failed: (400 MessageRejected|TypeError)$/
+      )
+    );
+  });
+
+  test('a successful save sends no alert', async () => {
+    sesReplies(ok(), ok());
+    await send();
+    await finishResponse();
+
+    expect(putDynamoDbItem).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(errorLog).not.toHaveBeenCalled();
   });
 });

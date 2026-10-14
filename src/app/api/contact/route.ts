@@ -7,11 +7,12 @@ export async function POST(req: Request) {
 
   const body = await req.json().catch(() => null);
   if (!body) return new Response('Bad Request', { status: 400 });
-  const { locale, name, email, message, recaptchaToken } = body;
+  const { locale, name, email, message, recaptchaToken, privacyRead } = body;
   const fields = [locale, name, email, message, recaptchaToken];
 
   if (
     fields.some((field) => typeof field !== 'string' || !field) ||
+    privacyRead !== true ||
     !serverFormValidations.contactForm(name, email, message)
   )
     return new Response('Bad Request', { status: 400 });

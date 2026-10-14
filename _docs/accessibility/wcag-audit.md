@@ -45,6 +45,13 @@
 - From 768px up the menus, logo, titles and footer look the same as on `main`. The footer clearance now matches the real 82px footer instead of 88px, so pages end 6px sooner.
 - Evidence: axe 4.11.0 found 0 violations in 40 runs (4 pages, both themes, menus closed and open, 375 and 1280 wide). Tab walks forward and back on /en, /es and /en/contact at 375×667, 320×568 and 1280×900 found no focus stop hidden (555 stops). No page scrolls sideways at 320×450 or 320×256, menu open or closed.
 
+**Update (2026-10-14, branch `feat/privacy-notice`): no criterion changes.**
+
+- New page `/[locale]/privacy`: one `h1`, an `h2` per section, real lists, and links to other sites say they open in a new tab.
+- The footer's name line links "Privacy" / "Privacidad". On phones it stays one line down to 320 wide, so the footer clearance still fits.
+- Above Submit, one short line and a required "I've read the privacy notice" checkbox replace the retention line. The link sits in the checkbox label. Submitting without the box shows an error tied to it with `aria-describedby` and moves focus to it, unless a text field needs fixing first. The reCAPTCHA line is plain text with no links.
+- Evidence: axe 4.11.0 found 0 violations in 36 runs (/en, /es, both contact pages and both privacy pages; both themes; 375, 768 and 1280 wide). No page scrolls sideways.
+
 Severity counts as found on 2026-10-05:
 
 | Severity     | Count  |

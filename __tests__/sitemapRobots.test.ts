@@ -11,6 +11,8 @@ test('sitemap lists only the indexable pages', () => {
     `${SITE}/es`,
     `${SITE}/en/contact`,
     `${SITE}/es/contact`,
+    `${SITE}/en/privacy`,
+    `${SITE}/es/privacy`,
   ]);
 });
 

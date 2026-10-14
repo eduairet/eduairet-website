@@ -31,6 +31,15 @@ interface PageMeta {
   description: string;
 }
 
+// A string is a paragraph; an array of strings is a list.
+type PrivacyBlock = string | string[];
+
+interface PrivacySection {
+  id: string;
+  title: string;
+  body: PrivacyBlock[];
+}
+
 const toPageMeta = (data?: Partial<PageMeta>): PageMeta => ({
   title: data?.title || '',
   description: data?.description || '',
@@ -55,6 +64,7 @@ export class Dictionary {
     home: PageMeta;
     contact: PageMeta;
     resources: PageMeta;
+    privacy: PageMeta;
     notFound: PageMeta;
     ogImageAlt: string;
   };
@@ -75,6 +85,7 @@ export class Dictionary {
     theme: {
       text: string;
     };
+    privacy: string;
     credits: string;
   };
   buttons: {
@@ -114,18 +125,24 @@ export class Dictionary {
       sending: string;
       instructions: string;
       lengthHint: string;
-      retention: string;
-      recaptcha: {
-        text: string;
-        privacy: string;
-        terms: string;
-      };
+      notice: string;
+      noticeLink: string;
+      privacyCheck: string;
+      recaptcha: string;
       errors: {
         submit: string;
+        privacy: string;
         empty: ContactFormErrors;
         invalid: ContactFormErrors;
       };
     };
+  };
+  privacy: {
+    title: string;
+    updated: string;
+    intro: string;
+    links: Record<string, string>;
+    sections: PrivacySection[];
   };
 
   constructor(data: Partial<Dictionary> = {}) {
@@ -133,6 +150,7 @@ export class Dictionary {
       home: toPageMeta(data.meta?.home),
       contact: toPageMeta(data.meta?.contact),
       resources: toPageMeta(data.meta?.resources),
+      privacy: toPageMeta(data.meta?.privacy),
       notFound: toPageMeta(data.meta?.notFound),
       ogImageAlt: data.meta?.ogImageAlt || '',
     };
@@ -154,6 +172,7 @@ export class Dictionary {
       theme: {
         text: data.footer?.theme?.text || '',
       },
+      privacy: data.footer?.privacy || '',
       credits: data.footer?.credits || '',
     };
     this.buttons = {
@@ -199,14 +218,13 @@ export class Dictionary {
         sending: data.contact?.form?.sending || '',
         instructions: data.contact?.form?.instructions || '',
         lengthHint: data.contact?.form?.lengthHint || '',
-        retention: data.contact?.form?.retention || '',
-        recaptcha: {
-          text: data.contact?.form?.recaptcha?.text || '',
-          privacy: data.contact?.form?.recaptcha?.privacy || '',
-          terms: data.contact?.form?.recaptcha?.terms || '',
-        },
+        notice: data.contact?.form?.notice || '',
+        noticeLink: data.contact?.form?.noticeLink || '',
+        privacyCheck: data.contact?.form?.privacyCheck || '',
+        recaptcha: data.contact?.form?.recaptcha || '',
         errors: {
           submit: data.contact?.form?.errors?.submit || '',
+          privacy: data.contact?.form?.errors?.privacy || '',
           empty: {
             name: data.contact?.form?.errors?.empty?.name || '',
             email: data.contact?.form?.errors?.empty?.email || '',
@@ -219,6 +237,13 @@ export class Dictionary {
           },
         },
       },
+    };
+    this.privacy = {
+      title: data.privacy?.title || '',
+      updated: data.privacy?.updated || '',
+      intro: data.privacy?.intro || '',
+      links: data.privacy?.links || {},
+      sections: data.privacy?.sections || [],
     };
   }
 }

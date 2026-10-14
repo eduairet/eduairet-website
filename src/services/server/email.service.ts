@@ -4,6 +4,7 @@ import { AwsCredentials, Lang, MailResponse } from '@/models';
 import { SITE_URL } from '@/utils/constants';
 import {
   assumeRoleWithWebIdentity,
+  AwsResponseError,
   awsErrorType,
   defaultLocale,
   isLang,
@@ -34,6 +35,7 @@ type SendEmailOptions = {
 
 const SES_ROLE_SESSION = 'eduairet-website-contact';
 const MESSAGE_RETENTION_SECONDS = 90 * 24 * 60 * 60;
+const SAVE_ALERT_SUBJECT = 'Contact form backup failed';
 
 const copy = {
   en: {
@@ -125,15 +127,15 @@ const sendSesEmail = async (
   return false;
 };
 
-const saveMessage = async (
+const vercelEnv = () => process.env.VERCEL_ENV ?? 'development';
+
+// Resolves to why the save failed, or null when it worked.
+const putMessage = async (
   { region, credentials }: AwsSession,
   { locale, name, email, message }: ContactMessage
 ) => {
   const tableName = process.env.CONTACT_TABLE;
-  if (!tableName) {
-    console.error('DynamoDB PutItem failed: missing CONTACT_TABLE');
-    return;
-  }
+  if (!tableName) return 'missing CONTACT_TABLE';
   const now = new Date();
   try {
     await putDynamoDbItem({
@@ -148,16 +150,36 @@ const saveMessage = async (
             Math.floor(now.getTime() / 1000) + MESSAGE_RETENTION_SECONDS
           ),
         },
-        vercelEnv: { S: process.env.VERCEL_ENV ?? 'development' },
+        vercelEnv: { S: vercelEnv() },
         locale: { S: locale },
         name: { S: name },
         email: { S: email },
         message: { S: message },
       },
     });
+    return null;
   } catch (error) {
-    console.error(`DynamoDB PutItem failed: ${(error as Error).message}`);
+    return error instanceof AwsResponseError
+      ? error.message
+      : (error as Error).name;
   }
+};
+
+const saveMessage = async (session: AwsSession, contact: ContactMessage) => {
+  const failure = await putMessage(session, contact);
+  if (!failure) return;
+  console.error(`DynamoDB PutItem failed: ${failure}`);
+  await sendSesEmail(session, {
+    to: session.from,
+    subject: SAVE_ALERT_SUBJECT,
+    text: [
+      "A contact message wasn't saved in DynamoDB.",
+      '',
+      `Reason: ${failure}`,
+      `Time: ${new Date().toISOString()}`,
+      `Environment: ${vercelEnv()}`,
+    ].join('\n'),
+  });
 };
 
 export const sendEmail = async (

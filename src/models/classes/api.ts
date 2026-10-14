@@ -18,6 +18,8 @@ export class ContactRequest {
   email: string;
   message: string;
   recaptchaToken: string;
+  // The form only sends once the privacy notice box is ticked.
+  privacyRead = true as const;
 
   constructor(
     locale: Lang,

@@ -22,6 +22,7 @@ const validBody = JSON.stringify({
   email: 'test@example.test',
   message: 'Hello from the contact API test.',
   recaptchaToken: 'token-123',
+  privacyRead: true,
 });
 
 const sentFields = [
@@ -132,6 +133,18 @@ describe('POST /api/contact', () => {
       expect(sendEmail).not.toHaveBeenCalled();
     }
   );
+
+  test('answers a send without the privacy box ticked with 400', async () => {
+    for (const value of [false, 'true', 1, null, undefined]) {
+      const body = { ...JSON.parse(validBody), privacyRead: value };
+      const res = await submit(JSON.stringify(body));
+
+      expect(res.status).toBe(400);
+      expect(await res.text()).toBe('Bad Request');
+    }
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(sendEmail).not.toHaveBeenCalled();
+  });
 
   test.each([
     ['a failed check', { success: false }],

@@ -78,6 +78,11 @@
   }
 }
 
+.privacy {
+  @extend %prose-link;
+  margin-left: 0.75rem;
+}
+
 .actions {
   display: flex;
   align-items: center;

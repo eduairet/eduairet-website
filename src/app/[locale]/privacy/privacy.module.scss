@@ -1,0 +1,41 @@
+@use '@/styles/abstracts/index' as *;
+
+.privacy {
+  width: 100%;
+  max-width: 40rem;
+  margin-inline: auto;
+  font-size: 1.125rem;
+  line-height: 1.5;
+
+  h2,
+  p:not(.updated),
+  li {
+    text-align: left;
+  }
+
+  section {
+    margin-top: 2.5rem;
+  }
+
+  p + p,
+  p + ul,
+  ul + p {
+    margin-top: 0.75rem;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-left: 1.25rem;
+  }
+
+  a {
+    @extend %prose-link;
+    overflow-wrap: anywhere;
+  }
+}
+
+.updated {
+  font-size: 1rem;
+}
