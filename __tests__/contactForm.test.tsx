@@ -25,6 +25,7 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock('next/navigation', () => ({
   usePathname: () => '/en/contact',
+  useRouter: () => ({ prefetch: () => {} }),
 }));
 
 vi.mock('@/hooks/useRecaptcha', () => ({
@@ -71,7 +72,11 @@ const fillValid = () => {
   fireEvent.change(screen.getByRole('textbox', { name: 'Message' }), {
     target: { value: 'Hello there,\nthis message has a line break.' },
   });
+  fireEvent.click(privacyBox());
 };
+
+const privacyBox = (name = "I've read the privacy notice") =>
+  screen.getByRole('checkbox', { name }) as HTMLInputElement;
 
 beforeEach(() => {
   stubResizeObserver();
@@ -98,14 +103,75 @@ describe('ContactForm reCAPTCHA', () => {
   });
 });
 
-describe('ContactForm retention notice', () => {
+describe('ContactForm privacy notice', () => {
   test.each([
-    ['en', EnContent, /backup copy of your message for 90 days/],
-    ['es', EsContent, /copia de respaldo de tu mensaje durante 90 días/],
-  ] as const)('%s says how long a backup is kept', (locale, data, text) => {
-    renderForm(locale, new Dictionary(data));
+    [
+      'en',
+      EnContent,
+      /backup copy of your message for 90 days/,
+      "I've read the privacy notice",
+      'privacy notice',
+      'This site is protected by reCAPTCHA.',
+    ],
+    [
+      'es',
+      EsContent,
+      /copia de respaldo de tu mensaje durante 90 días/,
+      'He leído el aviso de privacidad',
+      'aviso de privacidad',
+      'Este sitio está protegido por reCAPTCHA.',
+    ],
+  ] as const)(
+    '%s shows one short line and an unticked box linking the privacy page',
+    (locale, data, retention, boxName, linkName, recaptcha) => {
+      renderForm(locale, new Dictionary(data));
 
-    expect(screen.getByText(text).tagName).toBe('P');
+      expect(screen.getByText(retention).tagName).toBe('P');
+
+      const box = privacyBox(boxName);
+      expect(box.checked).toBe(false);
+      expect(box.required).toBe(true);
+      const page = screen.getByRole('link', { name: linkName });
+      expect(page.getAttribute('href')).toBe(`/${locale}/privacy`);
+      expect(page.getAttribute('target')).toBeNull();
+      expect(box.labels?.[0].contains(page)).toBe(true);
+
+      // reCAPTCHA is named, with no links to Google's policies.
+      expect(screen.getByText(recaptcha).tagName).toBe('P');
+      expect(screen.getAllByRole('link')).toHaveLength(1);
+      expect(document.body.textContent).not.toMatch(/[{}]/);
+    }
+  );
+
+  test('an unticked box blocks the send, explains why and takes focus', () => {
+    renderForm();
+    fillValid();
+    fireEvent.click(privacyBox());
+    fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+
+    const box = privacyBox();
+    expect(document.activeElement).toBe(box);
+    expect(box.getAttribute('aria-invalid')).toBe('true');
+    expect(describedText(box)).toBe(
+      "Please confirm you've read the privacy notice"
+    );
+    expect(mocks.getRecaptchaToken).not.toHaveBeenCalled();
+    expect(mocks.fetchData).not.toHaveBeenCalled();
+
+    fireEvent.click(box);
+    expect(box.getAttribute('aria-invalid')).toBeNull();
+    expect(box.getAttribute('aria-describedby')).toBeNull();
+  });
+
+  test('with empty fields too, every error shows and focus goes to the first field', () => {
+    renderForm();
+    fireEvent.click(screen.getByRole('button', { name: 'Submit' }));
+
+    expect(document.activeElement).toBe(
+      screen.getByRole('textbox', { name: 'Name' })
+    );
+    expect(privacyBox().getAttribute('aria-invalid')).toBe('true');
+    expect(mocks.fetchData).not.toHaveBeenCalled();
   });
 });
 
@@ -191,9 +257,10 @@ describe('ContactForm accessibility', () => {
 
     await waitFor(() => expect(mocks.fetchData).toHaveBeenCalled());
     expect(mocks.getRecaptchaToken).toHaveBeenCalledTimes(1);
-    expect(mocks.fetchData.mock.calls[0][1].body.recaptchaToken).toBe(
-      'fresh-token'
-    );
+    expect(mocks.fetchData.mock.calls[0][1].body).toMatchObject({
+      recaptchaToken: 'fresh-token',
+      privacyRead: true,
+    });
 
     // While sending the button keeps focus and is named.
     const sending = screen.getByRole('button', { name: 'Sending…' });
@@ -217,6 +284,7 @@ describe('ContactForm accessibility', () => {
     screen
       .getAllByRole('textbox')
       .forEach((field) => expect((field as HTMLInputElement).value).toBe(''));
+    expect(privacyBox().checked).toBe(false);
     expect(document.activeElement).toBe(
       screen.getByRole('button', { name: 'Submit' })
     );

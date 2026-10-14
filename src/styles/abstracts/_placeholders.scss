@@ -25,6 +25,15 @@
   text-underline-offset: 0.2em;
 }
 
+// Links inside running text get the underline without the global hover bar.
+%prose-link {
+  @extend %text-link;
+
+  &::before {
+    content: none;
+  }
+}
+
 %icon-button {
   cursor: pointer;
   width: $icon-button-size;

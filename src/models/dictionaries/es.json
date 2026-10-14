@@ -12,6 +12,10 @@
       "title": "Recursos | Eduardo Aire Torres",
       "description": "Recursos de Eduardo Aire Torres sobre diseño, tipografía y desarrollo web."
     },
+    "privacy": {
+      "title": "Aviso de privacidad | Eduardo Aire Torres",
+      "description": "Qué datos tuyos recaba este sitio, para qué, quién más los trata, cuánto tiempo los guardo y cómo pedir que se borren."
+    },
     "notFound": {
       "title": "Página no encontrada | Eduardo Aire Torres",
       "description": "Esta página no existe."
@@ -36,6 +40,7 @@
     "theme": {
       "text": "Tema"
     },
+    "privacy": "Privacidad",
     "credits": "Diseñado y desarrollado por {name} con {nextjs}, {react}, {typescript}, {sass} y {threejs}, y alojado en {vercel}. Las actualizaciones recientes se hicieron con ayuda de {claudecode} y {cursor}. Tipografía: {font} de James Edmondson ({foundry})."
   },
   "buttons": {
@@ -267,6 +272,7 @@
       "success": "¡Gracias! Tu mensaje va en camino. Te responderé pronto.",
       "errors": {
         "submit": "Algo salió mal y tu mensaje no se envió. Inténtalo de nuevo o escríbeme a hola@eduairet.com.",
+        "privacy": "Confirma que leíste el aviso de privacidad",
         "empty": {
           "name": "Escribe tu nombre",
           "email": "Escribe tu correo",
@@ -281,12 +287,151 @@
       "sending": "Enviando…",
       "instructions": "Llena todos los campos, por favor.",
       "lengthHint": "De {min} a {max} caracteres",
-      "retention": "Guardo una copia de respaldo de tu mensaje durante 90 días por si se pierde un correo, y después se borra.",
-      "recaptcha": {
-        "text": "Este sitio está protegido por reCAPTCHA y se aplican la {privacy} y los {terms} de Google.",
-        "privacy": "Política de privacidad",
-        "terms": "Términos del servicio"
-      }
+      "notice": "Uso tu nombre, correo y mensaje solo para responderte, y guardo una copia de respaldo de tu mensaje durante 90 días por si se pierde un correo.",
+      "privacyCheck": "He leído el {privacy}",
+      "noticeLink": "aviso de privacidad",
+      "recaptcha": "Este sitio está protegido por reCAPTCHA."
     }
+  },
+  "privacy": {
+    "title": "Aviso de privacidad",
+    "updated": "Última actualización: {date}",
+    "intro": "Esta página explica qué datos tuyos recaba este sitio, para qué, quién más los trata, cuánto tiempo los guardo y cómo pedir que se borren. Describe cómo funciona el sitio hoy.",
+    "links": {
+      "aws": "Aviso de privacidad de AWS",
+      "google": "Política de privacidad de Google",
+      "adobe": "Aviso de privacidad de Adobe Fonts",
+      "vercel": "Aviso de privacidad de Vercel",
+      "sabg": "Secretaría Anticorrupción y Buen Gobierno",
+      "edpb": "Comité Europeo de Protección de Datos"
+    },
+    "sections": [
+      {
+        "id": "who",
+        "title": "Quién soy",
+        "body": [
+          "Soy Eduardo Aire Torres. Llevo este sitio por mi cuenta y soy el responsable de los datos personales que recaba.",
+          "Mi domicilio para oír y recibir notificaciones es {address}. La forma más rápida de contactarme es {email}."
+        ]
+      },
+      {
+        "id": "data",
+        "title": "Qué datos recabo",
+        "body": [
+          "Cuando envías el formulario de contacto, recibo:",
+          [
+            "Tu nombre",
+            "Tu correo electrónico",
+            "Tu mensaje",
+            "El idioma de la página que usaste"
+          ],
+          "Cuando me escribes directo por correo, recibo tu dirección de correo, tu nombre si tu correo lo muestra, y lo que escribas.",
+          "Como en cualquier sitio web, los servicios que hacen funcionar este sitio también ven datos técnicos, como tu dirección IP y tu navegador. Las secciones de abajo dicen quién ve qué.",
+          "No te pido datos sensibles, como tu salud, tu religión o tus opiniones políticas. Por favor, no los incluyas en tu mensaje.",
+          "No tienes que darme ningún dato. Pero sin nombre, correo y mensaje, el formulario no se envía y no puedo responderte."
+        ]
+      },
+      {
+        "id": "purposes",
+        "title": "Para qué los uso",
+        "body": [
+          "Uso tu nombre, correo y mensaje solo para leer tu mensaje y responderte. Guardo una copia de respaldo para que tu mensaje no se pierda si un correo se extravía. Reviso cada envío con reCAPTCHA para frenar el spam.",
+          "Es todo. No uso tus datos para mercadotecnia ni publicidad, y no los vendo. Cada uso de arriba es necesario para responderte, así que no hay usos opcionales que desactivar.",
+          "reCAPTCHA le da una calificación a cada envío. Si es demasiado baja, el formulario no se envía y te pide intentarlo de nuevo o escribirme por correo. Una calificación muy alta también hace que recibas un correo breve de \"gracias\". Nada más sobre ti se decide de forma automática.",
+          "Si te aplica la ley de la Unión Europea, la base legal es mi interés legítimo en responder los mensajes que me envían y en frenar el spam (artículo 6(1)(f) del RGPD)."
+        ]
+      },
+      {
+        "id": "services",
+        "title": "Quién más los trata",
+        "body": [
+          "Estas empresas ayudan a que el sitio funcione. Cada una recibe solo lo que necesita:",
+          [
+            "Amazon Web Services (AWS) entrega tu mensaje a mi bandeja de entrada con Amazon SES. Cuando reCAPTCHA está muy seguro de que eres una persona, SES también te envía un correo breve de \"gracias\" que no incluye nada de lo que escribiste. Amazon DynamoDB guarda la copia de respaldo. {aws}",
+            "Google aloja mi bandeja de entrada en Google Workspace, así que tu nombre, correo y mensaje se guardan ahí. Google reCAPTCHA revisa que una persona esté usando el formulario. Se carga la primera vez que haces clic o tabulas a uno de los campos del formulario, y recaba datos de tu navegador y tu dispositivo para esa revisión. {google}",
+            "Adobe sirve la tipografía del sitio en cada página con Adobe Fonts. Tu navegador descarga la tipografía desde Adobe, así que Adobe recibe tu dirección IP. Adobe dice que no guarda tu dirección IP ni usa cookies, y que cuenta qué tipografías usa cada sitio para poder pagarles a quienes las diseñan. {adobe}",
+            "Vercel aloja el sitio. Como cualquier servicio de alojamiento, recibe tu dirección IP y datos de tu navegador cuando abres una página. Los usa para enviarte la página, bloquear bots y limitar cuántas veces una misma dirección IP puede enviar el formulario. {vercel}"
+          ],
+          "No comparto tus datos con nadie más, salvo que una ley o una orden judicial me lo exija."
+        ]
+      },
+      {
+        "id": "storage",
+        "title": "Dónde se guardan",
+        "body": [
+          "Las cuatro empresas tienen su sede en Estados Unidos, así que tus datos salen de México. AWS guarda la copia de respaldo en su región us-east-1, en Virginia, Estados Unidos. Los otros servicios pueden tratar tus datos en Estados Unidos o en otros países donde tengan servidores.",
+          "Si escribes desde la Unión Europea, tus datos van a Estados Unidos. Las cuatro empresas están certificadas en el Marco de Privacidad de Datos UE-EE. UU., que la Comisión Europea reconoce como una protección adecuada."
+        ]
+      },
+      {
+        "id": "retention",
+        "title": "Cuánto tiempo los guardo",
+        "body": [
+          [
+            "La copia de respaldo: 90 días. Después de esa fecha, DynamoDB la borra sola, por lo general en unos pocos días.",
+            "Los correos en mi bandeja de entrada: mientras estemos en contacto. Los borro cuando me lo pidas.",
+            "Los registros de Vercel que puedo ver: una hora. Nunca incluyen lo que escribiste. Vercel puede guardar sus propios registros por más tiempo, como explica su aviso de privacidad.",
+            "Los datos de reCAPTCHA: según los términos de Google.",
+            "Tu tema elegido: hasta que borres el almacenamiento de tu navegador."
+          ]
+        ]
+      },
+      {
+        "id": "cookies",
+        "title": "Cookies y almacenamiento del navegador",
+        "body": [
+          "El código de este sitio no guarda cookies ni usa herramientas de analítica o de publicidad.",
+          [
+            "Tema: el sitio guarda \"light\" o \"dark\" en el almacenamiento local de tu navegador, con el nombre \"theme\", para que la página se vea igual en tu próxima visita. En tu primera visita guarda la configuración de tu dispositivo. Nunca sale de tu dispositivo.",
+            "reCAPTCHA: cuando usas el formulario de contacto, Google guarda una cookie llamada _GRECAPTCHA para su revisión contra el spam. Como reCAPTCHA se carga desde google.com, tu navegador también puede enviarle a Google las cookies que ya tenga de google.com.",
+            "Vercel: si Vercel te muestra una revisión breve del navegador, tu navegador recuerda durante una hora que la pasaste."
+          ],
+          "Puedes borrarlas o bloquearlas en la configuración de tu navegador. Si bloqueas reCAPTCHA, el formulario no se puede enviar, así que mejor escríbeme por correo."
+        ]
+      },
+      {
+        "id": "choices",
+        "title": "Cómo limitar lo que recibo",
+        "body": [
+          [
+            "Escríbeme a {email} en vez de usar el formulario. Así no se guarda una copia de respaldo, y reCAPTCHA no se carga a menos que hagas clic o tabules a uno de los campos del formulario.",
+            "Bloquea las tipografías de terceros en tu navegador. El sitio sigue funcionando y usa una tipografía de tu dispositivo.",
+            "Pídeme en cualquier momento que borre tus mensajes, como explico abajo."
+          ]
+        ]
+      },
+      {
+        "id": "rights",
+        "title": "Tus derechos ARCO",
+        "body": [
+          "Puedes pedirme:",
+          [
+            "Acceder a los datos que tengo sobre ti y recibir una copia en un formato común",
+            "Rectificarlos",
+            "Cancelarlos (borrarlos)",
+            "Oponerte a que los use, o revocar tu consentimiento"
+          ],
+          "Escríbeme a {email} desde la dirección que usaste. Dime qué quieres y, si puedes, más o menos cuándo me escribiste. Si no puedo confirmar que la solicitud es tuya, te pediré que lo confirmes. Es gratis, y te respondo y la atiendo en un plazo de 20 días hábiles. Cuando borre tus datos, te aviso."
+        ]
+      },
+      {
+        "id": "complaints",
+        "title": "Quejas",
+        "body": [
+          "Si no estás conforme con mi respuesta, o no la recibes a tiempo, puedes presentar una queja:",
+          [
+            "En México, ante la {sabg}, dentro de los 15 días hábiles siguientes a mi respuesta, o una vez que pasen los 20 días hábiles sin respuesta.",
+            "En la Unión Europea, ante la autoridad de protección de datos de tu país. El {edpb} tiene la lista."
+          ]
+        ]
+      },
+      {
+        "id": "changes",
+        "title": "Cambios a este aviso",
+        "body": [
+          "Si cambio qué datos recaba el sitio o cómo los uso, actualizaré esta página y la fecha de arriba cuando el cambio entre en vigor."
+        ]
+      }
+    ]
   }
 }

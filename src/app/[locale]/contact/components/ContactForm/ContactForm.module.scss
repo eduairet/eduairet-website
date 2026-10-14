@@ -1,7 +1,7 @@
 @use '@/styles/abstracts/index' as *;
 
 .submit {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
 .instructions {
@@ -10,24 +10,15 @@
   margin-bottom: 1rem;
 }
 
-.retention,
+.notice {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  text-align: left;
+  margin-bottom: 0.75rem;
+}
+
 .recaptcha {
   font-size: 0.75rem;
   line-height: 1.4;
-}
-
-.retention {
   margin-top: 1.5rem;
-}
-
-.recaptcha {
-  margin-top: 0.5rem;
-
-  a {
-    @extend %text-link;
-
-    &::before {
-      content: none;
-    }
-  }
 }

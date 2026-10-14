@@ -12,6 +12,10 @@
       "title": "Resources | Eduardo Aire Torres",
       "description": "Resources from Eduardo Aire Torres on design, typography, and web development."
     },
+    "privacy": {
+      "title": "Privacy notice | Eduardo Aire Torres",
+      "description": "What this site collects about you, why, who else handles it, how long I keep it, and how to have it deleted."
+    },
     "notFound": {
       "title": "Page not found | Eduardo Aire Torres",
       "description": "This page doesn't exist."
@@ -36,6 +40,7 @@
     "theme": {
       "text": "Theme"
     },
+    "privacy": "Privacy",
     "credits": "Designed and built by {name} with {nextjs}, {react}, {typescript}, {sass} and {threejs}, and hosted on {vercel}. Recent updates were made with help from {claudecode} and {cursor}. Set in {font} by James Edmondson ({foundry})."
   },
   "buttons": {
@@ -267,6 +272,7 @@
       "success": "Thanks! Your message is on its way. I'll write back soon.",
       "errors": {
         "submit": "Something went wrong and your message wasn't sent. Please try again, or email me at hola@eduairet.com.",
+        "privacy": "Please confirm you've read the privacy notice",
         "empty": {
           "name": "Please enter your name",
           "email": "Please enter your email",
@@ -281,12 +287,151 @@
       "sending": "Sending…",
       "instructions": "Please fill in all the fields.",
       "lengthHint": "{min} to {max} characters",
-      "retention": "I keep a backup copy of your message for 90 days in case an email gets lost, and then it's deleted.",
-      "recaptcha": {
-        "text": "This site is protected by reCAPTCHA and the Google {privacy} and {terms} apply.",
-        "privacy": "Privacy Policy",
-        "terms": "Terms of Service"
-      }
+      "notice": "I use your name, email and message only to reply to you, and I keep a backup copy of your message for 90 days in case an email gets lost.",
+      "privacyCheck": "I've read the {privacy}",
+      "noticeLink": "privacy notice",
+      "recaptcha": "This site is protected by reCAPTCHA."
     }
+  },
+  "privacy": {
+    "title": "Privacy notice",
+    "updated": "Last updated: {date}",
+    "intro": "This page explains what this site collects about you, why, who else handles it, how long I keep it, and how to have it deleted. It describes how the site works today.",
+    "links": {
+      "aws": "AWS privacy notice",
+      "google": "Google privacy policy",
+      "adobe": "Adobe Fonts privacy notice",
+      "vercel": "Vercel privacy notice",
+      "sabg": "Secretaría Anticorrupción y Buen Gobierno",
+      "edpb": "European Data Protection Board"
+    },
+    "sections": [
+      {
+        "id": "who",
+        "title": "Who I am",
+        "body": [
+          "I'm Eduardo Aire Torres. I run this site on my own, and I'm responsible for the personal data it collects.",
+          "My address for legal notices is {address}. The fastest way to reach me is {email}."
+        ]
+      },
+      {
+        "id": "data",
+        "title": "What I collect",
+        "body": [
+          "When you send the contact form, I get:",
+          [
+            "Your name",
+            "Your email address",
+            "Your message",
+            "The language of the page you used"
+          ],
+          "When you email me directly, I get your email address, your name if your email shows it, and what you write.",
+          "Like any website, the services that run this site also see technical details, such as your IP address and your browser. The sections below say who sees what.",
+          "I don't ask for sensitive data, such as your health, religion or political views. Please leave it out of your message.",
+          "You don't have to give me anything. Without a name, an email and a message, though, the form can't send and I can't reply."
+        ]
+      },
+      {
+        "id": "purposes",
+        "title": "Why I use it",
+        "body": [
+          "I use your name, email and message only to read your message and reply to you. I keep a backup copy so your message isn't lost if an email goes missing. I check each send with reCAPTCHA to keep out spam.",
+          "That's all. I don't use your data for marketing or advertising, and I don't sell it. Every use above is needed to answer you, so there are no optional uses to turn off.",
+          "reCAPTCHA gives each send a score. If the score is too low, the form doesn't send and asks you to try again or email me. A very high score also means you get a short \"thanks\" email. Nothing else about you is decided automatically.",
+          "If EU law applies to you, the legal basis is my legitimate interest in answering the messages people send me and keeping out spam (GDPR Article 6(1)(f))."
+        ]
+      },
+      {
+        "id": "services",
+        "title": "Who else handles it",
+        "body": [
+          "These companies help run the site. Each one gets only what it needs:",
+          [
+            "Amazon Web Services (AWS) delivers your message to my inbox through Amazon SES. When reCAPTCHA is very sure you're a person, SES also sends you a short \"thanks\" email that includes nothing you wrote. Amazon DynamoDB keeps the backup copy. {aws}",
+            "Google hosts my inbox in Google Workspace, so your name, email and message are stored there. Google reCAPTCHA checks that a person is using the form. It loads when you first click or tab into one of the form's fields, and it collects details about your browser and device for that check. {google}",
+            "Adobe serves the site's font on every page through Adobe Fonts. Your browser downloads the font from Adobe, so Adobe receives your IP address. Adobe says it doesn't store your IP address or set cookies, and that it counts which fonts each website uses so it can pay the type designers. {adobe}",
+            "Vercel hosts the site. Like any host, it receives your IP address and browser details when you open a page. It uses them to send you the page, block bots, and limit how often one IP address can send the form. {vercel}"
+          ],
+          "I don't share your data with anyone else, unless a law or a court order requires it."
+        ]
+      },
+      {
+        "id": "storage",
+        "title": "Where it's stored",
+        "body": [
+          "All four companies are based in the United States, so your data leaves Mexico. AWS keeps the backup copy in its us-east-1 region, in Virginia, USA. The other services may handle your data in the United States or in other countries where they have servers.",
+          "If you write from the European Union, your data goes to the United States. All four companies are certified under the EU-U.S. Data Privacy Framework, which the European Commission recognizes as giving adequate protection."
+        ]
+      },
+      {
+        "id": "retention",
+        "title": "How long I keep it",
+        "body": [
+          [
+            "The backup copy: 90 days. After that date, DynamoDB deletes it on its own, usually within a few days.",
+            "Emails in my inbox: while we're in touch. I delete them when you ask me to.",
+            "The Vercel logs I can see: one hour. They never include what you wrote. Vercel may keep its own records longer, as its privacy notice explains.",
+            "reCAPTCHA data: as Google's terms describe.",
+            "Your theme choice: until you clear your browser's storage."
+          ]
+        ]
+      },
+      {
+        "id": "cookies",
+        "title": "Cookies and browser storage",
+        "body": [
+          "This site's code sets no cookies and uses no analytics or ad trackers.",
+          [
+            "Theme: the site saves \"light\" or \"dark\" in your browser's local storage, under the name \"theme\", so the page keeps its look on your next visit. On your first visit it saves your device's setting. It never leaves your device.",
+            "reCAPTCHA: when you use the contact form, Google sets a cookie called _GRECAPTCHA for its spam check. Because reCAPTCHA loads from google.com, your browser may also send Google cookies it already has for google.com.",
+            "Vercel: if Vercel shows you a short browser check, your browser remembers for one hour that you passed it."
+          ],
+          "You can clear or block these in your browser settings. If you block reCAPTCHA, the form can't send, so email me instead."
+        ]
+      },
+      {
+        "id": "choices",
+        "title": "How to limit what I get",
+        "body": [
+          [
+            "Email me at {email} instead of using the form. Then no backup copy is saved, and reCAPTCHA doesn't load unless you click or tab into one of the form's fields.",
+            "Block third-party fonts in your browser. The site still works and uses a font from your device instead.",
+            "Ask me at any time to delete your messages, as explained below."
+          ]
+        ]
+      },
+      {
+        "id": "rights",
+        "title": "Your rights",
+        "body": [
+          "You can ask me to:",
+          [
+            "Show you the data I have about you, and send you a copy in a common format",
+            "Correct it",
+            "Delete it",
+            "Stop using it, or withdraw your consent"
+          ],
+          "Email {email} from the address you used. Say what you'd like and, if you can, roughly when you wrote. If I can't tell the request is yours, I'll ask you to confirm it. It's free, and I'll answer and act on it within 20 business days. When I delete your data, I'll let you know."
+        ]
+      },
+      {
+        "id": "complaints",
+        "title": "Complaints",
+        "body": [
+          "If you're not happy with my answer, or you don't get one in time, you can complain:",
+          [
+            "In Mexico, to the {sabg}, within 15 business days of my answer, or once the 20 business days pass without one.",
+            "In the European Union, to the data protection authority of your country. The {edpb} lists them."
+          ]
+        ]
+      },
+      {
+        "id": "changes",
+        "title": "Changes to this notice",
+        "body": [
+          "If I change what the site collects or how I use it, I'll update this page and the date at the top when the change goes live."
+        ]
+      }
+    ]
   }
 }

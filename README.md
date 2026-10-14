@@ -19,7 +19,9 @@ docker compose up -d
 
 The site runs at http://localhost:3000/en. The container keeps its own `node_modules`, so after a dependency change run `docker compose down -v && docker compose up -d --build`.
 
-The contact form sends mail and saves a backup of each message only from Vercel deployments, because its AWS access comes from Vercel's OIDC token (see `SECURITY.md`). Locally it shows its error message, and the tests stub AWS.
+The contact form sends mail and saves a backup of each message only from Vercel deployments, because its AWS access comes from Vercel's OIDC token (see `SECURITY.md`). If a backup fails to save, it emails me an alert. Locally it shows its error message, and the tests stub AWS.
+
+What the site collects is explained to visitors on the privacy page (`/en/privacy`, `/es/privacy`). Update it whenever the site starts collecting something new or sends data to a new service.
 
 ## Check it
 

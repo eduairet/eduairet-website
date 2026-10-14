@@ -4,6 +4,7 @@ export const PagePaths = {
   home: '',
   contact: '/contact',
   resources: '/resources',
+  privacy: '/privacy',
 };
 
 export type SitePage = keyof typeof PagePaths;
@@ -18,6 +19,9 @@ export const PageUrls = {
   },
   contact_(locale: Lang) {
     return `/${locale}${PagePaths.contact}`;
+  },
+  privacy_(locale: Lang) {
+    return `/${locale}${PagePaths.privacy}`;
   },
 };
 

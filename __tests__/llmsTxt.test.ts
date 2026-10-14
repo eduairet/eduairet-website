@@ -19,6 +19,8 @@ test('llms.txt is Markdown with a title, a summary and every indexable page', as
     'https://www.eduairet.com/es',
     'https://www.eduairet.com/en/contact',
     'https://www.eduairet.com/es/contact',
+    'https://www.eduairet.com/en/privacy',
+    'https://www.eduairet.com/es/privacy',
   ]) {
     expect(body).toContain(`](${url})`);
   }

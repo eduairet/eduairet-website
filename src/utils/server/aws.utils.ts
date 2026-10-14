@@ -122,6 +122,11 @@ export const awsErrorType = async (res: Response) => {
   return type.split(':')[0].split('#').pop();
 };
 
+// Its message is only the HTTP status and the AWS error type.
+export class AwsResponseError extends Error {
+  name = 'AwsResponseError';
+}
+
 const xmlField = (xml: string, name: string) =>
   xml.match(new RegExp(`<${name}>([^<]+)</${name}>`))?.[1];
 
@@ -171,5 +176,6 @@ export const putDynamoDbItem = async ({
     service: 'dynamodb',
     credentials,
   });
-  if (!res.ok) throw new Error(`${res.status} ${await awsErrorType(res)}`);
+  if (!res.ok)
+    throw new AwsResponseError(`${res.status} ${await awsErrorType(res)}`);
 };

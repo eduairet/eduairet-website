@@ -13,6 +13,8 @@ test.each([
   ['es', 'home', `${SITE}/es`, 'es_MX', ['en_US']],
   ['en', 'contact', `${SITE}/en/contact`, 'en_US', ['es_MX']],
   ['es', 'contact', `${SITE}/es/contact`, 'es_MX', ['en_US']],
+  ['en', 'privacy', `${SITE}/en/privacy`, 'en_US', ['es_MX']],
+  ['es', 'privacy', `${SITE}/es/privacy`, 'es_MX', ['en_US']],
 ] as const)(
   '%s %s points its canonical and og:url at itself',
   async (locale, page, url, ogLocale, alternateLocale) => {
@@ -40,6 +42,20 @@ test('every page lists en, es and x-default with absolute www URLs', () => {
     en: `${SITE}/en/contact`,
     es: `${SITE}/es/contact`,
     'x-default': `${SITE}/contact`,
+  });
+});
+
+test("privacy titles use each language's name for the notice", async () => {
+  expect((await buildPageMetadata('en', 'privacy')).title).toBe(
+    'Privacy notice | Eduardo Aire Torres'
+  );
+  expect((await buildPageMetadata('es', 'privacy')).title).toBe(
+    'Aviso de privacidad | Eduardo Aire Torres'
+  );
+  expect(languageAlternates('privacy')).toEqual({
+    en: `${SITE}/en/privacy`,
+    es: `${SITE}/es/privacy`,
+    'x-default': `${SITE}/privacy`,
   });
 });
 

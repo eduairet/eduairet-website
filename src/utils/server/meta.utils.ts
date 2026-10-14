@@ -17,6 +17,7 @@ import { locales } from './localization.utils';
 export const indexablePages: SitePage[] = [
   'home',
   'contact',
+  'privacy',
   ...(RESOURCES_PUBLISHED ? (['resources'] as const) : []),
 ];
 

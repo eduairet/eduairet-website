@@ -10,10 +10,6 @@
   color: var(--foreground);
 
   a {
-    @extend %text-link;
-
-    &::before {
-      content: none;
-    }
+    @extend %prose-link;
   }
 }
