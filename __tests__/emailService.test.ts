@@ -1,16 +1,27 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import { sendEmail } from '@/services/server/email.service';
+import { assumeRoleWithWebIdentity } from '@/utils/server';
+
+vi.mock('@/utils/server', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/utils/server')>()),
+  assumeRoleWithWebIdentity: vi.fn(),
+}));
 
 const fetchMock = vi.fn();
 const errorLog = vi.spyOn(console, 'error').mockImplementation(() => {});
 
-// AWS's published example credentials, not real ones.
 const env = {
   SES_REGION: 'us-east-1',
-  SES_ACCESS_KEY_ID: 'AKIDEXAMPLE',
-  SES_SECRET_ACCESS_KEY: 'wJalrXUtnFEMI/K7MDENG+bPxRfiCYEXAMPLEKEY',
+  SES_ROLE_ARN: 'arn:aws:iam::123456789012:role/example',
   CONTACT_EMAIL: 'me@example.test',
+};
+
+// AWS's published example credentials, not real ones.
+const temporaryCredentials = {
+  accessKeyId: 'AKIDEXAMPLE',
+  secretAccessKey: 'wJalrXUtnFEMI/K7MDENG+bPxRfiCYEXAMPLEKEY',
+  sessionToken: 'session-token',
 };
 
 const visitor = {
@@ -22,6 +33,7 @@ const visitor = {
 const send = (locale: 'en' | 'es' = 'en', name = visitor.name) =>
   sendEmail(locale, visitor.email, name, visitor.message, {
     sendConfirmation: true,
+    oidcToken: 'oidc-token',
   });
 
 const sesReplies = (...responses: Response[]) =>
@@ -45,6 +57,7 @@ const sentEmail = (call: number) =>
 beforeEach(() => {
   vi.stubGlobal('fetch', fetchMock);
   Object.entries(env).forEach(([name, value]) => vi.stubEnv(name, value));
+  vi.mocked(assumeRoleWithWebIdentity).mockResolvedValue(temporaryCredentials);
 });
 
 afterEach(() => {
@@ -66,9 +79,23 @@ describe('sendEmail', () => {
     expect(init.signal).toBeInstanceOf(AbortSignal);
     expect(init.headers['content-type']).toBe('application/json');
     expect(init.headers['x-amz-date']).toMatch(/^\d{8}T\d{6}Z$/);
+    expect(init.headers['x-amz-security-token']).toBe('session-token');
     expect(init.headers.authorization).toMatch(
-      /^AWS4-HMAC-SHA256 Credential=AKIDEXAMPLE\/\d{8}\/us-east-1\/ses\/aws4_request, SignedHeaders=content-type;host;x-amz-date, Signature=[0-9a-f]{64}$/
+      /^AWS4-HMAC-SHA256 Credential=AKIDEXAMPLE\/\d{8}\/us-east-1\/ses\/aws4_request, SignedHeaders=content-type;host;x-amz-date;x-amz-security-token, Signature=[0-9a-f]{64}$/
     );
+  });
+
+  test("assumes the role with the request's OIDC token", async () => {
+    sesReplies(ok(), ok());
+    await send();
+
+    expect(assumeRoleWithWebIdentity).toHaveBeenCalledTimes(1);
+    expect(assumeRoleWithWebIdentity).toHaveBeenCalledWith({
+      region: env.SES_REGION,
+      roleArn: env.SES_ROLE_ARN,
+      sessionName: 'eduairet-website-contact',
+      webIdentityToken: 'oidc-token',
+    });
   });
 
   test('sends my copy first, with the visitor as Reply-To', async () => {
@@ -103,7 +130,8 @@ describe('sendEmail', () => {
       'en',
       visitor.email,
       visitor.name,
-      visitor.message
+      visitor.message,
+      { oidcToken: 'oidc-token' }
     );
 
     expect(result.success).toBe(true);
@@ -185,77 +213,34 @@ describe('sendEmail', () => {
     );
   });
 
-  test('missing SES settings fail without calling SES', async () => {
-    vi.stubEnv('SES_SECRET_ACCESS_KEY', '');
+  test('missing SES settings fail without calling AWS', async () => {
+    vi.stubEnv('SES_ROLE_ARN', '');
 
     expect((await send()).success).toBe(false);
+    expect(assumeRoleWithWebIdentity).not.toHaveBeenCalled();
     expect(fetchMock).not.toHaveBeenCalled();
-  });
-});
-
-describe('sendEmail with SES_ROLE_ARN', () => {
-  const roleArn = 'arn:aws:iam::123456789012:role/example';
-
-  const sendWithToken = (oidcToken: string | null = 'oidc-token') =>
-    sendEmail('en', visitor.email, visitor.name, visitor.message, {
-      oidcToken,
-    });
-
-  const stsOk = () =>
-    new Response(
-      `<AssumeRoleWithWebIdentityResponse><AssumeRoleWithWebIdentityResult><Credentials>
-        <AccessKeyId>ASIAEXAMPLE</AccessKeyId>
-        <SecretAccessKey>temporary-secret</SecretAccessKey>
-        <SessionToken>session-token</SessionToken>
-      </Credentials></AssumeRoleWithWebIdentityResult></AssumeRoleWithWebIdentityResponse>`
-    );
-  const stsDenied = () =>
-    new Response(
-      `<ErrorResponse><Error><Type>Sender</Type><Code>AccessDenied</Code>
-        <Message>Not authorized to perform sts:AssumeRoleWithWebIdentity on ${roleArn}</Message>
-      </Error></ErrorResponse>`,
-      { status: 403 }
-    );
-
-  beforeEach(() => vi.stubEnv('SES_ROLE_ARN', roleArn));
-
-  test('trades the OIDC token for temporary credentials at STS', async () => {
-    sesReplies(stsOk(), ok());
-    await sendWithToken();
-
-    const [url, init] = fetchMock.mock.calls[0];
-    expect(url).toBe('https://sts.us-east-1.amazonaws.com/');
-    const params = new URLSearchParams(init.body.toString());
-    expect(params.get('Action')).toBe('AssumeRoleWithWebIdentity');
-    expect(params.get('RoleArn')).toBe(roleArn);
-    expect(params.get('WebIdentityToken')).toBe('oidc-token');
-    expect(params.get('RoleSessionName')).toBe('eduairet-website-contact');
-    expect(init.headers).toBeUndefined();
-  });
-
-  test('signs SES with the temporary credentials, not the access keys', async () => {
-    sesReplies(stsOk(), ok());
-    const result = await sendWithToken();
-
-    expect(result.success).toBe(true);
-    const { headers } = fetchMock.mock.calls[1][1];
-    expect(headers['x-amz-security-token']).toBe('session-token');
-    expect(headers.authorization).toMatch(
-      /^AWS4-HMAC-SHA256 Credential=ASIAEXAMPLE\/\d{8}\/us-east-1\/ses\/aws4_request, SignedHeaders=content-type;host;x-amz-date;x-amz-security-token, /
-    );
   });
 
   test('without an OIDC token, nothing is sent', async () => {
-    expect((await sendWithToken(null)).success).toBe(false);
+    const result = await sendEmail(
+      'en',
+      visitor.email,
+      visitor.name,
+      visitor.message
+    );
+
+    expect(result.success).toBe(false);
+    expect(assumeRoleWithWebIdentity).not.toHaveBeenCalled();
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  test('an STS refusal logs only the status and code', async () => {
-    sesReplies(stsDenied());
-    const result = await sendWithToken();
+  test('a refused role logs only the status and code, and sends nothing', async () => {
+    vi.mocked(assumeRoleWithWebIdentity).mockRejectedValueOnce(
+      new Error('403 AccessDenied')
+    );
 
-    expect(result.success).toBe(false);
-    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect((await send()).success).toBe(false);
+    expect(fetchMock).not.toHaveBeenCalled();
     expect(errorLog).toHaveBeenCalledWith(
       'STS AssumeRoleWithWebIdentity failed: 403 AccessDenied'
     );

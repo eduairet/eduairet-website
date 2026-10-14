@@ -56,19 +56,17 @@ const sesErrorType = async (res: Response) => {
   return type.split(':')[0].split('#').pop();
 };
 
-// Access keys stay as the fallback until every environment has SES_ROLE_ARN.
+const sesSettings = () => {
+  const region = process.env.SES_REGION;
+  const roleArn = process.env.SES_ROLE_ARN;
+  const from = process.env.CONTACT_EMAIL;
+  return region && roleArn && from ? { region, roleArn, from } : null;
+};
+
 const sesCredentials = async (
-  region: string,
+  { region, roleArn }: { region: string; roleArn: string },
   oidcToken: string | null
 ): Promise<AwsCredentials | null> => {
-  const roleArn = process.env.SES_ROLE_ARN;
-  if (!roleArn) {
-    const accessKeyId = process.env.SES_ACCESS_KEY_ID;
-    const secretAccessKey = process.env.SES_SECRET_ACCESS_KEY;
-    if (!accessKeyId || !secretAccessKey) return null;
-    return { accessKeyId, secretAccessKey };
-  }
-
   if (!oidcToken) return null;
   try {
     return await assumeRoleWithWebIdentity({
@@ -83,12 +81,6 @@ const sesCredentials = async (
     );
     return null;
   }
-};
-
-const sesSettings = () => {
-  const region = process.env.SES_REGION;
-  const from = process.env.CONTACT_EMAIL;
-  return region && from ? { region, from } : null;
 };
 
 const sendSesEmail = async (
@@ -145,8 +137,7 @@ export const sendEmail = async (
   const failed = { success: false, message: t.failed, status: 500 };
 
   const settings = sesSettings();
-  const credentials =
-    settings && (await sesCredentials(settings.region, oidcToken));
+  const credentials = settings && (await sesCredentials(settings, oidcToken));
   if (!settings || !credentials) {
     console.error('SES SendEmail failed: missing SES settings or credentials');
     return failed;
