@@ -26,13 +26,10 @@ export async function POST(req: Request) {
         status: 400,
       });
 
-    const mailResponse = await sendEmail(
-      locale,
-      email,
-      name,
-      message,
-      captcha.trusted
-    );
+    const mailResponse = await sendEmail(locale, email, name, message, {
+      sendConfirmation: captcha.trusted,
+      oidcToken: req.headers.get('x-vercel-oidc-token'),
+    });
     if (!mailResponse.success)
       return new Response(mailResponse.message, {
         status: mailResponse.status,

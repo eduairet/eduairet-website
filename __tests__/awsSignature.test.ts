@@ -61,6 +61,24 @@ describe('signAwsRequest matches the AWS SigV4 test suite', () => {
       'AWS4-HMAC-SHA256 Credential=AKIDEXAMPLE/20150830/us-east-1/service/aws4_request, SignedHeaders=host;my-header1;my-header2;x-amz-date, Signature=acc3ed3afb60bb290fc8d2dd0098b9911fcaa05412b367055dee359757a9c736'
     );
   });
+
+  test('post-sts-header-before signs the session token', () => {
+    const sessionToken =
+      'AQoDYXdzEPT//////////wEXAMPLEtc764bNrC9SAPBSM22wDOk4x4HIZ8j4FZTwdQWLWsKWHGBuFqwAeMicRXmxfpSPfIeoIYRqTflfKD8YUuwthAx7mSEI/qkPpKPi/kMcGdQrmGdeehM4IC1NtBmUpp2wUE8phUZampKsburEDy0KPkyQDYwT7WZ0wq5VSXDvp75YU9HFvlRd8Tx6q6fE8YQcHNVXAkiY9q6d+xo0rKwT38xVqr7ZD0u0iPPkUL64lIZbqBAz+scqKmlzm8FDrypNC9Yjc8fPOLn9FX9KSYvKTr4rvx3iSIlTJabIQwj2ICCR/oLxBA==';
+    const headers = signAwsRequest({
+      method: 'POST',
+      url: 'https://example.amazonaws.com/',
+      region: 'us-east-1',
+      service: 'service',
+      credentials: { ...credentials, sessionToken },
+      date: new Date('2015-08-30T12:36:00Z'),
+    });
+
+    expect(headers['x-amz-security-token']).toBe(sessionToken);
+    expect(headers.authorization).toBe(
+      'AWS4-HMAC-SHA256 Credential=AKIDEXAMPLE/20150830/us-east-1/service/aws4_request, SignedHeaders=host;x-amz-date;x-amz-security-token, Signature=85d96828115b5dc0cfc3bd16ad9e210dd772bbebba041836c64533a82be05ead'
+    );
+  });
 });
 
 // "Examples of How to Derive a Signing Key for Signature Version 4", AWS General Reference:
