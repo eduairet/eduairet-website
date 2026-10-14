@@ -19,14 +19,6 @@
   @include rounded-corners($radius: 3rem);
 }
 
-// The contact form's card; the toast matches it.
-%form-card {
-  max-width: $form-card-width;
-  background-color: var(--background);
-  @include border($weight: 3px);
-  @include rounded-corners($radius: 1rem);
-}
-
 %text-link {
   text-decoration: underline;
   text-decoration-thickness: 1px;

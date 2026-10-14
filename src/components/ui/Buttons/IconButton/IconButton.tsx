@@ -8,6 +8,7 @@ interface IProps {
   title?: string;
   ariaLabel?: string;
   isActive?: boolean;
+  bare?: boolean;
   // Pass `controls` for buttons that toggle a menu, so the open state is exposed.
   controls?: string;
   onClick?: () => void;
@@ -20,6 +21,7 @@ export default function IconButton({
   controls,
   title = 'Button',
   isActive = false,
+  bare = false,
 }: IProps) {
   return (
     <button
@@ -27,9 +29,11 @@ export default function IconButton({
       aria-label={ariaLabel}
       aria-expanded={controls ? isActive : undefined}
       aria-controls={controls}
-      className={[styles['icon-button'], isActive ? styles.active : ''].join(
-        ' '
-      )}
+      className={[
+        styles['icon-button'],
+        isActive ? styles.active : '',
+        bare ? styles.bare : '',
+      ].join(' ')}
       onClick={onClick}
     >
       <SvgWrapper>{children}</SvgWrapper>

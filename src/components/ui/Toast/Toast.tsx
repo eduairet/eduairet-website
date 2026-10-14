@@ -71,7 +71,7 @@ export default function Toast() {
         {isOpen && <span key={toast.id}>{toast.message}</span>}
       </p>
       {isOpen && (
-        <IconButton title={content.buttons.closeToast} onClick={close}>
+        <IconButton title={content.buttons.closeToast} onClick={close} bare>
           <path d='M20 12L50 42L80 12L88 20L58 50L88 80L80 88L50 58L20 88L12 80L42 50L12 20Z' />
         </IconButton>
       )}

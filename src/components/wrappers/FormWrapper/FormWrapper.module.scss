@@ -1,8 +1,11 @@
 @use '@/styles/abstracts/index' as *;
 
 .form {
-  @extend %form-card;
   width: 100%;
+  max-width: $form-card-width;
+  background-color: var(--background);
+  @include border($weight: 3px);
+  @include rounded-corners($radius: 1rem);
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
