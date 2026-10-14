@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { afterEach, describe, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import {
   assumeRoleWithWebIdentity,
   awsSigningKey,
@@ -119,10 +119,10 @@ describe('assumeRoleWithWebIdentity', () => {
     webIdentityToken: 'oidc-token',
   };
 
-  const stsReplies = (body: string, status = 200) => {
-    vi.stubGlobal('fetch', fetchMock);
+  const stsReplies = (body: string, status = 200) =>
     fetchMock.mockResolvedValueOnce(new Response(body, { status }));
-  };
+
+  beforeEach(() => vi.stubGlobal('fetch', fetchMock));
 
   afterEach(() => {
     vi.clearAllMocks();

@@ -17,10 +17,9 @@ const env = {
   CONTACT_EMAIL: 'me@example.test',
 };
 
-// AWS's published example credentials, not real ones.
 const temporaryCredentials = {
-  accessKeyId: 'AKIDEXAMPLE',
-  secretAccessKey: 'wJalrXUtnFEMI/K7MDENG+bPxRfiCYEXAMPLEKEY',
+  accessKeyId: 'ASIAEXAMPLE',
+  secretAccessKey: 'temporary-secret',
   sessionToken: 'session-token',
 };
 
@@ -81,7 +80,7 @@ describe('sendEmail', () => {
     expect(init.headers['x-amz-date']).toMatch(/^\d{8}T\d{6}Z$/);
     expect(init.headers['x-amz-security-token']).toBe('session-token');
     expect(init.headers.authorization).toMatch(
-      /^AWS4-HMAC-SHA256 Credential=AKIDEXAMPLE\/\d{8}\/us-east-1\/ses\/aws4_request, SignedHeaders=content-type;host;x-amz-date;x-amz-security-token, Signature=[0-9a-f]{64}$/
+      /^AWS4-HMAC-SHA256 Credential=ASIAEXAMPLE\/\d{8}\/us-east-1\/ses\/aws4_request, SignedHeaders=content-type;host;x-amz-date;x-amz-security-token, Signature=[0-9a-f]{64}$/
     );
   });
 
@@ -226,15 +225,19 @@ describe('sendEmail', () => {
       'en',
       visitor.email,
       visitor.name,
-      visitor.message
+      visitor.message,
+      { oidcToken: null }
     );
 
     expect(result.success).toBe(false);
+    expect(errorLog).toHaveBeenCalledWith(
+      'SES SendEmail failed: no Vercel OIDC token'
+    );
     expect(assumeRoleWithWebIdentity).not.toHaveBeenCalled();
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  test('a refused role logs only the status and code, and sends nothing', async () => {
+  test('a refused role reports failure and sends nothing', async () => {
     vi.mocked(assumeRoleWithWebIdentity).mockRejectedValueOnce(
       new Error('403 AccessDenied')
     );

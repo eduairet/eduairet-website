@@ -18,7 +18,7 @@ type SesEmail = {
 
 type SendEmailOptions = {
   sendConfirmation?: boolean;
-  oidcToken?: string | null;
+  oidcToken: string | null;
 };
 
 const SES_TIMEOUT_MS = 10_000;
@@ -56,25 +56,28 @@ const sesErrorType = async (res: Response) => {
   return type.split(':')[0].split('#').pop();
 };
 
-const sesSettings = () => {
+const sesConfig = async (
+  oidcToken: string | null
+): Promise<SesConfig | null> => {
   const region = process.env.SES_REGION;
   const roleArn = process.env.SES_ROLE_ARN;
   const from = process.env.CONTACT_EMAIL;
-  return region && roleArn && from ? { region, roleArn, from } : null;
-};
-
-const sesCredentials = async (
-  { region, roleArn }: { region: string; roleArn: string },
-  oidcToken: string | null
-): Promise<AwsCredentials | null> => {
-  if (!oidcToken) return null;
+  if (!region || !roleArn || !from) {
+    console.error('SES SendEmail failed: missing SES environment variables');
+    return null;
+  }
+  if (!oidcToken) {
+    console.error('SES SendEmail failed: no Vercel OIDC token');
+    return null;
+  }
   try {
-    return await assumeRoleWithWebIdentity({
+    const credentials = await assumeRoleWithWebIdentity({
       region,
       roleArn,
       sessionName: SES_ROLE_SESSION,
       webIdentityToken: oidcToken,
     });
+    return { region, from, credentials };
   } catch (error) {
     console.error(
       `STS AssumeRoleWithWebIdentity failed: ${(error as Error).message}`
@@ -131,18 +134,13 @@ export const sendEmail = async (
   email: string,
   name: string,
   message: string,
-  { sendConfirmation = false, oidcToken = null }: SendEmailOptions = {}
+  { sendConfirmation = false, oidcToken }: SendEmailOptions
 ): Promise<MailResponse> => {
   const t = copy[isLang(locale) ? locale : defaultLocale];
   const failed = { success: false, message: t.failed, status: 500 };
 
-  const settings = sesSettings();
-  const credentials = settings && (await sesCredentials(settings, oidcToken));
-  if (!settings || !credentials) {
-    console.error('SES SendEmail failed: missing SES settings or credentials');
-    return failed;
-  }
-  const config = { ...settings, credentials };
+  const config = await sesConfig(oidcToken);
+  if (!config) return failed;
 
   const sentToMe = await sendSesEmail(config, {
     to: config.from,
