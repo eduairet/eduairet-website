@@ -47,6 +47,6 @@ who never wrote to me:
 - **Rate limit:** a Vercel Firewall rule limits form sends per IP.
 - **Reputation alarms:** CloudWatch emails me if the email bounce or
   complaint rate starts to climb, well before Amazon SES would act.
-- **Short-lived AWS credentials:** deployments trade Vercel's OIDC token for
-  AWS credentials that expire in minutes, and that role may only send mail
-  from my address.
+- **No stored AWS keys:** deployments trade Vercel's OIDC token for AWS
+  credentials that expire in minutes, and that role may only send mail from
+  my address.

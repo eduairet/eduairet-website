@@ -19,7 +19,7 @@ docker compose up -d
 
 The site runs at http://localhost:3000/en. The container keeps its own `node_modules`, so after a dependency change run `docker compose down -v && docker compose up -d --build`.
 
-The contact form sends mail only from Vercel deployments, where its SES settings live (see `SECURITY.md`). Locally it shows its error message, and the tests stub AWS.
+The contact form sends mail only from Vercel deployments, because its AWS access comes from Vercel's OIDC token (see `SECURITY.md`). Locally it shows its error message, and the tests stub AWS.
 
 ## Check it
 
