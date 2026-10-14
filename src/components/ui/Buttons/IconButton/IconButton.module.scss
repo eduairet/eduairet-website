@@ -23,6 +23,21 @@
     }
   }
 
+  // No circle; 24px is the smallest target WCAG 2.5.8 allows.
+  &.bare {
+    width: $touch-target-min;
+    height: $touch-target-min;
+    border: none;
+    background: none;
+
+    & svg {
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      transform: translate(-50%, -50%);
+    }
+  }
+
   &.active {
     border-color: $accent;
     & svg {

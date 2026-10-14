@@ -1,30 +1,27 @@
 @use '@/styles/abstracts/index' as *;
 
+$close-inset: 0.25rem;
+
 .toast {
   position: fixed;
   z-index: $z-toast;
-  top: $header-height;
-  left: 1rem;
-  right: 1rem;
-  margin-inline: auto;
+  top: calc((#{$header-height} + #{$pill-height}) / 2 + 0.5rem);
+  // Matches the menu pill's edge: the header spans 100vw, scrollbar included.
+  right: calc(#{$page-gutter} + 100% - 100vw);
+  width: min(#{$toast-width}, 100% - 2 * #{$page-gutter});
 
-  // The header scrolls away here, so the toast moves up to the top.
+  // The header scrolls away here, so the toast moves up to the corner.
   @media (height <= $breakpoint-short-height) {
     top: 1rem;
-  }
-
-  // In the header on wide screens; a toast too tall to center grows down.
-  @media (width >= $breakpoint-md) and (height > $breakpoint-short-height) {
-    top: calc(#{$header-height} / 2);
-    translate: 0 max(-50%, calc(1rem - #{$header-height} / 2));
+    right: 1rem;
   }
 
   &.open {
-    @extend %form-card;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem 1rem 1rem 1.5rem;
+    padding: 0.625rem calc(#{$touch-target-min} + 2 * #{$close-inset}) 0.625rem
+      1rem;
+    background-color: var(--background);
+    @include border($weight: 2px);
+    @include rounded-corners($radius: 0.75rem);
     animation: toast-in $fade-in-duration ease-out;
 
     @media (prefers-reduced-motion: reduce) {
@@ -33,13 +30,15 @@
   }
 
   button {
-    flex-shrink: 0;
+    position: absolute;
+    top: $close-inset;
+    right: $close-inset;
   }
 }
 
 .message {
-  flex-grow: 1;
   text-align: left;
+  font-size: 0.875rem;
 }
 
 @keyframes toast-in {
