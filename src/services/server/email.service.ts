@@ -1,13 +1,17 @@
+import { randomUUID } from 'node:crypto';
+import { after } from 'next/server';
 import { AwsCredentials, Lang, MailResponse } from '@/models';
 import { SITE_URL } from '@/utils/constants';
 import {
   assumeRoleWithWebIdentity,
+  awsErrorType,
   defaultLocale,
   isLang,
-  signAwsRequest,
+  postSignedAws,
+  putDynamoDbItem,
 } from '@/utils/server';
 
-type SesConfig = { region: string; from: string; credentials: AwsCredentials };
+type AwsSession = { region: string; from: string; credentials: AwsCredentials };
 
 type SesEmail = {
   to: string;
@@ -16,13 +20,20 @@ type SesEmail = {
   replyTo?: string;
 };
 
+type ContactMessage = {
+  locale: Lang;
+  name: string;
+  email: string;
+  message: string;
+};
+
 type SendEmailOptions = {
   sendConfirmation?: boolean;
   oidcToken: string | null;
 };
 
-const SES_TIMEOUT_MS = 10_000;
 const SES_ROLE_SESSION = 'eduairet-website-contact';
+const MESSAGE_RETENTION_SECONDS = 90 * 24 * 60 * 60;
 
 const copy = {
   en: {
@@ -48,17 +59,9 @@ const copy = {
 // Names may hold line breaks, and a subject must stay on one line.
 const oneLine = (text: string) => text.replace(/\s+/g, ' ').trim();
 
-// SES error messages can include addresses, so only the type is logged.
-const sesErrorType = async (res: Response) => {
-  const body = await res.json().catch(() => ({}));
-  const type: string =
-    res.headers.get('x-amzn-errortype') ?? body.__type ?? body.code ?? '';
-  return type.split(':')[0].split('#').pop();
-};
-
-const sesConfig = async (
+const awsSession = async (
   oidcToken: string | null
-): Promise<SesConfig | null> => {
+): Promise<AwsSession | null> => {
   const region = process.env.SES_REGION;
   const roleArn = process.env.SES_ROLE_ARN;
   const from = process.env.CONTACT_EMAIL;
@@ -87,7 +90,7 @@ const sesConfig = async (
 };
 
 const sendSesEmail = async (
-  { region, from, credentials }: SesConfig,
+  { region, from, credentials }: AwsSession,
   { to, subject, text, replyTo }: SesEmail
 ) => {
   const url = `https://email.${region}.amazonaws.com/v2/email/outbound-emails`;
@@ -104,29 +107,57 @@ const sendSesEmail = async (
   });
 
   try {
-    const res = await fetch(url, {
-      method: 'POST',
+    const res = await postSignedAws({
+      url,
+      headers: { 'content-type': 'application/json' },
       body,
-      // Without a limit, a stuck call holds the function until Vercel stops it.
-      signal: AbortSignal.timeout(SES_TIMEOUT_MS),
-      headers: signAwsRequest({
-        method: 'POST',
-        url,
-        headers: { 'content-type': 'application/json' },
-        body,
-        region,
-        service: 'ses',
-        credentials,
-      }),
+      region,
+      service: 'ses',
+      credentials,
     });
     if (res.ok) return true;
     console.error(
-      `SES SendEmail failed: ${res.status} ${await sesErrorType(res)}`
+      `SES SendEmail failed: ${res.status} ${await awsErrorType(res)}`
     );
   } catch (error) {
     console.error(`SES SendEmail failed: ${(error as Error).name}`);
   }
   return false;
+};
+
+const saveMessage = async (
+  { region, credentials }: AwsSession,
+  { locale, name, email, message }: ContactMessage
+) => {
+  const tableName = process.env.CONTACT_TABLE;
+  if (!tableName) {
+    console.error('DynamoDB PutItem failed: missing CONTACT_TABLE');
+    return;
+  }
+  const now = new Date();
+  try {
+    await putDynamoDbItem({
+      region,
+      tableName,
+      credentials,
+      item: {
+        id: { S: randomUUID() },
+        createdAt: { S: now.toISOString() },
+        expiresAt: {
+          N: String(
+            Math.floor(now.getTime() / 1000) + MESSAGE_RETENTION_SECONDS
+          ),
+        },
+        vercelEnv: { S: process.env.VERCEL_ENV ?? 'development' },
+        locale: { S: locale },
+        name: { S: name },
+        email: { S: email },
+        message: { S: message },
+      },
+    });
+  } catch (error) {
+    console.error(`DynamoDB PutItem failed: ${(error as Error).message}`);
+  }
 };
 
 export const sendEmail = async (
@@ -136,14 +167,18 @@ export const sendEmail = async (
   message: string,
   { sendConfirmation = false, oidcToken }: SendEmailOptions
 ): Promise<MailResponse> => {
-  const t = copy[isLang(locale) ? locale : defaultLocale];
+  const lang = isLang(locale) ? locale : defaultLocale;
+  const t = copy[lang];
   const failed = { success: false, message: t.failed, status: 500 };
 
-  const config = await sesConfig(oidcToken);
-  if (!config) return failed;
+  const session = await awsSession(oidcToken);
+  if (!session) return failed;
 
-  const sentToMe = await sendSesEmail(config, {
-    to: config.from,
+  // The backup runs after the response, so it can't delay or change it.
+  after(() => saveMessage(session, { locale: lang, name, email, message }));
+
+  const sentToMe = await sendSesEmail(session, {
+    to: session.from,
     replyTo: email,
     subject: `${t.subjectPrefix} ${name} (${email})`,
     text: message,
@@ -152,7 +187,7 @@ export const sendEmail = async (
 
   // The message already reached me, so a failed confirmation is not an error.
   if (sendConfirmation)
-    await sendSesEmail(config, { to: email, ...t.confirmation });
+    await sendSesEmail(session, { to: email, ...t.confirmation });
 
   return { success: true, message: t.sent, status: 200 };
 };

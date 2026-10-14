@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 import {
   assumeRoleWithWebIdentity,
   awsSigningKey,
+  putDynamoDbItem,
   signAwsRequest,
 } from '@/utils/server/aws.utils';
 
@@ -163,6 +164,82 @@ describe('assumeRoleWithWebIdentity', () => {
 
     await expect(assumeRoleWithWebIdentity(role)).rejects.toThrow(
       /^403 AccessDenied$/
+    );
+  });
+});
+
+// Request format: https://docs.aws.amazon.com/amazondynamodb/latest/APIReference/API_PutItem.html
+describe('putDynamoDbItem', () => {
+  const fetchMock = vi.fn();
+  const put = {
+    region: 'us-east-1',
+    tableName: 'example-table',
+    item: { id: { S: 'abc' }, expiresAt: { N: '1700000000' } },
+    credentials: {
+      accessKeyId: 'ASIAEXAMPLE',
+      secretAccessKey: 'temporary-secret',
+      sessionToken: 'session-token',
+    },
+  };
+
+  beforeEach(() => {
+    vi.stubGlobal('fetch', fetchMock);
+    vi.useFakeTimers({ now: new Date('2026-10-13T12:00:00Z') });
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+    vi.unstubAllGlobals();
+    vi.useRealTimers();
+  });
+
+  test('posts a PutItem signed over the exact body it sends', async () => {
+    fetchMock.mockResolvedValueOnce(new Response('{}'));
+    await putDynamoDbItem(put);
+
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toBe('https://dynamodb.us-east-1.amazonaws.com/');
+    expect(init.method).toBe('POST');
+    expect(init.signal).toBeInstanceOf(AbortSignal);
+    expect(JSON.parse(init.body)).toEqual({
+      TableName: 'example-table',
+      Item: { id: { S: 'abc' }, expiresAt: { N: '1700000000' } },
+    });
+    expect(init.headers['content-type']).toBe('application/x-amz-json-1.0');
+    expect(init.headers['x-amz-target']).toBe('DynamoDB_20120810.PutItem');
+    expect(init.headers['x-amz-security-token']).toBe('session-token');
+    expect(init.headers.authorization).toContain(
+      'Credential=ASIAEXAMPLE/20261013/us-east-1/dynamodb/aws4_request, SignedHeaders=content-type;host;x-amz-date;x-amz-security-token;x-amz-target,'
+    );
+    const { authorization } = signAwsRequest({
+      method: 'POST',
+      url,
+      headers: {
+        'content-type': 'application/x-amz-json-1.0',
+        'x-amz-target': 'DynamoDB_20120810.PutItem',
+      },
+      body: init.body,
+      region: 'us-east-1',
+      service: 'dynamodb',
+      credentials: put.credentials,
+    });
+    expect(init.headers.authorization).toBe(authorization);
+  });
+
+  test('a refusal throws only the status and error type', async () => {
+    fetchMock.mockResolvedValueOnce(
+      new Response(
+        JSON.stringify({
+          __type: 'com.amazonaws.dynamodb.v20120810#ResourceNotFoundException',
+          message:
+            'Requested resource not found: Table: example-table not found',
+        }),
+        { status: 400 }
+      )
+    );
+
+    await expect(putDynamoDbItem(put)).rejects.toThrow(
+      /^400 ResourceNotFoundException$/
     );
   });
 });

@@ -281,6 +281,7 @@
       "sending": "Enviando…",
       "instructions": "Llena todos los campos, por favor.",
       "lengthHint": "De {min} a {max} caracteres",
+      "retention": "Guardo una copia de respaldo de tu mensaje durante 90 días por si se pierde un correo, y después se borra.",
       "recaptcha": {
         "text": "Este sitio está protegido por reCAPTCHA y se aplican la {privacy} y los {terms} de Google.",
         "privacy": "Política de privacidad",

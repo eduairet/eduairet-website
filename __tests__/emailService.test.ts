@@ -1,12 +1,23 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { after } from 'next/server';
+import { Lang } from '@/models';
 import { sendEmail } from '@/services/server/email.service';
-import { assumeRoleWithWebIdentity } from '@/utils/server';
+import { assumeRoleWithWebIdentity, putDynamoDbItem } from '@/utils/server';
+
+const afterTasks = vi.hoisted(() => [] as (() => unknown)[]);
+
+vi.mock('next/server', () => ({
+  after: vi.fn((task: () => unknown) => afterTasks.push(task)),
+}));
 
 vi.mock('@/utils/server', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/utils/server')>()),
   assumeRoleWithWebIdentity: vi.fn(),
+  putDynamoDbItem: vi.fn(),
 }));
+
+const finishResponse = () => Promise.all(afterTasks.splice(0).map((t) => t()));
 
 const fetchMock = vi.fn();
 const errorLog = vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -15,6 +26,8 @@ const env = {
   SES_REGION: 'us-east-1',
   SES_ROLE_ARN: 'arn:aws:iam::123456789012:role/example',
   CONTACT_EMAIL: 'me@example.test',
+  CONTACT_TABLE: 'contact-messages',
+  VERCEL_ENV: 'preview',
 };
 
 const temporaryCredentials = {
@@ -57,9 +70,11 @@ beforeEach(() => {
   vi.stubGlobal('fetch', fetchMock);
   Object.entries(env).forEach(([name, value]) => vi.stubEnv(name, value));
   vi.mocked(assumeRoleWithWebIdentity).mockResolvedValue(temporaryCredentials);
+  vi.mocked(putDynamoDbItem).mockResolvedValue(undefined);
 });
 
 afterEach(() => {
+  afterTasks.length = 0;
   vi.clearAllMocks();
   vi.unstubAllGlobals();
   vi.unstubAllEnvs();
@@ -247,5 +262,146 @@ describe('sendEmail', () => {
     expect(errorLog).toHaveBeenCalledWith(
       'STS AssumeRoleWithWebIdentity failed: 403 AccessDenied'
     );
+  });
+});
+
+const DAY = 24 * 60 * 60;
+const savedItem = () => vi.mocked(putDynamoDbItem).mock.calls[0][0].item;
+
+describe('sendEmail saves a backup of the message', () => {
+  test('saves once, after the response, with only the agreed attributes', async () => {
+    sesReplies(ok(), ok());
+    await send();
+
+    expect(putDynamoDbItem).not.toHaveBeenCalled();
+    await finishResponse();
+
+    expect(putDynamoDbItem).toHaveBeenCalledTimes(1);
+    expect(putDynamoDbItem).toHaveBeenCalledWith(
+      expect.objectContaining({
+        region: env.SES_REGION,
+        tableName: env.CONTACT_TABLE,
+        credentials: temporaryCredentials,
+      })
+    );
+    const item = savedItem();
+    expect(Object.keys(item).sort()).toEqual([
+      'createdAt',
+      'email',
+      'expiresAt',
+      'id',
+      'locale',
+      'message',
+      'name',
+      'vercelEnv',
+    ]);
+    expect(item).toMatchObject({
+      locale: { S: 'en' },
+      name: { S: visitor.name },
+      email: { S: visitor.email },
+      message: { S: visitor.message },
+      vercelEnv: { S: 'preview' },
+    });
+    expect(item.id).toEqual({ S: expect.stringMatching(/^[0-9a-f-]{36}$/) });
+    expect(JSON.stringify(item)).not.toMatch(/oidc-token|session-token/);
+    expect(assumeRoleWithWebIdentity).toHaveBeenCalledTimes(1);
+  });
+
+  test('the expiry is a Number in epoch seconds, 90 days after creation', async () => {
+    sesReplies(ok(), ok());
+    await send();
+    await finishResponse();
+
+    const { createdAt, expiresAt } = savedItem() as Record<
+      string,
+      Record<string, string>
+    >;
+    const created = Date.parse(createdAt.S) / 1000;
+    expect(expiresAt.N).toMatch(/^\d+$/);
+    expect(Number(expiresAt.N) - Math.floor(created)).toBe(90 * DAY);
+    expect(Math.abs(created - Date.now() / 1000)).toBeLessThan(60);
+  });
+
+  test('stores the locale the email used, not the raw value', async () => {
+    sesReplies(ok());
+    await sendEmail(
+      'xx' as Lang,
+      visitor.email,
+      visitor.name,
+      visitor.message,
+      {
+        oidcToken: 'oidc-token',
+      }
+    );
+    await finishResponse();
+
+    expect(savedItem().locale).toEqual({ S: 'en' });
+  });
+
+  test('a failed save still sends my email and returns the same response', async () => {
+    vi.mocked(putDynamoDbItem).mockRejectedValueOnce(
+      new Error('400 ResourceNotFoundException')
+    );
+    sesReplies(ok(), ok());
+    const result = await send();
+    await finishResponse();
+
+    expect(result).toEqual({
+      success: true,
+      message: 'Email sent successfully',
+      status: 200,
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(errorLog).toHaveBeenCalledWith(
+      'DynamoDB PutItem failed: 400 ResourceNotFoundException'
+    );
+  });
+
+  test('a failed email still keeps the saved message', async () => {
+    sesReplies(rejected());
+    const result = await send();
+    await finishResponse();
+
+    expect(result.success).toBe(false);
+    expect(putDynamoDbItem).toHaveBeenCalledTimes(1);
+    expect(savedItem().message).toEqual({ S: visitor.message });
+  });
+
+  test('without a table name, the email still goes and nothing is saved', async () => {
+    vi.stubEnv('CONTACT_TABLE', '');
+    sesReplies(ok(), ok());
+    const result = await send();
+    await finishResponse();
+
+    expect(result.success).toBe(true);
+    expect(putDynamoDbItem).not.toHaveBeenCalled();
+    expect(errorLog).toHaveBeenCalledWith(
+      'DynamoDB PutItem failed: missing CONTACT_TABLE'
+    );
+  });
+
+  test('a refused role schedules no save', async () => {
+    vi.mocked(assumeRoleWithWebIdentity).mockRejectedValueOnce(
+      new Error('403 AccessDenied')
+    );
+    await send();
+
+    expect(after).not.toHaveBeenCalled();
+  });
+
+  test('logs hold no name, email or message when both fail', async () => {
+    vi.mocked(putDynamoDbItem).mockRejectedValueOnce(
+      new Error('400 ValidationException')
+    );
+    sesReplies(rejected());
+    await send();
+    await finishResponse();
+
+    expect(errorLog).toHaveBeenCalledTimes(2);
+    for (const line of errorLog.mock.calls.flat().map(String)) {
+      expect(line).not.toContain(visitor.name);
+      expect(line).not.toContain(visitor.email);
+      expect(line).not.toContain(visitor.message);
+    }
   });
 });

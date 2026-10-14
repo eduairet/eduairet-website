@@ -98,6 +98,17 @@ describe('ContactForm reCAPTCHA', () => {
   });
 });
 
+describe('ContactForm retention notice', () => {
+  test.each([
+    ['en', EnContent, /backup copy of your message for 90 days/],
+    ['es', EsContent, /copia de respaldo de tu mensaje durante 90 días/],
+  ] as const)('%s says how long a backup is kept', (locale, data, text) => {
+    renderForm(locale, new Dictionary(data));
+
+    expect(screen.getByText(text).tagName).toBe('P');
+  });
+});
+
 describe('ContactForm accessibility', () => {
   test.each([
     ['en', EnContent, 'Please fill in all the fields.'],

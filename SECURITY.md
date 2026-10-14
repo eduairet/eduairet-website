@@ -49,4 +49,12 @@ who never wrote to me:
   complaint rate starts to climb, well before Amazon SES would act.
 - **No stored AWS keys:** deployments trade Vercel's OIDC token for AWS
   credentials that expire in minutes, and that role may only send mail from
-  my address.
+  my address and add items to one DynamoDB table.
+
+## What the form stores
+
+Each message is also saved in a DynamoDB table, so it isn't lost if the email
+goes missing. An item holds the name, email, message, language, time and
+Vercel environment, plus an id and its expiry time. It holds no IP address
+and no reCAPTCHA token. DynamoDB deletes it on its own about 90 days later. Logs keep only the status
+and the AWS error type, never what someone wrote.
