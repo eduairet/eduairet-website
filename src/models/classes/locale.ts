@@ -114,6 +114,7 @@ export class Dictionary {
       sending: string;
       instructions: string;
       lengthHint: string;
+      retention: string;
       recaptcha: {
         text: string;
         privacy: string;
@@ -198,6 +199,7 @@ export class Dictionary {
         sending: data.contact?.form?.sending || '',
         instructions: data.contact?.form?.instructions || '',
         lengthHint: data.contact?.form?.lengthHint || '',
+        retention: data.contact?.form?.retention || '',
         recaptcha: {
           text: data.contact?.form?.recaptcha?.text || '',
           privacy: data.contact?.form?.recaptcha?.privacy || '',

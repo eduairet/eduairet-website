@@ -231,6 +231,7 @@ function ContactForm() {
           content.contact.form.submit
         )}
       </ButtonWrapper>
+      <p className={styles.retention}>{content.contact.form.retention}</p>
       <p className={styles.recaptcha}>
         {fillTemplate(recaptcha.text, (key) => (
           <ExternalLink

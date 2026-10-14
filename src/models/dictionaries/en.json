@@ -281,6 +281,7 @@
       "sending": "Sending…",
       "instructions": "Please fill in all the fields.",
       "lengthHint": "{min} to {max} characters",
+      "retention": "I keep a backup copy of your message for 90 days in case an email gets lost, and then it's deleted.",
       "recaptcha": {
         "text": "This site is protected by reCAPTCHA and the Google {privacy} and {terms} apply.",
         "privacy": "Privacy Policy",

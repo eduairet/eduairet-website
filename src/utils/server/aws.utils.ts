@@ -19,7 +19,14 @@ type WebIdentityRole = {
   webIdentityToken: string;
 };
 
-const STS_TIMEOUT_MS = 10_000;
+type DynamoDbPut = {
+  region: string;
+  tableName: string;
+  item: Record<string, { S: string } | { N: string }>;
+  credentials: AwsCredentials;
+};
+
+const AWS_TIMEOUT_MS = 10_000;
 const STS_SESSION_SECONDS = '900';
 
 const sha256 = (data: string) =>
@@ -98,6 +105,23 @@ export const signAwsRequest = ({
   };
 };
 
+// Without a limit, a stuck call holds the function until Vercel stops it.
+export const postSignedAws = (request: Omit<AwsRequest, 'method' | 'date'>) =>
+  fetch(request.url, {
+    method: 'POST',
+    body: request.body,
+    signal: AbortSignal.timeout(AWS_TIMEOUT_MS),
+    headers: signAwsRequest({ ...request, method: 'POST' }),
+  });
+
+// AWS error messages can include personal data, so only the type is kept.
+export const awsErrorType = async (res: Response) => {
+  const body = await res.json().catch(() => ({}));
+  const type: string =
+    res.headers.get('x-amzn-errortype') ?? body.__type ?? body.code ?? '';
+  return type.split(':')[0].split('#').pop();
+};
+
 const xmlField = (xml: string, name: string) =>
   xml.match(new RegExp(`<${name}>([^<]+)</${name}>`))?.[1];
 
@@ -118,7 +142,7 @@ export const assumeRoleWithWebIdentity = async ({
       WebIdentityToken: webIdentityToken,
       DurationSeconds: STS_SESSION_SECONDS,
     }),
-    signal: AbortSignal.timeout(STS_TIMEOUT_MS),
+    signal: AbortSignal.timeout(AWS_TIMEOUT_MS),
   });
   const xml = await res.text();
   const accessKeyId = xmlField(xml, 'AccessKeyId');
@@ -128,4 +152,24 @@ export const assumeRoleWithWebIdentity = async ({
   if (!res.ok || !accessKeyId || !secretAccessKey || !sessionToken)
     throw new Error(`${res.status} ${xmlField(xml, 'Code') ?? ''}`.trim());
   return { accessKeyId, secretAccessKey, sessionToken };
+};
+
+export const putDynamoDbItem = async ({
+  region,
+  tableName,
+  item,
+  credentials,
+}: DynamoDbPut) => {
+  const res = await postSignedAws({
+    url: `https://dynamodb.${region}.amazonaws.com/`,
+    headers: {
+      'content-type': 'application/x-amz-json-1.0',
+      'x-amz-target': 'DynamoDB_20120810.PutItem',
+    },
+    body: JSON.stringify({ TableName: tableName, Item: item }),
+    region,
+    service: 'dynamodb',
+    credentials,
+  });
+  if (!res.ok) throw new Error(`${res.status} ${await awsErrorType(res)}`);
 };
