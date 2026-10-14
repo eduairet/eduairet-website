@@ -1,6 +1,10 @@
 // @vitest-environment node
-import { describe, expect, test } from 'vitest';
-import { awsSigningKey, signAwsRequest } from '@/utils/server/aws.utils';
+import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import {
+  assumeRoleWithWebIdentity,
+  awsSigningKey,
+  signAwsRequest,
+} from '@/utils/server/aws.utils';
 
 // AWS's published example credentials, not real ones.
 const credentials = {
@@ -104,4 +108,61 @@ test('refuses a URL with a query string', () => {
       credentials,
     })
   ).toThrow();
+});
+
+describe('assumeRoleWithWebIdentity', () => {
+  const fetchMock = vi.fn();
+  const role = {
+    region: 'us-east-1',
+    roleArn: 'arn:aws:iam::123456789012:role/example',
+    sessionName: 'example-session',
+    webIdentityToken: 'oidc-token',
+  };
+
+  const stsReplies = (body: string, status = 200) =>
+    fetchMock.mockResolvedValueOnce(new Response(body, { status }));
+
+  beforeEach(() => vi.stubGlobal('fetch', fetchMock));
+
+  afterEach(() => {
+    vi.clearAllMocks();
+    vi.unstubAllGlobals();
+  });
+
+  test('posts an unsigned form to the regional STS endpoint', async () => {
+    stsReplies(
+      `<AssumeRoleWithWebIdentityResponse><AssumeRoleWithWebIdentityResult><Credentials>
+        <AccessKeyId>ASIAEXAMPLE</AccessKeyId>
+        <SecretAccessKey>temporary-secret</SecretAccessKey>
+        <SessionToken>session-token</SessionToken>
+      </Credentials></AssumeRoleWithWebIdentityResult></AssumeRoleWithWebIdentityResponse>`
+    );
+
+    expect(await assumeRoleWithWebIdentity(role)).toEqual({
+      accessKeyId: 'ASIAEXAMPLE',
+      secretAccessKey: 'temporary-secret',
+      sessionToken: 'session-token',
+    });
+    const [url, init] = fetchMock.mock.calls[0];
+    expect(url).toBe('https://sts.us-east-1.amazonaws.com/');
+    expect(init.headers).toBeUndefined();
+    const params = new URLSearchParams(init.body.toString());
+    expect(params.get('Action')).toBe('AssumeRoleWithWebIdentity');
+    expect(params.get('RoleArn')).toBe(role.roleArn);
+    expect(params.get('RoleSessionName')).toBe(role.sessionName);
+    expect(params.get('WebIdentityToken')).toBe(role.webIdentityToken);
+  });
+
+  test('a refusal throws only the status and error code', async () => {
+    stsReplies(
+      `<ErrorResponse><Error><Type>Sender</Type><Code>AccessDenied</Code>
+        <Message>Not authorized to perform sts:AssumeRoleWithWebIdentity on ${role.roleArn}</Message>
+      </Error></ErrorResponse>`,
+      403
+    );
+
+    await expect(assumeRoleWithWebIdentity(role)).rejects.toThrow(
+      /^403 AccessDenied$/
+    );
+  });
 });

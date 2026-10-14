@@ -11,7 +11,7 @@ Next.js 16 (App Router), React 19, TypeScript, SCSS modules, and three.js. GitHu
 
 ## Run it
 
-Create a `.env` with `NEXT_PUBLIC_TYPEKIT`, `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`, `RECAPTCHA_SECRET_KEY`, `SES_REGION`, `SES_ACCESS_KEY_ID`, `SES_SECRET_ACCESS_KEY`, and `CONTACT_EMAIL`, then:
+Create a `.env` with `NEXT_PUBLIC_TYPEKIT`, `NEXT_PUBLIC_RECAPTCHA_SITE_KEY`, and `RECAPTCHA_SECRET_KEY`, then:
 
 ```bash
 docker compose up -d
@@ -19,7 +19,7 @@ docker compose up -d
 
 The site runs at http://localhost:3000/en. The container keeps its own `node_modules`, so after a dependency change run `docker compose down -v && docker compose up -d --build`.
 
-On Vercel, `SES_ROLE_ARN` replaces the two SES keys: the contact route trades Vercel's OIDC token for short-lived credentials of that IAM role.
+The contact form sends mail only from Vercel deployments, because its AWS access comes from Vercel's OIDC token (see `SECURITY.md`). Locally it shows its error message, and the tests stub AWS.
 
 ## Check it
 
