@@ -3,6 +3,7 @@ import { cleanup, render, screen, within } from '@testing-library/react';
 import Privacy from '@/app/[locale]/privacy/page';
 import Footer from '@/components/ui/Footer/Footer';
 import { LanguageProvider } from '@/store/LanguageProvider';
+import { stubResizeObserver } from './helpers/resizeObserver';
 import { Dictionary, EnContent, EsContent, type Lang } from '@/models';
 import {
   POSTAL_ADDRESS,
@@ -110,6 +111,7 @@ test.each([
 ] as const)(
   'the %s footer links the privacy page in the same language',
   async (lang, name) => {
+    stubResizeObserver();
     render(
       <LanguageProvider locale={lang} content={dictionaries[lang]}>
         {await Footer({ lang })}

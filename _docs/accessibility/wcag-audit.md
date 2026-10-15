@@ -52,6 +52,13 @@
 - Above Submit, one short line and a required "I've read the privacy notice" checkbox replace the retention line. The link sits in the checkbox label. Submitting without the box shows an error tied to it with `aria-describedby` and moves focus to it, unless a text field needs fixing first. The reCAPTCHA line is plain text with no links.
 - Evidence: axe 4.11.0 found 0 violations in 36 runs (/en, /es, both contact pages and both privacy pages; both themes; 375, 768 and 1280 wide). No page scrolls sideways.
 
+**Update (2026-10-14, branch `feat/about-and-footer`): the 2.2.2 deviation now covers the About sphere too.**
+
+- The About photo sits in a circle in the border color, on a wireframe sphere that turns once every 48 s while it is on screen, from the first scroll or input on, like the card shapes. It holds still with reduced motion. Accepted by the site owner under F-23.
+- The About block fades and slides in like the cards; with reduced motion it only fades. With JavaScript off it shows at once.
+- The footer clearance follows the footer's measured height (F-06). Before, 200% text on a 375 wide phone hid the last line by 8px.
+- Evidence: axe 4.11.0 found 0 violations in 8 runs (/en and /es, both themes, 375 and 1280 wide). Tab walks on /en and /es at 375×812, 1280×900 and 1280×480, with 100% and 200% text, found no focus stop under the footer.
+
 Severity counts as found on 2026-10-05:
 
 | Severity     | Count  |
@@ -192,6 +199,7 @@ Severity counts as found on 2026-10-05:
 - Status: Fixed. `html` has `scroll-padding-top` (header; the section titles dock inside it) and `scroll-padding-bottom` (footer height). Since 2026-10-11 the footer reads its padding and gap from custom properties on `:root` in `_global.scss`, and the scroll padding adds up the same properties, so the two can't drift. The footer and the clearance also change layout through the same mixins in `_mixins.scss` (`footer-row` for one row, `footer-static` for the page flow), so moving a breakpoint moves both. Evidence: the obscured-focus script, forwards and backwards at 1280×900, 375×700, 320×568 and 320×256, found 0 focused elements covered.
 - Update (2026-10-12): while a toast is open, `scroll-padding-top` clears whichever reaches lower, the header or the toast, so a focused field never scrolls under it. Evidence: Shift+Tab walks with the success toast open at 1280×800, 768×1024 and 375×812, and at 1280×800 with 200% text, found no focused field covered.
 - Update (2026-10-13): rechecked after the toast moved under the menu pill: focusing each field from the bottom of the page at 1280×800, 768×1024, 375×812 and 320×568 left none under the toast.
+- Update (2026-10-14): `MeasuredFooter` writes the footer's real height to `--footer-height`, and the clearance adds 1rem to it. The sum of the custom properties stays as the value before scripts run and with JavaScript off, and the short-screen footer keeps its 1rem. A wrapped line or larger text can no longer hide content.
 
 ### F-07 Form errors are not tied to their fields, and the disabled Submit button hides why the form can't be sent
 
@@ -407,7 +415,8 @@ Severity counts as found on 2026-10-05:
   - Nothing is drawn for cards out of view or while the tab is hidden (0 draws/s in both).
   - Where a shape fits beside the text, it is full strength. Where it doesn't (phones, and tall cards near 768 wide), a smaller one sits behind the text at 15% opacity. With text hidden, the worst pixel behind each text run and icon was sampled on all 12 cards: at 375 wide, every text run stays at 4.5:1 or more, with the lowest value still the red date on white cards (4.68:1, as without shapes); where a tall shape reaches a date it measured 4.84:1 or more. Icons stay at 8.86:1 or more. At 768 and 1280 wide, nothing changes against `main`.
   - Thin lines that turn slowly don't flash (2.3.1). The canvases are `aria-hidden`, not focusable, and take no pointer events; the menus, sticky titles and footer stay above them.
-- Status: Accepted (2026-10-06), as a known deviation; widened to the card shapes on 2026-10-10. To meet 2.2.2 later, add a visible pause button that stops both and stores the choice.
+- **About sphere (since 2026-10-14):** the wireframe sphere behind the About photo turns once every 48 s, at 20% opacity, while it is on screen. Like the card shapes, its code loads only after the first scroll, pointer or key input. It is an `aria-hidden` SVG drawn at rest by the server, so it shows still with JavaScript off. It holds still with reduced motion and off screen. No text sits on it. Tests: `wireSphere.test.tsx`.
+- Status: Accepted (2026-10-06), as a known deviation; widened to the card shapes on 2026-10-10 and the About sphere on 2026-10-14. To meet 2.2.2 later, add a visible pause button that stops all three and stores the choice.
 
 ---
 
@@ -439,7 +448,7 @@ Severity counts as found on 2026-10-05:
 | 2.1.2 No Keyboard Trap                          | A     | Pass   | Tab cycles through to the end on every page                                                                             |
 | 2.1.4 Character Key Shortcuts                   | A     | N/A    | No shortcuts                                                                                                            |
 | 2.2.1 Timing Adjustable                         | A     | Pass   | F-02, F-13 fixed                                                                                                        |
-| 2.2.2 Pause, Stop, Hide                         | A     | Fail   | F-14 fixed; F-23 accepted deviation: particle background and card shapes have no pause control                          |
+| 2.2.2 Pause, Stop, Hide                         | A     | Fail   | F-14 fixed; F-23 accepted deviation: particle background, card shapes and About sphere have no pause control            |
 | 2.3.1 Three Flashes or Below Threshold          | A     | Pass   | Nothing flashes; F-23 background luminance changes stay under 0.10                                                      |
 | 2.4.1 Bypass Blocks                             | A     | Pass   | Landmarks, plus a skip link added 2026-10-06                                                                            |
 | 2.4.2 Page Titled                               | A     | Pass   | F-15 fixed                                                                                                              |
