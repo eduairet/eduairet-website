@@ -32,8 +32,14 @@ beforeEach(() => {
         };
       }
       unobserve() {}
+      disconnect() {}
     }
   );
+  vi.stubGlobal('matchMedia', () => ({
+    matches: false,
+    addEventListener() {},
+    removeEventListener() {},
+  }));
 });
 
 afterEach(() => {
@@ -45,7 +51,7 @@ test.each([
   ['en', EnContent, 'About'],
   ['es', EsContent, 'Sobre mí'],
 ] as const)(
-  '%s About section has an h2, the text and the photo',
+  '%s About section has an h2, the text and the video',
   (_, data, title) => {
     const content = new Dictionary(data);
     render(<AboutSection id='about' about={content.about} />);
@@ -53,22 +59,13 @@ test.each([
     expect(screen.getByRole('heading', { level: 2, name: title })).toBeTruthy();
     expect(screen.getByText(content.about.text)).toBeTruthy();
 
-    const photo = screen.getByRole('img', { name: 'Eduardo Aire Torres' });
-    expect(photo.getAttribute('width')).toBe('320');
-    expect(photo.getAttribute('height')).toBe('320');
-    expect(photo.getAttribute('loading')).toBe('lazy');
+    const portrait = screen.getByRole('img', { name: 'Eduardo Aire Torres' });
+    const video = portrait.querySelector('video')!;
+    expect(video.getAttribute('aria-hidden')).toBe('true');
+    expect(video.getAttribute('width')).toBe('320');
+    expect(video.getAttribute('height')).toBe('320');
   }
 );
-
-test('the photo comes in the sizes it is shown at', () => {
-  render(<AboutSection id='about' about={new Dictionary(EnContent).about} />);
-  const photo = screen.getByRole('img');
-
-  expect(photo.getAttribute('srcset')).toBe(
-    '/eduardo-aire-torres-160.webp 160w, /eduardo-aire-torres-256.webp 256w, /eduardo-aire-torres.webp 400w'
-  );
-  expect(photo.getAttribute('sizes')).toBe('(min-width: 768px) 320px, 240px');
-});
 
 test('the block shows before scripts run, then fades in and out with the cards', () => {
   const about = new Dictionary(EnContent).about;
@@ -85,15 +82,15 @@ test('the block shows before scripts run, then fades in and out with the cards',
   expect(block.className).not.toContain(revealStyles.inView);
 });
 
-test('Person.image is the photo the About section shows', async () => {
+test("Person.image is the About video's still", async () => {
   const content = new Dictionary(EnContent);
   render(<AboutSection id='about' about={content.about} />);
-  const photo = screen.getByRole('img');
-  const src = photo.getAttribute('src');
+  const still = screen.getByRole('img').querySelector('img')!;
   const { mainEntity } = (await buildHomeStructuredData('en'))['@graph'][1];
 
-  expect(mainEntity.image).toBe(`https://www.eduairet.com${src}`);
-  expect(photo.getAttribute('srcset')).toContain(`${src} 400w`);
+  expect(mainEntity.image).toBe(
+    `https://www.eduairet.com${still.getAttribute('src')}`
+  );
   expect(mainEntity.description).toBe(content.about.text);
 });
 

@@ -41,39 +41,26 @@
 .portrait {
   flex-shrink: 0;
   width: 240px;
-  aspect-ratio: 1;
   overflow: hidden;
   border-radius: 50%;
-  background-color: var(--foreground);
+  @include border($weight: 2px);
 
   @media (width >= $breakpoint-md) {
     width: 320px;
   }
 }
 
-.sphere {
+.still {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.video {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  fill: none;
-  stroke: var(--background);
-  stroke-width: 1.5px;
-  opacity: 0.2;
-
-  path {
-    vector-effect: non-scaling-stroke;
-  }
-}
-
-.far {
-  opacity: 0.5;
-}
-
-.photo {
-  display: block;
-  width: 100%;
-  height: auto;
 }
 
 .text {

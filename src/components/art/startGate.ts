@@ -1,4 +1,4 @@
-// Start-up checks shared by the decorative canvases.
+// Start-up checks shared by the decorative motion.
 
 const VISITOR_EVENTS = [
   'pointermove',
