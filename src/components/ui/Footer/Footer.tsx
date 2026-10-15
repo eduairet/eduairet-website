@@ -1,4 +1,5 @@
 import styles from './Footer.module.scss';
+import MeasuredFooter from './MeasuredFooter';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import { Lang } from '@/models';
 import GitHubLink from '@/components/ui/SocialLinks/GitHubLink';
@@ -19,7 +20,7 @@ export default async function Footer({ lang }: IProps) {
 
   if (!content?.footer) {
     return (
-      <footer className={styles.footer}>
+      <MeasuredFooter className={styles.footer}>
         <section className={styles.section}>
           <div className={styles.actions}>
             <GitHubLink />
@@ -32,12 +33,12 @@ export default async function Footer({ lang }: IProps) {
         <section className={styles.section}>
           <p>Eduardo Aire Torres {new Date().getFullYear()}</p>
         </section>
-      </footer>
+      </MeasuredFooter>
     );
   }
 
   return (
-    <footer className={styles.footer}>
+    <MeasuredFooter className={styles.footer}>
       <section
         aria-label={content.footer.social.ariaLabel}
         className={styles.section}
@@ -62,6 +63,6 @@ export default async function Footer({ lang }: IProps) {
           <ThemeButton />
         </p>
       </section>
-    </footer>
+    </MeasuredFooter>
   );
 }

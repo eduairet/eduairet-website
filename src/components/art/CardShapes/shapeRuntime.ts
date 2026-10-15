@@ -2,9 +2,10 @@ import { readTheme } from '@/hooks/useDarkMode';
 import type { Theme } from '@/models';
 import { pickShapes } from './pickShapes';
 import { SOLIDS, poseMatrix, type SolidName } from './solids';
+import { TAU } from '@/utils/math.utils';
+import { REDUCED_MOTION_QUERY } from '@/utils/constants';
 
 const STEP_MS = 1000 / 30;
-const TAU = Math.PI * 2;
 const TURN_SECONDS = 24;
 const SWAY_X = { angle: 0.35, seconds: 11 };
 const SWAY_Z = { angle: 0.3, seconds: 17 };
@@ -93,7 +94,7 @@ const swayZ = (time: number) =>
 
 // With `still`, each shape is drawn once and never animates.
 export function createShapeRuntime({ still = false } = {}): ShapeRuntime {
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY);
   const isStill = () => still || reducedMotion.matches;
   const entries = new Map<HTMLElement, Entry>();
   const visible = new Set<HTMLElement>();

@@ -7,18 +7,10 @@ import { LanguageContext } from '@/store/LanguageProvider';
 import TechIcon from './TechIcon';
 import ExternalLink from '@/components/ui/ExternalLink/ExternalLink';
 import { showCardShape } from '@/components/art/CardShapes/cardShapes';
-
-// One observer for every card. It toggles the class itself, so scrolling
-// never re-renders a card; a card shows while 30% of it crosses into view.
-let observer: IntersectionObserver | undefined;
-const cardObserver = () =>
-  (observer ??= new IntersectionObserver(
-    (entries) =>
-      entries.forEach((entry) =>
-        entry.target.classList.toggle(styles.inView, entry.isIntersecting)
-      ),
-    { threshold: 0.3 }
-  ));
+import {
+  REVEAL_CLASS,
+  useReveal,
+} from '@/components/wrappers/RevealOnScroll/useReveal';
 
 interface IProps {
   entry: SectionEntry;
@@ -31,23 +23,20 @@ export default function SectionCard({ entry, icons, tools }: IProps) {
   const cardRef = useRef<HTMLLIElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
+  useReveal(cardRef);
+
   useEffect(() => {
     const card = cardRef.current;
     if (!card) return;
-    cardObserver().observe(card);
-    const hideShape = showCardShape({
+    return showCardShape({
       card,
       content: contentRef.current,
       className: styles.shape,
     });
-    return () => {
-      cardObserver().unobserve(card);
-      hideShape();
-    };
   }, []);
 
   return (
-    <li ref={cardRef} className={styles.card}>
+    <li ref={cardRef} className={`${styles.card} ${REVEAL_CLASS}`}>
       <div ref={contentRef} className={styles.content}>
         <p className={styles.period}>{entry.period}</p>
         <h3 className={styles.roleTitle}>

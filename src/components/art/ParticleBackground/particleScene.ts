@@ -39,6 +39,7 @@ import {
   drawVertexShader,
   updateShader,
 } from './particleShaders';
+import { REDUCED_MOTION_QUERY } from '@/utils/constants';
 
 export interface ParticleScene {
   // eslint-disable-next-line no-unused-vars
@@ -244,7 +245,7 @@ export async function createParticleScene(
   let compiled = false;
   let lastStep = -Infinity;
   let resizeTimer: ReturnType<typeof setTimeout> | undefined;
-  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY);
 
   const layout = () => {
     const short = Math.min(width, height);

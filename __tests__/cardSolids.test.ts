@@ -1,5 +1,10 @@
 import { describe, expect, test } from 'vitest';
-import { SOLIDS, lines, poseMatrix } from '@/components/art/CardShapes/solids';
+import {
+  SOLIDS,
+  lines,
+  linesByDepth,
+  poseMatrix,
+} from '@/components/art/CardShapes/solids';
 
 const poses = Array.from({ length: 24 }, (_, i) =>
   poseMatrix(Math.sin(i), i * 0.5, Math.cos(i * 1.3))
@@ -50,6 +55,26 @@ describe('card solids', () => {
     expect(lines(SOLIDS.cylinder, m)).toHaveLength(4);
     // Outline plus 7 latitudes and 8 meridian circles.
     expect(lines(SOLIDS.sphere, m)).toHaveLength(16);
+  });
+
+  test('a split sphere draws the same lines, the outline on the near side', () => {
+    const length = (polylines: [number, number][][]) =>
+      polylines
+        .flatMap((line) =>
+          line
+            .slice(1)
+            .map(([x, y], i) => Math.hypot(x - line[i][0], y - line[i][1]))
+        )
+        .reduce((sum, step) => sum + step, 0);
+    const m = poseMatrix(0, 0.6, 0);
+    const { near, far } = linesByDepth(SOLIDS.sphere, m);
+
+    expect(length(near) + length(far)).toBeCloseTo(
+      length(lines(SOLIDS.sphere, m)),
+      6
+    );
+    expect(far.length).toBeGreaterThan(0);
+    expect(near[0]).toEqual(lines(SOLIDS.sphere, m)[0]);
   });
 
   test('a positive y angle turns the front to the right', () => {

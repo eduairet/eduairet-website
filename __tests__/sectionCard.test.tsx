@@ -4,7 +4,7 @@ import { LanguageProvider } from '@/store/LanguageProvider';
 import { Dictionary, EnContent } from '@/models';
 
 import SectionCard from '@/app/[locale]/components/HomeSection/SectionCard';
-import styles from '@/app/[locale]/components/HomeSection/HomeSection.module.scss';
+import styles from '@/components/wrappers/RevealOnScroll/RevealOnScroll.module.scss';
 
 const en = new Dictionary(EnContent);
 

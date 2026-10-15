@@ -1,17 +1,19 @@
 // Unit-sphere wireframes, traced as 2D paths (y up) in an orthographic view.
 
+import { TAU } from '@/utils/math.utils';
+
 type Family = 'boxes' | 'prisms' | 'pyramids' | 'round';
-type Point = [number, number];
+export type Point = [number, number];
 type Vec = [number, number, number];
 // Row-major 3x3 rotation.
 type Matrix = number[];
 
-// A canvas context works as a pen.
+// A canvas context works as a pen; z grows toward the viewer.
 interface Pen {
   // eslint-disable-next-line no-unused-vars
-  moveTo: (x: number, y: number) => void;
+  moveTo: (x: number, y: number, z: number) => void;
   // eslint-disable-next-line no-unused-vars
-  lineTo: (x: number, y: number) => void;
+  lineTo: (x: number, y: number, z: number) => void;
 }
 
 interface Solid {
@@ -20,7 +22,6 @@ interface Solid {
   trace: (m: Matrix, pen: Pen) => void;
 }
 
-const TAU = Math.PI * 2;
 const RING_STEPS = 96;
 
 const multiply = (...matrices: Matrix[]): Matrix =>
@@ -57,8 +58,9 @@ export function poseMatrix(x: number, y: number, z: number): Matrix {
 const step = (m: Matrix, [x, y, z]: Vec, pen: Pen, first: boolean) => {
   const px = m[0] * x + m[1] * y + m[2] * z;
   const py = m[3] * x + m[4] * y + m[5] * z;
-  if (first) pen.moveTo(px, py);
-  else pen.lineTo(px, py);
+  const pz = m[6] * x + m[7] * y + m[8] * z;
+  if (first) pen.moveTo(px, py, pz);
+  else pen.lineTo(px, py, pz);
 };
 
 const traceLoops = (m: Matrix, loops: Vec[][], pen: Pen) => {
@@ -337,4 +339,33 @@ export function lines(solid: Solid, m: Matrix): Point[][] {
     lineTo: (x, y) => out[out.length - 1].push([x, y]),
   });
   return out;
+}
+
+// The polylines split where they pass behind the solid's middle.
+export function linesByDepth(solid: Solid, m: Matrix) {
+  const near: Point[][] = [];
+  const far: Point[][] = [];
+  const sideOf = (z: number) => (z < 0 ? far : near);
+  let side = near;
+  let last: Vec = [0, 0, 0];
+  solid.trace(m, {
+    moveTo: (x, y, z) => {
+      side = sideOf(z);
+      side.push([[x, y]]);
+      last = [x, y, z];
+    },
+    lineTo: (x, y, z) => {
+      if (sideOf(z) !== side) {
+        const [lx, ly, lz] = last;
+        const t = lz / (lz - z);
+        const crossing: Point = [lx + (x - lx) * t, ly + (y - ly) * t];
+        side[side.length - 1].push(crossing);
+        side = sideOf(z);
+        side.push([crossing]);
+      }
+      side[side.length - 1].push([x, y]);
+      last = [x, y, z];
+    },
+  });
+  return { near, far };
 }
