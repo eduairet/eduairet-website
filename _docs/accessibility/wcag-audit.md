@@ -59,6 +59,12 @@
 - The footer clearance follows the footer's measured height (F-06). Before, 200% text on a 375 wide phone hid the last line by 8px.
 - Evidence: axe 4.11.0 found 0 violations in 8 runs (/en and /es, both themes, 375 and 1280 wide). Tab walks on /en and /es at 375×812, 1280×900 and 1280×480, with 100% and 200% text, found no focus stop under the footer.
 
+**Update (2026-10-15, branch `feat/about-video`): the 2.2.2 deviation now covers the About video instead of the sphere.**
+
+- A short looping video of me replaces the About photo and its sphere, in a circle with a 2px border in the text color. It is muted, has no controls, and is named "Eduardo Aire Torres" by its `role="img"` wrapper; the video itself is `aria-hidden`.
+- A still of its first frame (`alt=""`, inside the named wrapper) shows until the first scroll, pointer or key input, then loops while on screen and pauses off screen. The video file loads only then. With reduced motion, or with JavaScript off, only the still shows.
+- Evidence: axe 4.11.0 found 0 violations in 8 runs (/en and /es, both themes, 375 and 1280 wide).
+
 Severity counts as found on 2026-10-05:
 
 | Severity     | Count  |
@@ -415,8 +421,8 @@ Severity counts as found on 2026-10-05:
   - Nothing is drawn for cards out of view or while the tab is hidden (0 draws/s in both).
   - Where a shape fits beside the text, it is full strength. Where it doesn't (phones, and tall cards near 768 wide), a smaller one sits behind the text at 15% opacity. With text hidden, the worst pixel behind each text run and icon was sampled on all 12 cards: at 375 wide, every text run stays at 4.5:1 or more, with the lowest value still the red date on white cards (4.68:1, as without shapes); where a tall shape reaches a date it measured 4.84:1 or more. Icons stay at 8.86:1 or more. At 768 and 1280 wide, nothing changes against `main`.
   - Thin lines that turn slowly don't flash (2.3.1). The canvases are `aria-hidden`, not focusable, and take no pointer events; the menus, sticky titles and footer stay above them.
-- **About sphere (since 2026-10-14):** the wireframe sphere behind the About photo turns once every 48 s, at 20% opacity, while it is on screen. Like the card shapes, its code loads only after the first scroll, pointer or key input. It is an `aria-hidden` SVG drawn at rest by the server, so it shows still with JavaScript off. It holds still with reduced motion and off screen. No text sits on it. Tests: `wireSphere.test.tsx`.
-- Status: Accepted (2026-10-06), as a known deviation; widened to the card shapes on 2026-10-10 and the About sphere on 2026-10-14. To meet 2.2.2 later, add a visible pause button that stops all three and stores the choice.
+- **About video (since 2026-10-15, replacing the 2026-10-14 sphere):** a muted 5.5 s portrait video loops while it is on screen. Like the card shapes, it starts only after the first scroll, pointer or key input. Before that, with reduced motion, off screen and with JavaScript off, it shows its still first frame. The head moves gently and the gray backdrop stays still, so it doesn't flash (2.3.1). No text sits on it. Tests: `aboutVideo.test.tsx`.
+- Status: Accepted (2026-10-06), as a known deviation; widened to the card shapes on 2026-10-10 and to the About sphere on 2026-10-14, now the About video. To meet 2.2.2 later, add a visible pause button that stops all three and stores the choice.
 
 ---
 
@@ -448,7 +454,7 @@ Severity counts as found on 2026-10-05:
 | 2.1.2 No Keyboard Trap                          | A     | Pass   | Tab cycles through to the end on every page                                                                             |
 | 2.1.4 Character Key Shortcuts                   | A     | N/A    | No shortcuts                                                                                                            |
 | 2.2.1 Timing Adjustable                         | A     | Pass   | F-02, F-13 fixed                                                                                                        |
-| 2.2.2 Pause, Stop, Hide                         | A     | Fail   | F-14 fixed; F-23 accepted deviation: particle background, card shapes and About sphere have no pause control            |
+| 2.2.2 Pause, Stop, Hide                         | A     | Fail   | F-14 fixed; F-23 accepted deviation: particle background, card shapes and About video have no pause control             |
 | 2.3.1 Three Flashes or Below Threshold          | A     | Pass   | Nothing flashes; F-23 background luminance changes stay under 0.10                                                      |
 | 2.4.1 Bypass Blocks                             | A     | Pass   | Landmarks, plus a skip link added 2026-10-06                                                                            |
 | 2.4.2 Page Titled                               | A     | Pass   | F-15 fixed                                                                                                              |

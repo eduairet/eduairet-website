@@ -6,12 +6,9 @@ export const SITE_SHORT_NAME = 'eat';
 export const PERSON_HANDLE = 'eduairet';
 export const X_HANDLE = `@${PERSON_HANDLE}`;
 
+// The About video's first frame, shown until it plays; also Person.image.
 export const PROFILE_PHOTO = '/eduardo-aire-torres.webp';
-export const PROFILE_PHOTO_SRCSET = [
-  '/eduardo-aire-torres-160.webp 160w',
-  '/eduardo-aire-torres-256.webp 256w',
-  `${PROFILE_PHOTO} 400w`,
-].join(', ');
+export const PROFILE_VIDEO = '/eduardo-aire-torres.mp4';
 
 export const OG_IMAGE_SIZE = { width: 1200, height: 630 };
 
