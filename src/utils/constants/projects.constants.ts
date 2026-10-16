@@ -232,7 +232,7 @@ export const PROJECTS: Project[] = [
     slug: 'fontfactory',
     started: '2022-11',
     updated: PROJECTS_UPDATED,
-    stack: ['javascript', 'html', 'css', 'rust'],
+    stack: ['javascript', 'html', 'css', 'rust', 'near'],
     links: [
       { kind: 'live', href: 'https://fontfactory.vercel.app' },
       { kind: 'code', href: 'https://github.com/eduairet/fontfactory' },
