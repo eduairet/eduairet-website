@@ -180,6 +180,32 @@ describe('Nav menus (disclosure pattern)', () => {
     expect(screen.getByRole('link', { name: 'Contacto' })).toBeTruthy();
   });
 
+  test.each([
+    [
+      'en',
+      ['Home', 'Projects', 'Contact'],
+      ['/en', '/en/projects', '/en/contact'],
+    ],
+    [
+      'es',
+      ['Inicio', 'Proyectos', 'Contacto'],
+      ['/es', '/es/projects', '/es/contact'],
+    ],
+  ] as const)(
+    'the %s menu lists Projects between Home and Contact',
+    (locale, names, hrefs) => {
+      nav.locale = locale;
+      nav.pathname = `/${locale}`;
+      renderMenus();
+      const pages = within(document.getElementById('nav-main-menu')!)
+        .getAllByRole('link')
+        .slice(0, 3);
+
+      expect(pages.map((link) => link.textContent)).toEqual(names);
+      expect(pages.map((link) => link.getAttribute('href'))).toEqual(hrefs);
+    }
+  );
+
   test('only one menu is open at a time', () => {
     renderMenus();
     const menu = screen.getByRole('button', { name: 'Menu' });
@@ -232,13 +258,13 @@ describe('Phone menu (modal dialog pattern)', () => {
     return { button, dialog: screen.getByRole('dialog', { name: 'Menu' }) };
   };
 
-  test('holds Home, Contact, both languages and the theme toggle', () => {
+  test('holds Home, Projects, Contact, both languages and the theme toggle', () => {
     const { button, dialog } = openPhoneMenu();
     const menu = within(dialog);
 
     expect(dialog.getAttribute('aria-modal')).toBe('true');
     expect(dialog.contains(button)).toBe(true);
-    for (const name of ['Home', 'Contact', 'English', 'Español'])
+    for (const name of ['Home', 'Projects', 'Contact', 'English', 'Español'])
       expect(menu.getByRole('link', { name })).toBeTruthy();
     expect(
       menu.getByRole('button', { name: 'Switch to light theme' })

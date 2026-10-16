@@ -1,6 +1,7 @@
 import styles from './privacy.module.scss';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import ExternalLink from '@/components/ui/ExternalLink/ExternalLink';
+import PageTransition from '@/components/wrappers/PageTransition/PageTransition';
 import type { LocaleProps } from '@/models';
 import { PRIVACY_UPDATED, PrivacyLinks } from '@/utils/constants';
 import { contactDetail, fillTemplate } from '@/utils/template.utils';
@@ -32,30 +33,32 @@ export default async function Privacy({ params }: LocaleProps) {
     );
 
   return (
-    <article className={styles.privacy}>
-      <h1>{privacy.title}</h1>
-      <p className={styles.updated}>
-        {fillTemplate(privacy.updated, () => (
-          <time dateTime={PRIVACY_UPDATED}>{updated}</time>
+    <PageTransition>
+      <article className={styles.privacy}>
+        <h1>{privacy.title}</h1>
+        <p className={styles.updated}>
+          {fillTemplate(privacy.updated, () => (
+            <time dateTime={PRIVACY_UPDATED}>{updated}</time>
+          ))}
+        </p>
+        <p>{privacy.intro}</p>
+        {privacy.sections.map(({ id, title, body }) => (
+          <section key={id} id={id}>
+            <h2>{title}</h2>
+            {body.map((block, i) =>
+              typeof block === 'string' ? (
+                <p key={i}>{fill(block)}</p>
+              ) : (
+                <ul key={i}>
+                  {block.map((item, j) => (
+                    <li key={j}>{fill(item)}</li>
+                  ))}
+                </ul>
+              )
+            )}
+          </section>
         ))}
-      </p>
-      <p>{privacy.intro}</p>
-      {privacy.sections.map(({ id, title, body }) => (
-        <section key={id} id={id}>
-          <h2>{title}</h2>
-          {body.map((block, i) =>
-            typeof block === 'string' ? (
-              <p key={i}>{fill(block)}</p>
-            ) : (
-              <ul key={i}>
-                {block.map((item, j) => (
-                  <li key={j}>{fill(item)}</li>
-                ))}
-              </ul>
-            )
-          )}
-        </section>
-      ))}
-    </article>
+      </article>
+    </PageTransition>
   );
 }

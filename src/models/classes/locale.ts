@@ -59,11 +59,92 @@ const toSection = (data?: Partial<Section>): Section => ({
   })),
 });
 
+export interface ProjectCopy {
+  title: string;
+  period: string;
+  role: string;
+  // The card's second line, as on the other home cards.
+  company?: string;
+  summary: string;
+  explanation: string[];
+  highlights: string[];
+  // Alt text and captions, keyed by media name.
+  media: Record<string, string>;
+  shareAlt: string;
+}
+
+export interface ProjectsCopy {
+  title: string;
+  heading: string;
+  intro: string;
+  seeMore: string;
+  viewAll: string;
+  allProjects: string;
+  whatIDid: string;
+  nextProject: string;
+  linksLabel: string;
+  media: string;
+  openLarger: string;
+  close: string;
+  tryIt: string;
+  feed: string;
+  links: Record<string, string>;
+  art: {
+    waves: { label: string; caption: string };
+    ascii: { label: string; random: string; caption: string };
+    torus: { caption: string };
+    letrastica: { caption: string };
+  };
+  items: Record<string, ProjectCopy>;
+}
+
+const toProjectCopy = (data?: Partial<ProjectCopy>): ProjectCopy => ({
+  title: data?.title || '',
+  period: data?.period || '',
+  role: data?.role || '',
+  company: data?.company || '',
+  summary: data?.summary || '',
+  explanation: data?.explanation || [],
+  highlights: data?.highlights || [],
+  media: data?.media || {},
+  shareAlt: data?.shareAlt || '',
+});
+
+const toProjects = (data?: Partial<ProjectsCopy>): ProjectsCopy => ({
+  title: data?.title || '',
+  heading: data?.heading || '',
+  intro: data?.intro || '',
+  seeMore: data?.seeMore || '',
+  viewAll: data?.viewAll || '',
+  allProjects: data?.allProjects || '',
+  whatIDid: data?.whatIDid || '',
+  nextProject: data?.nextProject || '',
+  linksLabel: data?.linksLabel || '',
+  media: data?.media || '',
+  openLarger: data?.openLarger || '',
+  close: data?.close || '',
+  tryIt: data?.tryIt || '',
+  feed: data?.feed || '',
+  links: data?.links || {},
+  art: {
+    waves: { label: '', caption: '', ...data?.art?.waves },
+    ascii: { label: '', random: '', caption: '', ...data?.art?.ascii },
+    torus: { caption: '', ...data?.art?.torus },
+    letrastica: { caption: '', ...data?.art?.letrastica },
+  },
+  items: Object.fromEntries(
+    Object.entries(data?.items || {}).map(([slug, item]) => [
+      slug,
+      toProjectCopy(item),
+    ])
+  ),
+});
+
 export class Dictionary {
   meta: {
     home: PageMeta;
     contact: PageMeta;
-    resources: PageMeta;
+    projects: PageMeta;
     privacy: PageMeta;
     notFound: PageMeta;
     ogImageAlt: string;
@@ -71,6 +152,7 @@ export class Dictionary {
   nav: {
     menu: string;
     home: string;
+    projects: string;
     contact: string;
     skip: string;
     langs: {
@@ -105,12 +187,8 @@ export class Dictionary {
     text: string;
   };
   experience: Section;
-  projects: Section;
+  projects: ProjectsCopy;
   education: Section;
-  resources: {
-    title: string;
-    text: string;
-  };
   notFound: {
     title: string;
   };
@@ -149,7 +227,7 @@ export class Dictionary {
     this.meta = {
       home: toPageMeta(data.meta?.home),
       contact: toPageMeta(data.meta?.contact),
-      resources: toPageMeta(data.meta?.resources),
+      projects: toPageMeta(data.meta?.projects),
       privacy: toPageMeta(data.meta?.privacy),
       notFound: toPageMeta(data.meta?.notFound),
       ogImageAlt: data.meta?.ogImageAlt || '',
@@ -157,6 +235,7 @@ export class Dictionary {
     this.nav = data.nav || {
       menu: '',
       home: '',
+      projects: '',
       contact: '',
       skip: '',
       langs: {
@@ -198,12 +277,8 @@ export class Dictionary {
       text: data.about?.text || '',
     };
     this.experience = toSection(data.experience);
-    this.projects = toSection(data.projects);
+    this.projects = toProjects(data.projects);
     this.education = toSection(data.education);
-    this.resources = {
-      title: data.resources?.title || '',
-      text: data.resources?.text || '',
-    };
     this.notFound = {
       title: data.notFound?.title || '',
     };

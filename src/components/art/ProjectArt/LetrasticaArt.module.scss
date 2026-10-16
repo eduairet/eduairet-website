@@ -1,0 +1,231 @@
+@use '@/styles/abstracts/index' as *;
+@use 'sass:list';
+
+// Layouts and nudges from the proof of concept's phone and tablet CSS.
+$wide: 640px;
+
+.frame {
+  container-type: inline-size;
+}
+
+.art {
+  position: relative;
+  height: 820px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #b2ef2e;
+
+  @container (width > #{$wide}) {
+    height: 600px;
+  }
+}
+
+.field {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+
+  g[data-jitter] {
+    transition: none;
+  }
+}
+
+.logo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  @container (width > #{$wide}) {
+    gap: 1.5rem;
+  }
+}
+
+.group {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  @container (width > #{$wide}) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.top {
+  grid-template-areas:
+    'L E .'
+    'T R A';
+
+  > :nth-child(1) {
+    grid-area: L;
+  }
+  > :nth-child(2) {
+    grid-area: E;
+  }
+  > :nth-child(3) {
+    grid-area: T;
+  }
+  > :nth-child(4) {
+    grid-area: R;
+  }
+  > :nth-child(5) {
+    grid-area: A;
+  }
+}
+
+.bottom {
+  grid-template-areas:
+    'S T I'
+    '. C A';
+
+  > :nth-child(1) {
+    grid-area: S;
+  }
+  > :nth-child(2) {
+    grid-area: T;
+  }
+  > :nth-child(3) {
+    grid-area: I;
+  }
+  > :nth-child(4) {
+    grid-area: C;
+  }
+  > :nth-child(5) {
+    grid-area: A;
+  }
+}
+
+.letter {
+  animation: jump 1s var(--delay) infinite;
+
+  svg {
+    display: block;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
+$phone-nudges: (
+  'letter-l': (
+    60px,
+    0,
+  ),
+  'letter-e': (
+    52px,
+    -9px,
+  ),
+  'letter-t-middle': (
+    17px,
+    18px,
+  ),
+  'letter-r': (
+    18px,
+    10px,
+  ),
+  'letter-a-acute': (
+    -5px,
+    -35px,
+  ),
+  'letter-s': (
+    32px,
+    -3px,
+  ),
+  'letter-t-end': (
+    16px,
+    -5px,
+  ),
+  'letter-i': (
+    13px,
+    -26px,
+  ),
+  'letter-c': (
+    -48px,
+    -18px,
+  ),
+  'letter-a': (
+    -55px,
+    -3px,
+  ),
+);
+
+$wide-nudges: (
+  'letter-l': (
+    0,
+    0,
+  ),
+  'letter-e': (
+    10px,
+    40px,
+  ),
+  'letter-t-middle': (
+    -9px,
+    -13px,
+  ),
+  'letter-r': (
+    -3px,
+    40px,
+  ),
+  'letter-a-acute': (
+    8px,
+    -10px,
+  ),
+  'letter-s': (
+    -5px,
+    -10px,
+  ),
+  'letter-t-end': (
+    8px,
+    13px,
+  ),
+  'letter-i': (
+    14px,
+    -20px,
+  ),
+  'letter-c': (
+    25px,
+    13px,
+  ),
+  'letter-a': (
+    30px,
+    -18px,
+  ),
+);
+
+@each $letter, $nudge in $phone-nudges {
+  .letter svg[data-letter='#{$letter}'] {
+    translate: list.nth($nudge, 1) list.nth($nudge, 2);
+  }
+}
+
+@container (width > #{$wide}) {
+  @each $letter, $nudge in $wide-nudges {
+    .letter svg[data-letter='#{$letter}'] {
+      translate: list.nth($nudge, 1) list.nth($nudge, 2);
+    }
+  }
+}
+
+@keyframes jump {
+  0%,
+  50%,
+  100% {
+    transform: translateY(0);
+    rotate: 0deg;
+  }
+  40% {
+    transform: translateY(-10px);
+    rotate: 1deg;
+  }
+  90% {
+    transform: translateY(-8px);
+    rotate: -1deg;
+  }
+}

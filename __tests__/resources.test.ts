@@ -1,10 +1,32 @@
 import { expect, test } from 'vitest';
-import Resources from '@/app/[locale]/resources/page';
+import { getPathMatch } from 'next/dist/shared/lib/router/utils/path-match';
+import nextConfig from '../next.config.mjs';
 
-test('resources page returns 404 while it is unpublished', async () => {
-  const render = Resources({ params: Promise.resolve({ locale: 'en' }) });
+const redirectFor = async (path: string) => {
+  const redirects = (await nextConfig.redirects?.()) ?? [];
+  return redirects.find(({ source }) => getPathMatch(source)(path) !== false);
+};
 
-  await expect(render).rejects.toMatchObject({
-    digest: expect.stringContaining('404'),
+test.each(['/resources', '/en/resources', '/es/resources'])(
+  '%s goes to the old portfolio with a permanent redirect',
+  async (path) => {
+    expect(await redirectFor(path)).toMatchObject({
+      destination: 'https://eduairet.myportfolio.com/resources',
+      permanent: true,
+    });
+  }
+);
+
+test.each(['/fr/resources', '/en/resources/old', '/en/projects'])(
+  '%s is not sent to the old portfolio',
+  async (path) => {
+    expect(await redirectFor(path)).toBeUndefined();
+  }
+);
+
+test('the older portfolio pages keep their redirects', async () => {
+  expect(await redirectFor('/indoctrinated-hound')).toMatchObject({
+    destination: 'https://eduairet.myportfolio.com/indoctrinated-hound',
+    permanent: true,
   });
 });

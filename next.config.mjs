@@ -2,6 +2,12 @@ import path from 'node:path';
 
 const oldPortfolioPages = ['indoctrinated-hound', '36days-of-type-2019'];
 
+const toOldPortfolio = (source, slug) => ({
+  source,
+  destination: `https://eduairet.myportfolio.com/${slug}`,
+  permanent: true,
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
@@ -14,11 +20,11 @@ const nextConfig = {
     ],
   },
   async redirects() {
-    return oldPortfolioPages.map((slug) => ({
-      source: `/${slug}`,
-      destination: `https://eduairet.myportfolio.com/${slug}`,
-      permanent: true,
-    }));
+    return [
+      ...oldPortfolioPages.map((slug) => toOldPortfolio(`/${slug}`, slug)),
+      // Search results still point here, with and without a locale.
+      toOldPortfolio('/:locale(en|es)?/resources', 'resources'),
+    ];
   },
 };
 

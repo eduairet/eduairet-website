@@ -8,9 +8,9 @@
       "title": "Contact | Eduardo Aire Torres",
       "description": "Have a project, a role, or a question? Send me a message and I'll get back to you."
     },
-    "resources": {
-      "title": "Resources | Eduardo Aire Torres",
-      "description": "Resources from Eduardo Aire Torres on design, typography, and web development."
+    "projects": {
+      "title": "Projects | Eduardo Aire Torres",
+      "description": "Projects where design meets code: font tools, a payments portal, blockchain apps and generative type."
     },
     "privacy": {
       "title": "Privacy notice | Eduardo Aire Torres",
@@ -25,6 +25,7 @@
   "nav": {
     "menu": "Menu",
     "home": "Home",
+    "projects": "Projects",
     "contact": "Contact",
     "langs": {
       "en": "English",
@@ -184,35 +185,298 @@
   },
   "projects": {
     "title": "Projects",
-    "items": [
-      {
-        "role": "Melvin Pay",
-        "roleUrl": "https://melvinpay.com",
-        "company": "",
-        "companyUrl": "",
-        "meta": "",
-        "period": "Jan – Mar 2023",
-        "description": "A payments product I helped bring to launch. I cleaned up the shared components so they were easier to work with and shipped the merchant-portal features the team needed to go live.",
-        "stack": ["angular", "typescript", "sass"]
+    "heading": "Where design meets code",
+    "intro": "I love the projects that live between design and code. Each one here taught me something new, whether it was a font tool, a payments portal or a marketplace on the blockchain. Open any card to see what I did and how it came to life.",
+    "seeMore": "See more",
+    "viewAll": "View all",
+    "allProjects": "All projects",
+    "whatIDid": "What I did",
+    "nextProject": "Next project",
+    "linksLabel": "Project links",
+    "media": "Screens",
+    "openLarger": "Open larger",
+    "close": "Close",
+    "tryIt": "Try it",
+    "links": {
+      "live": "Live site",
+      "code": "Code",
+      "generator": "Art generator code",
+      "course": "Alchemy University",
+      "showcase": "ETHGlobal showcase",
+      "accelerator": "Women Build Web3",
+      "appCode": "Accelerator code"
+    },
+    "art": {
+      "waves": {
+        "label": "Your three letters",
+        "caption": "Each letter becomes a stack of noisy waves, redrawn twelve times a second."
       },
-      {
-        "role": "InterplanetaryFonts",
-        "roleUrl": "https://ethglobal.com/showcase/interplanetary-fonts-ekwuo",
-        "company": "Women Build Web3",
-        "companyUrl": "https://www.blog.encode.club/women-build-web3-accelerator-with-encode-summary-67cc905de63c",
-        "meta": "",
-        "period": "Sep 2022 – Apr 2023",
-        "description": "A decentralized marketplace for fonts that I co-designed. It reached the ETHOnline 2022 finals and joined the Women Build Web3 accelerator. I shaped the interface and the data behind it.",
-        "stack": [
-          "react",
-          "ethereum",
-          "tailwind",
-          "vercel",
-          "graphql",
-          "thegraph"
-        ]
+      "ascii": {
+        "label": "Your name",
+        "random": "Random letters",
+        "caption": "Letters and spaces only. Accents are dropped, like in the original."
+      },
+      "torus": {
+        "caption": "The torus, drawn with twelve characters and turning in place."
+      },
+      "letrastica": {
+        "caption": "Move your pointer, or tap, and every eye follows you."
       }
-    ]
+    },
+    "items": {
+      "eduardo-pavon": {
+        "title": "Eduardo Pavón",
+        "period": "Sep – Oct 2026",
+        "role": "Design and development",
+        "summary": "A gallery site for Eduardo Pavón, an artist who draws with Bic pens. Fast, bilingual and calm, so the drawings carry the page.",
+        "explanation": [
+          "Eduardo Pavón builds hyperrealistic drawings stroke by stroke with a ballpoint pen. The site had to show that patience up close.",
+          "I built a static site in Spanish and English that loads fast and stays out of the way. A magnifier lets you follow every line."
+        ],
+        "highlights": [
+          "Static pages in two languages, built with Astro and Tailwind, with no framework running in the browser.",
+          "One small script: a magnifier over each drawing.",
+          "An image pipeline that prepares every artwork for the web.",
+          "Everything runs in Docker, from the dev server to the build."
+        ],
+        "media": {
+          "home": "The home page: the artist’s name in big blue letters over a short statement about his work.",
+          "clip": "A scroll down the home page, past the statement and into the drawings.",
+          "phone": "The gallery on a phone."
+        },
+        "shareAlt": "The Eduardo Pavón site: his name in big blue letters over a short statement about his work."
+      },
+      "font-proofer": {
+        "title": "Font Proofer",
+        "period": "Jun 2026",
+        "role": "Design and development",
+        "summary": "A Claude Code template for type designers. Drop in your fonts, answer a few questions, and get print proofs and web test pages.",
+        "explanation": [
+          "Proofing a font usually means scripts, Python and a lot of setup. I wanted type designers to skip all of that.",
+          "You drop your fonts in a folder and talk to Claude in plain words. It reads the fonts, asks what you need and builds the proofs inside a container you never have to open. I presented it at TypeLab 2026."
+        ],
+        "highlights": [
+          "Three specialists split the work: a typographer, a font engineer and a web engineer.",
+          "/init-font reads metrics, character coverage, languages, OpenType features and variable axes.",
+          "Vector PDF proofs with waterfalls, kerning tests and language specimens.",
+          "Fonts stay on your machine. They are never committed or uploaded."
+        ],
+        "media": {
+          "title": "The title slide of my TypeLab 2026 talk: a large serif “Aa” over “Claude Font Proofer”.",
+          "print": "A slide about the print proof, with a screenshot of a generated PDF.",
+          "web": "A slide about the web proof, with a screenshot of a live specimen."
+        },
+        "shareAlt": "The title slide of my TypeLab 2026 talk about Claude Font Proofer."
+      },
+      "vibe-coded-torus": {
+        "title": "Vibe-coded Torus",
+        "period": "Mar 2026",
+        "role": "Personal project",
+        "summary": "The classic spinning ASCII torus, rebuilt in Rust as an experiment in working with Claude Code from a written spec.",
+        "explanation": [
+          "donut.c draws a spinning 3D torus with nothing but text characters. I rebuilt it in Rust with Claude Code.",
+          "I wrote the math down first, then had every step covered by tests. The version below is a port that runs in your browser."
+        ],
+        "highlights": [
+          "Samples points on the torus, rotates them, projects them and shades each one with 12 characters.",
+          "The math lives in its own spec, and tests cover projection, light and rendering.",
+          "Runs anywhere with one Docker command."
+        ],
+        "media": {},
+        "shareAlt": "An ASCII torus drawn with text characters on black."
+      },
+      "letrastica-5": {
+        "title": "Letrástica 5",
+        "period": "Apr – Aug 2024",
+        "role": "Animation",
+        "summary": "The animated logo for Letrástica 5: letters with eyes that follow your pointer, over a field of restless little figures.",
+        "explanation": [
+          "The logo for Letrástica’s fifth edition was drawn as a cast of characters with eyes. I didn’t design it. I animated it.",
+          "Each letter watches your pointer and blinks on its own, and the little figures around them keep moving. It was built to drop into the event’s site. Move your pointer over the one below."
+        ],
+        "highlights": [
+          "Each letter is its own SVG drawing, with eyes that track the pointer, or your tap on a phone.",
+          "The eyes blink at their own pace, and the letters bounce a little out of step.",
+          "The little figures in the background jump around at random, so it never looks the same twice.",
+          "Built to slot into the event’s site as a self-contained piece."
+        ],
+        "media": {
+          "desktop": "The animated Letrástica 5 logo: black letters with white eyes on a bright green field of little figures.",
+          "phone": "The logo stacked for a phone screen."
+        },
+        "shareAlt": "The Letrástica 5 logo: black letters with white eyes on a bright green field of little figures."
+      },
+      "the-session": {
+        "title": "The Session",
+        "period": "Oct 2023",
+        "role": "Full-stack developer, team of three",
+        "summary": "A DApp for finding a group therapy session and joining the talk. We built it as a team for ETHOnline 2023.",
+        "explanation": [
+          "The Session started with a simple idea: talking helps, and nobody should feel alone with it.",
+          "Our designer shaped it in Figma, our smart contract developer wrote the contracts, and I built the app. Its warm, bold look made something hard feel welcoming."
+        ],
+        "highlights": [
+          "A Next.js front end built from the team’s Figma design.",
+          "Messages between people through Push Protocol.",
+          "A contract deployed on Scroll’s Sepolia network."
+        ],
+        "media": {
+          "clip": "A scroll through the home page and its row of therapy groups.",
+          "groups": "Session cards for anxiety, depression, stress management and grief, each with a day, time and number of peers.",
+          "phone": "The home page on a phone."
+        },
+        "shareAlt": "The Session home page: “let’s talk about it” over a row of rounded session cards."
+      },
+      "emoji-drop": {
+        "title": "Emoji Drop",
+        "period": "May – Jun 2023",
+        "role": "Personal project",
+        "summary": "A small DApp on the Internet Computer. Send an emoji and see which one people send the most.",
+        "explanation": [
+          "A compact project to learn how the Internet Computer works.",
+          "A canister stores every emoji people send and counts them. The page shows the favorite."
+        ],
+        "highlights": [
+          "A Motoko canister that counts emojis and checks that each input really is one.",
+          "A React and TypeScript front end served from the chain itself."
+        ],
+        "media": {
+          "home": "The Emoji Drop card: a field to pick an emoji, a Verify button and a round Send button.",
+          "phone": "The top emoji section on a phone."
+        },
+        "shareAlt": "The Emoji Drop card, with a field to pick an emoji and a Send button."
+      },
+      "collectible-pleasures": {
+        "title": "Collectible Pleasures",
+        "period": "May 2023",
+        "role": "Personal project, Alchemy University",
+        "summary": "A DApp that turns three letters into an NFT, drawn as the waves of the Unknown Pleasures cover. I built the art, the contract and the app.",
+        "explanation": [
+          "A project from my Alchemy University bootcamp, and a tribute to the Unknown Pleasures album cover.",
+          "You type three letters, and each one becomes a stack of noisy waves. A small server draws the art and saves it to IPFS, and a contract mints it as an NFT. Try the generator below. To mint one, use the live site."
+        ],
+        "highlights": [
+          "A full alphabet drawn only with waves: each letter is a set of wave modules.",
+          "The same art engine in Python, rendering animated GIFs.",
+          "A Solidity contract with tests, and a Next.js app to connect a wallet and mint."
+        ],
+        "media": {
+          "home": "The live site: “Collectible” over a square of white wave lines, then “PLEASURES” and a field to type three letters.",
+          "phone": "The same page on a phone."
+        },
+        "shareAlt": "Collectible Pleasures: a square of white wave lines between “Collectible” and “PLEASURES”."
+      },
+      "melvin-pay": {
+        "title": "Melvin Pay",
+        "period": "Jan – Mar 2023",
+        "role": "Front-end developer, merchant portal",
+        "summary": "A payments product I helped bring to launch. I cleaned up the shared components so they were easier to work with and shipped the merchant-portal features the team needed to go live.",
+        "explanation": [
+          "Melvin Pay let pet owners pay for vet visits and pet care in installments. I joined to help bring it to launch, and I built the merchant portal: the side that clinics and shops used to run their sales.",
+          "The company has since closed, so these screens come from my code running with made-up data."
+        ],
+        "highlights": [
+          "A dashboard where a shop creates tickets and collects payments in one tap.",
+          "Ticket lists for pending, paid and unused sales, with the payment history of each one.",
+          "A weekly income report that splits cash, transfers and balances.",
+          "Shared components cleaned up so the team could ship faster."
+        ],
+        "media": {
+          "clip": "A walk through the merchant portal: the ticket tabs, then the weekly income report.",
+          "income": "The weekly income report with totals for cash, transfers and the amount Melvin deposits.",
+          "ticket": "A ticket’s details: total, merchant fee, and each payment with its status.",
+          "phone": "The merchant dashboard on a phone."
+        },
+        "shareAlt": "The Melvin Pay merchant dashboard for a demo pet clinic."
+      },
+      "typefobia": {
+        "title": "Typefobia",
+        "period": "Dec 2022 – Feb 2023",
+        "role": "Front-end developer, Letter Engine",
+        "summary": "The site for Typefobia, an “anti-congress” of type. Loud colors, a full program, and donations by card or crypto.",
+        "explanation": [
+          "Typefobia was an irreverent type event, and the site had to match its tone.",
+          "With Letter Engine, I built the pages for the program, the guests and the workshops, plus a way to donate with PayPal or a crypto wallet. I wrote most of the code."
+        ],
+        "highlights": [
+          "A Next.js site with pages for the program, guests, workshops and activities.",
+          "A donation contract in Solidity with tests, connected through a wallet button.",
+          "PayPal donations and a Mailchimp newsletter sign-up."
+        ],
+        "media": {
+          "clip": "A scroll down the home page as the gradient shifts.",
+          "guests": "The guests page, with each speaker’s photo and bio in black boxes.",
+          "phone": "The home page on a phone."
+        },
+        "shareAlt": "The Typefobia home page on a pink-to-orange gradient."
+      },
+      "fontfactory": {
+        "title": "FontFactory",
+        "period": "Nov 2022",
+        "role": "Personal project",
+        "summary": "A NEAR DApp that mints your own copy of the Paradisio font, stamped with a unique font ID.",
+        "explanation": [
+          "What if every copy of a font knew who owned it? FontFactory was my test of that idea on NEAR.",
+          "You sign in with a NEAR wallet and mint an instance of Paradisio with its own ID."
+        ],
+        "highlights": [
+          "A Rust contract on NEAR’s testnet, with unit and integration tests.",
+          "A small front end that signs in with a NEAR wallet and shows the latest font ID."
+        ],
+        "media": {
+          "home": "The FontFactory page: a round FF logo, a box for the latest font ID and a NEAR sign-in button.",
+          "phone": "The same page on a phone."
+        },
+        "shareAlt": "The FontFactory page with its round FF logo."
+      },
+      "interplanetary-fonts": {
+        "title": "InterplanetaryFonts",
+        "period": "Sep 2022 – Apr 2023",
+        "role": "Co-designer and front-end developer",
+        "company": "Women Build Web3",
+        "summary": "A decentralized marketplace for fonts that I co-designed. It reached the ETHOnline 2022 finals and joined the Women Build Web3 accelerator. I shaped the interface and the data behind it.",
+        "explanation": [
+          "InterplanetaryFonts was a marketplace where type designers could share font projects, get funded while they work and sell fonts as NFTs.",
+          "We built it as a small team for ETHOnline 2022, where it reached the finals, and then took it into the Women Build Web3 accelerator. Our demo video shows the whole flow."
+        ],
+        "highlights": [
+          "I built most of the hackathon front end: the gallery, the font pages and the creator profiles.",
+          "On a font page you pick the characters to mint, watch the price change, and test the font loaded from IPFS.",
+          "Modals to mint, fund a project, and stream payments to its creators with Superfluid.",
+          "In the accelerator I added Lens Protocol sign-in and profiles, and a GraphQL layer with Apollo.",
+          "I reworked the home page state and moved fonts and colors into shared CSS variables."
+        ],
+        "media": {
+          "clip-demo": "Our ETHOnline 2022 demo video, with sound.",
+          "gallery": "The gallery of font projects, each card with a cover image and its creator.",
+          "clip-font": "A scroll through a font page, from the specimen to the minting options.",
+          "phone": "A font page on a phone."
+        },
+        "shareAlt": "The InterplanetaryFonts gallery of font projects."
+      },
+      "ascii-name-generator": {
+        "title": "ASCII Name Generator",
+        "period": "Jun – Jul 2021",
+        "role": "Personal project",
+        "summary": "A Python program that writes your name in big ASCII letters, plus a little website that keeps every name it made.",
+        "explanation": [
+          "One of my first coding projects, and still one of my favorites.",
+          "I drew a whole alphabet on a grid in Python, then wrote a program that builds any name from it. It can also fill each stroke with random letters. Type your name below."
+        ],
+        "highlights": [
+          "A hand-drawn alphabet, seven rows tall, stored as simple grids.",
+          "A random mode that fills every stroke with different letters.",
+          "Every name made in the terminal shows up on the project’s website."
+        ],
+        "media": {
+          "terminal": "The program running in a terminal, asking for a name and printing it in big letters.",
+          "names": "The site’s list of names made so far, in colored ASCII letters.",
+          "phone": "The project site on a phone."
+        },
+        "shareAlt": "The ASCII Name Generator site in cyan on black."
+      }
+    },
+    "feed": "Projects feed"
   },
   "education": {
     "title": "Education",
@@ -254,10 +518,6 @@
         "stack": []
       }
     ]
-  },
-  "resources": {
-    "title": "Resources",
-    "text": "Resources will be listed here soon."
   },
   "notFound": {
     "title": "404 - Page not found"
@@ -372,7 +632,8 @@
             "Emails in my inbox: while we're in touch. I delete them when you ask me to.",
             "The Vercel logs I can see: one hour. They never include what you wrote. Vercel may keep its own records longer, as its privacy notice explains.",
             "reCAPTCHA data: as Google's terms describe.",
-            "Your theme choice: until you clear your browser's storage."
+            "Your theme choice: until you clear your browser's storage.",
+            "What you type into the project demos: until you close the tab."
           ]
         ]
       },
@@ -383,6 +644,7 @@
           "This site's code sets no cookies and uses no analytics or ad trackers.",
           [
             "Theme: the site saves \"light\" or \"dark\" in your browser's local storage, under the name \"theme\", so the page keeps its look on your next visit. On your first visit it saves your device's setting. It never leaves your device.",
+            "Project demos: the live pieces on some project pages (Collectible Pleasures and ASCII Name Generator) keep the letters you type, and the random-letters choice, in your browser's session storage, under the names \"waves-letters\", \"ascii-name\" and \"ascii-random\". They never leave your device and are deleted when you close the tab.",
             "reCAPTCHA: when you use the contact form, Google sets a cookie called _GRECAPTCHA for its spam check. Because reCAPTCHA loads from google.com, your browser may also send Google cookies it already has for google.com.",
             "Vercel: if Vercel shows you a short browser check, your browser remembers for one hour that you passed it."
           ],

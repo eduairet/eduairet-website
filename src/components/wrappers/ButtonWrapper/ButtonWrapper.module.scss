@@ -18,17 +18,7 @@
   @include rounded-corners($radius: 1.25rem);
   @include merge-transitions((border-color, color));
 
-  @media (hover: hover) {
-    &:hover:not(:disabled, [aria-disabled='true']) {
-      border-color: $accent;
-      color: var(--accent-text);
-    }
-  }
-
-  &:active:not(:disabled, [aria-disabled='true']) {
-    background-color: $accent;
-    color: $black;
-  }
+  @include button-states;
 
   &:disabled,
   &[aria-disabled='true'] {

@@ -1,16 +1,13 @@
 'use client';
 
-import { useContext, useEffect, useRef } from 'react';
+import { useContext, useRef } from 'react';
 import styles from './HomeSection.module.scss';
 import { SectionEntry } from '@/models';
 import { LanguageContext } from '@/store/LanguageProvider';
-import TechIcon from './TechIcon';
+import TechStackList from './TechStackList';
 import ExternalLink from '@/components/ui/ExternalLink/ExternalLink';
-import { showCardShape } from '@/components/art/CardShapes/cardShapes';
-import {
-  REVEAL_CLASS,
-  useReveal,
-} from '@/components/wrappers/RevealOnScroll/useReveal';
+import { useCardShape } from '@/components/art/CardShapes/useCardShape';
+import { REVEAL_CLASS } from '@/components/wrappers/RevealOnScroll/useReveal';
 
 interface IProps {
   entry: SectionEntry;
@@ -23,17 +20,7 @@ export default function SectionCard({ entry, icons, tools }: IProps) {
   const cardRef = useRef<HTMLLIElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
 
-  useReveal(cardRef);
-
-  useEffect(() => {
-    const card = cardRef.current;
-    if (!card) return;
-    return showCardShape({
-      card,
-      content: contentRef.current,
-      className: styles.shape,
-    });
-  }, []);
+  useCardShape(cardRef, contentRef, styles.shape);
 
   return (
     <li ref={cardRef} className={`${styles.card} ${REVEAL_CLASS}`}>
@@ -69,20 +56,11 @@ export default function SectionCard({ entry, icons, tools }: IProps) {
           </p>
         )}
         <p className={styles.description}>{entry.description}</p>
-        {icons.length + tools.length > 0 && (
-          <ul className={styles.stack} aria-label={content.home.techStack}>
-            {icons.map((tool) => (
-              <li key={tool}>
-                <TechIcon tool={tool} />
-              </li>
-            ))}
-            {tools.map((tool) => (
-              <li key={tool} className={styles.toolPill}>
-                {tool}
-              </li>
-            ))}
-          </ul>
-        )}
+        <TechStackList
+          icons={icons}
+          tools={tools}
+          label={content.home.techStack}
+        />
       </div>
     </li>
   );

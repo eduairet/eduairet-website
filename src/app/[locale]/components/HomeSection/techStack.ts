@@ -37,6 +37,11 @@ export const TOOLS: Record<string, { name: string; Icon?: ComponentType }> = {
   aws: { name: 'AWS' },
   codex: { name: 'OpenAI Codex' },
   thegraph: { name: 'The Graph' },
+  rust: { name: 'Rust' },
+  solidity: { name: 'Solidity' },
+  motoko: { name: 'Motoko' },
+  astro: { name: 'Astro' },
+  ipfs: { name: 'IPFS' },
 };
 
 // Icons go to the cards as keys, so their paths ship in the JS, not the page.

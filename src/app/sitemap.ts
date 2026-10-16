@@ -1,16 +1,17 @@
 import type { MetadataRoute } from 'next';
 import {
-  indexablePages,
-  languageAlternates,
+  indexablePaths,
   locales,
-  pageUrl,
+  pathAlternates,
+  pathUrl,
 } from '@/utils/server';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return indexablePages.flatMap((page) =>
+  return indexablePaths.flatMap(({ path, updated }) =>
     locales.map((locale) => ({
-      url: pageUrl(locale, page),
-      alternates: { languages: languageAlternates(page) },
+      url: pathUrl(locale, path),
+      lastModified: updated,
+      alternates: { languages: pathAlternates(path) },
     }))
   );
 }

@@ -1,11 +1,12 @@
 import { Dictionary, EnContent, EsContent } from '@/models';
-import { SITE_NAME, SITE_URL } from '@/utils/constants';
-import { indexablePages, pageUrl } from '@/utils/server';
+import { PROJECTS, SITE_NAME, SITE_URL } from '@/utils/constants';
+import { feedPath, indexablePages, pageUrl, projectUrl } from '@/utils/server';
 
 export const dynamic = 'force-static';
 
 const en = new Dictionary(EnContent);
 const es = new Dictionary(EsContent);
+const content = { en, es };
 
 // A Markdown summary of the site for language models (https://llmstxt.org),
 // built from the same copy and URLs as the pages.
@@ -14,6 +15,12 @@ export function GET() {
     `- [${en.meta[page].title}](${pageUrl('en', page)}): ${en.meta[page].description}`,
     `- [${es.meta[page].title}](${pageUrl('es', page)}): ${es.meta[page].description}`,
   ]);
+  const projects = PROJECTS.flatMap(({ slug }) =>
+    (['en', 'es'] as const).map((locale) => {
+      const { title, summary } = content[locale].projects.items[slug];
+      return `- [${title}](${projectUrl(locale, slug)}): ${summary}`;
+    })
+  );
   const body = [
     `# ${SITE_NAME}`,
     '',
@@ -25,9 +32,15 @@ export function GET() {
     '',
     ...links,
     '',
+    '## Projects',
+    '',
+    ...projects,
+    '',
     '## Optional',
     '',
     `- [Sitemap](${SITE_URL}/sitemap.xml)`,
+    `- [${en.projects.feed}](${SITE_URL}${feedPath('en')}): RSS`,
+    `- [${es.projects.feed}](${SITE_URL}${feedPath('es')}): RSS`,
     '',
   ].join('\n');
 

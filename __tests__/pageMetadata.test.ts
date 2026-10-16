@@ -1,10 +1,10 @@
 import { expect, test } from 'vitest';
+import { PagePaths } from '@/utils/constants';
 import {
   buildPageMetadata,
-  languageAlternates,
+  pathAlternates,
   siteMetadata,
 } from '@/utils/server';
-import { generateMetadata as resourcesMetadata } from '@/app/[locale]/resources/page';
 
 const SITE = 'https://www.eduairet.com';
 
@@ -33,12 +33,12 @@ test.each([
 );
 
 test('every page lists en, es and x-default with absolute www URLs', () => {
-  expect(languageAlternates('home')).toEqual({
+  expect(pathAlternates(PagePaths.home)).toEqual({
     en: `${SITE}/en`,
     es: `${SITE}/es`,
     'x-default': SITE,
   });
-  expect(languageAlternates('contact')).toEqual({
+  expect(pathAlternates(PagePaths.contact)).toEqual({
     en: `${SITE}/en/contact`,
     es: `${SITE}/es/contact`,
     'x-default': `${SITE}/contact`,
@@ -52,7 +52,7 @@ test("privacy titles use each language's name for the notice", async () => {
   expect((await buildPageMetadata('es', 'privacy')).title).toBe(
     'Aviso de privacidad | Eduardo Aire Torres'
   );
-  expect(languageAlternates('privacy')).toEqual({
+  expect(pathAlternates(PagePaths.privacy)).toEqual({
     en: `${SITE}/en/privacy`,
     es: `${SITE}/es/privacy`,
     'x-default': `${SITE}/privacy`,
@@ -114,13 +114,6 @@ test('404s fall back to layout metadata: no canonical, hreflang, or robots overr
   expect(siteMetadata.alternates).toBeUndefined();
   expect(siteMetadata.robots).toBeUndefined();
   expect(String(siteMetadata.metadataBase)).toBe(`${SITE}/`);
-});
-
-test('the unpublished resources page adds no metadata of its own', async () => {
-  const metadata = await resourcesMetadata({
-    params: Promise.resolve({ locale: 'en' }),
-  });
-  expect(metadata).toEqual({});
 });
 
 test('unknown locales 404 instead of building metadata', async () => {
