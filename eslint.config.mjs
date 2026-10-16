@@ -4,6 +4,13 @@ import nextConfig from 'eslint-config-next';
 import prettierConfig from 'eslint-config-prettier';
 import unusedImports from 'eslint-plugin-unused-imports';
 
+const unusedVarsOptions = {
+  vars: 'all',
+  varsIgnorePattern: '^_',
+  args: 'after-used',
+  argsIgnorePattern: '^_',
+};
+
 export default defineConfig([
   globalIgnores([
     '.next/**',
@@ -25,15 +32,15 @@ export default defineConfig([
     rules: {
       '@typescript-eslint/no-unused-vars': 'off',
       'unused-imports/no-unused-imports': 'error',
-      'unused-imports/no-unused-vars': [
-        'error',
-        {
-          vars: 'all',
-          varsIgnorePattern: '^_',
-          args: 'after-used',
-          argsIgnorePattern: '^_',
-        },
-      ],
+      'no-unused-vars': ['error', unusedVarsOptions],
+    },
+  },
+  {
+    // unused-imports wraps typescript-eslint's rule, which needs its parser since 8.71.
+    files: ['**/*.{ts,tsx,mts,cts}'],
+    rules: {
+      'no-unused-vars': 'off',
+      'unused-imports/no-unused-vars': ['error', unusedVarsOptions],
     },
   },
 ]);

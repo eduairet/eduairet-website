@@ -7,6 +7,9 @@ const importHook = async () => {
   return import('@/hooks/useRecaptcha');
 };
 
+// A cold transform takes about 5s in a fresh container, so pay it before the tests.
+await importHook();
+
 const scripts = () =>
   [...document.querySelectorAll('script')].filter((s) =>
     s.src.startsWith('https://www.google.com/recaptcha/api.js')
