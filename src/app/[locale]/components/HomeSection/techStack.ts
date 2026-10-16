@@ -42,6 +42,7 @@ export const TOOLS: Record<string, { name: string; Icon?: ComponentType }> = {
   motoko: { name: 'Motoko' },
   astro: { name: 'Astro' },
   ipfs: { name: 'IPFS' },
+  near: { name: 'NEAR Protocol' },
 };
 
 // Icons go to the cards as keys, so their paths ship in the JS, not the page.
