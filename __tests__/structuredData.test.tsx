@@ -38,6 +38,7 @@ test.each(['en', 'es'])(
           'https://www.linkedin.com/in/eduairet/',
           'https://x.com/eduairet',
           'https://www.instagram.com/eduairet/',
+          'https://archive.eduairet.com',
         ],
       },
     });
