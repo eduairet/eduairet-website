@@ -25,6 +25,8 @@ jobs:
       - name: Build test image
         run: |
           docker build -t eduairet-website-test .
+      - name: Lint in Docker
+        run: docker run --rm eduairet-website-test pnpm lint
       - name: Run tests in Docker
         run: |
           docker run --rm \
