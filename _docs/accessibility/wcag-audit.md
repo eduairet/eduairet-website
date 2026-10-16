@@ -67,11 +67,11 @@
 
 **Update (2026-10-15, branch `feat/projects`): no criterion changes.** `/resources`, `/en/resources` and `/es/resources` now redirect (308) to the old portfolio's resources page, so the site no longer has a resources page or its 404 state (F-15, F-22).
 
-**Update (2026-10-15, branch `feat/projects`): new project pages; the 2.2.2 deviation would cover their clips and live pieces.**
+**Update (2026-10-15, branch `feat/projects`): new project pages; the 2.2.2 deviation now covers their clips and live pieces.**
 
 - New routes: `/[locale]/projects` and `/[locale]/projects/<slug>` (12 projects). The nav menu has Projects between Home and Contact.
 - Each project card is one link: the title link stretches over the card, and the focus ring is drawn on the card. "View all" is a link to the first hidden card, so it works without JavaScript; with it, focus moves to the first new card. Media open in a `<dialog>`: Escape closes it and focus returns to the image.
-- Short muted clips loop while on screen, and four live pieces move (the torus, the Collectible Pleasures waves, the Letrástica 5 letters and their figures). They have no pause control, so under 2.2.2 they need the same acceptance as F-23. With reduced motion they hold still, and so does every page transition except a short fade. The InterplanetaryFonts demo video has sound and plays only from its own controls.
+- Short muted clips loop while on screen, and four live pieces move (the torus, the Collectible Pleasures waves, the Letrástica 5 letters and their figures). They have no pause control; the site owner accepted them under F-23 on 2026-10-16. With reduced motion they hold still, and so does every page transition except a short fade. The InterplanetaryFonts demo video has sound and plays only from its own controls.
 - Evidence: axe 4.11.0 found 0 violations in 24 runs (/en/projects, /es/projects, three project pages and /en; both themes; 375 and 1280 wide). With JavaScript off, all 32 pages are reachable by following links. Tab walks on /en/projects and /en/projects/melvin-pay showed a ring on every stop.
 
 Severity counts as found on 2026-10-05:
@@ -431,7 +431,7 @@ Severity counts as found on 2026-10-05:
   - Where a shape fits beside the text, it is full strength. Where it doesn't (phones, and tall cards near 768 wide), a smaller one sits behind the text at 15% opacity. With text hidden, the worst pixel behind each text run and icon was sampled on all 12 cards: at 375 wide, every text run stays at 4.5:1 or more, with the lowest value still the red date on white cards (4.68:1, as without shapes); where a tall shape reaches a date it measured 4.84:1 or more. Icons stay at 8.86:1 or more. At 768 and 1280 wide, nothing changes against `main`.
   - Thin lines that turn slowly don't flash (2.3.1). The canvases are `aria-hidden`, not focusable, and take no pointer events; the menus, sticky titles and footer stay above them.
 - **About video (since 2026-10-15, replacing the 2026-10-14 sphere):** a muted 5.5 s portrait video loops while it is on screen. Like the card shapes, it starts only after the first scroll, pointer or key input. Before that, with reduced motion, off screen and with JavaScript off, it shows its still first frame. The head moves gently and the gray backdrop stays still, so it doesn't flash (2.3.1). No text sits on it. Tests: `aboutVideo.test.tsx`.
-- Status: Accepted (2026-10-06), as a known deviation; widened to the card shapes on 2026-10-10 and to the About sphere on 2026-10-14, now the About video. To meet 2.2.2 later, add a visible pause button that stops all three and stores the choice.
+- Status: Accepted (2026-10-06), as a known deviation; widened to the card shapes on 2026-10-10 and to the About sphere on 2026-10-14, now the About video, and to the project clips and live pieces on 2026-10-16. To meet 2.2.2 later, add a visible pause button that stops all of them and stores the choice.
 
 ---
 
@@ -463,7 +463,7 @@ Severity counts as found on 2026-10-05:
 | 2.1.2 No Keyboard Trap                          | A     | Pass   | Tab cycles through to the end on every page                                                                             |
 | 2.1.4 Character Key Shortcuts                   | A     | N/A    | No shortcuts                                                                                                            |
 | 2.2.1 Timing Adjustable                         | A     | Pass   | F-02, F-13 fixed                                                                                                        |
-| 2.2.2 Pause, Stop, Hide                         | A     | Fail   | F-14 fixed; F-23 accepted deviation: particle background, card shapes and About video have no pause control             |
+| 2.2.2 Pause, Stop, Hide                         | A     | Fail   | F-14 fixed; F-23 accepted deviation: particle background, card shapes, About video and project motion have no pause control |
 | 2.3.1 Three Flashes or Below Threshold          | A     | Pass   | Nothing flashes; F-23 background luminance changes stay under 0.10                                                      |
 | 2.4.1 Bypass Blocks                             | A     | Pass   | Landmarks, plus a skip link added 2026-10-06                                                                            |
 | 2.4.2 Page Titled                               | A     | Pass   | F-15 fixed                                                                                                              |
