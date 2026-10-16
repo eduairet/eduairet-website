@@ -1,25 +1,7 @@
 @use 'abstracts/index' as *;
 
-@mixin light-theme {
-  --background: #{$white};
-  --background-80: #{get-color($white, 0.8)};
-  --background-50: #{get-color($white, 0.5)};
-  --background-00: #{get-color($white, 0)};
-  --foreground: #{$black};
-  --foreground-50: #{get-color($black, 0.5)};
-  --accent-text: #{$accent-on-light};
-  --valid: #{$valid-on-light};
-}
-
 :root {
-  --background: #{$black};
-  --background-80: #{get-color($black, 0.8)};
-  --background-50: #{get-color($black, 0.5)};
-  --background-00: #{get-color($black, 0)};
-  --foreground: #{$white};
-  --foreground-50: #{get-color($white, 0.5)};
-  --accent-text: #{$accent};
-  --valid: #{$valid};
+  @include dark-theme;
   // The footer's spacing, read by the footer and added up for its clearance.
   --footer-padding-y: 1.5rem;
   --footer-gap: 1rem;
@@ -256,5 +238,38 @@ textarea {
   * {
     scrollbar-width: thin;
     scrollbar-color: var(--foreground-50) transparent;
+  }
+}
+
+// PageTransition: only page content animates; header and footer stay put.
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-old(.page-exit) {
+  animation: 150ms ease-in both page-fade reverse;
+}
+
+::view-transition-new(.page-enter) {
+  animation:
+    210ms ease-out 150ms both page-fade,
+    400ms cubic-bezier(0.2, 0.7, 0.2, 1) both page-rise;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(.page-enter) {
+    animation: 150ms ease-out both page-fade;
+  }
+}
+
+@keyframes page-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes page-rise {
+  from {
+    translate: 0 12px;
   }
 }

@@ -6,17 +6,16 @@ import {
   resolveStack,
   TOOLS,
 } from '@/app/[locale]/components/HomeSection/techStack';
+import { PROJECTS } from '@/utils/constants';
 
 test.each([
   ['en', EnContent],
   ['es', EsContent],
 ] as const)('every %s stack key shows as an icon or a name', (_, data) => {
   const content = new Dictionary(data);
-  for (const section of [content.experience, content.projects]) {
-    for (const { stack } of section.items) {
-      const { icons, tools } = resolveStack(stack);
-      expect(icons.length + tools.length).toBe(stack.length);
-    }
+  for (const { stack } of [...content.experience.items, ...PROJECTS]) {
+    const { icons, tools } = resolveStack(stack);
+    expect(icons.length + tools.length).toBe(stack.length);
   }
 });
 

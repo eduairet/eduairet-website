@@ -47,3 +47,23 @@
     content: none;
   }
 }
+
+// A link or button drawn as a pill, with the contact form's button states.
+%pill-button {
+  @extend %pill;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--foreground);
+  @include merge-transitions((border-color, color));
+  @include button-states;
+
+  &::before {
+    content: none;
+  }
+}
+
+%pill-small {
+  height: 44px;
+  padding: 0 1.25rem;
+  font-size: 1rem;
+}

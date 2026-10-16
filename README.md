@@ -23,6 +23,16 @@ The contact form sends mail and saves a backup of each message only from Vercel 
 
 What the site collects is explained to visitors on the privacy page (`/en/privacy`, `/es/privacy`). Update it whenever the site starts collecting something new or sends data to a new service.
 
+## Projects
+
+Each project has three parts:
+
+- Facts shared by both languages (slug, dates, stack, links, media): `src/utils/constants/projects.constants.ts`.
+- Copy in English and Spanish, keyed by slug: `projects.items` in `src/models/dictionaries/en.json` and `es.json`.
+- Media in `public/projects/<slug>/`: WebP stills at each width listed, MP4 clips with a `-poster.webp`, and `og.jpg` (1200×630) for link previews.
+
+The home page shows `HOME_PROJECTS`. `/projects` lists them all, and the first 9 show before "View all". When a page's content changes, update its date (`PAGES_UPDATED` or the project's `updated`), because the sitemap's `lastmod` comes from it.
+
 ## Check it
 
 ```bash

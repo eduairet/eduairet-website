@@ -1,4 +1,5 @@
 @use 'variables' as *;
+@use 'functions' as *;
 @use 'sass:list';
 
 @mixin accessibility-outline($color: $accent, $offset: 3px, $width: 3px) {
@@ -98,4 +99,50 @@
   @media (height <= $breakpoint-short-height) {
     @content;
   }
+}
+
+// Hover and press states shared by buttons and button-like links.
+@mixin button-states {
+  @media (hover: hover) {
+    &:hover:not(:disabled, [aria-disabled='true']) {
+      border-color: $accent;
+      color: var(--accent-text);
+    }
+  }
+
+  &:active:not(:disabled, [aria-disabled='true']) {
+    background-color: $accent;
+    color: $black;
+  }
+}
+
+// Dark is the site default; dark-theme also keeps a surface dark in light mode.
+@mixin dark-theme {
+  --background: #{$black};
+  --background-80: #{get-color($black, 0.8)};
+  --background-50: #{get-color($black, 0.5)};
+  --background-00: #{get-color($black, 0)};
+  --foreground: #{$white};
+  --foreground-50: #{get-color($white, 0.5)};
+  --accent-text: #{$accent};
+  --valid: #{$valid};
+}
+
+@mixin light-theme {
+  --background: #{$white};
+  --background-80: #{get-color($white, 0.8)};
+  --background-50: #{get-color($white, 0.5)};
+  --background-00: #{get-color($white, 0)};
+  --foreground: #{$black};
+  --foreground-50: #{get-color($black, 0.5)};
+  --accent-text: #{$accent-on-light};
+  --valid: #{$valid-on-light};
+}
+
+// Small uppercase labels, like the dates on the cards.
+@mixin eyebrow {
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  @include degular($wght: 500, $opsz: 12);
 }

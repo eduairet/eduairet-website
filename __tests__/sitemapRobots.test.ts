@@ -2,17 +2,24 @@ import { expect, test } from 'vitest';
 import sitemap from '@/app/sitemap';
 import robots from '@/app/robots';
 import manifest from '@/app/manifest';
+import { PAGES_UPDATED, PRIVACY_UPDATED, PROJECTS } from '@/utils/constants';
 
 const SITE = 'https://www.eduairet.com';
 
-test('sitemap lists only the indexable pages', () => {
+test('sitemap lists the indexable pages, then every project', () => {
   expect(sitemap().map((entry) => entry.url)).toEqual([
     `${SITE}/en`,
     `${SITE}/es`,
+    `${SITE}/en/projects`,
+    `${SITE}/es/projects`,
     `${SITE}/en/contact`,
     `${SITE}/es/contact`,
     `${SITE}/en/privacy`,
     `${SITE}/es/privacy`,
+    ...PROJECTS.flatMap(({ slug }) => [
+      `${SITE}/en/projects/${slug}`,
+      `${SITE}/es/projects/${slug}`,
+    ]),
   ]);
 });
 
@@ -24,12 +31,23 @@ test('every sitemap entry carries en, es and x-default alternates', () => {
   }
 });
 
-test('sitemap leaves out fields Google ignores or that could be wrong', () => {
+test('sitemap leaves out fields Google ignores', () => {
   for (const entry of sitemap()) {
     expect(entry).not.toHaveProperty('priority');
     expect(entry).not.toHaveProperty('changeFrequency');
-    expect(entry).not.toHaveProperty('lastModified');
   }
+});
+
+test('lastmod is the date each page was last edited, by hand', () => {
+  const lastmod = Object.fromEntries(
+    sitemap().map(({ url, lastModified }) => [url, lastModified])
+  );
+  expect(lastmod[`${SITE}/en/privacy`]).toBe(PRIVACY_UPDATED);
+  expect(lastmod[`${SITE}/es/contact`]).toBe(PAGES_UPDATED.contact);
+  for (const { slug, updated } of PROJECTS)
+    expect(lastmod[`${SITE}/en/projects/${slug}`]).toBe(updated);
+  for (const value of Object.values(lastmod))
+    expect(value).toMatch(/^\d{4}-\d{2}-\d{2}$/);
 });
 
 test('robots.txt allows the site, blocks the API, and points to the sitemap', () => {

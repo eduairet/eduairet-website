@@ -8,6 +8,10 @@
       "title": "Contacto | Eduardo Aire Torres",
       "description": "¿Tienes un proyecto, una vacante o una pregunta? Mándame un mensaje y te respondo."
     },
+    "projects": {
+      "title": "Proyectos | Eduardo Aire Torres",
+      "description": "Proyectos donde el diseño se encuentra con el código: herramientas para fuentes, un portal de pagos, apps en blockchain y tipografía generativa."
+    },
     "privacy": {
       "title": "Aviso de privacidad | Eduardo Aire Torres",
       "description": "Qué datos tuyos recaba este sitio, para qué, quién más los trata, cuánto tiempo los guardo y cómo pedir que se borren."
@@ -21,6 +25,7 @@
   "nav": {
     "menu": "Menú",
     "home": "Inicio",
+    "projects": "Proyectos",
     "contact": "Contacto",
     "langs": {
       "en": "English",
@@ -180,35 +185,298 @@
   },
   "projects": {
     "title": "Proyectos",
-    "items": [
-      {
-        "role": "Melvin Pay",
-        "roleUrl": "https://melvinpay.com",
-        "company": "",
-        "companyUrl": "",
-        "meta": "",
-        "period": "Ene – Mar 2023",
-        "description": "Un producto de pagos que ayudé a llevar al lanzamiento. Ordené los componentes compartidos para que fueran más fáciles de usar y entregué las funciones del portal de comercios que el equipo necesitaba para salir a producción.",
-        "stack": ["angular", "typescript", "sass"]
+    "heading": "Donde el diseño se encuentra con el código",
+    "intro": "Me encantan los proyectos que viven entre el diseño y el código. Cada uno de estos me enseñó algo nuevo, ya fuera una herramienta para fuentes, un portal de pagos o un mercado en blockchain. Abre cualquier tarjeta para ver lo que hice y cómo cobró vida.",
+    "seeMore": "Ver más",
+    "viewAll": "Ver todos",
+    "allProjects": "Todos los proyectos",
+    "whatIDid": "Lo que hice",
+    "nextProject": "Siguiente proyecto",
+    "linksLabel": "Enlaces del proyecto",
+    "media": "Pantallas",
+    "openLarger": "Ver en grande",
+    "close": "Cerrar",
+    "tryIt": "Pruébalo",
+    "links": {
+      "live": "Sitio en vivo",
+      "code": "Código",
+      "generator": "Código del generador",
+      "course": "Alchemy University",
+      "showcase": "Proyecto en ETHGlobal",
+      "accelerator": "Women Build Web3",
+      "appCode": "Código de la aceleradora"
+    },
+    "art": {
+      "waves": {
+        "label": "Tus tres letras",
+        "caption": "Cada letra se vuelve una pila de ondas ruidosas, redibujada doce veces por segundo."
       },
-      {
-        "role": "InterplanetaryFonts",
-        "roleUrl": "https://ethglobal.com/showcase/interplanetary-fonts-ekwuo",
-        "company": "Women Build Web3",
-        "companyUrl": "https://www.blog.encode.club/women-build-web3-accelerator-with-encode-summary-67cc905de63c",
-        "meta": "",
-        "period": "Sep 2022 – Abr 2023",
-        "description": "Un marketplace descentralizado de fuentes que codiseñé. Llegó a la final de ETHOnline 2022 y entró a la aceleradora Women Build Web3. Di forma a la interfaz y a los datos detrás de ella.",
-        "stack": [
-          "react",
-          "ethereum",
-          "tailwind",
-          "vercel",
-          "graphql",
-          "thegraph"
-        ]
+      "ascii": {
+        "label": "Tu nombre",
+        "random": "Letras al azar",
+        "caption": "Solo letras y espacios. Los acentos se quitan, como en el original."
+      },
+      "torus": {
+        "caption": "El toro, dibujado con doce caracteres y girando en su lugar."
+      },
+      "letrastica": {
+        "caption": "Mueve tu cursor, o toca la pantalla, y todos los ojos te siguen."
       }
-    ]
+    },
+    "items": {
+      "eduardo-pavon": {
+        "title": "Eduardo Pavón",
+        "period": "Sep – Oct 2026",
+        "role": "Diseño y desarrollo",
+        "summary": "Un sitio galería para Eduardo Pavón, un artista que dibuja con plumas Bic. Rápido, bilingüe y sereno, para que los dibujos sostengan la página.",
+        "explanation": [
+          "Eduardo Pavón construye dibujos hiperrealistas trazo a trazo con una pluma. El sitio tenía que mostrar esa paciencia de cerca.",
+          "Hice un sitio estático en español e inglés que carga rápido y no estorba. Una lupa te deja seguir cada línea."
+        ],
+        "highlights": [
+          "Páginas estáticas en dos idiomas, hechas con Astro y Tailwind, sin framework corriendo en el navegador.",
+          "Un solo script pequeño: una lupa sobre cada dibujo.",
+          "Un proceso de imágenes que prepara cada obra para la web.",
+          "Todo corre en Docker, desde el servidor de desarrollo hasta el build."
+        ],
+        "media": {
+          "home": "La página principal: el nombre del artista en letras azules grandes sobre una breve presentación de su obra.",
+          "clip": "Un recorrido hacia abajo por la página principal, de la presentación a los dibujos.",
+          "phone": "La galería en un teléfono."
+        },
+        "shareAlt": "El sitio de Eduardo Pavón: su nombre en letras azules grandes sobre una breve presentación de su obra."
+      },
+      "font-proofer": {
+        "title": "Font Proofer",
+        "period": "Jun 2026",
+        "role": "Diseño y desarrollo",
+        "summary": "Una plantilla de Claude Code para diseñadores de tipografía. Pones tus fuentes, respondes unas preguntas y obtienes pruebas de impresión y páginas de prueba web.",
+        "explanation": [
+          "Probar una fuente casi siempre implica scripts, Python y mucha configuración. Quería que los diseñadores se saltaran todo eso.",
+          "Pones tus fuentes en una carpeta y le hablas a Claude con palabras simples. Lee las fuentes, pregunta lo que necesitas y arma las pruebas dentro de un contenedor que nunca tienes que abrir. Lo presenté en TypeLab 2026."
+        ],
+        "highlights": [
+          "Tres especialistas se reparten el trabajo: un tipógrafo, un ingeniero de fuentes y un ingeniero web.",
+          "/init-font lee métricas, cobertura de caracteres, idiomas, funciones OpenType y ejes variables.",
+          "Pruebas PDF vectoriales con cascadas, pruebas de kerning y muestras por idioma.",
+          "Las fuentes se quedan en tu equipo. Nunca se suben ni se publican."
+        ],
+        "media": {
+          "title": "La portada de mi charla en TypeLab 2026: una gran “Aa” con serifas sobre “Claude Font Proofer”.",
+          "print": "Una diapositiva sobre la prueba impresa, con una captura de un PDF generado.",
+          "web": "Una diapositiva sobre la prueba web, con una captura de un espécimen en vivo."
+        },
+        "shareAlt": "La portada de mi charla en TypeLab 2026 sobre Claude Font Proofer."
+      },
+      "vibe-coded-torus": {
+        "title": "Vibe-coded Torus",
+        "period": "Mar 2026",
+        "role": "Proyecto personal",
+        "summary": "El clásico toro de ASCII que gira, rehecho en Rust como un experimento de trabajar con Claude Code a partir de una especificación escrita.",
+        "explanation": [
+          "donut.c dibuja un toro en 3D que gira usando solo caracteres de texto. Lo rehíce en Rust con Claude Code.",
+          "Primero escribí las matemáticas y luego cubrí cada paso con pruebas. La versión de abajo es un port que corre en tu navegador."
+        ],
+        "highlights": [
+          "Toma puntos del toro, los gira, los proyecta y sombrea cada uno con 12 caracteres.",
+          "Las matemáticas tienen su propia especificación, y hay pruebas para la proyección, la luz y el dibujo.",
+          "Corre en cualquier lado con un comando de Docker."
+        ],
+        "media": {},
+        "shareAlt": "Un toro de ASCII dibujado con caracteres de texto sobre negro."
+      },
+      "letrastica-5": {
+        "title": "Letrástica 5",
+        "period": "Abr – Ago 2024",
+        "role": "Animación",
+        "summary": "El logo animado de Letrástica 5: letras con ojos que siguen tu cursor, sobre un campo de figuritas inquietas.",
+        "explanation": [
+          "El logo de la quinta edición de Letrástica se dibujó como un elenco de personajes con ojos. Yo no lo diseñé. Lo animé.",
+          "Cada letra sigue tu cursor y parpadea a su propio ritmo, y las figuritas alrededor no dejan de moverse. Lo hice para insertarlo en el sitio del evento. Mueve tu cursor sobre el de abajo."
+        ],
+        "highlights": [
+          "Cada letra es su propio dibujo SVG, con ojos que siguen el cursor, o tu toque en el teléfono.",
+          "Los ojos parpadean a su propio ritmo, y las letras rebotan un poco desfasadas.",
+          "Las figuritas del fondo saltan al azar, así que nunca se ve igual.",
+          "Hecho para insertarse en el sitio del evento como una pieza independiente."
+        ],
+        "media": {
+          "desktop": "El logo animado de Letrástica 5: letras negras con ojos blancos sobre un campo verde brillante lleno de figuritas.",
+          "phone": "El logo acomodado para la pantalla de un teléfono."
+        },
+        "shareAlt": "El logo de Letrástica 5: letras negras con ojos blancos sobre un campo verde brillante lleno de figuritas."
+      },
+      "the-session": {
+        "title": "The Session",
+        "period": "Oct 2023",
+        "role": "Desarrollador full-stack, equipo de tres",
+        "summary": "Una DApp para encontrar una sesión de terapia grupal y unirte a la conversación. La hicimos en equipo para ETHOnline 2023.",
+        "explanation": [
+          "The Session nació de una idea sencilla: hablar ayuda, y nadie debería sentirse solo con eso.",
+          "Nuestra diseñadora lo trazó en Figma, nuestro desarrollador de contratos escribió los contratos inteligentes y yo construí la app. Su estilo cálido y llamativo hizo que algo difícil se sintiera acogedor."
+        ],
+        "highlights": [
+          "Un front end en Next.js hecho a partir del diseño en Figma del equipo.",
+          "Mensajes entre personas con Push Protocol.",
+          "Un contrato publicado en la red Sepolia de Scroll."
+        ],
+        "media": {
+          "clip": "Un recorrido por la página principal y su fila de grupos de terapia.",
+          "groups": "Tarjetas de sesiones de ansiedad, depresión, manejo del estrés y duelo, cada una con día, hora y número de personas.",
+          "phone": "La página principal en un teléfono."
+        },
+        "shareAlt": "La página principal de The Session: “let’s talk about it” sobre una fila de tarjetas redondeadas."
+      },
+      "emoji-drop": {
+        "title": "Emoji Drop",
+        "period": "May – Jun 2023",
+        "role": "Proyecto personal",
+        "summary": "Una DApp pequeña en Internet Computer. Envía un emoji y mira cuál es el que más manda la gente.",
+        "explanation": [
+          "Un proyecto compacto para aprender cómo funciona Internet Computer.",
+          "Un canister guarda cada emoji que manda la gente y los cuenta. La página muestra el favorito."
+        ],
+        "highlights": [
+          "Un canister en Motoko que cuenta emojis y revisa que cada entrada sí sea uno.",
+          "Un front end en React y TypeScript servido desde la misma cadena."
+        ],
+        "media": {
+          "home": "La tarjeta de Emoji Drop: un campo para elegir un emoji, un botón Verify y un botón redondo Send.",
+          "phone": "La sección del emoji favorito en un teléfono."
+        },
+        "shareAlt": "La tarjeta de Emoji Drop, con un campo para elegir un emoji y un botón Send."
+      },
+      "collectible-pleasures": {
+        "title": "Collectible Pleasures",
+        "period": "May 2023",
+        "role": "Proyecto personal, Alchemy University",
+        "summary": "Una DApp que convierte tres letras en un NFT, dibujadas como las ondas de la portada de Unknown Pleasures. Hice el arte, el contrato y la app.",
+        "explanation": [
+          "Un proyecto de mi bootcamp en Alchemy University, y un homenaje a la portada del disco Unknown Pleasures.",
+          "Escribes tres letras y cada una se vuelve una pila de ondas ruidosas. Un servidor pequeño dibuja el arte y lo guarda en IPFS, y un contrato lo acuña como NFT. Prueba el generador de abajo. Para acuñar uno, usa el sitio en vivo."
+        ],
+        "highlights": [
+          "Un alfabeto completo dibujado solo con ondas: cada letra es un conjunto de módulos de onda.",
+          "El mismo motor de arte en Python, que genera GIFs animados.",
+          "Un contrato en Solidity con pruebas, y una app en Next.js para conectar la wallet y acuñar."
+        ],
+        "media": {
+          "home": "El sitio en vivo: “Collectible” sobre un cuadro de ondas blancas, luego “PLEASURES” y un campo para escribir tres letras.",
+          "phone": "La misma página en un teléfono."
+        },
+        "shareAlt": "Collectible Pleasures: un cuadro de ondas blancas entre “Collectible” y “PLEASURES”."
+      },
+      "melvin-pay": {
+        "title": "Melvin Pay",
+        "period": "Ene – Mar 2023",
+        "role": "Desarrollador front-end, portal de comercios",
+        "summary": "Un producto de pagos que ayudé a llevar al lanzamiento. Ordené los componentes compartidos para que fueran más fáciles de usar y entregué las funciones del portal de comercios que el equipo necesitaba para salir a producción.",
+        "explanation": [
+          "Melvin Pay dejaba que los dueños de mascotas pagaran consultas y cuidados en parcialidades. Me uní para ayudar a lanzarlo y construí el portal de comercios: la parte que usaban clínicas y tiendas para llevar sus ventas.",
+          "La empresa ya cerró, así que estas pantallas vienen de mi código corriendo con datos inventados."
+        ],
+        "highlights": [
+          "Un tablero donde el comercio crea tickets y cobra pagos con un toque.",
+          "Listas de tickets pendientes, pagados y sin usar, con el historial de pagos de cada uno.",
+          "Un reporte semanal de ingresos que separa efectivo, transferencias y saldos.",
+          "Componentes compartidos ordenados para que el equipo entregara más rápido."
+        ],
+        "media": {
+          "clip": "Un recorrido por el portal de comercios: las pestañas de tickets y luego el reporte semanal de ingresos.",
+          "income": "El reporte semanal de ingresos con los totales de efectivo, transferencias y lo que deposita Melvin.",
+          "ticket": "El detalle de un ticket: total, comisión del comercio y cada pago con su estatus.",
+          "phone": "El tablero del comercio en un teléfono."
+        },
+        "shareAlt": "El tablero de comercios de Melvin Pay para una clínica de mascotas de prueba."
+      },
+      "typefobia": {
+        "title": "Typefobia",
+        "period": "Dic 2022 – Feb 2023",
+        "role": "Desarrollador front-end, Letter Engine",
+        "summary": "El sitio de Typefobia, un “anti congreso” de tipografía. Colores escandalosos, un programa completo y donaciones con tarjeta o cripto.",
+        "explanation": [
+          "Typefobia fue un evento de tipografía irreverente, y el sitio tenía que estar a su altura.",
+          "Con Letter Engine hice las páginas del programa, las personas invitadas y los talleres, además de una forma de donar con PayPal o con una wallet de cripto. Escribí la mayor parte del código."
+        ],
+        "highlights": [
+          "Un sitio en Next.js con páginas para el programa, invitadxs, talleres y actividades.",
+          "Un contrato de donaciones en Solidity con pruebas, conectado con un botón de wallet.",
+          "Donaciones con PayPal y registro al boletín con Mailchimp."
+        ],
+        "media": {
+          "clip": "Un recorrido hacia abajo por la página principal mientras cambia el degradado.",
+          "guests": "La página de invitadxs, con la foto y la semblanza de cada ponente en cajas negras.",
+          "phone": "La página principal en un teléfono."
+        },
+        "shareAlt": "La página principal de Typefobia sobre un degradado de rosa a naranja."
+      },
+      "fontfactory": {
+        "title": "FontFactory",
+        "period": "Nov 2022",
+        "role": "Proyecto personal",
+        "summary": "Una DApp en NEAR que acuña tu propia copia de la fuente Paradisio, marcada con un ID de fuente único.",
+        "explanation": [
+          "¿Y si cada copia de una fuente supiera quién es su dueño? FontFactory fue mi prueba de esa idea en NEAR.",
+          "Entras con una wallet de NEAR y acuñas una instancia de Paradisio con su propio ID."
+        ],
+        "highlights": [
+          "Un contrato en Rust en la testnet de NEAR, con pruebas unitarias y de integración.",
+          "Un front end pequeño que entra con una wallet de NEAR y muestra el último ID de fuente."
+        ],
+        "media": {
+          "home": "La página de FontFactory: un logo redondo FF, una caja para el último ID de fuente y un botón para entrar con NEAR.",
+          "phone": "La misma página en un teléfono."
+        },
+        "shareAlt": "La página de FontFactory con su logo redondo FF."
+      },
+      "interplanetary-fonts": {
+        "title": "InterplanetaryFonts",
+        "period": "Sep 2022 – Abr 2023",
+        "role": "Codiseñador y desarrollador front-end",
+        "company": "Women Build Web3",
+        "summary": "Un marketplace descentralizado de fuentes que codiseñé. Llegó a la final de ETHOnline 2022 y entró a la aceleradora Women Build Web3. Di forma a la interfaz y a los datos detrás de ella.",
+        "explanation": [
+          "InterplanetaryFonts era un marketplace donde los diseñadores de tipografía podían compartir proyectos, recibir fondos mientras trabajaban y vender fuentes como NFT.",
+          "Lo hicimos en un equipo pequeño para ETHOnline 2022, donde llegó a la final, y luego lo llevamos a la aceleradora Women Build Web3. Nuestro video demo muestra todo el recorrido."
+        ],
+        "highlights": [
+          "Construí casi todo el front end del hackathon: la galería, las páginas de fuentes y los perfiles de creadores.",
+          "En la página de una fuente eliges los caracteres a acuñar, ves cómo cambia el precio y pruebas la fuente cargada desde IPFS.",
+          "Ventanas para acuñar, financiar un proyecto y enviar pagos en flujo a sus creadores con Superfluid.",
+          "En la aceleradora agregué inicio de sesión y perfiles con Lens Protocol, y una capa de GraphQL con Apollo.",
+          "Rehice el estado de la página principal y moví fuentes y colores a variables de CSS compartidas."
+        ],
+        "media": {
+          "clip-demo": "Nuestro video demo de ETHOnline 2022, con sonido.",
+          "gallery": "La galería de proyectos de fuentes, cada tarjeta con su portada y su creador.",
+          "clip-font": "Un recorrido por la página de una fuente, del espécimen a las opciones para acuñar.",
+          "phone": "La página de una fuente en un teléfono."
+        },
+        "shareAlt": "La galería de proyectos de fuentes de InterplanetaryFonts."
+      },
+      "ascii-name-generator": {
+        "title": "ASCII Name Generator",
+        "period": "Jun – Jul 2021",
+        "role": "Proyecto personal",
+        "summary": "Un programa en Python que escribe tu nombre en letras grandes de ASCII, más un sitio pequeño que guarda cada nombre que hizo.",
+        "explanation": [
+          "Uno de mis primeros proyectos de código, y todavía de mis favoritos.",
+          "Dibujé un alfabeto completo en una retícula en Python y luego escribí un programa que arma cualquier nombre con él. También puede rellenar cada trazo con letras al azar. Escribe tu nombre abajo."
+        ],
+        "highlights": [
+          "Un alfabeto dibujado a mano, de siete filas de alto, guardado en retículas simples.",
+          "Un modo al azar que llena cada trazo con letras distintas.",
+          "Cada nombre hecho en la terminal aparece en el sitio del proyecto."
+        ],
+        "media": {
+          "terminal": "El programa en una terminal, pidiendo un nombre e imprimiéndolo en letras grandes.",
+          "names": "La lista de nombres hechos en el sitio, en letras ASCII de colores.",
+          "phone": "El sitio del proyecto en un teléfono."
+        },
+        "shareAlt": "El sitio de ASCII Name Generator en cian sobre negro."
+      }
+    },
+    "feed": "Feed de proyectos"
   },
   "education": {
     "title": "Educación",
@@ -364,7 +632,8 @@
             "Los correos en mi bandeja de entrada: mientras estemos en contacto. Los borro cuando me lo pidas.",
             "Los registros de Vercel que puedo ver: una hora. Nunca incluyen lo que escribiste. Vercel puede guardar sus propios registros por más tiempo, como explica su aviso de privacidad.",
             "Los datos de reCAPTCHA: según los términos de Google.",
-            "Tu tema elegido: hasta que borres el almacenamiento de tu navegador."
+            "Tu tema elegido: hasta que borres el almacenamiento de tu navegador.",
+            "Lo que escribes en las demos de proyectos: hasta que cierras la pestaña."
           ]
         ]
       },
@@ -375,6 +644,7 @@
           "El código de este sitio no guarda cookies ni usa herramientas de analítica o de publicidad.",
           [
             "Tema: el sitio guarda \"light\" o \"dark\" en el almacenamiento local de tu navegador, con el nombre \"theme\", para que la página se vea igual en tu próxima visita. En tu primera visita guarda la configuración de tu dispositivo. Nunca sale de tu dispositivo.",
+            "Demos de proyectos: las piezas en vivo de algunas páginas de proyectos (Collectible Pleasures y ASCII Name Generator) guardan las letras que escribes, y la opción de letras al azar, en el almacenamiento de sesión de tu navegador, con los nombres \"waves-letters\", \"ascii-name\" y \"ascii-random\". Nunca salen de tu dispositivo y se borran al cerrar la pestaña.",
             "reCAPTCHA: cuando usas el formulario de contacto, Google guarda una cookie llamada _GRECAPTCHA para su revisión contra el spam. Como reCAPTCHA se carga desde google.com, tu navegador también puede enviarle a Google las cookies que ya tenga de google.com.",
             "Vercel: si Vercel te muestra una revisión breve del navegador, tu navegador recuerda durante una hora que la pasaste."
           ],

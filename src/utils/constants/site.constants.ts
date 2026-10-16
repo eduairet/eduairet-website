@@ -29,7 +29,15 @@ export const SocialUrls = {
   email: `mailto:${EMAIL_ADDRESS}`,
 };
 
-export const PRIVACY_UPDATED = '2026-10-14';
+export const PRIVACY_UPDATED = '2026-10-15';
+
+// When each page's content last changed; the sitemap's lastmod. Update on edit.
+export const PAGES_UPDATED = {
+  home: '2026-10-15',
+  projects: '2026-10-15',
+  contact: '2026-10-14',
+  privacy: PRIVACY_UPDATED,
+};
 
 // Pages the privacy notice links, keyed by its {placeholders}.
 export const PrivacyLinks: Record<string, string> = {

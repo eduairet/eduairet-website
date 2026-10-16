@@ -1,0 +1,21 @@
+@use '@/styles/abstracts/index' as *;
+
+.grid {
+  width: 100%;
+}
+
+// Hidden until "View all"; the scroll-in reveal makes them rise.
+.extra {
+  scroll-margin-top: $header-height;
+
+  .grid:not([data-open]):not(:has(:target)) > & {
+    display: none;
+  }
+}
+
+.viewAll {
+  .grid[data-open] ~ &,
+  .grid:has(:target) ~ & {
+    display: none;
+  }
+}

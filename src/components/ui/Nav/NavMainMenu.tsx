@@ -57,6 +57,10 @@ export default function NavMainMenu({ themeLabel, className }: IProps) {
         onClick={onLinkClick}
       >
         <NavLink href={PageUrls.home_(locale)} text={content.nav.home} />
+        <NavLink
+          href={PageUrls.projects_(locale)}
+          text={content.nav.projects}
+        />
         <NavLink href={PageUrls.contact_(locale)} text={content.nav.contact} />
         <li className={styles.languages}>
           <ul aria-label={content.buttons.langsButton.title}>

@@ -1,0 +1,62 @@
+@use '@/styles/abstracts/index' as *;
+
+$grid-gap: 1.5rem;
+
+// One grid rule for home and /projects.
+.grid {
+  list-style: none;
+  display: grid;
+  gap: $grid-gap;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(max(250px, calc((100% - 2 * #{$grid-gap}) / 3)), 1fr)
+  );
+}
+
+.card {
+  @media (hover: hover) {
+    &:hover .link {
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 0.2em;
+    }
+  }
+
+  &:has(.link:focus-visible) {
+    @include accessibility-outline;
+  }
+}
+
+// Narrow cards give the text the full width; the shape sits behind it.
+.card .content {
+  max-width: 100%;
+}
+
+.card .link {
+  position: static;
+  text-decoration: none;
+
+  &::before {
+    content: none;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.pillLink {
+  @extend %pill-button;
+  align-self: center;
+  margin-top: 2rem;
+  padding: 0 2rem;
+  font-size: 1.25rem;
+  @include degular($wght: 500, $opsz: 24);
+}

@@ -1,10 +1,14 @@
 'use client';
 
-import { memo, useContext } from 'react';
-import { usePathname } from 'next/navigation';
+import { memo, useContext, type MouseEvent } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import styles from './NavLink.module.scss';
 import { LanguageContext } from '@/store/LanguageProvider';
 import IntentLink from '@/components/ui/IntentLink/IntentLink';
+import {
+  canAnimateLocaleSwitch,
+  switchLocaleWithTransition,
+} from '@/utils/client/localeSwitch';
 
 interface IProps {
   href: string;
@@ -15,6 +19,7 @@ interface IProps {
 
 function NavLink({ href, text, lang, isLangLink = false }: IProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const { locale } = useContext(LanguageContext);
 
   const isActive = () => {
@@ -27,6 +32,22 @@ function NavLink({ href, text, lang, isLangLink = false }: IProps) {
     ? `${href}${pathname.slice(locale.length + 1)}`
     : href;
 
+  // A plain click cross-fades; new-tab clicks and old browsers keep the link.
+  const switchLanguage = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (
+      !canAnimateLocaleSwitch() ||
+      isActive() ||
+      e.button !== 0 ||
+      e.metaKey ||
+      e.ctrlKey ||
+      e.shiftKey ||
+      e.altKey
+    )
+      return;
+    e.preventDefault();
+    switchLocaleWithTransition(() => router.push(hrefState));
+  };
+
   return (
     <li className={styles['nav-link']}>
       <IntentLink
@@ -35,6 +56,7 @@ function NavLink({ href, text, lang, isLangLink = false }: IProps) {
         lang={lang}
         hrefLang={lang}
         aria-current={isActive() ? 'page' : undefined}
+        onClick={isLangLink ? switchLanguage : undefined}
       >
         {text}
       </IntentLink>

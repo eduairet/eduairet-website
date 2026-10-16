@@ -43,11 +43,11 @@ const renderPrivacy = async (locale: Lang) =>
   render(await Privacy({ params: Promise.resolve({ locale }) }));
 
 test.each([
-  ['en', 'Privacy notice', 'October 14, 2026', '(opens in a new tab)'],
+  ['en', 'Privacy notice', 'October 15, 2026', '(opens in a new tab)'],
   [
     'es',
     'Aviso de privacidad',
-    '14 de octubre de 2026',
+    '15 de octubre de 2026',
     '(se abre en otra pestaña)',
   ],
 ] as const)(

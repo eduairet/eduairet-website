@@ -1,0 +1,120 @@
+@use '@/styles/abstracts/index' as *;
+
+$terminal-font: ui-monospace, 'Cascadia Mono', Consolas, Menlo, monospace;
+
+// The live pieces keep their own colors inside the site's 2px frame.
+.frame {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  @include border($weight: 2px);
+  @include rounded-corners($radius: $card-radius);
+}
+
+.caption {
+  padding: 0.75rem 1.25rem 1rem;
+  font-size: 0.9375rem;
+  text-align: left;
+  color: var(--foreground);
+  background-color: var(--background);
+  border-top: 2px solid var(--foreground);
+}
+
+.terminal {
+  container-type: inline-size;
+  background-color: $black;
+  color: $white;
+}
+
+.screen {
+  margin: 0;
+  padding: clamp(1rem, 4cqi, 2rem);
+  font-family: $terminal-font;
+  // A monospace character is about 0.6em wide.
+  font-size: min(
+    1rem,
+    calc((100cqi - 2 * clamp(1rem, 4cqi, 2rem)) / (var(--columns) * 0.61))
+  );
+  line-height: 1.05;
+  text-align: left;
+  white-space: pre;
+  overflow: hidden;
+}
+
+// The terminal is black in both themes, so its controls use the dark theme.
+.controls {
+  @include dark-theme;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem 1.5rem;
+  padding: 1rem 1.25rem 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9375rem;
+  text-align: left;
+}
+
+.input {
+  height: 44px;
+  min-width: 10rem;
+  padding: 0 1rem;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  font-family: $terminal-font;
+  font-size: 1.125rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  @include border($weight: 2px, $color: currentColor);
+  @include rounded-corners($radius: 22px);
+
+  &:focus-visible {
+    @include accessibility-outline;
+  }
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.9375rem;
+}
+
+.waves {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: $black;
+  color: $white;
+
+  .field {
+    align-items: center;
+    padding: 1rem 1.25rem 0;
+  }
+
+  .input {
+    width: 8rem;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .caption {
+    align-self: stretch;
+  }
+}
+
+.wavesArt {
+  width: min(100%, 420px);
+  height: auto;
+  aspect-ratio: 1;
+  padding: 1rem;
+  fill: none;
+  stroke: $white;
+  stroke-width: 1;
+  stroke-linejoin: round;
+}

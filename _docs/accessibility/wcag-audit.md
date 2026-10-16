@@ -67,6 +67,13 @@
 
 **Update (2026-10-15, branch `feat/projects`): no criterion changes.** `/resources`, `/en/resources` and `/es/resources` now redirect (308) to the old portfolio's resources page, so the site no longer has a resources page or its 404 state (F-15, F-22).
 
+**Update (2026-10-15, branch `feat/projects`): new project pages; the 2.2.2 deviation would cover their clips and live pieces.**
+
+- New routes: `/[locale]/projects` and `/[locale]/projects/<slug>` (12 projects). The nav menu has Projects between Home and Contact.
+- Each project card is one link: the title link stretches over the card, and the focus ring is drawn on the card. "View all" is a link to the first hidden card, so it works without JavaScript; with it, focus moves to the first new card. Media open in a `<dialog>`: Escape closes it and focus returns to the image.
+- Short muted clips loop while on screen, and four live pieces move (the torus, the Collectible Pleasures waves, the Letrástica 5 letters and their figures). They have no pause control, so under 2.2.2 they need the same acceptance as F-23. With reduced motion they hold still, and so does every page transition except a short fade. The InterplanetaryFonts demo video has sound and plays only from its own controls.
+- Evidence: axe 4.11.0 found 0 violations in 24 runs (/en/projects, /es/projects, three project pages and /en; both themes; 375 and 1280 wide). With JavaScript off, all 32 pages are reachable by following links. Tab walks on /en/projects and /en/projects/melvin-pay showed a ring on every stop.
+
 Severity counts as found on 2026-10-05:
 
 | Severity     | Count  |

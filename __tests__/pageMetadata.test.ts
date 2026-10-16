@@ -1,7 +1,8 @@
 import { expect, test } from 'vitest';
+import { PagePaths } from '@/utils/constants';
 import {
   buildPageMetadata,
-  languageAlternates,
+  pathAlternates,
   siteMetadata,
 } from '@/utils/server';
 
@@ -32,12 +33,12 @@ test.each([
 );
 
 test('every page lists en, es and x-default with absolute www URLs', () => {
-  expect(languageAlternates('home')).toEqual({
+  expect(pathAlternates(PagePaths.home)).toEqual({
     en: `${SITE}/en`,
     es: `${SITE}/es`,
     'x-default': SITE,
   });
-  expect(languageAlternates('contact')).toEqual({
+  expect(pathAlternates(PagePaths.contact)).toEqual({
     en: `${SITE}/en/contact`,
     es: `${SITE}/es/contact`,
     'x-default': `${SITE}/contact`,
@@ -51,7 +52,7 @@ test("privacy titles use each language's name for the notice", async () => {
   expect((await buildPageMetadata('es', 'privacy')).title).toBe(
     'Aviso de privacidad | Eduardo Aire Torres'
   );
-  expect(languageAlternates('privacy')).toEqual({
+  expect(pathAlternates(PagePaths.privacy)).toEqual({
     en: `${SITE}/en/privacy`,
     es: `${SITE}/es/privacy`,
     'x-default': `${SITE}/privacy`,

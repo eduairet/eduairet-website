@@ -1,17 +1,19 @@
 import styles from './HomeContent.module.scss';
-import { Dictionary } from '@/models';
+import { Dictionary, type Lang } from '@/models';
 import HomeTitle from '@/app/[locale]/components/HomeTitle/HomeTitle';
 import HomeSubtitle from '../HomeSubtitle/HomeSubtitle';
 import HomeSummary from '../HomeSummary/HomeSummary';
 import ScrollCue from '../ScrollCue/ScrollCue';
 import AboutSection from '../AboutSection/AboutSection';
 import HomeSection from '../HomeSection/HomeSection';
+import ProjectsSection from '../ProjectsSection/ProjectsSection';
 
 interface IProps {
+  locale: Lang;
   content: Dictionary;
 }
 
-export default function HomeContent({ content }: IProps) {
+export default function HomeContent({ locale, content }: IProps) {
   return (
     <div className={styles.content}>
       <section className={styles.hero}>
@@ -24,7 +26,7 @@ export default function HomeContent({ content }: IProps) {
       </section>
       <AboutSection id='about' about={content.about} />
       <HomeSection id='experience' section={content.experience} />
-      <HomeSection id='projects' section={content.projects} />
+      <ProjectsSection id='projects' locale={locale} content={content} />
       <HomeSection id='education' section={content.education} />
     </div>
   );
