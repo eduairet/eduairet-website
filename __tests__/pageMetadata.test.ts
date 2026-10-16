@@ -4,7 +4,6 @@ import {
   languageAlternates,
   siteMetadata,
 } from '@/utils/server';
-import { generateMetadata as resourcesMetadata } from '@/app/[locale]/resources/page';
 
 const SITE = 'https://www.eduairet.com';
 
@@ -114,13 +113,6 @@ test('404s fall back to layout metadata: no canonical, hreflang, or robots overr
   expect(siteMetadata.alternates).toBeUndefined();
   expect(siteMetadata.robots).toBeUndefined();
   expect(String(siteMetadata.metadataBase)).toBe(`${SITE}/`);
-});
-
-test('the unpublished resources page adds no metadata of its own', async () => {
-  const metadata = await resourcesMetadata({
-    params: Promise.resolve({ locale: 'en' }),
-  });
-  expect(metadata).toEqual({});
 });
 
 test('unknown locales 404 instead of building metadata', async () => {

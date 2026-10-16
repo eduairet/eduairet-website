@@ -62,6 +62,3 @@ export const SAME_AS = [
   SocialUrls.x,
   SocialUrls.instagram,
 ];
-
-// To publish, also add a link in NavMainMenu.
-export const RESOURCES_PUBLISHED = false;

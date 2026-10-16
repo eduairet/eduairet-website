@@ -65,6 +65,8 @@
 - A still of its first frame (`alt=""`, inside the named wrapper) shows until the first scroll, pointer or key input, then loops while on screen and pauses off screen. The video file loads only then. With reduced motion, or with JavaScript off, only the still shows.
 - Evidence: axe 4.11.0 found 0 violations in 8 runs (/en and /es, both themes, 375 and 1280 wide).
 
+**Update (2026-10-15, branch `feat/projects`): no criterion changes.** `/resources`, `/en/resources` and `/es/resources` now redirect (308) to the old portfolio's resources page, so the site no longer has a resources page or its 404 state (F-15, F-22).
+
 Severity counts as found on 2026-10-05:
 
 | Severity     | Count  |

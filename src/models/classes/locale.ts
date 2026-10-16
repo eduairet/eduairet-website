@@ -63,7 +63,6 @@ export class Dictionary {
   meta: {
     home: PageMeta;
     contact: PageMeta;
-    resources: PageMeta;
     privacy: PageMeta;
     notFound: PageMeta;
     ogImageAlt: string;
@@ -107,10 +106,6 @@ export class Dictionary {
   experience: Section;
   projects: Section;
   education: Section;
-  resources: {
-    title: string;
-    text: string;
-  };
   notFound: {
     title: string;
   };
@@ -149,7 +144,6 @@ export class Dictionary {
     this.meta = {
       home: toPageMeta(data.meta?.home),
       contact: toPageMeta(data.meta?.contact),
-      resources: toPageMeta(data.meta?.resources),
       privacy: toPageMeta(data.meta?.privacy),
       notFound: toPageMeta(data.meta?.notFound),
       ogImageAlt: data.meta?.ogImageAlt || '',
@@ -200,10 +194,6 @@ export class Dictionary {
     this.experience = toSection(data.experience);
     this.projects = toSection(data.projects);
     this.education = toSection(data.education);
-    this.resources = {
-      title: data.resources?.title || '',
-      text: data.resources?.text || '',
-    };
     this.notFound = {
       title: data.notFound?.title || '',
     };

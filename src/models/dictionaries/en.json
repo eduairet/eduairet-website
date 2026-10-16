@@ -8,10 +8,6 @@
       "title": "Contact | Eduardo Aire Torres",
       "description": "Have a project, a role, or a question? Send me a message and I'll get back to you."
     },
-    "resources": {
-      "title": "Resources | Eduardo Aire Torres",
-      "description": "Resources from Eduardo Aire Torres on design, typography, and web development."
-    },
     "privacy": {
       "title": "Privacy notice | Eduardo Aire Torres",
       "description": "What this site collects about you, why, who else handles it, how long I keep it, and how to have it deleted."
@@ -254,10 +250,6 @@
         "stack": []
       }
     ]
-  },
-  "resources": {
-    "title": "Resources",
-    "text": "Resources will be listed here soon."
   },
   "notFound": {
     "title": "404 - Page not found"

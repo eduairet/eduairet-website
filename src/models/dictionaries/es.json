@@ -8,10 +8,6 @@
       "title": "Contacto | Eduardo Aire Torres",
       "description": "¿Tienes un proyecto, una vacante o una pregunta? Mándame un mensaje y te respondo."
     },
-    "resources": {
-      "title": "Recursos | Eduardo Aire Torres",
-      "description": "Recursos de Eduardo Aire Torres sobre diseño, tipografía y desarrollo web."
-    },
     "privacy": {
       "title": "Aviso de privacidad | Eduardo Aire Torres",
       "description": "Qué datos tuyos recaba este sitio, para qué, quién más los trata, cuánto tiempo los guardo y cómo pedir que se borren."
@@ -254,10 +250,6 @@
         "stack": []
       }
     ]
-  },
-  "resources": {
-    "title": "Recursos",
-    "text": "Pronto encontrarás recursos aquí."
   },
   "notFound": {
     "title": "404 - Página no encontrada"

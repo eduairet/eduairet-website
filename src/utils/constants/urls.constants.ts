@@ -3,7 +3,6 @@ import { Lang } from '@/models';
 export const PagePaths = {
   home: '',
   contact: '/contact',
-  resources: '/resources',
   privacy: '/privacy',
 };
 

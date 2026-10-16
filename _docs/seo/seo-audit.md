@@ -36,8 +36,9 @@ Before PR #31 (production, 2026-10-08): /en mobile 27, /es mobile 39, desktop ti
 On a production build:
 
 - Fetch each route as a browser, Googlebot, facebookexternalhit, and Slackbot; metadata must be in `<head>`.
-- `/en/does-not-exist`, `/es/does-not-exist`, `/en/resources` and `/wp-login.php` return 404 with noindex, not 200. A client Suspense boundary around page content turns them into 200s.
+- `/en/does-not-exist`, `/es/does-not-exist` and `/wp-login.php` return 404 with noindex, not 200. A client Suspense boundary around page content turns them into 200s.
 - `/` returns 302 with `Vary: Accept-Language`.
+- `/resources`, `/en/resources` and `/es/resources` return 308 to `https://eduairet.myportfolio.com/resources`, like the other old portfolio pages in `next.config.mjs`.
 - For every URL in `/sitemap.xml`: 200, no noindex, self canonical, and the same hreflang set as the sitemap.
 - POST the rendered `/en` and `/es` HTML to `https://validator.schema.org/validate`: 0 errors, 0 warnings.
 - `pnpm test run` covers metadata, sitemap, robots, manifest, and JSON-LD.

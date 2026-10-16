@@ -5,7 +5,6 @@ import {
   OG_IMAGE_SIZE,
   OpenGraphLocales,
   PagePaths,
-  RESOURCES_PUBLISHED,
   SITE_NAME,
   SITE_URL,
   THEME_COLORS,
@@ -14,12 +13,7 @@ import {
 } from '@/utils/constants';
 import { locales } from './localization.utils';
 
-export const indexablePages: SitePage[] = [
-  'home',
-  'contact',
-  'privacy',
-  ...(RESOURCES_PUBLISHED ? (['resources'] as const) : []),
-];
+export const indexablePages: SitePage[] = ['home', 'contact', 'privacy'];
 
 export const pageUrl = (locale: Lang, page: SitePage) =>
   `${SITE_URL}/${locale}${PagePaths[page]}`;
