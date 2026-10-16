@@ -1,10 +1,9 @@
 import path from 'node:path';
+import { oldPortfolioPages } from './oldPortfolioPages.mjs';
 
-const oldPortfolioPages = ['indoctrinated-hound', '36days-of-type-2019'];
-
-const toOldPortfolio = (source, slug) => ({
+const toArchive = (source, slug) => ({
   source,
-  destination: `https://eduairet.myportfolio.com/${slug}`,
+  destination: `https://archive.eduairet.com/${slug}`,
   permanent: true,
 });
 
@@ -21,9 +20,13 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      ...oldPortfolioPages.map((slug) => toOldPortfolio(`/${slug}`, slug)),
+      ...oldPortfolioPages.map((slug) => toArchive(`/${slug}`, slug)),
       // Search results still point here, with and without a locale.
-      toOldPortfolio('/:locale(en|es)?/resources', 'resources'),
+      toArchive('/:locale(en|es)?/resources', 'resources'),
+      // Old portfolio pages the new site replaces; `/` and `/projects` then pick the language.
+      { source: '/home', destination: '/', permanent: true },
+      { source: '/about', destination: '/#about', permanent: true },
+      { source: '/work', destination: '/projects', permanent: true },
     ];
   },
 };

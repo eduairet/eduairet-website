@@ -22,6 +22,7 @@ Every indexable page is prerendered with its metadata in `<head>`: a self-refere
 | The home subtitle is inline text, not flex items                              | As flex items each word rendered as its own block, and Google joined them as "Ingeniero - de - Diseño".                                                                                                                                                                                         |
 | Unmatched URLs get `app/global-not-found.tsx` (experimental flag)             | A full server-rendered 404 with `lang` and h1. `notFound()` calls and one-segment paths like `/wp-login.php` still use the layout 404.                                                                                                                                                          |
 | The `/` redirect sends `Vary: Accept-Language`                                | Its target depends on that header ([RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html#name-vary)).                                                                                                                                                                                          |
+| Old portfolio paths 308 straight to `archive.eduairet.com/<path>`             | eduairet.com hosted the Adobe Portfolio until 2023, and old links and Google still use its paths. One permanent hop moves their signals ([redirects](https://developers.google.com/search/docs/crawling-indexing/301-redirects)). Paths gone from the archive stay 404.                         |
 
 ## Search Console baseline (2026-10-07)
 
@@ -41,7 +42,7 @@ On a production build:
 - Fetch each route as a browser, Googlebot, facebookexternalhit, and Slackbot; metadata must be in `<head>`.
 - `/en/does-not-exist`, `/es/does-not-exist` and `/wp-login.php` return 404 with noindex, not 200. A client Suspense boundary around page content turns them into 200s.
 - `/` returns 302 with `Vary: Accept-Language`.
-- `/resources`, `/en/resources` and `/es/resources` return 308 to `https://eduairet.myportfolio.com/resources`, like the other old portfolio pages in `next.config.mjs`.
+- Each path in `oldPortfolioPages.mjs`, plus `/resources`, `/en/resources` and `/es/resources`, returns 308 to the same path on `https://archive.eduairet.com`, in one hop. `/home`, `/about` and `/work` return 308 to `/`, `/#about` and `/projects`.
 - For every URL in `/sitemap.xml`: 200, no noindex, self canonical, and the same hreflang set as the sitemap.
 - POST the rendered `/en` and `/es` HTML to `https://validator.schema.org/validate`: 0 errors, 0 warnings.
 - `pnpm test run` covers metadata, sitemap, robots, manifest, and JSON-LD.

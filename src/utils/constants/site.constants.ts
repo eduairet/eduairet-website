@@ -21,6 +21,8 @@ export const EMAIL_ADDRESS = 'hola@eduairet.com';
 export const POSTAL_ADDRESS =
   'Boulevard Manuel Ávila Camacho 571, Col. Periodista, 11220, Miguel Hidalgo, Ciudad de México, México';
 
+export const ARCHIVE_URL = 'https://archive.eduairet.com';
+
 export const SocialUrls = {
   github: 'https://github.com/eduairet',
   linkedin: 'https://www.linkedin.com/in/eduairet/',
@@ -69,4 +71,5 @@ export const SAME_AS = [
   SocialUrls.linkedin,
   SocialUrls.x,
   SocialUrls.instagram,
+  ARCHIVE_URL,
 ];
