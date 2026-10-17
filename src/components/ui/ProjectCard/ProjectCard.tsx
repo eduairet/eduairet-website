@@ -43,7 +43,7 @@ export default function ProjectCard({
         className={`${cardStyles.content} ${styles.content}`}
       >
         <p className={cardStyles.period}>{card.period}</p>
-        <Heading className={cardStyles.roleTitle}>
+        <Heading className={`${cardStyles.roleTitle} ${styles.title}`}>
           <IntentLink href={card.href} className={styles.link}>
             {card.title}
           </IntentLink>
@@ -54,6 +54,7 @@ export default function ProjectCard({
           icons={card.icons}
           tools={card.tools}
           label={techStack}
+          className={styles.stack}
         />
       </div>
     </li>

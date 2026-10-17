@@ -32,6 +32,17 @@ $grid-gap: 1.5rem;
   max-width: 100%;
 }
 
+// The link's ::after covers the card only if nothing between them is positioned.
+.card .content,
+.card .title {
+  position: static;
+}
+
+// Icons stay above the link so their name tooltips still show.
+.card .stack [title] {
+  z-index: 2;
+}
+
 .card .link {
   position: static;
   text-decoration: none;
