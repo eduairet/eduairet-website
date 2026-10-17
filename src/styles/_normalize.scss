@@ -15,6 +15,8 @@ h4,
 h5,
 h6 {
   text-wrap: balance;
+  // Not site-wide: menus sized to their text would split every word.
+  overflow-wrap: anywhere;
 }
 
 p {
