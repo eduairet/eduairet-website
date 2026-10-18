@@ -86,4 +86,4 @@ Locale unknown URLs return 404, `noindex`, and `global-not-found.tsx`. Checked: 
 
 ## Lighthouse SEO
 
-On this environment the home page scores 92 because one link reads `See more`. The project page scores 100. Numbers and the run method are in the Lighthouse report.
+On this environment `/en` and `/es` score 100 on SEO, mobile and desktop. The projects link reads `See all projects` in English and `Ver todos los proyectos` in Spanish. The project page scores 100. Numbers and the run method are in the Lighthouse report.

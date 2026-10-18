@@ -22,7 +22,7 @@ Contrast ratios in this report are the sRGB relative luminance of the tokens in 
 
 ## Results
 
-axe-core 4.11.0 reported 0 violations in 136 runs.
+axe-core 4.11.0 reported 0 violations in 136 runs. Home (`/en` and `/es`, dark and light, 375 by 812 and 1280 by 900) reported 0 violations in 8 runs.
 
 The Tab walk took 744 stops across 24 pages and left 0 hidden or fully under the fixed footer.
 
@@ -284,7 +284,7 @@ Stack in `src/styles/abstracts/variables/_z-index.scss`, back to front: backgrou
 | 2.4.1 Bypass Blocks                                        | A     | Pass           | Landmarks, plus a skip link.                                                                                                    |
 | 2.4.2 Page Titled                                          | A     | Fail           | F-15 open for file-like unknown URLs. The other checked titles name the page.                                                   |
 | 2.4.3 Focus Order                                          | A     | Pass           | F-05 and F-09 fixed.                                                                                                            |
-| 2.4.4 Link Purpose (In Context)                            | A     | Pass           | F-20 fixed. Home Lighthouse flags the words `See more` (see the Lighthouse report). That audit is separate from this criterion. |
+| 2.4.4 Link Purpose (In Context)                            | A     | Pass           | F-20 fixed. The home projects link reads `See all projects` in English and `Ver todos los proyectos` in Spanish.                |
 | 2.4.5 Multiple Ways                                        | AA    | Pass           | F-22 fixed. Home, Projects, and Contact are in the nav.                                                                         |
 | 2.4.6 Headings and Labels                                  | AA    | Pass           | Headings and labels describe their content on the checked pages.                                                                |
 | 2.4.7 Focus Visible                                        | AA    | Pass           | F-01, F-04, and F-05 fixed. The Tab walk found 0 hidden stops.                                                                  |
