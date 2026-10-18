@@ -8,10 +8,16 @@ let observer: IntersectionObserver | undefined;
 const revealObserver = () =>
   (observer ??= new IntersectionObserver(
     (entries) =>
-      entries.forEach(({ target, isIntersecting }) => {
-        target.classList.add(REVEAL_CLASS);
-        target.classList.toggle(styles.inView, isIntersecting);
-      }),
+      entries.forEach(
+        ({ target, isIntersecting, boundingClientRect, rootBounds }) => {
+          target.classList.add(REVEAL_CLASS);
+          // A card leaving through the top stays shown. Dropping it 30px
+          // would cross the 0.3 threshold again and the card would shake.
+          const above =
+            rootBounds != null && boundingClientRect.top < rootBounds.top;
+          target.classList.toggle(styles.inView, isIntersecting || above);
+        }
+      ),
     { threshold: 0.3 }
   ));
 
