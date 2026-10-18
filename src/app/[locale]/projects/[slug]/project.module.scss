@@ -22,6 +22,13 @@
   @extend %docked-pill;
   margin-bottom: clamp(1.5rem, 5vw, 2.5rem);
 
+  // Flow starts under the header, and sticky only catches up after scroll.
+  @media (height > $breakpoint-short-height) {
+    margin-top: calc(
+      ((#{$header-height} - #{$pill-height}) / 2) - #{$header-height}
+    );
+  }
+
   // The Spanish label meets the phone nav below this width.
   @media (width < 360px) {
     padding-inline: 0.75rem;
