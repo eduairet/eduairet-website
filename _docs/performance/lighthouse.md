@@ -38,14 +38,14 @@ The measured run is local Lighthouse, not PageSpeed Insights.
 
 | Page                                 | Form    | Performance | Accessibility | Best practices | SEO | FCP   | LCP   | TBT   | CLS |
 | ------------------------------------ | ------- | ----------- | ------------- | -------------- | --- | ----- | ----- | ----- | --- |
-| `/en`                                | Mobile  | 99          | 100           | 100            | 92  | 1.1 s | 2.0 s | 30 ms | 0   |
-| `/en`                                | Desktop | 100         | 100           | 100            | 92  | 0.3 s | 0.6 s | 0 ms  | 0   |
+| `/en`                                | Mobile  | 99          | 100           | 100            | 100 | 1.1 s | 2.0 s | 30 ms | 0   |
+| `/en`                                | Desktop | 100         | 100           | 100            | 100 | 0.3 s | 0.6 s | 0 ms  | 0   |
 | `/en/projects/collectible-pleasures` | Mobile  | 99          | 100           | 100            | 100 | 1.1 s | 2.0 s | 20 ms | 0   |
 | `/en/projects/collectible-pleasures` | Desktop | 100         | 100           | 100            | 100 | 0.3 s | 0.6 s | 0 ms  | 0   |
 
 Home mobile Total Blocking Time was 40 ms, 30 ms, and 20 ms. The median is 30 ms. Home desktop Largest Contentful Paint was 0.6 s, 0.6 s, and 0.5 s. The median is 0.6 s. The project page mobile Total Blocking Time was 30 ms, 20 ms, and 20 ms. The median is 20 ms. Every other cell was the same in all three runs.
 
-Home SEO is 92 because the `link-text` audit fails on one link. The href is `http://127.0.0.1:3000/en/projects` and the text is `See more`. The project page scores 100 on SEO.
+Home SEO is 100 on `/en` and `/es`, mobile and desktop. The projects link reads `See all projects` in English and `Ver todos los proyectos` in Spanish, and the `link-text` audit passes. The project page scores 100 on SEO.
 
 ## What the page does
 
