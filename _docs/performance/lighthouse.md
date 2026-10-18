@@ -208,10 +208,6 @@ Same setup, after PR #47 (the full-screen phone menu) went live. Baselines: the 
 - CLS was 0.001 or 0.002 in all 24 reports, as before.
 - Best Practices was 100 in all 24 reports; Adobe Fonts didn't time out.
 
-## Branch `chore/projects-link` (2026-10-18)
-
-The All projects link docks in CSS through `%docked-pill`. The section titles use that same placeholder. This pass did not re-run Lighthouse.
-
 ## How to re-measure
 
 PageSpeed Insights is the reference: run https://pagespeed.web.dev on each page three times and compare medians.
@@ -222,3 +218,13 @@ Locally, on a production build in the container (`docker compose run --rm fronte
 - **Software WebGL (close to PSI):** a throwaway image on top of the project image with `apk add chromium mesa-egl mesa-gles mesa-dri-gallium font-liberation font-roboto`, run with `--cpus=1`, and Lighthouse's `--chrome-flags="--headless=new --no-sandbox --use-gl=angle --use-angle=gl-egl --ignore-gpu-blocklist"`. Serve the site to it as `localhost`, or the HTTPS audits fail.
 
 PSI throttles mobile CPU by 1.2x on a machine that benchmarks about 1,200; local runs use Lighthouse's default 4x, so local mobile scores in the software setup are harsher than PSI. To get close to PSI on a fast machine, pass `--throttling.cpuSlowdownMultiplier` equal to the run's `benchmarkIndex` divided by 1,000.
+
+## Branch `chore/footer-layout` (2026-10-17)
+
+This branch has no new Lighthouse run. The scores above stay as recorded.
+
+On viewports under 768px wide, `--footer-clearance` is `1rem` in CSS. `MeasuredFooter` still writes `--footer-height`, and that write does not move the page there. From 768px up, with height over 500px, the footer stays fixed and the clearance still follows `--footer-height`.
+
+## Branch `chore/projects-link` (2026-10-17)
+
+The All projects link docks in CSS through `%docked-pill`. The section titles use that same placeholder. This pass did not re-run Lighthouse.

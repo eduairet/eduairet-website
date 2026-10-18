@@ -14,26 +14,18 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  // Keeps the scroll cue above the fixed footer.
   padding-bottom: var(--footer-clearance);
 
   > a {
     align-self: center;
 
-    // The scroll cue shows only while it fits fully above the fixed footer.
     @supports (animation-timeline: view()) {
       animation: cue-fits linear both;
       animation-timeline: view(block auto var(--footer-clearance));
       animation-range: entry 0% entry 100%;
 
-      @media (height <= $breakpoint-short-height) {
+      @include footer-static {
         animation: none;
-      }
-    }
-
-    @supports not (animation-timeline: view()) {
-      @media (width < $breakpoint-md) and ($breakpoint-short-height < height < $breakpoint-short-phone-height) {
-        display: none;
       }
     }
   }

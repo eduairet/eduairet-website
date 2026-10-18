@@ -74,7 +74,16 @@
 - Short muted clips loop while on screen, and four live pieces move (the torus, the Collectible Pleasures waves, the Letrástica 5 letters and their figures). They have no pause control; the site owner accepted them under F-23 on 2026-10-16. With reduced motion they hold still, and so does every page transition except a short fade. The InterplanetaryFonts demo video has sound and plays only from its own controls.
 - Evidence: axe 4.11.0 found 0 violations in 24 runs (/en/projects, /es/projects, three project pages and /en; both themes; 375 and 1280 wide). With JavaScript off, all 32 pages are reachable by following links. Tab walks on /en/projects and /en/projects/melvin-pay showed a ring on every stop.
 
-**Update (2026-10-18, branch `chore/projects-link`): no criterion changes.**
+**Update (2026-10-17, branch `chore/footer-layout`): no criterion changes.**
+
+- Below 768px wide, the footer sits in the page flow at the end of the content. Screens 500px tall or shorter already did this. `footer-static` in `src/styles/abstracts/_mixins.scss` matches width under 768px and height of 500px or less, so the footer and `--footer-clearance` change together.
+- `--footer-clearance` is `1rem` on those viewports. From 768px up, with height over 500px, the footer stays fixed. `MeasuredFooter` still writes `--footer-height`, and that height still sets the clearance there.
+- A short page keeps the footer on the bottom edge of the screen. `body` already has `min-height: 100dvh` in `src/styles/_normalize.scss`, and `main` already grows.
+- The hero scroll cue stays visible on phones. `HomeContent.module.scss` turns its fit animation off inside `footer-static`. The old 700px hide rule is gone.
+- Privacy is a long page. At 375×667 the English page is 6368px tall and the Spanish page is 6869px tall. The global 404 has no site footer. Contact is the shortest page with the footer. At 375×1400 and 390×1400 the contact footer is static and flush with the viewport, in English and in Spanish.
+- Evidence: a Playwright script on the dev server. Long pages checked for a static footer and 0 covered items in `main`: home and `/projects/collectible-pleasures` at 375×667 and 390×844, plus home at 767×800 and 1280×480, in English and in Spanish. That is 12 pages, 5 scroll positions each. At 1280×800 the home footer is fixed and pixel-identical to the page before this change (0 pixels differ on the viewport and on the footer, English and Spanish). At 768×800 the footer is fixed. At 767×800 and at 1280×480 it is static. Tab walks on 12 pages took 420 stops and left 0 under the footer. The open phone menu covers the viewport. On the tall contact page it covers the footer too.
+
+**Update (2026-10-17, branch `chore/projects-link`): no criterion changes.**
 
 The All projects link on a project page docks with the section titles. Both use `%docked-pill` in `src/styles/abstracts/_placeholders.scss`. On a phone the link sits at the left of the header. From 768px up it sits in the center.
 
@@ -84,6 +93,7 @@ Playwright in Chrome checked `/en/projects/eduardo-pavon`.
 - At 768 and 1280 wide the open nav menu and the language menu do not overlap the link. Each menu is the top hit in its own box. The link stays the top hit in its own box.
 - The `ProjectMedia` dialog covers the link. The `.close` button stays `position: sticky` with `top: 12px`.
 - At a height of 500 the link is `static`. At a height of 501 it is `sticky`.
+- Below 768px wide the footer stays in the page flow. At 390×844 it is `static` and does not cover the link. At 1280×900 it stays `fixed` at z-index 4, above the link.
 
 This pass did not run axe.
 
@@ -228,6 +238,7 @@ Severity counts as found on 2026-10-05:
 - Update (2026-10-12): while a toast is open, `scroll-padding-top` clears whichever reaches lower, the header or the toast, so a focused field never scrolls under it. Evidence: Shift+Tab walks with the success toast open at 1280×800, 768×1024 and 375×812, and at 1280×800 with 200% text, found no focused field covered.
 - Update (2026-10-13): rechecked after the toast moved under the menu pill: focusing each field from the bottom of the page at 1280×800, 768×1024, 375×812 and 320×568 left none under the toast.
 - Update (2026-10-14): `MeasuredFooter` writes the footer's real height to `--footer-height`, and the clearance adds 1rem to it. The sum of the custom properties stays as the value before scripts run and with JavaScript off, and the short-screen footer keeps its 1rem. A wrapped line or larger text can no longer hide content.
+- Update (2026-10-17): below 768px the footer is in the page flow, so a focused item cannot sit under it. `scroll-padding-bottom` is `--footer-clearance`. `footer-static` sets that clearance to `1rem` below 768px wide and at 500px tall or shorter. From 768px up the footer stays fixed, and the clearance still follows `--footer-height`. Evidence: the Playwright run in the 2026-10-17 summary. 420 Tab stops across 12 pages left 0 under the footer.
 
 ### F-07 Form errors are not tied to their fields, and the disabled Submit button hides why the form can't be sent
 
@@ -547,6 +558,7 @@ AAA items and best practices (not required for AA):
 - **404 pages without JavaScript:** the server sends an empty document (no `lang`, no heading) and React builds the 404 page in the browser. The status (404) and `noindex` are correct. Next.js does this for `notFound()` when the root layout sits under `[locale]`; its experimental `global-not-found.js` is the documented way out.
 - **Content is hidden without JavaScript:** the server HTML ships every page's content at `opacity: 0` (`template.tsx`), so if JS is slow or fails, the page stays blank.
 - **Done 2026-10-09, short screens:** at 320×256 the scroll chevron (absolutely positioned at the bottom of the hero) overlapped two words of the summary. It now sits in the flow under the text, and it shows only while it fits above the footer.
+- **Done 2026-10-17, phones:** below 768px the footer sits in the page flow. The hero scroll cue stays visible on those screens.
 - **Done 2026-10-09, mobile overlap:** at 375px the sticky section titles ("Experience") slid over the logo button in the header. Below 768px they now pass under the header. Since 2026-10-11 the logo is in the nav pill and the titles dock top left instead.
 - **Done 2026-10-06, Third party, reCAPTCHA badge:** it is hidden with `visibility: hidden` in `_normalize.scss`, which is fine for accessibility (it leaves the accessibility tree). Google's terms ask for the notice text ("This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.") to be shown when the badge is hidden. Add it under the form, in both languages.
 - **Third party, Typekit:** Degular loads and passed the text-spacing test. Nothing to fix.
