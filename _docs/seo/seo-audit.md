@@ -31,7 +31,7 @@ Checked samples return 200, have no `noindex`, and have a self canonical on `htt
 
 `/` returns 302 and `Vary: Accept-Language`. With `Accept-Language: es` the location is `/es`. Without that header the location is `/en`. The redirect is `proxy` in `src/proxy.ts`.
 
-Titles checked on this build:
+Titles on the production build:
 
 - `/en`: Eduardo Aire Torres | Design Engineer & Product Engineer
 - `/es`: Eduardo Aire Torres | Ingeniero de Diseño y Producto
@@ -56,7 +56,7 @@ Home JSON-LD types are `WebSite` and `ProfilePage`. `Person` is `ProfilePage.mai
 
 Project pages use `CreativeWork`. The schema is shared by every project in `structuredData.utils.ts`.
 
-The schema.org validator was not called on this pass.
+The test run did not call the schema.org validator.
 
 ## Sitemap and robots
 
@@ -90,7 +90,7 @@ On this environment the home page scores 92 because one link reads `See more`. T
 
 ## Not re-verified
 
-- Search Console index counts, crawl stats, and earlier URL inspection notes.
+- Search Console index counts and crawl stats.
 - A POST of the rendered HTML to `https://validator.schema.org/validate`.
 - Vercel dashboard rules for AI crawlers, Open Graph image bypass, and feed bot protection. They are not in this repository. `robots.ts` allows every user agent except `/api/`. Local feeds return 200.
 - Whether Google Search uses the SVG favicon. Both icon files are served.
