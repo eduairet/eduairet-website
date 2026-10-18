@@ -208,6 +208,10 @@ Same setup, after PR #47 (the full-screen phone menu) went live. Baselines: the 
 - CLS was 0.001 or 0.002 in all 24 reports, as before.
 - Best Practices was 100 in all 24 reports; Adobe Fonts didn't time out.
 
+## Branch `chore/projects-link` (2026-10-18)
+
+The All projects link docks in CSS through `%docked-pill`. The section titles use that same placeholder. This pass did not re-run Lighthouse.
+
 ## How to re-measure
 
 PageSpeed Insights is the reference: run https://pagespeed.web.dev on each page three times and compare medians.

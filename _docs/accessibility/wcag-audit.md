@@ -74,6 +74,19 @@
 - Short muted clips loop while on screen, and four live pieces move (the torus, the Collectible Pleasures waves, the Letrástica 5 letters and their figures). They have no pause control; the site owner accepted them under F-23 on 2026-10-16. With reduced motion they hold still, and so does every page transition except a short fade. The InterplanetaryFonts demo video has sound and plays only from its own controls.
 - Evidence: axe 4.11.0 found 0 violations in 24 runs (/en/projects, /es/projects, three project pages and /en; both themes; 375 and 1280 wide). With JavaScript off, all 32 pages are reachable by following links. Tab walks on /en/projects and /en/projects/melvin-pay showed a ring on every stop.
 
+**Update (2026-10-18, branch `chore/projects-link`): no criterion changes.**
+
+The All projects link on a project page docks with the section titles. Both use `%docked-pill` in `src/styles/abstracts/_placeholders.scss`. On a phone the link sits at the left of the header. From 768px up it sits in the center.
+
+Playwright in Chrome checked `/en/projects/eduardo-pavon`.
+
+- At 375 and 390 wide the open phone menu covers the link. `.nav-wrapper` rises to z-index 6. `elementFromPoint` on the link hits the header.
+- At 768 and 1280 wide the open nav menu and the language menu do not overlap the link. Each menu is the top hit in its own box. The link stays the top hit in its own box.
+- The `ProjectMedia` dialog covers the link. The `.close` button stays `position: sticky` with `top: 12px`.
+- At a height of 500 the link is `static`. At a height of 501 it is `sticky`.
+
+This pass did not run axe.
+
 Severity counts as found on 2026-10-05:
 
 | Severity     | Count  |
@@ -131,7 +144,7 @@ Severity counts as found on 2026-10-05:
   - The reCAPTCHA notice sits under the button.
   - The pressed Submit button has black text.
 - **Skip link:** a "Skip to content" link appears top-left on the first Tab.
-- **Short screens:** on screens 500px tall or less, the header scrolls away, the footer sits at the end of the page, and section titles are not sticky.
+- **Short screens:** on screens 500px tall or less, the header scrolls away, the footer sits at the end of the page, and section titles are not sticky. The All projects link is not sticky at that height.
 - **404 page:** the heading reads "404 - Page not found" / "404 - Página no encontrada".
 
 **What axe found vs. what manual testing found.** axe reported only 2 real problems: the active nav link contrast in light mode, and `aria-label` on a `<p>`. Every other finding below came from keyboard, accessibility tree, pixel, motion, and form testing. A clean axe run here would have been very misleading.
