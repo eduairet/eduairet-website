@@ -76,6 +76,18 @@ describe('SectionCard', () => {
     expect(card.className).not.toContain(styles.inView);
 
     act(() => notify(true));
+    expect(card.className).toContain(styles.inView);
+  });
+
+  test('keeps a card shown after it scrolls off the top', () => {
+    render(
+      <LanguageProvider locale='en' content={en}>
+        <SectionCard entry={entry} icons={[]} tools={[]} />
+      </LanguageProvider>
+    );
+    const card = screen.getByRole('listitem');
+
+    act(() => notify(true));
     act(() => notify(false, -200));
     expect(card.className).toContain(styles.inView);
   });

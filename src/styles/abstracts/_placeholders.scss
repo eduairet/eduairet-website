@@ -69,7 +69,7 @@
 
 %docked-pill {
   position: sticky;
-  top: calc((#{$header-height} - #{$pill-height}) / 2);
+  top: $docked-pill-top;
   z-index: $z-docked;
   align-self: flex-start;
   margin-left: calc(#{$page-gutter} - 1rem);
