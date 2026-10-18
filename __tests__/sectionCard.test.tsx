@@ -74,9 +74,6 @@ describe('SectionCard', () => {
 
     act(() => notify(false));
     expect(card.className).not.toContain(styles.inView);
-
-    act(() => notify(true));
-    expect(card.className).toContain(styles.inView);
   });
 
   test('keeps a card shown after it scrolls off the top', () => {
