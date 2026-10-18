@@ -1,5 +1,12 @@
 @use '@/styles/abstracts/index' as *;
 
+// Phone nav cluster that does not scale with the root font: icon, logo,
+// 2px borders, and the pill's end padding.
+$phone-nav-fixed: calc(
+  #{$icon-button-size} + #{$logo-size-compact} + 4px +
+    ((#{$pill-height} - #{$logo-size-compact}) / 2 - 2px)
+);
+
 .project {
   width: 100%;
   max-width: 52rem;
@@ -19,8 +26,14 @@
 .back {
   @extend %pill-button;
   @extend %pill-small;
-  align-self: flex-start;
-  margin: 0 0 clamp(1.5rem, 5vw, 2.5rem);
+  @extend %docked-pill;
+  margin-bottom: clamp(1.5rem, 5vw, 2.5rem);
+
+  // "Todos los proyectos" stays beside the phone nav as the root font grows.
+  @media (width < $breakpoint-md) {
+    padding-inline: 0.75rem;
+    font-size: min(1rem, calc((100vw - #{$phone-nav-fixed} - 5.5rem) / 13));
+  }
 }
 
 .header {
