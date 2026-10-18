@@ -6,6 +6,7 @@ $toast-width: 280px;
 $header-height: 120px;
 $page-gutter: 1.5rem;
 $pill-height: 50px;
+$docked-pill-top: calc((#{$header-height} - #{$pill-height}) / 2);
 $footer-row-height: 35px;
 $footer-line-height: 1.25rem;
 $icon-button-size: 30px;

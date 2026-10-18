@@ -1,6 +1,6 @@
 # WCAG 2.2 AA
 
-Last verified: 2026-10-17.
+Last verified: 2026-10-18.
 
 The site meets WCAG 2.2 Levels A and AA on the checks below, with three exceptions. 2.2.2 Pause, Stop, Hide is an accepted deviation (F-23). 1.2.2 Captions (Prerecorded) is open (F-24). 2.4.2 Page Titled fails on file-like unknown URLs (F-15). 4.1.1 Parsing is obsolete in WCAG 2.2 and is not evaluated.
 
@@ -22,7 +22,7 @@ Contrast ratios in this report are the sRGB relative luminance of the tokens in 
 
 ## Results
 
-axe-core 4.11.0 reported 0 violations in 136 runs. Home (`/en` and `/es`, dark and light, 375 by 812 and 1280 by 900) reported 0 violations in 8 runs.
+axe-core 4.11.0 reported 0 violations in 136 runs. Home and `/projects/collectible-pleasures`, in `en` and `es`, dark and light, at 375 by 812 and 1280 by 900, reported 0 violations in 16 runs.
 
 The Tab walk took 744 stops across 24 pages and left 0 hidden or fully under the fixed footer.
 
@@ -32,7 +32,7 @@ The Tab walk took 744 stops across 24 pages and left 0 hidden or fully under the
 
 At 375 by 667 with reduced motion, `/en/privacy` is 6530px tall and `/es/privacy` is 7031px tall.
 
-The All projects link on `/projects/eduardo-pavon` is `sticky` at `top: 35px` and `z-index: 3`. It is `flex-start` at 390 wide and `center` at 1280 wide. It is `static` at 390 by 500 and at 1280 by 500. It is `sticky` at 390 by 501. The footer on those phone widths is `static`. At 1280 by 900 the footer is `fixed`.
+The All projects link is `sticky` at `top: 35px` and `z-index: 3`. Above 500px tall its top margin is `-85px`, so on load the link is already at that top and the meta line starts under the header. It stays at 35px while the page scrolls. It is `flex-start` under 768px wide and `center` from 768px up. At 500px tall or shorter it is `static` and the top margin is `0`. At 501px tall it is `sticky` with the `-85px` margin. On `/projects/collectible-pleasures` at 320px wide in Spanish, the link ends 7px before the menu pill. The open phone menu is `z-index: 6` and covers the link. The footer on those phone widths is `static`. At 1280 by 900 the footer is `fixed`.
 
 ## Layout rules in the SCSS
 
@@ -40,7 +40,7 @@ Breakpoints in `src/styles/abstracts/variables/_breakpoints.scss`: `$breakpoint-
 
 `footer-static` in `src/styles/abstracts/_mixins.scss` matches `width < 768px` or `height <= 500px`. `footer-row` matches `width >= 768px`.
 
-`%docked-pill` in `src/styles/abstracts/_placeholders.scss` is `sticky` at `top: calc((120px - 50px) / 2)`, which is 35px, on `$z-docked`. It aligns to the start under 768px and to the center from 768px up. At a height of 500px or less it is `static`. Section titles and the All projects link use this placeholder. `$header-height` is 120px and `$pill-height` is 50px in `src/styles/abstracts/variables/_sizes.scss`.
+`%docked-pill` in `src/styles/abstracts/_placeholders.scss` is `sticky` at `top: $docked-pill-top` on `$z-docked`. `$docked-pill-top` in `src/styles/abstracts/variables/_sizes.scss` is `calc((#{$header-height} - #{$pill-height}) / 2)`, which is 35px. `$header-height` is 120px and `$pill-height` is 50px. The placeholder aligns to the start under 768px and to the center from 768px up. At a height of 500px or less it is `static`. Section titles and the All projects link use this placeholder. The All projects link, in `src/app/[locale]/projects/[slug]/project.module.scss`, also sets `margin-top: calc(#{$docked-pill-top} - #{$header-height})`, which is `-85px`, when the height is over 500px. That is the sticky top minus the header, so the link's flow position is the dock before any scroll. Section titles use `$docked-pill-top` as `top`.
 
 Stack in `src/styles/abstracts/variables/_z-index.scss`, back to front: background -1, backdrop 1, header 2, docked 3, footer 4, toast 5, menu 6, skip link 7.
 
@@ -55,8 +55,8 @@ Stack in `src/styles/abstracts/variables/_z-index.scss`, back to front: backgrou
 - Criterion: 1.4.3 Contrast (Minimum) (AA), and 2.4.7 Focus Visible (AA)
 - Severity: Critical
 - Status: Fixed
-- Where: `RevealOnScroll` (`src/components/wrappers/RevealOnScroll/RevealOnScroll.module.scss`)
-- Now: a card starts at `opacity: 0` and `translateY(30px)`, then `.inView` sets `opacity: 1` and clears the transform. Under `prefers-reduced-motion: reduce` the transform transition is dropped and the fade remains. Under `scripting: none` the card is opaque at once.
+- Where: `useReveal` (`src/components/wrappers/RevealOnScroll/useReveal.ts`) and `RevealOnScroll.module.scss`
+- Now: a card starts at `opacity: 0` and `translateY(30px)`, then `.inView` sets `opacity: 1` and clears the transform. The observer threshold is `0.3`. A block that leaves through the bottom loses `.inView`. A block whose top is already above the viewport keeps `.inView`, so the 30px offset cannot pull it back across the threshold. Under `prefers-reduced-motion: reduce` the transform transition is dropped and the fade remains. Under `scripting: none` the card is opaque at once.
 
 ### F-02 The contact token was requested on load
 

@@ -10,7 +10,6 @@
     transform: none;
   }
 
-  // Nothing would add .inView without scripts.
   @media (scripting: none) {
     opacity: 1;
     transform: none;

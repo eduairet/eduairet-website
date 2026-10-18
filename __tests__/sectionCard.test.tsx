@@ -8,8 +8,7 @@ import styles from '@/components/wrappers/RevealOnScroll/RevealOnScroll.module.s
 
 const en = new Dictionary(EnContent);
 
-// eslint-disable-next-line no-unused-vars
-let notify: (isIntersecting: boolean) => void = () => {};
+let notify: (isIntersecting: boolean, top?: number) => void = () => {};
 let options: { threshold?: number } | undefined;
 
 beforeEach(() => {
@@ -18,14 +17,25 @@ beforeEach(() => {
     class {
       constructor(
         callback: (
-          // eslint-disable-next-line no-unused-vars
-          entries: { isIntersecting: boolean; target: Element }[]
+          entries: {
+            isIntersecting: boolean;
+            target: Element;
+            boundingClientRect?: { top: number };
+            rootBounds?: { top: number } | null;
+          }[]
         ) => void,
         init?: { threshold?: number }
       ) {
         options = init;
-        notify = (isIntersecting) =>
-          callback([{ isIntersecting, target: screen.getByRole('listitem') }]);
+        notify = (isIntersecting, top) =>
+          callback([
+            {
+              isIntersecting,
+              target: screen.getByRole('listitem'),
+              boundingClientRect: { top: top ?? 0 },
+              rootBounds: top == null ? null : { top: 0 },
+            },
+          ]);
       }
       observe() {}
       unobserve() {}
@@ -64,6 +74,19 @@ describe('SectionCard', () => {
 
     act(() => notify(false));
     expect(card.className).not.toContain(styles.inView);
+  });
+
+  test('keeps a card shown after it scrolls off the top', () => {
+    render(
+      <LanguageProvider locale='en' content={en}>
+        <SectionCard entry={entry} icons={[]} tools={[]} />
+      </LanguageProvider>
+    );
+    const card = screen.getByRole('listitem');
+
+    act(() => notify(true));
+    act(() => notify(false, -200));
+    expect(card.className).toContain(styles.inView);
   });
 
   test('lists the icons by name, then the other tools as text', () => {

@@ -1,17 +1,23 @@
 import { RefObject, useEffect } from 'react';
 import styles from './RevealOnScroll.module.scss';
 
-// One shared observer; adding .reveal here keeps blocks visible until scripts run.
 export const REVEAL_CLASS = styles.reveal;
 
 let observer: IntersectionObserver | undefined;
 const revealObserver = () =>
   (observer ??= new IntersectionObserver(
     (entries) =>
-      entries.forEach(({ target, isIntersecting }) => {
-        target.classList.add(REVEAL_CLASS);
-        target.classList.toggle(styles.inView, isIntersecting);
-      }),
+      entries.forEach(
+        ({ target, isIntersecting, boundingClientRect, rootBounds }) => {
+          target.classList.add(REVEAL_CLASS);
+          const leftThroughTop =
+            rootBounds != null && boundingClientRect.top < rootBounds.top;
+          target.classList.toggle(
+            styles.inView,
+            isIntersecting || leftThroughTop
+          );
+        }
+      ),
     { threshold: 0.3 }
   ));
 
