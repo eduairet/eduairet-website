@@ -1,6 +1,6 @@
 # WCAG 2.2 AA
 
-Last verified: 2026-10-18.
+Last verified: 2026-10-17.
 
 The site meets WCAG 2.2 Levels A and AA on the checks below, with three exceptions. 2.2.2 Pause, Stop, Hide is an accepted deviation (F-23). 1.2.2 Captions is open (F-24). 2.4.2 Page Titled fails on file-like unknown URLs (F-15). 4.1.1 Parsing is obsolete in WCAG 2.2 and is not evaluated.
 
@@ -217,7 +217,7 @@ Stack in `src/styles/abstracts/variables/_z-index.scss`, back to front: backgrou
 
 - Criterion: 1.3.1 Info and Relationships (A)
 - Severity: Needs review
-- Status: Not re-verified
+- Status: Not checked
 - Where: `HomeTitle.tsx`
 - The `h1` is built from inline spans. The test run did not include a screen reader.
 
@@ -253,74 +253,74 @@ Stack in `src/styles/abstracts/variables/_z-index.scss`, back to front: backgrou
 
 ## Criteria
 
-| Criterion                                       | Level | Result          | Notes                                                                                                                           |
-| ----------------------------------------------- | ----- | --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| 1.1.1 Non-text Content                          | A     | Pass            | F-09 fixed. Decorative canvases are `aria-hidden`.                                                                              |
-| 1.2.1 Audio-only and Video-only (Prerecorded)   | A     | Not re-verified | F-24. The demo has both streams. A text alternative was not checked.                                                            |
-| 1.2.2 Captions (Prerecorded)                    | A     | Fail            | F-24 open.                                                                                                                      |
-| 1.2.3 Audio Description or Media Alternative    | A     | Not re-verified | No WebVTT file in `public`. A page-level alternative was not checked.                                                           |
-| 1.2.4 Captions (Live)                           | AA    | Does not apply  | No live media.                                                                                                                  |
-| 1.2.5 Audio Description (Prerecorded)           | AA    | Not re-verified | Same limit as 1.2.3.                                                                                                            |
-| 1.3.1 Info and Relationships                    | A     | Pass            | F-07, F-10, and F-19 fixed. F-21 has no screen reader result.                                                                   |
-| 1.3.2 Meaningful Sequence                       | A     | Pass            | DOM order matches the visual order on the checked pages.                                                                        |
-| 1.3.3 Sensory Characteristics                   | A     | Pass            | Instructions do not rely on shape or position alone.                                                                            |
-| 1.3.4 Orientation                               | AA    | Pass            | No orientation lock in the layout.                                                                                              |
-| 1.3.5 Identify Input Purpose                    | AA    | Pass            | F-11 fixed.                                                                                                                     |
-| 1.4.1 Use of Color                              | A     | Pass            | F-12 fixed. Invalid fields also expose text and `aria-invalid`.                                                                 |
-| 1.4.2 Audio Control                             | A     | Pass            | No element autoplays. Clips and the About video are muted. The demo waits for its controls.                                     |
-| 1.4.3 Contrast (Minimum)                        | AA    | Pass            | F-03 fixed. Ratios are from the color tokens. The test run did not sample pixels behind the particles.                          |
-| 1.4.4 Resize Text                               | AA    | Not re-verified | The test run did not resize text to 200 percent.                                                                                |
-| 1.4.5 Images of Text                            | AA    | Pass            | The logo is the image of text.                                                                                                  |
-| 1.4.10 Reflow                                   | AA    | Pass            | `/en` has 0 horizontal overflow at 320px wide.                                                                                  |
-| 1.4.11 Non-text Contrast                        | AA    | Pass            | F-04 fixed. Token ratios are above 3:1 for the field rings in use.                                                              |
-| 1.4.12 Text Spacing                             | AA    | Not re-verified | The test run did not apply the text-spacing override.                                                                           |
-| 1.4.13 Content on Hover or Focus                | AA    | Pass            | Extra content on hover is the native tooltip on tech icons.                                                                     |
-| 2.1.1 Keyboard                                  | A     | Pass            | The Tab walk reached the controls. Menu, form, and dialog behavior is covered by unit tests.                                    |
-| 2.1.2 No Keyboard Trap                          | A     | Pass            | Forward Tab returned to the start on each walked page.                                                                          |
-| 2.1.4 Character Key Shortcuts                   | A     | Does not apply  | No character shortcuts.                                                                                                         |
-| 2.2.1 Timing Adjustable                         | A     | Pass            | F-02 and F-13 fixed. The test run did not wait two minutes before submit.                                                       |
-| 2.2.2 Pause, Stop, Hide                         | A     | Fail            | F-14 fixed. F-23 is an accepted deviation.                                                                                      |
-| 2.3.1 Three Flashes or Below Threshold          | A     | Not re-verified | No flash was observed in the checks. The test run did not measure luminance.                                                    |
-| 2.4.1 Bypass Blocks                             | A     | Pass            | Landmarks, plus a skip link.                                                                                                    |
-| 2.4.2 Page Titled                               | A     | Fail            | F-15 open for file-like unknown URLs. The other checked titles name the page.                                                   |
-| 2.4.3 Focus Order                               | A     | Pass            | F-05 and F-09 fixed.                                                                                                            |
-| 2.4.4 Link Purpose (In Context)                 | A     | Pass            | F-20 fixed. Home Lighthouse flags the words `See more` (see the Lighthouse report). That audit is separate from this criterion. |
-| 2.4.5 Multiple Ways                             | AA    | Pass            | F-22 fixed. Home, Projects, and Contact are in the nav.                                                                         |
-| 2.4.6 Headings and Labels                       | AA    | Pass            | Headings and labels describe their content on the checked pages.                                                                |
-| 2.4.7 Focus Visible                             | AA    | Pass            | F-01, F-04, and F-05 fixed. The Tab walk found 0 hidden stops.                                                                  |
-| 2.4.11 Focus Not Obscured (Minimum)             | AA    | Pass            | F-06 fixed. 744 stops, 0 fully under the fixed footer.                                                                          |
-| 2.5.1 Pointer Gestures                          | A     | Does not apply  | No multipoint or path gesture.                                                                                                  |
-| 2.5.2 Pointer Cancellation                      | A     | Pass            | Actions run on click.                                                                                                           |
-| 2.5.3 Label in Name                             | A     | Pass            | Text controls include their visible label. Icon-only controls have no visible text label.                                       |
-| 2.5.4 Motion Actuation                          | A     | Does not apply  | No motion input.                                                                                                                |
-| 2.5.7 Dragging Movements                        | AA    | Does not apply  | No dragging.                                                                                                                    |
-| 2.5.8 Target Size (Minimum)                     | AA    | Pass            | The toast close control is at least 24px. Inline text links are exempt.                                                         |
-| 3.1.1 Language of Page                          | A     | Pass            | `html lang` is `en` or `es` on locale pages. The global 404 uses `lang="en"`.                                                   |
-| 3.1.2 Language of Parts                         | AA    | Pass            | F-16 fixed. The Spanish line on the global 404 has `lang="es"`. The test run did not include a screen reader.                   |
-| 3.2.1 On Focus                                  | A     | Pass            | Focus does not change the context by itself.                                                                                    |
-| 3.2.2 On Input                                  | A     | Pass            | Inputs do not submit or navigate on their own.                                                                                  |
-| 3.2.3 Consistent Navigation                     | AA    | Pass            | The same header and footer render on locale pages. The global 404 has no site footer.                                           |
-| 3.2.4 Consistent Identification                 | AA    | Pass            | The same controls keep the same names.                                                                                          |
-| 3.2.6 Consistent Help                           | A     | Pass            | Contact is in the nav, and the email link is in the footer, on locale pages.                                                    |
-| 3.3.1 Error Identification                      | A     | Pass            | F-02 and F-07 fixed.                                                                                                            |
-| 3.3.2 Labels or Instructions                    | A     | Pass            | F-08 and F-17 fixed.                                                                                                            |
-| 3.3.3 Error Suggestion                          | AA    | Pass            | F-08 fixed.                                                                                                                     |
-| 3.3.4 Error Prevention (Legal, Financial, Data) | AA    | Does not apply  | The form does not make a legal, financial, or data-change commitment.                                                           |
-| 3.3.7 Redundant Entry                           | A     | Pass            | The form is one step. Values stay after an error.                                                                               |
-| 3.3.8 Accessible Authentication (Minimum)       | AA    | Does not apply  | No sign-in. reCAPTCHA v3 shows no challenge.                                                                                    |
-| 4.1.2 Name, Role, Value                         | A     | Pass            | F-05, F-09, and F-18 fixed.                                                                                                     |
-| 4.1.3 Status Messages                           | AA    | Pass            | F-09 fixed.                                                                                                                     |
+| Criterion                                       | Level | Result         | Notes                                                                                                                           |
+| ----------------------------------------------- | ----- | -------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| 1.1.1 Non-text Content                          | A     | Pass           | F-09 fixed. Decorative canvases are `aria-hidden`.                                                                              |
+| 1.2.1 Audio-only and Video-only (Prerecorded)   | A     | Not checked    | F-24. The demo has both streams. A text alternative was not checked.                                                            |
+| 1.2.2 Captions (Prerecorded)                    | A     | Fail           | F-24 open.                                                                                                                      |
+| 1.2.3 Audio Description or Media Alternative    | A     | Not checked    | No WebVTT file in `public`. A page-level alternative was not checked.                                                           |
+| 1.2.4 Captions (Live)                           | AA    | Does not apply | No live media.                                                                                                                  |
+| 1.2.5 Audio Description (Prerecorded)           | AA    | Not checked    | Same limit as 1.2.3.                                                                                                            |
+| 1.3.1 Info and Relationships                    | A     | Pass           | F-07, F-10, and F-19 fixed. F-21 has no screen reader result.                                                                   |
+| 1.3.2 Meaningful Sequence                       | A     | Pass           | DOM order matches the visual order on the checked pages.                                                                        |
+| 1.3.3 Sensory Characteristics                   | A     | Pass           | Instructions do not rely on shape or position alone.                                                                            |
+| 1.3.4 Orientation                               | AA    | Pass           | No orientation lock in the layout.                                                                                              |
+| 1.3.5 Identify Input Purpose                    | AA    | Pass           | F-11 fixed.                                                                                                                     |
+| 1.4.1 Use of Color                              | A     | Pass           | F-12 fixed. Invalid fields also expose text and `aria-invalid`.                                                                 |
+| 1.4.2 Audio Control                             | A     | Pass           | No element autoplays. Clips and the About video are muted. The demo waits for its controls.                                     |
+| 1.4.3 Contrast (Minimum)                        | AA    | Pass           | F-03 fixed. Ratios are from the color tokens. The test run did not sample pixels behind the particles.                          |
+| 1.4.4 Resize Text                               | AA    | Not checked    | The test run did not resize text to 200 percent.                                                                                |
+| 1.4.5 Images of Text                            | AA    | Pass           | The logo is the image of text.                                                                                                  |
+| 1.4.10 Reflow                                   | AA    | Pass           | `/en` has 0 horizontal overflow at 320px wide.                                                                                  |
+| 1.4.11 Non-text Contrast                        | AA    | Pass           | F-04 fixed. Token ratios are above 3:1 for the field rings in use.                                                              |
+| 1.4.12 Text Spacing                             | AA    | Not checked    | The test run did not apply the text-spacing override.                                                                           |
+| 1.4.13 Content on Hover or Focus                | AA    | Pass           | Extra content on hover is the native tooltip on tech icons.                                                                     |
+| 2.1.1 Keyboard                                  | A     | Pass           | The Tab walk reached the controls. Menu, form, and dialog behavior is covered by unit tests.                                    |
+| 2.1.2 No Keyboard Trap                          | A     | Pass           | Forward Tab returned to the start on each walked page.                                                                          |
+| 2.1.4 Character Key Shortcuts                   | A     | Does not apply | No character shortcuts.                                                                                                         |
+| 2.2.1 Timing Adjustable                         | A     | Pass           | F-02 and F-13 fixed. The test run did not wait two minutes before submit.                                                       |
+| 2.2.2 Pause, Stop, Hide                         | A     | Fail           | F-14 fixed. F-23 is an accepted deviation.                                                                                      |
+| 2.3.1 Three Flashes or Below Threshold          | A     | Not checked    | No flash was observed in the checks. The test run did not measure luminance.                                                    |
+| 2.4.1 Skip repeated blocks                      | A     | Pass           | Landmarks, plus a skip link.                                                                                                    |
+| 2.4.2 Page Titled                               | A     | Fail           | F-15 open for file-like unknown URLs. The other checked titles name the page.                                                   |
+| 2.4.3 Focus Order                               | A     | Pass           | F-05 and F-09 fixed.                                                                                                            |
+| 2.4.4 Link Purpose (In Context)                 | A     | Pass           | F-20 fixed. Home Lighthouse flags the words `See more` (see the Lighthouse report). That audit is separate from this criterion. |
+| 2.4.5 Multiple Ways                             | AA    | Pass           | F-22 fixed. Home, Projects, and Contact are in the nav.                                                                         |
+| 2.4.6 Headings and Labels                       | AA    | Pass           | Headings and labels describe their content on the checked pages.                                                                |
+| 2.4.7 Focus Visible                             | AA    | Pass           | F-01, F-04, and F-05 fixed. The Tab walk found 0 hidden stops.                                                                  |
+| 2.4.11 Focus Not Obscured (Minimum)             | AA    | Pass           | F-06 fixed. 744 stops, 0 fully under the fixed footer.                                                                          |
+| 2.5.1 Pointer Gestures                          | A     | Does not apply | No multipoint or path gesture.                                                                                                  |
+| 2.5.2 Pointer Cancellation                      | A     | Pass           | Actions run on click.                                                                                                           |
+| 2.5.3 Label in Name                             | A     | Pass           | Text controls include their visible label. Icon-only controls have no visible text label.                                       |
+| 2.5.4 Motion Actuation                          | A     | Does not apply | No motion input.                                                                                                                |
+| 2.5.7 Dragging Movements                        | AA    | Does not apply | No dragging.                                                                                                                    |
+| 2.5.8 Target Size (Minimum)                     | AA    | Pass           | The toast close control is at least 24px. Inline text links are exempt.                                                         |
+| 3.1.1 Language of Page                          | A     | Pass           | `html lang` is `en` or `es` on locale pages. The global 404 uses `lang="en"`.                                                   |
+| 3.1.2 Language of Parts                         | AA    | Pass           | F-16 fixed. The Spanish line on the global 404 has `lang="es"`. The test run did not include a screen reader.                   |
+| 3.2.1 On Focus                                  | A     | Pass           | Focus does not change the context by itself.                                                                                    |
+| 3.2.2 On Input                                  | A     | Pass           | Inputs do not submit or navigate on their own.                                                                                  |
+| 3.2.3 Consistent Navigation                     | AA    | Pass           | The same header and footer render on locale pages. The global 404 has no site footer.                                           |
+| 3.2.4 Consistent Identification                 | AA    | Pass           | The same controls keep the same names.                                                                                          |
+| 3.2.6 Consistent Help                           | A     | Pass           | Contact is in the nav, and the email link is in the footer, on locale pages.                                                    |
+| 3.3.1 Error Identification                      | A     | Pass           | F-02 and F-07 fixed.                                                                                                            |
+| 3.3.2 Labels or Instructions                    | A     | Pass           | F-08 and F-17 fixed.                                                                                                            |
+| 3.3.3 Error Suggestion                          | AA    | Pass           | F-08 fixed.                                                                                                                     |
+| 3.3.4 Error Prevention (Legal, Financial, Data) | AA    | Does not apply | The form does not make a legal, financial, or data-change commitment.                                                           |
+| 3.3.7 Redundant Entry                           | A     | Pass           | The form is one step. Values stay after an error.                                                                               |
+| 3.3.8 Accessible Authentication (Minimum)       | AA    | Does not apply | No sign-in. reCAPTCHA v3 shows no challenge.                                                                                    |
+| 4.1.2 Name, Role, Value                         | A     | Pass           | F-05, F-09, and F-18 fixed.                                                                                                     |
+| 4.1.3 Status Messages                           | AA    | Pass           | F-09 fixed.                                                                                                                     |
 
 ## Open items
 
 - F-15. File-like unknown URLs use the Next default error shell. The title is the site name.
 - F-23. Accepted deviation. Motion listed there has no pause control.
 - F-24. The InterplanetaryFonts demo video has an audio stream and no captions track.
-- F-21. Not re-verified. The test run did not include a screen reader.
+- F-21. Not checked. The test run did not include a screen reader.
 - F-02. The test run did not wait two minutes before submit.
 
 ## Notes
 
-- The shared focus outline is `#f00`, 3px, with a 3px offset. That is 3.42:1 on `#ededed`. It passes 1.4.11 and sits below the 2.4.13 AAA target.
+- The shared focus outline is `#f00`, 3px, with a 3px offset. That is 3.42:1 on `#ededed`. It meets 1.4.11 and sits below the 2.4.13 AAA target.
 - `#f00` on `#000` is 5.25:1. 1.4.6 AAA asks for 7:1 on normal text.
 - At a height of 500px or less, the header, the footer, and docked pills leave the fixed layer. That is the short-screen rule in the SCSS above.

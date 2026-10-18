@@ -1,6 +1,6 @@
 # SEO
 
-Last verified: 2026-10-18.
+Last verified: 2026-10-17.
 
 ## Scope and method
 
@@ -20,6 +20,8 @@ User agents for the head check: a browser, Googlebot, facebookexternalhit, and S
 `node -e "import('./oldPortfolioPages.mjs').then(m => console.log(m.oldPortfolioPages.length))"` prints 106.
 
 `rg -c "slug: '" src/utils/constants/projects.constants.ts` prints 12.
+
+Search Console data, Vercel dashboard rules, and the schema.org validator are outside the scope of this report.
 
 ## Metadata
 
@@ -56,8 +58,6 @@ Home JSON-LD types are `WebSite` and `ProfilePage`. `Person` is `ProfilePage.mai
 
 Project pages use `CreativeWork`. The schema is shared by every project in `structuredData.utils.ts`.
 
-The test run did not call the schema.org validator.
-
 ## Sitemap and robots
 
 `/sitemap.xml` lists 32 URLs. `curl -s http://127.0.0.1:3000/sitemap.xml | grep -c '<url>'` prints 32. That is 16 paths times 2 locales. Every URL has `lastmod`. The file has no `priority` and no `changefreq`.
@@ -87,10 +87,3 @@ Locale unknown URLs return 404, `noindex`, and `global-not-found.tsx`. Checked: 
 ## Lighthouse SEO
 
 On this environment the home page scores 92 because one link reads `See more`. The project page scores 100. Numbers and the run method are in the Lighthouse report.
-
-## Not re-verified
-
-- Search Console index counts and crawl stats.
-- A POST of the rendered HTML to `https://validator.schema.org/validate`.
-- Vercel dashboard rules for AI crawlers, Open Graph image bypass, and feed bot protection. They are not in this repository. `robots.ts` allows every user agent except `/api/`. Local feeds return 200.
-- Whether Google Search uses the SVG favicon. Both icon files are served.

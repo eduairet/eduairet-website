@@ -1,6 +1,6 @@
 # Lighthouse
 
-Last verified: 2026-10-18.
+Last verified: 2026-10-17.
 
 ## Scope and method
 
