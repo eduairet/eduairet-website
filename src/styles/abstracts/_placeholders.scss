@@ -67,3 +67,20 @@
   padding: 0 1.25rem;
   font-size: 1rem;
 }
+
+%docked-pill {
+  position: sticky;
+  top: calc((#{$header-height} - #{$pill-height}) / 2);
+  z-index: $z-docked;
+  align-self: flex-start;
+  margin-left: calc(#{$page-gutter} - 1rem);
+
+  @media (width >= $breakpoint-md) {
+    align-self: center;
+    margin-left: 0;
+  }
+
+  @media (height <= $breakpoint-short-height) {
+    position: static;
+  }
+}

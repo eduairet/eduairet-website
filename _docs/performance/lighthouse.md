@@ -224,3 +224,9 @@ PSI throttles mobile CPU by 1.2x on a machine that benchmarks about 1,200; local
 This branch has no new Lighthouse run. The scores above stay as recorded.
 
 On viewports under 768px wide, `--footer-clearance` is `1rem` in CSS. `MeasuredFooter` still writes `--footer-height`, and that write does not move the page there. From 768px up, with height over 500px, the footer stays fixed and the clearance still follows `--footer-height`.
+
+## Branch `chore/projects-link` (2026-10-17)
+
+This branch has no new Lighthouse run. The scores above stay as recorded.
+
+The All projects link and the section titles use `%docked-pill` in `src/styles/abstracts/_placeholders.scss`.
