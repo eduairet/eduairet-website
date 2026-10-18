@@ -19,8 +19,14 @@
 .back {
   @extend %pill-button;
   @extend %pill-small;
-  align-self: flex-start;
-  margin: 0 0 clamp(1.5rem, 5vw, 2.5rem);
+  @extend %docked-pill;
+  margin-bottom: clamp(1.5rem, 5vw, 2.5rem);
+
+  // Spanish "Todos los proyectos" meets the nav pill below this width.
+  @media (width < 360px) {
+    padding-inline: 0.75rem;
+    font-size: 0.875rem;
+  }
 }
 
 .header {
