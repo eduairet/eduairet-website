@@ -8,8 +8,7 @@ export const THEME_COLORS: Record<Theme, string> = {
   light: Colors.white,
 };
 
-// The saved choice, else the OS preference. Self-contained, because it is
-// also inlined as a script that runs before the body paints.
+// Saved choice, else the OS setting. Inlined before paint, so this function cannot import.
 export function resolveTheme(storageKey: string): Theme {
   try {
     const saved = localStorage.getItem(storageKey);
@@ -22,8 +21,7 @@ export function resolveTheme(storageKey: string): Theme {
   }
 }
 
-// Chrome on Android tints its bar from theme-color; iOS Safari ignores it.
-// Self-contained for the same reason as resolveTheme.
+// Chrome on Android tints the bar from theme-color. iOS Safari ignores it. Inlined before paint, same as resolveTheme.
 export function applyThemeToPage(theme: Theme, colors: Record<Theme, string>) {
   document.body.setAttribute('data-theme', theme);
   document

@@ -40,27 +40,34 @@ fixed "thanks" email. These guards keep it from being used to email people
 who never wrote to me:
 
 - **CAPTCHA:** reCAPTCHA v3 must pass before anything is sent.
-- **Score-gated confirmation:** the visitor's confirmation goes out only for
-  the highest reCAPTCHA scores. Every passing score gets the same response.
+- **Score-gated confirmation:** the visitor's confirmation goes out only when
+  the reCAPTCHA score is at least 0.9 (`MIN_CONFIRMATION_SCORE` in
+  `src/services/server/captcha.service.ts`). A pass is 0.5
+  (`MIN_CAPTCHA_SCORE`). Every passing score gets the same response.
 - **Strict input:** every field must be a non-empty string and the privacy
   notice box must be ticked, or the request gets a 400.
-- **Rate limit:** a Vercel Firewall rule limits form sends per IP.
-- **Reputation alarms:** CloudWatch emails me if the email bounce or
-  complaint rate starts to climb, well before Amazon SES would act.
-- **No stored AWS keys:** deployments trade Vercel's OIDC token for AWS
-  credentials that expire in minutes, and that role may only send mail from
-  my address and add items to one DynamoDB table.
+- **Rate limit:** not re-verified. A Vercel Firewall rule is not in this
+  repository.
+- **Reputation alarms:** not re-verified. CloudWatch alarms are not in this
+  repository.
+- **No stored AWS keys:** deployments trade Vercel's OIDC token
+  (`x-vercel-oidc-token`) for AWS credentials that expire in 900 seconds
+  (`STS_SESSION_SECONDS` in `src/utils/server/aws.utils.ts`). The role's
+  permission boundary is not in this repository, so the claim that it may
+  only send mail and write one table is not re-verified.
 
 ## What the form stores
 
 Each message is also saved in a DynamoDB table, so it isn't lost if the email
 goes missing. An item holds the name, email, message, language, time and
-Vercel environment, plus an id and its expiry time. It holds no IP address
-and no reCAPTCHA token. DynamoDB deletes it on its own about 90 days later. Logs keep only the status
-and the AWS error type, never what someone wrote.
+Vercel environment, plus an id and `expiresAt`. `expiresAt` is 90 days ahead
+(`MESSAGE_RETENTION_SECONDS` in `src/services/server/email.service.ts`). It
+holds no IP address and no reCAPTCHA token. DynamoDB TTL deletion is not
+re-verified, because the table setting is not in this repository. Logs keep
+only the status and the AWS error type, never what someone wrote.
 
-If a save fails, the site emails me through SES with the same status and
-error type, the time and the Vercel environment, and nothing from the form.
-Runtime logs on Vercel Hobby last only an hour, so this email is how I find
-out. The [privacy notice](https://www.eduairet.com/en/privacy) explains all of
-this to visitors.
+If a save fails, the site emails me through SES with the reason, the time and
+the Vercel environment, and nothing from the form. Runtime log retention on
+Vercel Hobby is not re-verified, because it is not in this repository. The
+[privacy notice](https://www.eduairet.com/en/privacy) explains all of this to
+visitors.

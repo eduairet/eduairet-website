@@ -129,7 +129,6 @@ const sendSesEmail = async (
 
 const vercelEnv = () => process.env.VERCEL_ENV ?? 'development';
 
-// Resolves to why the save failed, or null when it worked.
 const putMessage = async (
   { region, credentials }: AwsSession,
   { locale, name, email, message }: ContactMessage

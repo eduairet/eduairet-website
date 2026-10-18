@@ -63,12 +63,10 @@ export interface ProjectCopy {
   title: string;
   period: string;
   role: string;
-  // The card's second line, as on the other home cards.
   company?: string;
   summary: string;
   explanation: string[];
   highlights: string[];
-  // Alt text and captions, keyed by media name.
   media: Record<string, string>;
   shareAlt: string;
 }
@@ -323,8 +321,7 @@ export class Dictionary {
   }
 }
 
-// The part of the dictionary that client components read. Long page copy
-// stays on the server, so the browser gets one small set of UI strings.
+// Client components read this slice. Long page copy stays on the server.
 const UI_KEYS = [
   'meta',
   'nav',

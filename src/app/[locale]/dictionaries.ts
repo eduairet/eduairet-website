@@ -13,8 +13,7 @@ const dictionaries: Dictionaries = {
   es: new Dictionary(EsContent),
 };
 
-// Paths the proxy lets through (dotted files, /_next/*) can reach [locale] with
-// any segment, such as /wp-login.php; answer those with a 404, not a crash.
+// Any first segment matches [locale]. A segment that is not a locale must 404.
 export const toLang = (locale: string): Lang => {
   if (!isLang(locale)) notFound();
   return locale;

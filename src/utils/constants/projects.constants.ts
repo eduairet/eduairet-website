@@ -25,7 +25,6 @@ export type ProjectLinkKind =
 
 export type ProjectArt = 'letrastica' | 'torus' | 'waves' | 'ascii';
 
-// How a shot is shown: in a browser window, in a phone, or as it is.
 export type MediaFrame = 'browser' | 'phone' | 'plain';
 
 export interface ProjectImage {
@@ -52,7 +51,6 @@ export type ProjectMedia = ProjectImage | ProjectVideo;
 
 export interface Project {
   slug: ProjectSlug;
-  // ISO dates: when the work began, and when this page's content last changed.
   started: string;
   updated: string;
   stack: string[];
@@ -98,7 +96,6 @@ const clip = (name = 'clip'): ProjectVideo => ({
 
 const PROJECTS_UPDATED = '2026-10-15';
 
-// Newest first.
 export const PROJECTS: Project[] = [
   {
     slug: 'eduardo-pavon',

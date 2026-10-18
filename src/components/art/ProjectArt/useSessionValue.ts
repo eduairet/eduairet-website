@@ -33,7 +33,7 @@ export function useSessionValue<T>(key: string, initial: T) {
     try {
       sessionStorage.setItem(key, raw);
     } catch {
-      // Blocked storage: the value lives in memory only.
+      // The value is already in memory. A blocked store must not throw.
     }
     listeners.forEach((listener) => listener());
   };

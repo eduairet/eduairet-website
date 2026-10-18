@@ -33,7 +33,7 @@ export const SocialUrls = {
 
 export const PRIVACY_UPDATED = '2026-10-15';
 
-// When each page's content last changed; the sitemap's lastmod. Update on edit.
+// Dates the sitemap writes as lastmod.
 export const PAGES_UPDATED = {
   home: '2026-10-15',
   projects: '2026-10-15',
@@ -41,7 +41,6 @@ export const PAGES_UPDATED = {
   privacy: PRIVACY_UPDATED,
 };
 
-// Pages the privacy notice links, keyed by its {placeholders}.
 export const PrivacyLinks: Record<string, string> = {
   aws: 'https://aws.amazon.com/privacy/',
   google: 'https://policies.google.com/privacy',
@@ -51,7 +50,6 @@ export const PrivacyLinks: Record<string, string> = {
   edpb: 'https://www.edpb.europa.eu/about-edpb/about-edpb/members_en',
 };
 
-// Names the footer credit line links, keyed by its {placeholders}.
 export const CreditLinks: Record<string, { label: string; href: string }> = {
   name: { label: SITE_NAME, href: SocialUrls.github },
   nextjs: { label: 'Next.js', href: 'https://nextjs.org' },

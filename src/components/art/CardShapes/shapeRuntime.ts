@@ -16,7 +16,6 @@ const LARGE = 0.8;
 const SMALL = 0.6;
 // Keeps text over the lines readable (see wcag-audit.md, F-23).
 const BEHIND_OPACITY = 0.15;
-// Center distance from the right and bottom edges, in radii.
 const INSET = 0.62;
 const TEXT_GAP = 16;
 const STROKE = 1;
@@ -30,12 +29,10 @@ interface Motion {
 
 export interface ShapeCard {
   card: HTMLElement;
-  // The text block the shape must not cover at full strength.
   content: HTMLElement | null;
   className: string;
 }
 
-// A card's canvas, made the first time the card scrolls into view.
 interface View {
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
@@ -58,9 +55,7 @@ let picks: SolidName[] = [];
 const motions: Motion[] = [];
 
 export interface ShapeRuntime {
-  // eslint-disable-next-line no-unused-vars
   add: (shape: ShapeCard) => void;
-  // eslint-disable-next-line no-unused-vars
   remove: (card: HTMLElement) => void;
   dispose: () => void;
 }
@@ -92,7 +87,6 @@ const swayX = (time: number) =>
 const swayZ = (time: number) =>
   SWAY_Z.angle * Math.cos((TAU * time) / SWAY_Z.seconds);
 
-// With `still`, each shape is drawn once and never animates.
 export function createShapeRuntime({ still = false } = {}): ShapeRuntime {
   const reducedMotion = window.matchMedia(REDUCED_MOTION_QUERY);
   const isStill = () => still || reducedMotion.matches;
@@ -155,7 +149,6 @@ export function createShapeRuntime({ still = false } = {}): ShapeRuntime {
     const scale = radius * pixelRatio;
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.clearRect(0, 0, canvas.width, canvas.height);
-    // Unit coordinates, y up, centered on the shape.
     context.setTransform(
       scale,
       0,

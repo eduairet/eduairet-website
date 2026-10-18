@@ -11,8 +11,7 @@ const NUMBER = /-?\d*\.?\d+/g;
 const numbersIn = (d: string) => (d.match(NUMBER) ?? []).map(Number);
 const round = (n: number) => Math.round(n * 1e5) / 1e5;
 
-// Morphs an SVG path to `d` from wherever it is now, and returns the `d`
-// to render. Paths must share the same commands, so only their numbers change.
+// Paths must share commands, so the tween changes only the numbers.
 export default function usePathTween(
   ref: RefObject<SVGPathElement | null>,
   d: string

@@ -8,8 +8,7 @@ type IProps = Omit<ComponentProps<typeof Link>, 'href' | 'prefetch'> & {
   href: string;
 };
 
-// Prefetches on hover, focus or touch, not when the link renders: Chrome
-// warns when a prefetched page's preloaded CSS goes unused.
+// Prefetch on hover, focus or touch. Chrome warns when preloaded CSS from a prefetch goes unused.
 export default function IntentLink({ href, ...props }: IProps) {
   const router = useRouter();
   const prefetch = () => router.prefetch(href);

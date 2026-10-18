@@ -13,8 +13,7 @@ export default function HomeSubtitle({ subtitle }: IProps) {
   return (
     <h2 className={styles.subtitle}>
       {subtitleArray.map((w, i) => {
-        // Real spaces keep the words apart for screen readers, copy and paste,
-        // and search engines.
+        // Real spaces, so screen readers, paste and search engines see separate words.
         return (
           <Fragment key={`subtitle-word-${i.toString().padStart(2, '0')}`}>
             {i > 0 && ' '}

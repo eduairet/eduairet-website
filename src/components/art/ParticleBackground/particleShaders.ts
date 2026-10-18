@@ -92,8 +92,7 @@ const MIN_LIFE = 15;
 export const MAX_LIFE = 90;
 export const MAX_DELAY = 300;
 
-// Randomness comes from hashing each particle's texel, so both shaders agree
-// on its age without a seed texture.
+// Hash the texel so both shaders agree on age without a seed texture.
 const lifeCycle = /* glsl */ `
 #define TAU 6.283185307179586
 
@@ -132,7 +131,6 @@ Cycle lifeCycle(uvec2 cell, float frame) {
 }
 `;
 
-// State per particle: position (0..1), heading (radians), speed.
 // GPUComputationRenderer adds the `uState` and `resolution` declarations.
 export const updateShader = /* glsl */ `
 uniform float uFrame;
@@ -248,8 +246,7 @@ void main() {
 }
 `;
 
-// Premultiplied. Dark theme: gray letters add up. Light theme: black letters
-// with max blending, so overlaps never get darker than one letter.
+// Premultiplied. Dark letters add. Light letters use max blending so overlaps stay one letter dark.
 export const drawFragmentShader = /* glsl */ `
 uniform sampler2D uAtlas;
 uniform float uGain;

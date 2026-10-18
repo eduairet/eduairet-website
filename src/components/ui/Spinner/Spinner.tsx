@@ -10,7 +10,6 @@ const spinnerSizes = {
 
 interface IProps {
   size?: SpinnerSize;
-  // Text alternative; without it the spinner is decorative.
   label?: string;
 }
 

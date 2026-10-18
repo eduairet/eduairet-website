@@ -5,20 +5,15 @@ import { TAU } from '@/utils/math.utils';
 type Family = 'boxes' | 'prisms' | 'pyramids' | 'round';
 type Point = [number, number];
 type Vec = [number, number, number];
-// Row-major 3x3 rotation.
 type Matrix = number[];
 
-// A canvas context works as a pen.
 interface Pen {
-  // eslint-disable-next-line no-unused-vars
   moveTo: (x: number, y: number) => void;
-  // eslint-disable-next-line no-unused-vars
   lineTo: (x: number, y: number) => void;
 }
 
 interface Solid {
   family: Family;
-  // eslint-disable-next-line no-unused-vars
   trace: (m: Matrix, pen: Pen) => void;
 }
 
@@ -67,7 +62,6 @@ const traceLoops = (m: Matrix, loops: Vec[][], pen: Pen) => {
     for (let i = 0; i < loop.length; i++) step(m, loop[i], pen, i === 0);
 };
 
-// eslint-disable-next-line no-unused-vars
 const loop = <T = Vec>(point: (angle: number) => T, steps = RING_STEPS) =>
   Array.from({ length: steps + 1 }, (_, k) => point((k / steps) * TAU));
 
@@ -168,7 +162,6 @@ function octahedron() {
   return polyhedron('pyramids', vertices, faces);
 }
 
-// A solid of revolution about its own y axis, from bottom to top ring.
 function revolution(rings: { y: number; r: number }[]) {
   const scale = 1 / Math.max(...rings.map(({ y, r }) => Math.hypot(y, r)));
   const fitted = rings.map(({ y, r }) => ({ y: y * scale, r: r * scale }));
@@ -235,13 +228,11 @@ function sphere(latitudes: number, meridians: number) {
   };
 }
 
-// Samples per ring around the hole, and per small circle around the tube.
 const TORUS_RING_STEPS = 64;
 const TORUS_TUBE_STEPS = 32;
 // The short march toward the viewer for points near the hole.
 const MARCH = { start: 0.03, steps: 12, minStep: 0.05, hit: -1e-3 };
 
-// A grid of rings around the hole and around the tube, with its back hidden.
 function torus(parallels: number, meridians: number, ring = 0.68, tube = 0.32) {
   const scale = 1 / (ring + tube);
   const [R, r] = [ring * scale, tube * scale];
@@ -269,7 +260,6 @@ function torus(parallels: number, meridians: number, ring = 0.68, tube = 0.32) {
   ];
   // Past this distance the ray has left the unit-sized torus.
   const reach = 2 * (R + r) + MARCH.start;
-  // Inside the tube on the way to the viewer means hidden.
   const blocked = ([x, y, z]: Vec, [vx, vy, vz]: Vec) => {
     let t = MARCH.start;
     for (let i = 0; i < MARCH.steps && t < reach; i++) {
@@ -286,7 +276,6 @@ function torus(parallels: number, meridians: number, ring = 0.68, tube = 0.32) {
   return {
     family: 'round' as const,
     trace(m: Matrix, pen: Pen) {
-      // The viewer's direction in the torus's own space.
       const view: Vec = [m[6], m[7], m[8]];
       for (const samples of loops) {
         let drawing = false;

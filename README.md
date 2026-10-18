@@ -50,5 +50,5 @@ The PHP logo on the experience cards is by Colin Viebrock, licensed under [CC BY
 
 - [Accessibility audit (WCAG 2.2 AA)](_docs/accessibility/wcag-audit.md)
 - [Performance (Lighthouse)](_docs/performance/lighthouse.md)
-- [SEO decisions](_docs/seo/seo-audit.md)
+- [SEO](_docs/seo/seo-audit.md)
 - [Security policy](SECURITY.md)

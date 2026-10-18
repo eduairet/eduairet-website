@@ -7,7 +7,6 @@
   gap: 2rem;
   padding-block: clamp(3rem, 8vw, 5rem);
 
-  // Top and bottom lines run the full screen width, past the content column.
   // The shadow paints them out to the edges without adding scrollable width.
   &::before,
   &::after {
@@ -29,7 +28,6 @@
     bottom: 0;
   }
 
-  // Lines the portrait up with the text inside the cards below.
   @media (width >= $breakpoint-md) {
     flex-direction: row;
     align-items: center;

@@ -1,574 +1,326 @@
-# WCAG 2.2 AA audit: eduairet-website
+# WCAG 2.2 AA
 
-## 1. Summary
+Last verified: 2026-10-18.
 
-**Verdict before fixes (2026-10-05): Does not conform to WCAG 2.2 Level AA.**
+The site meets WCAG 2.2 Levels A and AA on the checks below, with three exceptions. 2.2.2 Pause, Stop, Hide is an accepted deviation (F-23). 1.2.2 Captions is open (F-24). 2.4.2 Page Titled fails on file-like unknown URLs (F-15). 4.1.1 Parsing is obsolete in WCAG 2.2 and is not evaluated.
 
-**Verdict after fixes (2026-10-06): Conforms** to WCAG 2.2 Level AA on every criterion I could test in Chrome. No findings are open. F-21 was closed on code review, at your call; no screen reader was run. For F-22, `/resources` now returns 404 until it has content.
+## Scope and method
 
-**Update (2026-10-06, branch `feat/particle-background`): one accepted deviation.** The new particle background has no pause control, so 2.2.2 Pause, Stop, Hide (Level A) is not met, and strictly the site no longer conforms. The site owner accepted this; see F-23 for the mitigations and the measured contrast. Every other criterion is unchanged.
+Production server: `pnpm build`, then `pnpm start --port 3000`. Next.js 16.4.0. React 19.3.0. The server for this pass was already running that build.
 
-**Update (2026-10-08, branch `feat/seo-audit`): no criterion changes.** The logo now fades into a photo on hover, keyboard focus, and press. The photo has `alt=""`, so the link is still named "Home", and with reduced motion it swaps without fading. reCAPTCHA now loads only on the contact page, and the page loading spinner is gone (see F-19).
+axe-core 4.11.0 through `@axe-core/playwright` 4.11.0 and Playwright 1.56.1. Browser: Google Chrome 154.0.8037.92 at `/usr/local/bin/google-chrome`, with `--no-sandbox` and `--disable-dev-shm-usage`. Tags: `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa`.
 
-**Update (2026-10-08, branch `perf/lighthouse`): no criterion changes.** The particle background now starts on the first scroll, pointer or key input and stays off with software WebGL; with reduced motion it still draws one still frame. Pages no longer fade in, the theme is set before the first paint, and the card, theme and menu animations moved from framer-motion to CSS with the same timing and the same reduced-motion behavior. axe: 0 violations on all pages and the 404, both themes, menus open and closed.
+Routes, each in `en` and `es`: `/`, `/contact`, `/privacy`, `/projects`, the 12 slugs in `PROJECTS` (`src/utils/constants/projects.constants.ts`), and `/does-not-exist`. Themes: dark and light. The theme is `localStorage` key `theme` plus `colorScheme` emulation. Viewports: 375 by 812, and 1280 by 900. Menus stayed closed.
 
-**Update (2026-10-09, branch `feat/ui-polish`): no criterion changes.**
+That is 17 paths, 2 locales, 2 themes, and 2 widths, so 136 runs. `rg -c "slug: '" src/utils/constants/projects.constants.ts` prints 12. Adding home, contact, privacy, projects, and the unknown path makes 17.
 
-- Section titles are sticky outlined pills. From 768px up they dock in the header; below that they sit under it, so the open menus stay on top.
-- The photo moved from the logo to a new About section.
-- The form asks for every field once, with no asterisks (F-17).
-- Field focus is one ring in the border's color (F-04).
-- A credit line closes every page. Its links are underlined and say they open in a new tab.
-- Card tech icons wrap under the text. Tools with no usable logo are listed by name, at 7.69:1 contrast or more.
-- On phones too short to fit it above the footer, the hero scroll arrow is hidden.
-- A click, a right click, or Enter or Space on a link or button bursts the particle ring outward; it re-forms in about 1.5 s. With reduced motion there is no burst, and the opacity cap keeps it from flashing (F-23).
-- No page scrolls sideways at any tested size, 320 to 1920 wide (1.4.10). Before, desktop pages scrolled sideways by the scrollbar's width, and some phone layouts were wider than the screen.
-- Evidence: axe 4.11.0 found 0 violations in 48 runs (4 pages, both themes, menus closed and open, 1280 and 375 wide). A Tab walk forward and back on /en, /es and /en/contact at 4 sizes found no focus stop entirely hidden (772 stops). With reduced motion, nothing new moves.
+Keyboard: Playwright presses Tab on `/en`, `/es`, `/en/contact`, `/es/contact`, `/en/projects/collectible-pleasures`, and `/es/projects/collectible-pleasures`. Viewports: 375 by 667, 1280 by 900, 320 by 568, and 1280 by 480. `prefers-reduced-motion: reduce` is on. Each element counts once, so two links with the same name are two stops. A stop inside `footer` is not counted as covered by the footer. This pass walked forward only.
 
-**Update (2026-10-09, branch `perf/page-weight-fonts`): no criterion changes.**
+Layout: the same Playwright session reads `footer` position, `--footer-clearance`, and the All projects link (`main a[href="/<locale>/projects"]` on `/projects/eduardo-pavon`).
 
-- Tools with no usable logo are text pills in the same tech stack list as the icons, in the same text color as before. All 44 icons keep their names in the accessibility tree.
-- Cards have a 2px outline, like the section titles.
-- The hero scroll arrow shows only while it fits fully above the fixed footer. It never touched the footer or the hero text at 34 sizes in both languages, also with a 50% longer summary: 320×568, 360×640, 360×740, 360×800, 375×667, 375×812, 390×844, 393×852, 412×915, 414×896, 430×932, 375×600, 360×560, 320×480, 375×520, 390×560, 412×600, 360×680, 375×700, 414×720, 568×320, 667×375, 740×360, 812×375, 844×390, 915×412, 932×430, 768×1024, 1024×768, 1280×800, 1280×900, 1366×768, 1440×900, 1920×1080. Browsers without scroll timelines keep the old 700px rule.
-- The open menus stay above the sticky titles at 375, 768 and 1280 wide.
-- Evidence: axe 4.11.0 found 0 violations in 16 runs (4 pages, both themes, menus closed and open), again on the final build.
+Contrast ratios in this report are the sRGB relative luminance of the tokens in `src/styles/abstracts/variables/_colors.scss`. They are not new pixel samples.
 
-**Update (2026-10-10, branch `feat/card-shapes`): the 2.2.2 deviation now covers the card shapes too.** Each card shows a slowly turning wireframe solid, accepted by the site owner under F-23. Cards have rounder corners. No other criterion changes.
+## Results
 
-- Evidence: axe 4.11.0 found 0 violations in 16 runs (4 pages, both themes, 1280 and 375 wide, every card's shape drawn). The 12 canvases are `aria-hidden`, not focusable, take no pointer events, and are missing from the accessibility tree.
+axe-core 4.11.0 reported 0 violations in 136 runs.
 
-**Update (2026-10-11, branch `feat/mobile-menu`): no criterion changes.**
+The Tab walk took 744 stops across 24 pages and left 0 hidden or fully under the fixed footer.
 
-- Below 768px the menu fills the screen and holds Home, Contact, both languages and the theme toggle. It is a modal dialog: focus moves in and wraps, the page behind is inert, scroll is locked, and Escape, a chosen link or the menu button close it and return focus to the button. Open menus close when the window crosses 768px. See F-05.
-- On phones the globe button and the footer's theme toggle are gone; the logo sits in the nav pill next to the menu button. Each control is in the accessibility tree once at every width.
-- On phones section titles dock in the top left corner of the header, so fixed bars cover 239px of a 375×667 screen instead of 334px.
-- From 768px up the menus, logo, titles and footer look the same as on `main`. The footer clearance now matches the real 82px footer instead of 88px, so pages end 6px sooner.
-- Evidence: axe 4.11.0 found 0 violations in 40 runs (4 pages, both themes, menus closed and open, 375 and 1280 wide). Tab walks forward and back on /en, /es and /en/contact at 375×667, 320×568 and 1280×900 found no focus stop hidden (555 stops). No page scrolls sideways at 320×450 or 320×256, menu open or closed.
+`footer` is `static` when the width is under 768 or the height is 500 or less. It is `fixed` from 768 wide with height over 500. Checked on home and `/projects/collectible-pleasures`, in `en` and `es`, at 375 by 667, 390 by 844, 767 by 800, and 1280 by 480 (static), and on home at 1280 by 800 and 768 by 800 (fixed). All 20 cases matched. On the fixed cases `--footer-height` is `82px` and `--footer-clearance` is `calc(82px + 1rem)`. On the static cases the clearance is `1rem`.
 
-**Update (2026-10-14, branch `feat/privacy-notice`): no criterion changes.**
+`/en` has 0 horizontal overflow at 320 by 450, 320 by 256, 375 by 667, and 1280 by 900.
 
-- New page `/[locale]/privacy`: one `h1`, an `h2` per section, real lists, and links to other sites say they open in a new tab.
-- The footer's name line links "Privacy" / "Privacidad". On phones it stays one line down to 320 wide, so the footer clearance still fits.
-- Above Submit, one short line and a required "I've read the privacy notice" checkbox replace the retention line. The link sits in the checkbox label. Submitting without the box shows an error tied to it with `aria-describedby` and moves focus to it, unless a text field needs fixing first. The reCAPTCHA line is plain text with no links.
-- Evidence: axe 4.11.0 found 0 violations in 36 runs (/en, /es, both contact pages and both privacy pages; both themes; 375, 768 and 1280 wide). No page scrolls sideways.
+At 375 by 667 with reduced motion, `/en/privacy` is 6530px tall and `/es/privacy` is 7031px tall.
 
-**Update (2026-10-14, branch `feat/about-and-footer`): the 2.2.2 deviation now covers the About sphere too.**
+The All projects link on `/projects/eduardo-pavon` is `sticky` at `top: 35px` and `z-index: 3`. It is `flex-start` at 390 wide and `center` at 1280 wide. It is `static` at 390 by 500 and at 1280 by 500. It is `sticky` at 390 by 501. The footer on those phone widths is `static`. At 1280 by 900 the footer is `fixed`.
 
-- The About photo sits in a circle in the border color, on a wireframe sphere that turns once every 48 s while it is on screen, from the first scroll or input on, like the card shapes. It holds still with reduced motion. Accepted by the site owner under F-23.
-- The About block fades and slides in like the cards; with reduced motion it only fades. With JavaScript off it shows at once.
-- The footer clearance follows the footer's measured height (F-06). Before, 200% text on a 375 wide phone hid the last line by 8px.
-- Evidence: axe 4.11.0 found 0 violations in 8 runs (/en and /es, both themes, 375 and 1280 wide). Tab walks on /en and /es at 375×812, 1280×900 and 1280×480, with 100% and 200% text, found no focus stop under the footer.
+## Layout rules in the SCSS
 
-**Update (2026-10-15, branch `feat/about-video`): the 2.2.2 deviation now covers the About video instead of the sphere.**
+Breakpoints in `src/styles/abstracts/variables/_breakpoints.scss`: `$breakpoint-md` is 768px. `$breakpoint-short-height` is 500px.
 
-- A short looping video of me replaces the About photo and its sphere, in a circle with a 2px border in the text color. It is muted, has no controls, and is named "Eduardo Aire Torres" by its `role="img"` wrapper; the video itself is `aria-hidden`.
-- A still of its first frame (`alt=""`, inside the named wrapper) shows until the first scroll, pointer or key input, then loops while on screen and pauses off screen. The video file loads only then. With reduced motion, or with JavaScript off, only the still shows.
-- Evidence: axe 4.11.0 found 0 violations in 8 runs (/en and /es, both themes, 375 and 1280 wide).
+`footer-static` in `src/styles/abstracts/_mixins.scss` matches `width < 768px` or `height <= 500px`. `footer-row` matches `width >= 768px`.
 
-**Update (2026-10-15, branch `feat/projects`): no criterion changes.** `/resources`, `/en/resources` and `/es/resources` now redirect (308) to the old portfolio's resources page, so the site no longer has a resources page or its 404 state (F-15, F-22).
+`%docked-pill` in `src/styles/abstracts/_placeholders.scss` is `sticky` at `top: calc((120px - 50px) / 2)`, which is 35px, on `$z-docked`. It aligns to the start under 768px and to the center from 768px up. At a height of 500px or less it is `static`. Section titles and the All projects link use this placeholder. `$header-height` is 120px and `$pill-height` is 50px in `src/styles/abstracts/variables/_sizes.scss`.
 
-**Update (2026-10-15, branch `feat/projects`): new project pages; the 2.2.2 deviation now covers their clips and live pieces.**
+Stack in `src/styles/abstracts/variables/_z-index.scss`, back to front: background -1, backdrop 1, header 2, docked 3, footer 4, toast 5, menu 6, skip link 7.
 
-- New routes: `/[locale]/projects` and `/[locale]/projects/<slug>` (12 projects). The nav menu has Projects between Home and Contact.
-- Each project card is one link: the title link stretches over the card, and the focus ring is drawn on the card. "View all" is a link to the first hidden card, so it works without JavaScript; with it, focus moves to the first new card. Media open in a `<dialog>`: Escape closes it and focus returns to the image.
-- Short muted clips loop while on screen, and four live pieces move (the torus, the Collectible Pleasures waves, the Letrástica 5 letters and their figures). They have no pause control; the site owner accepted them under F-23 on 2026-10-16. With reduced motion they hold still, and so does every page transition except a short fade. The InterplanetaryFonts demo video has sound and plays only from its own controls.
-- Evidence: axe 4.11.0 found 0 violations in 24 runs (/en/projects, /es/projects, three project pages and /en; both themes; 375 and 1280 wide). With JavaScript off, all 32 pages are reachable by following links. Tab walks on /en/projects and /en/projects/melvin-pay showed a ring on every stop.
+`--footer-clearance` in `src/styles/_global.scss` is `calc(var(--footer-height, estimate) + 1rem)` when the footer is fixed. `footer-static` sets it to `1rem`. `MeasuredFooter` writes `--footer-height` from the footer border box.
 
-**Update (2026-10-17, branch `chore/footer-layout`): no criterion changes.**
+`PHONE_QUERY` in `src/utils/constants/layout.constants.ts` is `max-width: 767.98px`. Below that width the main menu is a modal dialog (`role="dialog"`, `aria-modal`) while it is open. Focus wraps, and Escape, a chosen link, or the menu button closes it.
 
-- Below 768px wide, the footer sits in the page flow at the end of the content. Screens 500px tall or shorter already did this. `footer-static` in `src/styles/abstracts/_mixins.scss` matches width under 768px and height of 500px or less, so the footer and `--footer-clearance` change together.
-- `--footer-clearance` is `1rem` on those viewports. From 768px up, with height over 500px, the footer stays fixed. `MeasuredFooter` still writes `--footer-height`, and that height still sets the clearance there.
-- A short page keeps the footer on the bottom edge of the screen. `body` already has `min-height: 100dvh` in `src/styles/_normalize.scss`, and `main` already grows.
-- The hero scroll cue stays visible on phones. `HomeContent.module.scss` turns its fit animation off inside `footer-static`. The old 700px hide rule is gone.
-- Privacy is a long page. At 375×667 the English page is 6368px tall and the Spanish page is 6869px tall. The global 404 has no site footer. Contact is the shortest page with the footer. At 375×1400 and 390×1400 the contact footer is static and flush with the viewport, in English and in Spanish.
-- Evidence: a Playwright script on the dev server. Long pages checked for a static footer and 0 covered items in `main`: home and `/projects/collectible-pleasures` at 375×667 and 390×844, plus home at 767×800 and 1280×480, in English and in Spanish. That is 12 pages, 5 scroll positions each. At 1280×800 the home footer is fixed and pixel-identical to the page before this change (0 pixels differ on the viewport and on the footer, English and Spanish). At 768×800 the footer is fixed. At 767×800 and at 1280×480 it is static. Tab walks on 12 pages took 420 stops and left 0 under the footer. The open phone menu covers the viewport. On the tall contact page it covers the footer too.
+## Findings
 
-**Update (2026-10-17, branch `chore/projects-link`): no criterion changes.**
+### F-01 Reduced motion left the cards invisible
 
-The All projects link and the section titles use `%docked-pill` in `src/styles/abstracts/_placeholders.scss`. Below 768px wide the link sits at the left of the header. From 768px up the link sits in the center. At a height of 500px or less the link is `static`.
-
-Playwright in Chrome checked `/en/projects/eduardo-pavon` and `/es/projects/eduardo-pavon`.
-
-- At 390px wide the open phone menu covers the link. `.nav-wrapper` uses `$z-menu`.
-- At 1280px wide the open language menu is the top hit in its box. The centered link stays clear of the desktop nav and the logo.
-- The `ProjectMedia` dialog covers the link. The `.close` button stays `position: sticky` with `top: 12px`.
-- At 390×500 and at 1280×500 the link is `static`. At 390×501 the link is `sticky`.
-- At 390×844 the footer is `static` in the page flow. At 1280×900 the footer is `fixed` at `$z-footer`. The fixed footer sits above the link.
-- On `/es/projects/eduardo-pavon` at 390px wide the link is `sticky` at `top: 35px` on `$z-docked`.
-
-axe 4.11.0 found 0 violations in 48 runs (`/en`, `/es`, `/en/projects/collectible-pleasures`, `/es/projects/collectible-pleasures`, `/en/projects/eduardo-pavon`, and `/es/projects/eduardo-pavon`, both themes, 375 and 1280 wide, unscrolled and scrolled with the first section title or the All projects link docked).
-
-Severity counts as found on 2026-10-05:
-
-| Severity     | Count  |
-| ------------ | ------ |
-| Critical     | 2      |
-| Serious      | 7      |
-| Moderate     | 9      |
-| Minor        | 2      |
-| Needs review | 2      |
-| **Total**    | **22** |
-
-- **Date:** 2026-10-05
-- **Standard:** WCAG 2.2 (W3C Recommendation, 12 December 2024 update), Levels A and AA. 4.1.1 Parsing is obsolete and not reported.
-- **Build tested:** `main` at `1f61fd3`, dev server in Docker (`docker compose up -d`, http://localhost:3000). Next.js 16.3.6, React 19.3.0, framer-motion 13.4.4.
-  - Note: the container was first running stale `node_modules` (Next 15.5.21, which ignores `src/proxy.ts`). I ran `pnpm install --frozen-lockfile` to match the committed lockfile before testing. No dependencies were added or changed.
-- **Routes (all in `en` and `es`):** `/[locale]` home, `/[locale]/contact`, `/[locale]/resources`, 404 (`/[locale]/<anything>`). `/` and locale-less paths redirect (302) to a locale.
-- **Themes:** dark (default) and light (`body[data-theme='light']`).
-- **States:** both nav menus open and closed; contact form empty, invalid, valid, sending, success (mocked 200), error (mocked 500); reduced motion on and off; Suspense loading fallback.
-- **Viewports:** 1280×900, 640×450 (200% zoom of 1280×900), 375×700, 320×568, 320×256 (400% zoom of 1280×1024).
-- **Tools:**
-  - axe-core 4.12.0 (from cdnjs), tags `wcag2a, wcag2aa, wcag21a, wcag21aa, wcag22aa`, run in the Claude in-app browser (Chromium) on 8 pages × 6 states (dark, light, each menu open in each theme) = 48 runs.
-  - Google Chrome 154.0.8037.98 headless, driven over the Chrome DevTools Protocol by small scripts. Used for keyboard (real `Tab`, `Shift+Tab`, `Enter`, `Space`, `Escape`, arrow key events), the full accessibility tree (`Accessibility.getFullAXTree`), `prefers-reduced-motion` emulation, viewport sizing, screenshots, and pixel-sampled contrast (text made transparent, then the background behind every text run sampled and compared with the computed text color).
-  - The contact API was intercepted in tests, so no real email was sent. reCAPTCHA was stubbed with a fake token, because the site key does not run on localhost.
-- **Not available:** Claude in Chrome (the extension was not connected), so no test used your real Chrome profile. No screen reader (NVDA, JAWS, VoiceOver) was run. Findings that depend on how a screen reader speaks are marked "Needs review".
-
-**Verification after fixes (2026-10-06).** All 20 Critical, Serious, Moderate, and Minor findings are fixed; F-21 was closed on code review; F-22 was closed by unpublishing `/resources`.
-
-- `npx tsc --noEmit`: pass.
-- `pnpm lint`: pass.
-- `pnpm test run`: 28 tests pass in 6 files. 27 are new, in `navMenu`, `contactForm`, `validation`, `themeAndText`, and `resources`.
-- `npx prettier --check .`: on this Windows checkout (`core.autocrlf=true`) every file has CRLF endings, so the strict check flags files whether I touched them or not. With `--end-of-line auto`, only 3 files fail (`SECURITY.md`, `opengraph-image.tsx`, `models/types/form.ts`), the same 3 as before the fixes.
-- axe-core 4.12.0 in headless Chrome: 0 violations in all 48 runs (8 pages × dark/light × menus closed/main open/language open).
-- Repeated by hand in headless Chrome:
-  - Tab walks
-  - focus-obscured checks at 4 viewports
-  - pixel contrast in both themes with menus open and errors showing
-  - menu keyboard behavior
-  - the full form flow (empty, invalid, typed, sending, success, error) in both languages
-  - reduced motion
-  - 320×256 reflow
-  - the Spanish accessibility tree
-
-**What changed visually or in behavior** (the smallest change that passes in each case):
-
-- **Light theme:** red text is `#d40000` instead of `#f00`, as are the date labels on light cards. Dark theme reds are unchanged.
-- **Form fields:** they show a focus ring (since 2026-10-09, in the border's color; see F-04).
-- **Card links:** links inside cards have a thin underline.
-- **Scroll chevron:** it bounces 3 times, then stops.
-- **Menus:** Escape and moving focus away close them. The language links read "English"/"Español".
-- **Contact form:**
-  - Submit is always enabled.
-  - One line above the fields asks for every field (since 2026-10-09; see F-17).
-  - Hints read "3 to 100 characters".
-  - Error messages are friendlier and say how to fix the input.
-  - The reCAPTCHA notice sits under the button.
-  - The pressed Submit button has black text.
-- **Skip link:** a "Skip to content" link appears top-left on the first Tab.
-- **Short screens:** on screens 500px tall or less, the header scrolls away, the footer sits at the end of the page, and section titles are not sticky. The All projects link is `static` at that height.
-- **404 page:** the heading reads "404 - Page not found" / "404 - Página no encontrada".
-
-**What axe found vs. what manual testing found.** axe reported only 2 real problems: the active nav link contrast in light mode, and `aria-label` on a `<p>`. Every other finding below came from keyboard, accessibility tree, pixel, motion, and form testing. A clean axe run here would have been very misleading.
-
----
-
-## 2. Findings
-
-### F-01 With "reduce motion" turned on, all experience, project, and education cards are invisible
-
-- Criterion: 1.4.3 Contrast (Minimum) (AA); also 2.4.7 Focus Visible (AA)
+- Criterion: 1.4.3 Contrast (Minimum) (AA), and 2.4.7 Focus Visible (AA)
 - Severity: Critical
-- Where: `src/app/[locale]/components/HomeSection/SectionCard.tsx:15-27`; /en and /es, both themes, every viewport. Also affects production, because it is the same code.
-- Evidence: with `prefers-reduced-motion: reduce` emulated, all 12 cards stay at `opacity: 0; transform: translateY(30px)` after load and after scrolling them into view with a real mouse wheel. The screenshot shows the "Experience" heading over an empty black page. The console shows a React hydration error: "A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up." The cause: on the server `useReducedMotion()` returns `null`, so the card is rendered with `initial` (opacity 0). On the client it returns `true`, so `motionProps` becomes `{}`, and nothing ever animates the card in. Text at opacity 0 has a 1:1 contrast ratio. The 14 links inside the cards still take keyboard focus while invisible.
-- Who is affected: everyone who turned on "reduce motion" in their OS. Many of them have vestibular disorders, migraines, or attention disorders. They see the hero and then three empty sections, which is most of the site.
-- Fix: keep the same motion props on server and client, and let framer-motion respect the setting. Wrap the app in `<MotionConfig reducedMotion="user">`, which turns off transform animations for these users and keeps the opacity fade, and pass the `initial`/`whileInView` props unconditionally in `SectionCard`. This also removes the page-enter slide for these users (see Nice to have, 2.3.3).
-- Status: Fixed. `template.tsx` wraps pages in `<MotionConfig reducedMotion='user'>`, and `SectionCard` passes the same motion props on server and client. Evidence: headless Chrome with reduced motion emulated, after a real wheel scroll the cards in view are at opacity 1 with no slide, and the console has no hydration error.
+- Status: Fixed
+- Where: `RevealOnScroll` (`src/components/wrappers/RevealOnScroll/RevealOnScroll.module.scss`)
+- Now: a card starts at `opacity: 0` and `translateY(30px)`, then `.inView` sets `opacity: 1` and clears the transform. Under `prefers-reduced-motion: reduce` the transform transition is dropped and the fade remains. Under `scripting: none` the card is opaque at once.
 
-### F-02 The contact form fails for anyone who takes more than two minutes, and retries never work
+### F-02 The contact token was requested on load
 
-- Criterion: 2.2.1 Timing Adjustable (A); also 3.3.1 Error Identification (A)
+- Criterion: 2.2.1 Timing Adjustable (A), and 3.3.1 Error Identification (A)
 - Severity: Critical
-- Where: `src/hooks/useRecaptcha.ts:10-37`, `src/app/[locale]/contact/components/ContactForm/ContactForm.tsx:53,72-95`; /en/contact and /es/contact. The reCAPTCHA part is third party; the timing is ours.
-- Evidence: `useRecaptcha` calls `grecaptcha.execute()` once, when the page mounts, and never again. Google's reCAPTCHA v3 docs say "reCAPTCHA tokens expire after two minutes" and "call `execute` when the user takes the action rather than on page load". Each token can also be verified only once. So: (1) if a person spends more than two minutes on the form, the server rejects the token and the user sees only "There was an error submitting the form"; (2) every retry sends the same used token and fails again; (3) the only way out is to reload the page, which loses what they typed. There is no warning and no way to extend the limit. The essential exception does not apply, because calling `execute()` at submit time removes the limit without changing the feature.
-- Who is affected: people who type slowly or need breaks, such as screen reader users, switch and voice users, people with motor or cognitive disabilities, and people writing in a second language. They cannot contact you at all.
-- Fix: call `grecaptcha.execute(siteKey, { action: 'submit' })` inside `handleSubmit`, right before the `fetch`, and stop gating the submit button on a token.
-- Status: Fixed. `useRecaptcha` now returns `getRecaptchaToken()`, which `ContactForm` calls inside `handleSubmit`, and the button no longer waits for a token. Evidence: in Chrome with a stubbed `grecaptcha`, `execute` ran 0 times on load and once per submit. Unit test `contactForm.test.tsx` checks the token is fetched at submit. A real 2-minute expiry was not reproduced, because that needs a live send. A real send on the Vercel preview (2026-10-06) showed the new error message ("Something went wrong and your message wasn't sent…"), so the error path works, but the email was not sent. The cause is not confirmed: the reCAPTCHA key may not allow `*.vercel.app`, or the preview may lack the Gmail or reCAPTCHA environment variables. To do after deploy: send one real message in production, and wait more than two minutes before pressing Submit.
+- Status: Fixed
+- Where: `getRecaptchaToken` in `src/hooks/useRecaptcha.ts`, called from `handleSubmit` in `ContactForm.tsx`
+- Now: the token is requested at submit, not on load. A live wait of more than two minutes was not re-verified. That needs a real reCAPTCHA send.
 
-### F-03 Red text on light backgrounds is too faint
+### F-03 Red text on light backgrounds was under 4.5:1
 
 - Criterion: 1.4.3 Contrast (Minimum) (AA)
 - Severity: Serious
-- Where:
-  - Active nav link in an open menu ("Home", "Contact", "ENG"/"SPN", "ING"/"ESP"): `src/components/ui/Nav/NavLink/NavLink.module.scss:8-12`, `src/styles/_global.scss:129-131`. Light theme, every page.
-  - Card date labels (`.period`, 13px): `src/app/[locale]/components/HomeSection/HomeSection.module.scss:96-104`. Light-background cards (every second card), both themes, /en and /es.
-  - Field error text, red label, and red length hint: `src/components/ui/TextInput/TextInput.module.scss:56-58` (hard-coded `color: red`). Light theme, /contact.
-  - Form submit error message: `src/components/wrappers/FormWrapper/FormWrapper.module.scss:20-22`. Light theme, /contact.
-  - Hover color of dropdown links (`NavDropdown.module.scss:34-36`). Light theme.
-- Evidence: axe `color-contrast` on all 8 pages in light theme with a menu open: "#ff0000 on #ededed, 3.41". Pixel sampling of card dates: 3.38–3.42:1 ("May 2023 – Jan 2026", "Apr 2020 – Apr 2023", "2014 – Present", "Sep 2022 – Apr 2023", "2022 – 2023", "2019", and the /es versions). Error text computed `rgb(255,0,0)` on #ededed = 3.42:1. All of these are normal-size text and need 4.5:1. Red on black is 5.25:1 and passes, so dark-theme nav and errors are fine. The light-theme subtitle in red is large text (48px), so its 3.42:1 passes the 3:1 bar.
-- Who is affected: people with low vision or color-vision differences, and anyone on a bright screen. The error messages are the text they most need to read.
-- Fix (brand decision needed): add a text-accent token that stays `#f00` in dark mode and uses a darker red in light mode and on light cards. `#d40000` gives 4.72:1 on #ededed, the smallest change that passes. Replace the hard-coded `red` in `TextInput.module.scss` with the token.
-- Status: Fixed. New `--accent-text` token: `#f00` in dark mode, `#d40000` in light mode (`_global.scss`), plus `$accent-on-light` for the dates on light cards. It is used for the active nav link, dropdown hover, field errors, labels and hints, the form error message, and the Submit hover text. The pressed Submit button now has black text on red (5.25:1). Evidence: axe 0 `color-contrast` violations in 48 runs; pixel sampling 0 failures on /en, /es and /en/contact in both themes with menus open and errors showing (lowest: error text 4.68:1, active link and card dates 4.72:1).
+- Status: Fixed
+- Where: `--accent-text` in `src/styles/_global.scss`, and `$accent-on-light` in `_colors.scss`
+- Now: dark text red is `#f00` (5.25:1 on `#000`). Light text red is `#d40000` (4.72:1 on `#ededed`). `#f00` on `#ededed` is 3.42:1 and is not used for small text. The large red subtitle can use the 3:1 large-text bar. Pixel samples from earlier passes were not re-measured.
 
-### F-04 Form field focus is almost invisible in light mode, and invisible on fields with errors
+### F-04 Field focus was a mint border on light backgrounds
 
-- Criterion: 1.4.11 Non-text Contrast (AA); also 2.4.7 Focus Visible (AA)
+- Criterion: 1.4.11 Non-text Contrast (AA), and 2.4.7 Focus Visible (AA)
 - Severity: Serious
-- Where: `src/components/ui/TextInput/TextInput.module.scss:22-42`; /en/contact and /es/contact
-- Evidence: `outline: none` is set, and focus only changes the border to #00ffc3. Against the light background #ededed that is 1.11:1 (needs 3:1). On a field that is already invalid, the `.invalid` red border wins, so a focused invalid field looks exactly like an unfocused one; only the text caret shows. Screenshot `form-focus-es-light`: the focused "Nombre" field and the unfocused "Correo" field are identical. Dark mode passes (mint on black, 16.09:1) except for the invalid case.
-- Who is affected: keyboard users and people with low vision cannot tell which field they are typing in.
-- Fix: add `&:focus-visible { @include accessibility-outline; }` to `.input` and `.textarea`. The red 3px outline with a 3px offset is 3.42:1 on light and 5.25:1 on black, and it shows in every state because it sits outside the border. This adds the site-wide focus ring to fields (visible style change).
-- Status: Fixed. `.input` and `.textarea` get `@include accessibility-outline` on `:focus-visible`. Evidence: the Tab walk shows the 3px red outline on every field; screenshot `v-form-invalid-en-light` shows the focused invalid field ringed, while the other invalid fields are not.
-- Update (2026-10-09): the outline now sits on the border (2px, no offset) in the border's color, so focus reads as one thicker border. It is `--valid` without an error (`#00ffc3` dark, `#008566` light) and `#f00` with one. Pixel-sampled against the field and the page: green 16.09:1 (dark) and 3.95:1 (light), red 5.25:1 and 3.42:1. A focused field with an error goes from a 2px to a 4px red border; its error text and `aria-invalid` keep the error from relying on color (1.4.1).
+- Status: Fixed
+- Where: field focus styles in `TextInput.module.scss`
+- Now: focus reads as a thicker border. The valid color is `#00ffc3` in the dark theme (16.09:1 on `#000`) and `#008566` in the light theme (3.95:1 on `#ededed`). `#00ffc3` on `#ededed` is 1.11:1, so the light theme does not use it for the ring. An invalid field uses the red border, and the error text plus `aria-invalid` carry the error. The shared `accessibility-outline` mixin is still a 3px `#f00` outline with a 3px offset (3.42:1 on `#ededed`, 5.25:1 on `#000`).
 
-### F-05 Nav menus: hidden links take focus, the buttons don't say whether the menu is open, and Escape does nothing
+### F-05 Closed menus stayed in the tab order
 
-- Criterion: 2.4.3 Focus Order (A); 2.4.7 Focus Visible (AA); 4.1.2 Name, Role, Value (A)
+- Criterion: 2.4.3 Focus Order (A), 2.4.7 Focus Visible (AA), and 4.1.2 Name, Role, Value (A)
 - Severity: Serious
-- Where: `src/components/ui/Nav/NavDropdown/NavDropdown.tsx`, `NavDropdown.module.scss:11-42`, `NavMainMenu.tsx`, `NavLangMenu.tsx`, `src/components/ui/Buttons/HamburgerButton/HamburgerButton.tsx:23-27`, `src/components/ui/Buttons/IconButton/IconButton.tsx:22-28`; every page, both locales, both themes
-- Evidence:
-  - With both menus closed, Tab from the logo lands on "Home", "Contact", "ENG", and "SPN" (or "Home", "Contacto", "ING", "ESP"). They have `opacity: 0`, `transform: scaleY(0)`, and a 0px-tall box, so the focus ring cannot be seen. That is 4 invisible stops on every page.
-  - Screen readers also list these links while the menus are closed.
-  - The hamburger and globe buttons have no `aria-expanded` or `aria-controls`, so opening a menu is not announced.
-  - `Escape` does not close an open menu.
-  - When focus leaves an open menu, the menu and its 80% backdrop stay open.
-  - Pressing `Enter` on the current-language link closes the menu but leaves focus on the now-invisible link.
-- Who is affected: keyboard users lose track of focus four times on every page. Screen reader users don't know a menu opened or closed.
-- Fix: follow the APG Disclosure pattern. Add `aria-expanded` and `aria-controls` on each toggle button. Hide the closed list with `visibility: hidden` (transitioned together with opacity/transform, so the animation stays) so it leaves the tab order and the accessibility tree. Close on `Escape` and return focus to the button. Close when focus moves outside the menu.
-- Status: Fixed. Closed lists use `visibility: hidden`, which flips after the closing animation, so the animation is kept. The toggles have `aria-expanded` and `aria-controls`. The new `useNavMenu` hook closes the menu on Escape (focus returns to the toggle), when focus leaves the menu, and after a link is chosen (focus returns to the toggle). Evidence: the Tab walk on /en has 24 stops and none is hidden; closed-menu links are gone from the accessibility tree; Escape leaves `aria-expanded="false"` with focus on the toggle; 6 tests in `navMenu.test.tsx`.
-- Update (2026-10-11): below 768px the main menu follows the [APG modal dialog pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/) instead. The dialog holds the menu button, so it can close itself; focus moves to the first link and Tab wraps. Tests in `navMenu.test.tsx`.
+- Status: Fixed
+- Where: `useNavMenu`, `NavDropdown`, `NavMainMenu`
+- Now: a closed list uses `visibility: hidden` after the close animation. Toggles expose `aria-expanded` and `aria-controls`. Escape and a focus move outside the menu close it and return focus to the toggle. Below 768px the open main menu is a modal dialog.
 
-### F-06 On small screens, keyboard focus goes behind the fixed footer
+### F-06 Focus sat under the fixed footer
 
 - Criterion: 2.4.11 Focus Not Obscured (Minimum) (AA)
 - Severity: Serious
-- Where: `src/components/ui/Footer/Footer.module.scss:3-21`, `src/components/ui/Nav/NavBar/NavBar.module.scss:3-22`, `src/styles/_global.scss:17-19`; /en and /es home, 375 px wide and narrower
-- Evidence: at 375×700, tabbing forward to "See my experience", "InterplanetaryFonts", "Women Build Web3", "Alchemy University", and "Cooper Union" scrolls each link to the bottom edge, 100% under the footer (footer covers y 551–700). Screenshot `m-focus-fwd-women`: no part of the link or its focus ring is visible. At 1280×900 the same links sit under the transparent top of the footer gradient and stay visible, so desktop passes. Going backwards, links scroll under the header gradient, which is see-through enough to pass.
-- Who is affected: keyboard users on phones, tablets, and zoomed desktops cannot see where focus is.
-- Fix: add `scroll-padding-top` (header height, 120px) and `scroll-padding-bottom` (footer height: 152px below 768px, 88px above) on `html`. This is technique C43 in the 2.4.11 Understanding doc. No visual change.
-- Status: Fixed. `html` has `scroll-padding-top` (header; the section titles dock inside it) and `scroll-padding-bottom` (footer height). Since 2026-10-11 the footer reads its padding and gap from custom properties on `:root` in `_global.scss`, and the scroll padding adds up the same properties, so the two can't drift. The footer and the clearance also change layout through the same mixins in `_mixins.scss` (`footer-row` for one row, `footer-static` for the page flow), so moving a breakpoint moves both. Evidence: the obscured-focus script, forwards and backwards at 1280×900, 375×700, 320×568 and 320×256, found 0 focused elements covered.
-- Update (2026-10-12): while a toast is open, `scroll-padding-top` clears whichever reaches lower, the header or the toast, so a focused field never scrolls under it. Evidence: Shift+Tab walks with the success toast open at 1280×800, 768×1024 and 375×812, and at 1280×800 with 200% text, found no focused field covered.
-- Update (2026-10-13): rechecked after the toast moved under the menu pill: focusing each field from the bottom of the page at 1280×800, 768×1024, 375×812 and 320×568 left none under the toast.
-- Update (2026-10-14): `MeasuredFooter` writes the footer's real height to `--footer-height`, and the clearance adds 1rem to it. The sum of the custom properties stays as the value before scripts run and with JavaScript off, and the short-screen footer keeps its 1rem. A wrapped line or larger text can no longer hide content.
-- Update (2026-10-17): below 768px the footer is in the page flow, so a focused item cannot sit under it. `scroll-padding-bottom` is `--footer-clearance`. `footer-static` sets that clearance to `1rem` below 768px wide and at 500px tall or shorter. From 768px up the footer stays fixed, and the clearance still follows `--footer-height`. Evidence: the Playwright run in the 2026-10-17 summary. 420 Tab stops across 12 pages left 0 under the footer.
+- Status: Fixed
+- Where: `footer-static`, `--footer-clearance`, `scroll-padding-bottom` in `_global.scss`
+- Now: under 768px wide, and at 500px tall or shorter, the footer is in the page flow, so a focused item cannot sit under it. From 768px up, with more than 500px of height, the footer stays fixed and the clearance follows `--footer-height`. The Tab walk in Results left 0 stops fully under that footer.
 
-### F-07 Form errors are not tied to their fields, and the disabled Submit button hides why the form can't be sent
+### F-07 Errors were not tied to fields
 
-- Criterion: 3.3.1 Error Identification (A); also 1.3.1 Info and Relationships (A)
+- Criterion: 3.3.1 Error Identification (A), and 1.3.1 Info and Relationships (A)
 - Severity: Serious
-- Where: `src/components/ui/TextInput/TextInput.tsx:54-110`, `src/hooks/useTextInput.ts`, `ContactForm.tsx:160-170`; /en/contact and /es/contact
-- Evidence:
-  - After leaving an empty or invalid field, the inputs have no `aria-invalid` and no `aria-describedby`. The error text ("Name is required", "Invalid email") is a plain `<p>` after the field and is not announced.
-  - The Submit button is `disabled` until every field is valid, so a user who never visited a field gets no message at all. Screen readers announce only "Submit, dimmed".
-  - `handleChange` passes the validity from the previous render (`TextInput.tsx:48-52`), so validity runs one keystroke behind. In testing, Tab from a just-completed message field skipped the still-disabled Submit button and landed on "GitHub Link".
-- Who is affected: screen reader users don't hear errors or which field has them. Everyone faces a button that won't work with no reason given.
-- Fix:
-  - Keep the button enabled.
-  - On submit with errors, show all errors and move focus to the first invalid field.
-  - Set `aria-invalid="true"` and `aria-describedby="<id>-error"` on invalid fields, and give each error `<p>` that id.
-  - Compute validity from the new value in `handleChange`.
-- Status: Fixed. Submit is always enabled. Submitting with errors shows every error and focuses the first invalid field. Fields get `aria-invalid` and `aria-describedby` (error plus hint). Validity is computed from the new value. Evidence: in Chrome, pressing Enter on Submit with empty fields moved focus to Name, which exposes invalid=true with the description "Please enter your name 3 to 100 characters". Tab from a just-completed message now lands on Submit. Covered by `contactForm.test.tsx`.
+- Status: Fixed
+- Where: `TextInput.tsx`, `useTextInput.ts`, `ContactForm.tsx`
+- Now: Submit stays enabled. A submit with errors shows each error and focuses the first invalid field. Invalid fields set `aria-invalid` and `aria-describedby`. Validity uses the new value.
 
-### F-08 Error messages don't say how to fix the problem, and valid input is rejected
+### F-08 Error text did not say how to fix the input
 
-- Criterion: 3.3.3 Error Suggestion (AA); also 3.3.2 Labels or Instructions (A)
+- Criterion: 3.3.3 Error Suggestion (AA), and 3.3.2 Labels or Instructions (A)
 - Severity: Serious
-- Where: `src/utils/constants/form.constants.ts:1-9`, `src/utils/client/form.utils.ts`, `src/utils/server/form.utils.ts:4-17`, dictionaries `contact.form.errors.invalid`; /en/contact and /es/contact
-- Evidence:
-  - The message rule `/^.*$/` has no `s` flag, so any line break makes the message invalid ("Invalid message"), on both client and server. A message with paragraphs can never be sent.
-  - The name rule allows only letters, spaces, and dots, so "O'Brien" and "Jean-Luc" get "Invalid name".
-  - The email rule rejects `+` addresses (`ada+site@gmail.com`) and TLDs longer than 4 letters (`.studio`), and shows "Invalid email".
-  - None of these messages says what is allowed.
-- Who is affected: everyone, and especially people with cognitive disabilities and screen reader users, who must guess what is wrong.
-- Fix: write messages that say what to do ("Use letters, spaces, apostrophes, or hyphens", "Write at least 10 characters", "Enter an email like name@example.com") in both dictionaries. Let the message rule accept line breaks. Decision needed: also widen the name and email rules (client and server) so real names and addresses pass.
-- Status: Fixed. Messages say what to do, in both languages. Messages accept line breaks; names accept apostrophes and hyphens; emails accept `+` and long TLDs. The rules are shared, so client and server match. Evidence: `validation.test.ts` (O'Brien, Jean-Luc, José María, ada+site@gmail.com, .studio, and a multi-line message through `serverFormValidations`); Chrome run with a typed two-line message.
+- Status: Fixed
+- Where: `src/utils/constants/form.constants.ts`, client and server form utils, both dictionaries
+- Now: messages say what to change, in English and in Spanish. Messages accept line breaks. Names accept apostrophes and hyphens. Emails accept `+` and long top-level domains. Client and server share the rules.
 
-### F-09 Sending, success, and error are not announced, and focus is lost on submit
+### F-09 Sending and the result were silent
 
-- Criterion: 4.1.3 Status Messages (AA); also 4.1.2 Name, Role, Value (A), 1.1.1 Non-text Content (A), 2.4.3 Focus Order (A)
+- Criterion: 4.1.3 Status Messages (AA), 4.1.2 Name, Role, Value (A), and 2.4.3 Focus Order (A)
 - Severity: Serious
-- Where: `ContactForm.tsx:160-170`, `src/components/wrappers/FormWrapper/FormWrapper.tsx:22-30`, `src/components/ui/Spinner/Spinner.tsx:19-43`, `src/components/wrappers/MainWrapper/MainWrapper.tsx:14-25`; /en/contact and /es/contact
-- Evidence:
-  - While sending, the Submit button becomes `disabled`, and its only content is the spinner SVG, which has no name, so the button's accessible name is empty. Focus falls to `<body>` (observed with `document.activeElement`).
-  - "The form was submitted successfully!" and "There was an error submitting the form" render in a plain `<p>` with no `role="status"` or `aria-live`, so screen readers say nothing.
-  - The page-level loading spinner in `MainWrapper` also has no name.
-- Who is affected: screen reader users press Submit and hear nothing. They don't know if the message was sent, failed, or is still sending.
-- Fix:
-  - Always render a `role="status"` region in the form and put the success or error text in it.
-  - Give `Spinner` an optional label (`role="img"` and `aria-label`, e.g. "Sending…" / "Enviando…"), or keep visually hidden button text while sending.
-  - Use `aria-disabled` instead of `disabled` while sending, so focus stays on the button.
-- Status: Fixed. `FormWrapper` always renders a `role="status"` paragraph. While sending, the button uses `aria-disabled` and shows a spinner labeled "Sending…"/"Enviando…". Evidence: in Chrome, focus stayed on the button with name "Sending…" and `aria-disabled="true"`; the success and error messages appeared in the status region, in English and Spanish.
-- Update (2026-10-12): the success message now shows in a toast at the top of the screen (inside the header on wide screens, just below it on phones), in its own always-rendered `role="status"` region. The form's status region holds only errors, so each message is announced once. Focus stays on the button. Evidence: `toast.test.tsx`, `contactForm.test.tsx`, and a Chrome run on /en/contact and /es/contact.
-- Update (2026-10-13): the toast is smaller and sits just under the menu pill, lined up with its right edge (top right corner on short screens). Its close button is a bare ✕ in the toast's top right corner, with a 24px target (the 2.5.8 minimum) and the usual focus ring. Still no timer. Evidence: headless Chrome at 1280×800, 768×1024, 375×812, 320×568 and 800×450.
+- Status: Fixed
+- Where: `FormWrapper.tsx`, `Spinner.tsx`, the toast
+- Now: the form status region holds errors. Success shows in a toast with its own `role="status"`, no timer, and a close button of at least 24px. While sending, the button uses `aria-disabled` and a named spinner. Focus stays on the button.
 
-### F-10 The home subtitle has no spaces between its words
+### F-10 The home subtitle dropped its spaces
 
 - Criterion: 1.3.1 Info and Relationships (A)
 - Severity: Moderate
-- Where: `src/app/[locale]/components/HomeSubtitle/HomeSubtitle.tsx:13-31`; /en and /es home
-- Evidence: the `<h2>` text content and accessible name are "DesignEngineer·ProductEngineer" ("IngenierodeDiseño·eIngenierodeProducto" in Spanish). Each word is a flex item, so the spaces exist only as CSS `gap`.
-- Who is affected: screen reader users may hear run-together words, braille users read one long word, and copy and paste gives the same.
-- Fix: render a real space (`{' '}`) between the word spans. No visual change.
-- Status: Fixed. Real spaces between the word spans; the flex gap still sets the look. Evidence: the accessibility tree names the heading "Ingeniero de Diseño · Ingeniero de Producto"; unit test in `themeAndText.test.tsx`.
+- Status: Fixed
+- Where: `HomeSubtitle.tsx`
+- Now: a real space is rendered between word spans. The flex gap still sets the look.
 
-### F-11 Name and email fields don't declare their purpose
+### F-11 Name and email had no autocomplete
 
 - Criterion: 1.3.5 Identify Input Purpose (AA)
 - Severity: Moderate
-- Where: `src/components/ui/TextInput/TextInput.tsx:69-94`, `ContactForm.tsx:106-132`; /contact
-- Evidence: `autocomplete` is `null` on `#name` and `#email`.
-- Who is affected: people with motor or cognitive disabilities who rely on autofill, and users of tools that add icons to known fields.
-- Fix: pass `autoComplete="name"` and `autoComplete="email"`.
-- Status: Fixed. `autocomplete="name"` and `autocomplete="email"`. Evidence: `contactForm.test.tsx`.
+- Status: Fixed
+- Where: the name and email fields in `ContactForm.tsx`
+- Now: `autocomplete="name"` and `autocomplete="email"`.
 
-### F-12 Links inside cards look like the text around them
+### F-12 Links in cards matched the text beside them
 
 - Criterion: 1.4.1 Use of Color (A)
 - Severity: Moderate
-- Where: `src/styles/_global.scss:101-127` (links have no underline until hover), `HomeSection.module.scss:115-125`; /en and /es home, the company line of each card
-- Evidence: in "BevNET.com, Inc. · Contract · Remote" the link differs from the text next to it only by lightness: #ededed vs. #ededed at 65% opacity on dark cards (2.40:1), and black vs. black at 65% on light cards (2.73:1). Technique G183 needs at least 3:1 plus an extra cue on hover and focus (failure F73). The role-title links ("Melvin Pay", "InterplanetaryFonts") look exactly like the non-link titles.
-- Who is affected: people with color-vision differences or low vision can't find the links.
-- Fix (visual change, needs your OK): show a thin underline on links inside cards at all times, or lower the meta text to reach 3:1 against the link and keep the hover underline.
-- Status: Fixed. Links in cards have a 1px underline. Evidence: axe no longer reports `link-in-text-block` as incomplete; the Tab walk shows each link.
+- Status: Fixed
+- Where: links inside cards, `_global.scss`
+- Now: links in cards have a 1px underline.
 
-### F-13 The success message disappears after 10 seconds
+### F-13 The success message cleared itself
 
 - Criterion: 2.2.1 Timing Adjustable (A)
 - Severity: Moderate
-- Where: `ContactForm.tsx:97-100`; /contact
-- Evidence: `setTimeout(() => setSubmitMessage(''), 10000)`. The form also resets, so after 10 seconds nothing on the page shows the message was sent. The Understanding doc's "toast" exception covers only messages that have another way to be seen.
-- Who is affected: people who read slowly, look away, or use magnification and are reading another part of the screen.
-- Fix: remove the timeout. Clear the message when the user starts typing again.
-- Status: Fixed. The 10-second timeout is removed; the message clears when the user types again. Evidence: in Chrome the success and error messages were still there after 11 s; the unit test advances 30 s and then checks that typing clears it.
-- Update (2026-10-12): the success message now shows in a toast with no timer. It closes when the visitor closes it (button or Escape) or types in a field. Leaving a field without typing no longer clears the form's error. Evidence: unit tests advance 30 s; Chrome runs in both languages and themes.
+- Status: Fixed
+- Where: the contact toast
+- Now: the toast has no timer. It closes from its button, from Escape, or when the visitor types in a field.
 
-### F-14 The scroll chevron bounces forever
+### F-14 The scroll cue bounced without stopping
 
 - Criterion: 2.2.2 Pause, Stop, Hide (A)
 - Severity: Moderate
-- Where: `src/app/[locale]/components/ScrollCue/ScrollCue.module.scss:28-32`; /en and /es home
-- Evidence: `animation: scroll-bounce 1.6s ease-in-out infinite`. It starts automatically, lasts more than five seconds, and sits next to other content. The `prefers-reduced-motion` rule stops it (verified), but the 2.2.2 Understanding doc requires a mechanism on the page; an OS setting is not listed.
-- Who is affected: people with attention disorders, who find constant motion distracting.
-- Fix: stop after three bounces (`animation-iteration-count: 3`, 4.8 s). The animation stays, it just ends.
-- Status: Fixed. `animation-iteration-count: 3` (4.8 s). Evidence: computed `animation-iteration-count` is `3`; with reduced motion, the animation is `none`.
+- Status: Fixed
+- Where: `ScrollCue.module.scss`
+- Now: `animation: scroll-bounce 1.6s ease-in-out 3`, so it runs for 4.8 seconds. Reduced motion sets the animation to none.
 
-### F-15 Resources and 404 pages reuse the home page title
+### F-15 Some 404 titles do not say the page is missing
 
 - Criterion: 2.4.2 Page Titled (A)
 - Severity: Moderate
-- Where: `src/utils/server/meta.utils.ts:22-29` (falls back to `meta.default`), `src/app/[locale]/resources/page.tsx`, `src/app/[locale]/not-found.tsx`
-- Evidence: the `<title>` of /en/resources and every English 404 is "Eduardo Aire Torres | Design Engineer & Product Engineer". On /es it's "Eduardo Aire Torres | Ingeniero de Diseño e Ingeniero de Producto". Home and contact titles are correct in both locales.
-- Who is affected: screen reader users, and anyone switching tabs, can't tell they landed on a 404 or the resources page.
-- Fix: add `resources` and `notFound` entries to `meta` in both dictionaries (e.g. "Page not found | Eduardo Aire Torres" / "Página no encontrada | Eduardo Aire Torres") and use them on those pages.
-- Status: Fixed. New `meta.resources` and `meta.notFound` entries in both dictionaries. Resources uses `generateMetadata`; the 404 page renders a `<title>` that React 19 hoists into the head, because `not-found.js` can't export metadata. Evidence: `document.title` in Chrome is "Resources | …", "Recursos | …", "Page not found | …" and "Página no encontrada | …". Caveat: until React loads, a 404's server HTML has the site name as its title.
+- Status: Open
+- Where: `src/app/global-not-found.tsx`, `src/app/[locale]/not-found.tsx`, `PUBLIC_FILE` in `src/proxy.ts`
+- Now: `/en/does-not-exist`, `/es/does-not-exist`, `/en/projects/not-a-real-slug`, `/es/projects/not-a-real-slug`, `/en/contact/extra`, `/.well-known/test`, and `/api/nope` return HTTP 404 with `noindex` and render `global-not-found.tsx`. The title is `Page not found | Eduardo Aire Torres`. The `h1` is `404 - Page not found`. A Spanish line, `404 - Página no encontrada`, has `lang="es"`. `html` `lang` is `en`. `/en` at 200 has one `main` and one `h1`.
+- `/wp-login.php` and `/not-a-page.html` return HTTP 404 with `noindex` and the Next default shell (`html id="__next_error__"`). The title is `Eduardo Aire Torres`. The response contains `This page could not be found.` Those titles do not name the 404.
+- `[locale]/not-found.tsx` still hoists a localized title. The unknown routes above did not render it. They rendered `global-not-found.tsx`.
+- `/fr` returns 302 to `/en/fr` with `Vary: Accept-Language`. `/en/fr` is the global 404 above.
 
-### F-16 Spanish pages expose English names and text
+### F-16 Spanish pages exposed English names
 
 - Criterion: 3.1.2 Language of Parts (AA)
 - Severity: Moderate
-- Where:
-  - `src/components/brand/EatHomeButton/EatHomeButton.tsx:24,29`: "Home"
-  - `src/models/dictionaries/es.json:14`: nav "Home"
-  - `src/components/ui/SocialLinks/*.tsx`: "GitHub Link", "LinkedIn Link", "X Link", "Instagram Link", "Email Link"
-  - `SectionCard.tsx:63`: "Tech stack" (×7)
-  - `src/app/[locale]/resources/page.tsx`: "Resources", "Resources will be listed here..."
-  - `src/app/[locale]/not-found.tsx:4`: "404 - Page Not Found!"
-- Evidence: Chrome's accessibility tree on `lang="es"` pages shows all of the names above in English.
-- Who is affected: Spanish screen reader users hear English words read with Spanish pronunciation.
-- Fix: move every string into both dictionaries and the `Dictionary` class: "Inicio", "GitHub", "Correo", "Tecnologías", "Recursos", "Página no encontrada". Drop the "Link"/"Button" suffixes (see F-18).
-- Status: Fixed. Every string comes from the dictionaries: "Inicio", "Correo", "Tecnologías", "Recursos", "404 - Página no encontrada", "Saltar al contenido", "Idioma". Brand names (GitHub, LinkedIn, X, Instagram) stay as they are. Evidence: the full Spanish accessibility tree has no English names left.
+- Status: Fixed
+- Where: dictionaries `en.json` and `es.json`
+- Now: interface strings come from the dictionary for the page locale. Brand names stay as written. A full screen-reader pass was not re-run.
 
-### F-17 Required fields and length hints are not explained
+### F-17 Required fields were marked only with an asterisk
 
 - Criterion: 3.3.2 Labels or Instructions (A)
 - Severity: Moderate
-- Where: `src/components/ui/TextInput/TextInput.tsx:57-67,100-109`; /contact
-- Evidence:
-  - Labels read "Name*", "Email*", "Message*", and the asterisk becomes part of the accessible name ("Nombre*"). Nothing says what "*" means.
-  - The "3 - 100" and "10 - 255" hints and the "12/100" counter are not explained and are not linked to their fields.
-- Who is affected: people with cognitive disabilities and screen reader users, who hear "Name star" and don't get the length limits.
-- Fix: add one line above the form, "Fields marked * are required" / "Los campos con * son obligatorios". Hide the "*" from the accessible name (`aria-hidden`), since `required` already announces it. Turn the hint into words ("3 to 100 characters") and link it with `aria-describedby`.
-- Status: Fixed. "Fields marked * are required." / "Los campos con * son obligatorios." appears above the fields; the `*` is `aria-hidden`; the hint reads "3 to 100 characters" / "De 3 a 100 caracteres" and is linked with `aria-describedby`. Evidence: accessibility tree `textbox:"Nombre" desc="De 3 a 100 caracteres"`.
-- Update (2026-10-09): every field is required, so the asterisks are gone. One line before the fields reads "Please fill in all the fields." / "Llena todos los campos, por favor." Labels plus an instruction at the top of the form meet [3.3.2](https://www.w3.org/WAI/WCAG22/Understanding/labels-or-instructions) (G131 with [G184](https://www.w3.org/WAI/WCAG22/Techniques/general/G184)); `aria-required` is only advisory there (ARIA2), and native `required` already exposes the state. Evidence: accessibility tree `textbox:"Nombre" required desc="De 3 a 100 caracteres"`.
+- Status: Fixed
+- Where: `ContactForm.tsx`
+- Now: every field is required, and the asterisks are gone. One line above the fields asks the visitor to fill them in. Hints state the length in words and are linked with `aria-describedby`. Native `required` exposes the state. The privacy checkbox is required, and its error is tied to it.
 
-### F-18 The theme toggle doesn't expose its state, and the footer misuses `aria-label`
+### F-18 The theme button hid its state
 
 - Criterion: 4.1.2 Name, Role, Value (A)
 - Severity: Moderate
-- Where: `src/components/ui/Buttons/ThemeButton/ThemeButton.tsx:19-34`, `src/components/ui/Footer/Footer.tsx:53-59` (below 768px the toggle is in the menu, `NavMainMenu.tsx`); every page
-- Evidence:
-  - The button is named "Toggle Theme Button" / "Botón para cambiar de tema", with no `aria-pressed` and no change of name, so screen reader users can't tell which theme is on.
-  - `<p aria-label="Theme Section">` triggers axe `aria-prohibited-attr` on all 8 pages. ARIA 1.2 doesn't allow naming a paragraph, so screen readers ignore the label.
-  - Names repeat the role ("Language Select Button, button"; "GitHub Link, link").
-  - The 💡 emoji is hidden behind the `aria-label`, which is fine.
-- Who is affected: screen reader users.
-- Fix: name the button by its action and state, "Switch to light theme" / "Cambiar a tema claro" (and back), or keep a fixed name "Dark theme" with `aria-pressed`. Remove `aria-label` from the `<p>`. Remove "Button"/"Link" from names, in both dictionaries.
-- Status: Fixed. The theme button is named "Switch to light theme"/"Switch to dark theme" ("Cambiar a tema claro/oscuro") and updates after toggling. The `aria-label` on `<p>` is gone, and names no longer end in "Link"/"Button". Evidence: axe no longer reports `aria-prohibited-attr`; unit test in `themeAndText.test.tsx`; Tab walk names.
+- Status: Fixed
+- Where: `ThemeButton.tsx`, `Footer.tsx`
+- Now: the theme button name says which theme it will switch to, and it updates after the toggle. The footer paragraph has no `aria-label`. Control names do not repeat the role.
 
-### F-19 The loading fallback renders the whole page twice
+### F-19 The loading fallback duplicated the page
 
 - Criterion: 1.3.1 Info and Relationships (A)
 - Severity: Minor
-- Where: `src/components/wrappers/MainWrapper/MainWrapper.tsx:14-25,31`; every page while it streams
-- Evidence: while the Suspense boundary is pending, `Loading` renders a second `<main>` with `{children}`, so the page has two `main` landmarks with the same content and duplicate ids (`experience`, `projects`, `education`). Seen in the in-app browser, which stays in this state because it doesn't paint frames. In headless Chrome it lasts only until streaming ends.
-- Who is affected: screen reader users on slow connections may hear two copies of the page.
-- Fix: make the fallback show only the spinner (with a `role="status"` label) and not `children`.
-- Status: Fixed. On 2026-10-08 the loading fallback was removed: pages are now prerendered, so there is nothing to wait for, and the HTML has one `<main>`. Evidence: the raw HTML of /en has one `<main>` and one `<h1>`.
+- Status: Fixed
+- Where: page HTML
+- Now: pages are prerendered. The raw HTML of `/en` has one `main` and one `h1`.
 
-### F-20 Language links use unclear abbreviations
+### F-20 Language links used short abbreviations
 
 - Criterion: 2.4.4 Link Purpose (In Context) (A)
 - Severity: Minor
-- Where: `src/models/dictionaries/en.json:17-18`, `es.json:17-18`, `NavLangMenu.tsx`
-- Evidence: the links read "ENG"/"SPN" on English pages and "ING"/"ESP" on Spanish pages. Chrome exposes them in capitals ("SPN"), which screen readers may spell out. The list has no label linking it to the globe button, so the link text must stand on its own.
-- Who is affected: screen reader and voice-control users, and anyone who doesn't recognize "SPN".
-- Fix: use "English" and "Español", each with its own `lang` attribute (`lang="en"`, `lang="es"`). If you want to keep the short visible text, add an `aria-label` with the full name.
-- Status: Fixed. The links read "English" and "Español", with `lang` and `hreflang`, and the active one has `aria-current="page"`. Evidence: `navMenu.test.tsx`; screenshot `v-langmenu-es-light` shows both fit the dropdown.
+- Status: Fixed
+- Where: `NavLangLinks`
+- Now: the links read `English` and `Español`, with `lang` and `hreflang`. The active one has `aria-current="page"`.
 
-### F-21 Home title may be read letter by letter
+### F-21 The home title is split into spans
 
 - Criterion: 1.3.1 Info and Relationships (A)
 - Severity: Needs review
-- Where: `src/app/[locale]/components/HomeTitle/HomeTitle.tsx`
-- Evidence: the `<h1>` is built from 19 inline `<span>`s. Chrome's accessibility tree names the heading "Eduardo Aire Torres", which is good. Because the spans are inline (not flex, unlike F-10), most screen readers should read it as words.
-- Who is affected: screen reader users, if their browser and screen reader pair splits the spans.
-- What would settle it: test with NVDA + Chrome and VoiceOver + Safari. If either splits it, add `aria-label` on the `<h1>` and `aria-hidden` on the spans.
-- Status: Closed (2026-10-06): accepted on code review by the site owner, no screen reader run. The spans are inline and hold no spaces of their own, Chrome exposes the heading as "Eduardo Aire Torres", and the text content is the full name, so it is treated as passing. If someone does hear it letter by letter, add `aria-label` on the `<h1>` and `aria-hidden` on the spans.
+- Status: Not re-verified
+- Where: `HomeTitle.tsx`
+- The `h1` is built from inline spans. A screen reader was not run on this pass, so this item stays open as not re-verified.
 
-### F-22 The Resources page can't be reached from the site
+### F-22 Resources was a page with no link to it
 
 - Criterion: 2.4.5 Multiple Ways (AA)
 - Severity: Needs review
-- Where: `src/app/[locale]/resources/page.tsx`, `PageUrls.resources_` (unused in the nav)
-- Evidence: /en/resources and /es/resources return 200 but are not linked from any menu or page. They show only a placeholder ("Resources will be listed here..."). Home and Contact are reachable from the nav menu on every page.
-- Who is affected: anyone who would need the page.
-- What would settle it: tell me whether /resources is a published page. If it is, link it from the nav. If it isn't yet, it can return 404 until it's ready, which also removes F-15 and F-16 for that page.
-- Status: Closed (2026-10-06). Following my recommendation, `/resources` returns 404 until it has content (the `RESOURCES_PUBLISHED` flag in `src/utils/constants/site.constants.ts`); the translated text stays in the dictionaries for later. Evidence: /en/resources and /es/resources return HTTP 404 with `<meta name="robots" content="noindex">`; Chrome shows "404 - Page not found" / "404 - Página no encontrada" with the matching title; test `resources.test.ts`. To publish it: set the flag to `true` and add a nav link in `NavMainMenu`.
+- Status: Fixed
+- Where: `next.config.mjs` redirects
+- Now: this site has no resources page. `/resources`, `/en/resources`, and `/es/resources` return 308 to `https://archive.eduairet.com/resources`. Home, Projects, and Contact are in the nav on every page.
 
-### F-23 The particle background moves with no pause control
+### F-23 Motion has no pause control
 
-- Criterion: 2.2.2 Pause, Stop, Hide (A); also checked against 2.3.1 Three Flashes or Below Threshold (A) and 1.4.3 Contrast (Minimum) (AA)
+- Criterion: 2.2.2 Pause, Stop, Hide (A)
 - Severity: Moderate
-- Where: `src/components/art/ParticleBackground/` (mounted once in `BodyWrapper`); every page, both locales, both themes. Added on branch `feat/particle-background` (2026-10-06).
-- Evidence: a full-screen WebGL field of drifting letters behind the content. It starts automatically, runs for as long as the page is open, and sits next to other content. There is no pause button. The 2.2.2 Understanding doc does not count an OS setting such as reduced motion as the mechanism, so this does not meet 2.2.2.
-- Who is affected: people with attention disorders or vestibular conditions, who find constant motion distracting, if they have not turned on reduced motion.
-- Decision: the site owner chose not to add visible UI. This is a known deviation, accepted by the owner. The mitigations below go beyond common practice for animated portfolio backgrounds.
-- Mitigations (all verified in Chrome 154 over CDP, dev build):
-  - **Reduced motion:** with `prefers-reduced-motion: reduce`, the scene draws one still frame and never starts its loop (1 draw in 3 s). Turning the setting off while the page is open starts the loop (30 frames/s); turning it on again stops it at once. Test: `particleBackground.test.tsx`.
-  - **Hidden tab:** the loop stops while the tab is hidden (draws stayed at 265 for 3 s with another tab in front) and resumes when it is shown again.
-  - **Soft and low contrast:** the canvas is drawn at 20% opacity over the solid page background. In the dark theme, no background pixel can be brighter than 20% gray (worst measured: relative luminance 0.033). In the light theme, a particle darkens the page by at most about 5%. Since 2026-10-09 its letters are bold and slightly stronger (worst measured: 0.753 against 0.846 for the plain background).
-  - **Click burst (since 2026-10-09):** a click or keyboard activation sends the particles outward for about a second. It never runs with reduced motion, since the loop is off then, and the caps below still apply.
-  - **No flashing (2.3.1):** a flash needs opposing luminance changes of at least 0.10. The 20% opacity caps the change at 0.033 in the dark theme and below 0.10 in the light theme (0.094 measured on 2026-10-09), so the background cannot flash, at any rate.
-  - **Contrast (1.4.3):** text was hidden and the background behind every text run sampled 10 times over 10 s, on /en, /es, /en/contact and the 404 page in both themes. 0 failures. Lowest values: body text 14.40:1 (dark) and 16.67:1 (light); headings 10.79:1; the red home subtitle (large text) 3.16:1 (dark) and 3.06:1 (light, re-measured on 2026-10-09 with the pointer over it). The nav, footer and form sit on opaque surfaces and are unchanged (17.78:1 or more).
-  - **Out of the way:** the canvas is `aria-hidden`, has `pointer-events: none`, and is not focusable. A mouse and keyboard run of the nav menu, language links, contact form, theme button, skip link and Escape passed with the canvas in place.
-- **Card shapes (since 2026-10-10):** each card in Experience, Projects and Education shows a 1px wireframe solid that turns once every 24 s while the card is in view (`src/components/art/CardShapes/`). Every solid is see-through except the torus, a 12 by 24 grid that hides its back. It has no pause control either; the site owner accepted it under this finding. Verified in Chrome 154 over CDP, production build:
-  - With reduced motion, or when WebGL runs in software or is missing, each shape is drawn once as its card scrolls in (2 draws for 2 cards, then 0 in 3 s). Turning reduced motion off starts the turning; turning it on stops it at once. Tests: `shapeRuntime.test.ts`, `cardShapes.test.ts`.
-  - Nothing is drawn for cards out of view or while the tab is hidden (0 draws/s in both).
-  - Where a shape fits beside the text, it is full strength. Where it doesn't (phones, and tall cards near 768 wide), a smaller one sits behind the text at 15% opacity. With text hidden, the worst pixel behind each text run and icon was sampled on all 12 cards: at 375 wide, every text run stays at 4.5:1 or more, with the lowest value still the red date on white cards (4.68:1, as without shapes); where a tall shape reaches a date it measured 4.84:1 or more. Icons stay at 8.86:1 or more. At 768 and 1280 wide, nothing changes against `main`.
-  - Thin lines that turn slowly don't flash (2.3.1). The canvases are `aria-hidden`, not focusable, and take no pointer events; the menus, sticky titles and footer stay above them.
-- **About video (since 2026-10-15, replacing the 2026-10-14 sphere):** a muted 5.5 s portrait video loops while it is on screen. Like the card shapes, it starts only after the first scroll, pointer or key input. Before that, with reduced motion, off screen and with JavaScript off, it shows its still first frame. The head moves gently and the gray backdrop stays still, so it doesn't flash (2.3.1). No text sits on it. Tests: `aboutVideo.test.tsx`.
-- Status: Accepted (2026-10-06), as a known deviation; widened to the card shapes on 2026-10-10 and to the About sphere on 2026-10-14, now the About video, and to the project clips and live pieces on 2026-10-16. To meet 2.2.2 later, add a visible pause button that stops all of them and stores the choice.
+- Status: Accepted deviation
+- Where: `ParticleBackground`, `CardShapes`, `AboutVideo`, `ProjectMedia` clips, and the live pieces `torus`, `waves`, `letrastica`, and `ascii` in `projects.constants.ts`
+- The particle field, the card wireframes, the About video, the muted clips, and the four live pieces run with no pause control on the page. That does not meet 2.2.2. The deviation is accepted. To meet 2.2.2, add a pause control that stops all of them and stores the choice.
+- What the code does instead:
+  - Particles start from `whenVisitorActive` in `startGate.ts`, and only when `hasHardwareWebGL()` is true. The canvas opacity is 0.2 (`ParticleBackground.module.scss`). The canvas is `aria-hidden`.
+  - Card shapes turn once every 24 seconds (`TURN_SECONDS` in `shapeRuntime.ts`). Behind text, opacity is 0.15 (`BEHIND_OPACITY`). The canvases are `aria-hidden`. With reduced motion, or without hardware WebGL, a shape is drawn once.
+  - The About video is muted, looped, and unnamed on the element. The wrapper is `role="img"` with the site name. It plays only after the first visitor input, while on screen, and not under reduced motion. Otherwise the still shows. The file is video only (h264, 5.541667 seconds, `ffprobe` on `public/eduardo-aire-torres.mp4`).
+  - Project clips are muted, looped, and played while on screen. With reduced motion they hold still.
+- Earlier pixel luminance samples were not re-measured. The opacity values above are from source.
 
----
+### F-24 The demo video has audio and no captions
 
-## 3. Criteria table
+- Criterion: 1.2.2 Captions (Prerecorded) (A)
+- Severity: Serious
+- Status: Open
+- Where: `ProjectMedia.tsx` when `demo: true`, file `public/projects/interplanetary-fonts/clip-demo.mp4`
+- `ffprobe` reports h264 video and aac audio, duration 193.252 seconds. The player has `controls`, `playsInline`, and `preload="none"`. It is not muted, it does not autoplay, and it has no `track`. `find public -name '*.vtt' | wc -l` prints 0. 1.2.1, 1.2.3, and 1.2.5 were not re-verified beyond those file facts.
 
-| Criterion                                       | Level | Result | Findings                                                                                                                |
-| ----------------------------------------------- | ----- | ------ | ----------------------------------------------------------------------------------------------------------------------- |
-| 1.1.1 Non-text Content                          | A     | Pass   | F-09 fixed                                                                                                              |
-| 1.2.1 Audio-only and Video-only (Prerecorded)   | A     | N/A    | No audio or video                                                                                                       |
-| 1.2.2 Captions (Prerecorded)                    | A     | N/A    | No video                                                                                                                |
-| 1.2.3 Audio Description or Media Alternative    | A     | N/A    | No video                                                                                                                |
-| 1.2.4 Captions (Live)                           | AA    | N/A    | No live media                                                                                                           |
-| 1.2.5 Audio Description (Prerecorded)           | AA    | N/A    | No video                                                                                                                |
-| 1.3.1 Info and Relationships                    | A     | Pass   | F-07, F-10, F-19 fixed; F-21 closed on code review                                                                      |
-| 1.3.2 Meaningful Sequence                       | A     | Pass   | DOM order matches visual order on all pages                                                                             |
-| 1.3.3 Sensory Characteristics                   | A     | Pass   | No shape/position-only instructions                                                                                     |
-| 1.3.4 Orientation                               | AA    | Pass   | No orientation lock                                                                                                     |
-| 1.3.5 Identify Input Purpose                    | AA    | Pass   | F-11 fixed                                                                                                              |
-| 1.4.1 Use of Color                              | A     | Pass   | F-12 fixed                                                                                                              |
-| 1.4.2 Audio Control                             | A     | N/A    | No audio                                                                                                                |
-| 1.4.3 Contrast (Minimum)                        | AA    | Pass   | F-01, F-03 fixed; particle background measured (F-23)                                                                   |
-| 1.4.4 Resize Text                               | AA    | Pass   | 200% (640×450): no loss of content or function                                                                          |
-| 1.4.5 Images of Text                            | AA    | Pass   | Only the logo (exempt)                                                                                                  |
-| 1.4.10 Reflow                                   | AA    | Pass   | No horizontal scroll at 320 px wide. See Nice to have for 320×256                                                       |
-| 1.4.11 Non-text Contrast                        | AA    | Pass   | F-04 fixed                                                                                                              |
-| 1.4.12 Text Spacing                             | AA    | Pass   | WCAG spacing overrides on /en, /es, /en/contact: no clipped or lost text                                                |
-| 1.4.13 Content on Hover or Focus                | AA    | Pass   | Only native `title` tooltips on tech icons (browser-controlled)                                                         |
-| 2.1.1 Keyboard                                  | A     | Pass   | All controls work with Enter/Space                                                                                      |
-| 2.1.2 No Keyboard Trap                          | A     | Pass   | Tab cycles through to the end on every page                                                                             |
-| 2.1.4 Character Key Shortcuts                   | A     | N/A    | No shortcuts                                                                                                            |
-| 2.2.1 Timing Adjustable                         | A     | Pass   | F-02, F-13 fixed                                                                                                        |
-| 2.2.2 Pause, Stop, Hide                         | A     | Fail   | F-14 fixed; F-23 accepted deviation: particle background, card shapes, About video and project motion can't be paused   |
-| 2.3.1 Three Flashes or Below Threshold          | A     | Pass   | Nothing flashes; F-23 background luminance changes stay under 0.10                                                      |
-| 2.4.1 Bypass Blocks                             | A     | Pass   | Landmarks, plus a skip link added 2026-10-06                                                                            |
-| 2.4.2 Page Titled                               | A     | Pass   | F-15 fixed                                                                                                              |
-| 2.4.3 Focus Order                               | A     | Pass   | F-05, F-09 fixed                                                                                                        |
-| 2.4.4 Link Purpose (In Context)                 | A     | Pass   | F-20 fixed                                                                                                              |
-| 2.4.5 Multiple Ways                             | AA    | Pass   | F-22 closed: `/resources` returns 404; Home and Contact are in the nav on every page                                    |
-| 2.4.6 Headings and Labels                       | AA    | Pass   | Headings and labels describe their content                                                                              |
-| 2.4.7 Focus Visible                             | AA    | Pass   | F-01, F-04, F-05 fixed                                                                                                  |
-| 2.4.11 Focus Not Obscured (Minimum)             | AA    | Pass   | F-06 fixed                                                                                                              |
-| 2.5.1 Pointer Gestures                          | A     | N/A    | No multipoint or path gestures                                                                                          |
-| 2.5.2 Pointer Cancellation                      | A     | Pass   | Actions fire on click (up event)                                                                                        |
-| 2.5.3 Label in Name                             | A     | Pass   | Text controls' names match visible text. Icon-only controls have no visible label (N/A per Understanding doc)           |
-| 2.5.4 Motion Actuation                          | A     | N/A    | No motion input                                                                                                         |
-| 2.5.7 Dragging Movements                        | AA    | N/A    | No dragging                                                                                                             |
-| 2.5.8 Target Size (Minimum)                     | AA    | Pass   | Icon buttons 30×30, footer theme 24×24, phone logo 36×36. Menu links pass a 24px spacing test. Inline card links exempt |
-| 3.1.1 Language of Page                          | A     | Pass   | `<html lang="en">` / `lang="es"`; unknown locales redirect                                                              |
-| 3.1.2 Language of Parts                         | AA    | Pass   | F-16 fixed                                                                                                              |
-| 3.2.1 On Focus                                  | A     | Pass   | No context change on focus                                                                                              |
-| 3.2.2 On Input                                  | A     | Pass   | No auto-submit or auto-navigation                                                                                       |
-| 3.2.3 Consistent Navigation                     | AA    | Pass   | Same header and footer on every page                                                                                    |
-| 3.2.4 Consistent Identification                 | AA    | Pass   | Same components, same names                                                                                             |
-| 3.2.6 Consistent Help                           | A     | Pass   | Email link in the footer and Contact in the nav, same place on every page                                               |
-| 3.3.1 Error Identification                      | A     | Pass   | F-02, F-07 fixed                                                                                                        |
-| 3.3.2 Labels or Instructions                    | A     | Pass   | F-08, F-17 fixed                                                                                                        |
-| 3.3.3 Error Suggestion                          | AA    | Pass   | F-08 fixed                                                                                                              |
-| 3.3.4 Error Prevention (Legal, Financial, Data) | AA    | N/A    | No legal, financial, or data-changing submissions                                                                       |
-| 3.3.7 Redundant Entry                           | A     | Pass   | Single step; values are kept after an error                                                                             |
-| 3.3.8 Accessible Authentication (Minimum)       | AA    | N/A    | No sign-in. reCAPTCHA v3 shows no challenge (third party)                                                               |
-| 4.1.2 Name, Role, Value                         | A     | Pass   | F-05, F-09, F-18 fixed                                                                                                  |
-| 4.1.3 Status Messages                           | AA    | Pass   | F-09 fixed                                                                                                              |
+## Criteria
 
-Results are after the 2026-10-06 fixes. Before the fixes, every row that lists a fixed finding was a Fail. 4.1.1 Parsing is obsolete in WCAG 2.2 and not evaluated.
+| Criterion                                       | Level | Result          | Notes                                                                                                                                 |
+| ----------------------------------------------- | ----- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| 1.1.1 Non-text Content                          | A     | Pass            | F-09 fixed. Decorative canvases are `aria-hidden`.                                                                                    |
+| 1.2.1 Audio-only and Video-only (Prerecorded)   | A     | Not re-verified | F-24. The demo has both streams. A text alternative was not checked.                                                                  |
+| 1.2.2 Captions (Prerecorded)                    | A     | Fail            | F-24 open.                                                                                                                            |
+| 1.2.3 Audio Description or Media Alternative    | A     | Not re-verified | No WebVTT file in `public`. A page-level alternative was not checked.                                                                 |
+| 1.2.4 Captions (Live)                           | AA    | Does not apply  | No live media.                                                                                                                        |
+| 1.2.5 Audio Description (Prerecorded)           | AA    | Not re-verified | Same limit as 1.2.3.                                                                                                                  |
+| 1.3.1 Info and Relationships                    | A     | Pass            | F-07, F-10, and F-19 fixed. F-21 is not re-verified.                                                                                  |
+| 1.3.2 Meaningful Sequence                       | A     | Pass            | DOM order matches the visual order on the checked pages.                                                                              |
+| 1.3.3 Sensory Characteristics                   | A     | Pass            | Instructions do not rely on shape or position alone.                                                                                  |
+| 1.3.4 Orientation                               | AA    | Pass            | No orientation lock in the layout.                                                                                                    |
+| 1.3.5 Identify Input Purpose                    | AA    | Pass            | F-11 fixed.                                                                                                                           |
+| 1.4.1 Use of Color                              | A     | Pass            | F-12 fixed. Invalid fields also expose text and `aria-invalid`.                                                                       |
+| 1.4.2 Audio Control                             | A     | Pass            | No element autoplays. Clips and the About video are muted. The demo waits for its controls.                                           |
+| 1.4.3 Contrast (Minimum)                        | AA    | Pass            | F-03 fixed. Ratios are from the color tokens. Particle pixel samples were not re-measured.                                            |
+| 1.4.4 Resize Text                               | AA    | Not re-verified | A 200 percent text pass was not rerun.                                                                                                |
+| 1.4.5 Images of Text                            | AA    | Pass            | The logo is the image of text.                                                                                                        |
+| 1.4.10 Reflow                                   | AA    | Pass            | `/en` has 0 horizontal overflow at 320px wide.                                                                                        |
+| 1.4.11 Non-text Contrast                        | AA    | Pass            | F-04 fixed. Token ratios are above 3:1 for the field rings in use.                                                                    |
+| 1.4.12 Text Spacing                             | AA    | Not re-verified | The spacing override pass was not rerun.                                                                                              |
+| 1.4.13 Content on Hover or Focus                | AA    | Pass            | Extra content on hover is the native tooltip on tech icons.                                                                           |
+| 2.1.1 Keyboard                                  | A     | Pass            | The Tab walk reached the controls. Menu, form, and dialog behavior is covered by unit tests.                                          |
+| 2.1.2 No Keyboard Trap                          | A     | Pass            | Forward Tab returned to the start on each walked page.                                                                                |
+| 2.1.4 Character Key Shortcuts                   | A     | Does not apply  | No character shortcuts.                                                                                                               |
+| 2.2.1 Timing Adjustable                         | A     | Pass            | F-02 and F-13 fixed. The live two-minute send was not re-verified.                                                                    |
+| 2.2.2 Pause, Stop, Hide                         | A     | Fail            | F-14 fixed. F-23 is an accepted deviation.                                                                                            |
+| 2.3.1 Three Flashes or Below Threshold          | A     | Not re-verified | No flash was observed in the checks. The old luminance samples were not re-measured.                                                  |
+| 2.4.1 Bypass Blocks                             | A     | Pass            | Landmarks, plus a skip link.                                                                                                          |
+| 2.4.2 Page Titled                               | A     | Fail            | F-15 open for file-like unknown URLs. The other checked titles name the page.                                                         |
+| 2.4.3 Focus Order                               | A     | Pass            | F-05 and F-09 fixed.                                                                                                                  |
+| 2.4.4 Link Purpose (In Context)                 | A     | Pass            | F-20 fixed. Home Lighthouse still flags the words `See more` (see the Lighthouse report). That audit is separate from this criterion. |
+| 2.4.5 Multiple Ways                             | AA    | Pass            | F-22 fixed. Home, Projects, and Contact are in the nav.                                                                               |
+| 2.4.6 Headings and Labels                       | AA    | Pass            | Headings and labels describe their content on the checked pages.                                                                      |
+| 2.4.7 Focus Visible                             | AA    | Pass            | F-01, F-04, and F-05 fixed. The Tab walk found 0 hidden stops.                                                                        |
+| 2.4.11 Focus Not Obscured (Minimum)             | AA    | Pass            | F-06 fixed. 744 stops, 0 fully under the fixed footer.                                                                                |
+| 2.5.1 Pointer Gestures                          | A     | Does not apply  | No multipoint or path gesture.                                                                                                        |
+| 2.5.2 Pointer Cancellation                      | A     | Pass            | Actions run on click.                                                                                                                 |
+| 2.5.3 Label in Name                             | A     | Pass            | Text controls include their visible label. Icon-only controls have no visible text label.                                             |
+| 2.5.4 Motion Actuation                          | A     | Does not apply  | No motion input.                                                                                                                      |
+| 2.5.7 Dragging Movements                        | AA    | Does not apply  | No dragging.                                                                                                                          |
+| 2.5.8 Target Size (Minimum)                     | AA    | Pass            | The toast close control is at least 24px. Inline text links are exempt.                                                               |
+| 3.1.1 Language of Page                          | A     | Pass            | `html lang` is `en` or `es` on locale pages. The global 404 uses `lang="en"`.                                                         |
+| 3.1.2 Language of Parts                         | AA    | Pass            | F-16 fixed. The Spanish line on the global 404 has `lang="es"`. A screen reader was not rerun.                                        |
+| 3.2.1 On Focus                                  | A     | Pass            | Focus does not change the context by itself.                                                                                          |
+| 3.2.2 On Input                                  | A     | Pass            | Inputs do not submit or navigate on their own.                                                                                        |
+| 3.2.3 Consistent Navigation                     | AA    | Pass            | The same header and footer render on locale pages. The global 404 has no site footer.                                                 |
+| 3.2.4 Consistent Identification                 | AA    | Pass            | The same controls keep the same names.                                                                                                |
+| 3.2.6 Consistent Help                           | A     | Pass            | Contact is in the nav, and the email link is in the footer, on locale pages.                                                          |
+| 3.3.1 Error Identification                      | A     | Pass            | F-02 and F-07 fixed.                                                                                                                  |
+| 3.3.2 Labels or Instructions                    | A     | Pass            | F-08 and F-17 fixed.                                                                                                                  |
+| 3.3.3 Error Suggestion                          | AA    | Pass            | F-08 fixed.                                                                                                                           |
+| 3.3.4 Error Prevention (Legal, Financial, Data) | AA    | Does not apply  | The form does not make a legal, financial, or data-change commitment.                                                                 |
+| 3.3.7 Redundant Entry                           | A     | Pass            | The form is one step. Values stay after an error.                                                                                     |
+| 3.3.8 Accessible Authentication (Minimum)       | AA    | Does not apply  | No sign-in. reCAPTCHA v3 shows no challenge.                                                                                          |
+| 4.1.2 Name, Role, Value                         | A     | Pass            | F-05, F-09, and F-18 fixed.                                                                                                           |
+| 4.1.3 Status Messages                           | AA    | Pass            | F-09 fixed.                                                                                                                           |
 
----
+## Open items
 
-## 4. Leads
+- F-15. File-like unknown URLs use the Next default error shell. The title is the site name.
+- F-23. Accepted deviation. Motion listed there has no pause control.
+- F-24. The InterplanetaryFonts demo video has an audio stream and no captions track.
+- F-21. Not re-verified. No screen reader was run.
+- F-02. The live two-minute token wait was not re-verified.
 
-All leads marked Confirmed are now fixed; see each finding's status.
+## Notes that are still true
 
-| Lead                                                                                                    | Result                                        | Evidence                                                                                                                                                                                                                                                                       |
-| ------------------------------------------------------------------------------------------------------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Accent #f00 on #ededed ≈ 3.42:1 (active link, hover, form errors)                                       | Confirmed                                     | axe 3.41:1 on the active link; error text 3.42:1; also card dates 3.38–3.42:1 in both themes (F-03).                                                                                                                                                                           |
-| Field focus is only a #00ffc3 border (1.11:1 on light)                                                  | Confirmed                                     | `outline: none` with a mint border, 1.11:1 on #ededed; invalid fields show no change at all (F-04).                                                                                                                                                                            |
-| Closed dropdowns still in tab order; no `aria-expanded`/`aria-controls`; no Escape; no focus management | Confirmed                                     | 4 invisible tab stops on every page; no state attributes; Escape does nothing; focus left on a hidden link after choosing a language (F-05).                                                                                                                                   |
-| No skip link (2.4.1)                                                                                    | Confirmed no skip link, rejected as a failure | There is no skip link, but the landmarks satisfy 2.4.1 (ARIA11). Still worth adding (Nice to have).                                                                                                                                                                            |
-| Hard-coded English names on Spanish pages; `aria-label` plus a different sr-only span                   | Confirmed                                     | Accessibility tree on /es shows "Home", "GitHub Link", "Tech stack", "Resources", "404 - Page Not Found!" (F-16). Pairs differ ("GitHub Link" vs "GitHub", "Language Select Button" vs "Languages"); the `aria-label` wins, so the span is dead weight (F-18).                 |
-| `aria-label` on `<p>` in the footer                                                                     | Confirmed                                     | axe `aria-prohibited-attr` on all 8 pages (F-18).                                                                                                                                                                                                                              |
-| Errors not tied to fields; no live region; `*` only; disabled submit hides why                          | Confirmed                                     | No `aria-invalid` or `aria-describedby`; no live region anywhere; unexplained `*`; button disabled until valid (F-07, F-09, F-17).                                                                                                                                             |
-| Success message disappears after 10 s                                                                   | Confirmed                                     | Gone 10 s after a mocked success; the form also resets, so nothing else confirms it (F-13).                                                                                                                                                                                    |
-| Spinner has no name or status text                                                                      | Confirmed                                     | The Submit button's name is empty while sending, and focus drops to `<body>` (F-09).                                                                                                                                                                                           |
-| `HomeTitle` splits the `<h1>` into letters                                                              | Needs review                                  | Chrome names the heading "Eduardo Aire Torres"; no screen reader available to confirm (F-21). The subtitle does lose its spaces (F-10).                                                                                                                                        |
-| `template.tsx` and `FadeTransition` ignore reduced motion; check 2.2.2                                  | Confirmed (AAA only); FadeTransition unused   | With reduced motion emulated, the page still slides 30px for 1 s (2.3.3 AAA, Nice to have). `FadeTransition` is imported nowhere. Nothing in them lasts > 5 s. But the ScrollCue chevron is infinite (F-14), and `SectionCard`'s reduced-motion branch hides all cards (F-01). |
-| Theme toggle 💡: name and state                                                                         | Confirmed                                     | The name is fine; the state is not exposed (F-18).                                                                                                                                                                                                                             |
-| Titles, headings, reflow, spacing, zoom, target size, new-tab links                                     | Partly confirmed                              | Titles fail on resources and 404 (F-15). Heading order passes. Reflow, text spacing, 200% zoom, and target size pass. New-tab links have no warning, which is not an A/AA failure (Nice to have).                                                                              |
-
----
-
-## 5. Nice to have
-
-AAA items and best practices (not required for AA):
-
-- **Done 2026-10-06, Reflow at 320×256 (400% zoom on a 1280×1024 screen):** the fixed header (120px) and footer (149px) cover the whole viewport, and nothing can be read. 1.4.10 only requires 320 px _width_ for vertical pages, so this passes AA, but it is a serious usability problem for low-vision users. Make the header and footer static when `max-height` is small (e.g. ≤ 500px).
-- **Done 2026-10-06, Skip link:** add a "Skip to content" link as the first focusable item. It's cheap, and it helps keyboard users who don't use landmarks.
-- **Done 2026-10-06, 2.3.3 Animation from Interactions (AAA):** the page-enter slide in `template.tsx` ignores reduced motion. The `MotionConfig reducedMotion="user"` fix in F-01 handles this too.
-- **2.4.13 Focus Appearance (AAA):** the red outline is 3.42:1 on light. That passes 1.4.11 but is weaker than AAA would like.
-- **1.4.6 Contrast (Enhanced) (AAA):** red on black is 5.25:1 (AAA needs 7:1).
-- **Done 2026-10-06, 3.2.5 Change on Request (AAA) / G201:** 14 card links and 4 social links open a new tab without warning. Add "(opens in a new tab)" / "(se abre en otra pestaña)" as visually hidden text.
-- **404 pages without JavaScript:** the server sends an empty document (no `lang`, no heading) and React builds the 404 page in the browser. The status (404) and `noindex` are correct. Next.js does this for `notFound()` when the root layout sits under `[locale]`; its experimental `global-not-found.js` is the documented way out.
-- **Content is hidden without JavaScript:** the server HTML ships every page's content at `opacity: 0` (`template.tsx`), so if JS is slow or fails, the page stays blank.
-- **Done 2026-10-09, short screens:** at 320×256 the scroll chevron (absolutely positioned at the bottom of the hero) overlapped two words of the summary. It now sits in the flow under the text, and it shows only while it fits above the footer.
-- **Done 2026-10-17, phones:** below 768px the footer sits in the page flow. The hero scroll cue stays visible on those screens.
-- **Done 2026-10-09, mobile overlap:** at 375px the sticky section titles ("Experience") slid over the logo button in the header. Below 768px they now pass under the header. Since 2026-10-11 the logo is in the nav pill and the titles dock top left instead.
-- **Done 2026-10-06, Third party, reCAPTCHA badge:** it is hidden with `visibility: hidden` in `_normalize.scss`, which is fine for accessibility (it leaves the accessibility tree). Google's terms ask for the notice text ("This site is protected by reCAPTCHA and the Google Privacy Policy and Terms of Service apply.") to be shown when the badge is hidden. Add it under the form, in both languages.
-- **Third party, Typekit:** Degular loads and passed the text-spacing test. Nothing to fix.
-
-Out of scope (not accessibility):
-
-- The dev container does not pick up file edits (it serves stale code until `docker compose restart frontend`), even with `WATCHPACK_POLLING=true`. Next 16 uses Turbopack by default, so that variable may no longer apply.
-
-- The Docker volume had stale `node_modules` (Next 15.5.21 vs. the locked 16.3.6). As a result, `src/proxy.ts` never ran in dev: `/` returned 404 and `/contact` returned 500. Fixed locally with `pnpm install --frozen-lockfile`. The old dev server had also rewritten `tsconfig.json`; I reverted that.
-- Fixed 2026-10-08: `src/app/robots.ts` pointed `sitemap` at `https://acme.com/sitemap.xml`.
-- `src/components/transitions/FadeTransition.tsx` is unused.
-- `/resources` returns 404 until it has content (see F-22).
+- The shared focus outline is `#f00`, 3px, with a 3px offset. That is 3.42:1 on `#ededed`. It passes 1.4.11 and sits below the 2.4.13 AAA target.
+- `#f00` on `#000` is 5.25:1. 1.4.6 AAA asks for 7:1 on normal text.
+- At a height of 500px or less, the header, the footer, and docked pills leave the fixed layer. That is the short-screen rule in the SCSS above.

@@ -1,5 +1,3 @@
-// Start-up checks shared by the decorative motion.
-
 const VISITOR_EVENTS = [
   'pointermove',
   'pointerdown',
@@ -24,7 +22,6 @@ export function whenIdle(callback: () => void) {
   return () => window.clearTimeout(id);
 }
 
-// Waits for the first scroll, pointer or key input.
 export function whenVisitorActive(callback: () => void) {
   if (visitorActive) {
     callback();

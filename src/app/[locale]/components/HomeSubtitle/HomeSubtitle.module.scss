@@ -4,7 +4,6 @@
 .subtitle {
   text-align: left;
   font-size: clamp(2.5rem, 10vw, 3rem);
-  // Inline words, spaced and wrapped like the old flex items with a 0.5rem gap.
   line-height: calc(1em + 0.5rem);
   word-spacing: calc(0.5rem - #{map.get($degular-metrics, space)});
   margin-top: -0.25rem;

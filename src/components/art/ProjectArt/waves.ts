@@ -6,7 +6,6 @@ const LINE_SPACE = WAVES_SIZE / 50;
 const h = WAVES_SIZE;
 const reps = (share: number) => (h * share) / LINE_SPACE;
 
-// Each module is [lines, wave kind, top offset].
 type Module = [number, number, number];
 
 export const WAVE_LETTERS: Record<string, Module[]> = {
@@ -160,7 +159,6 @@ export const toWaveLetters = (text: string) =>
     .join('')
     .slice(0, 3);
 
-// eslint-disable-next-line no-unused-vars
 type Random = (min: number, max: number) => number;
 
 const radians = (degrees: number) => (degrees * Math.PI) / 180;

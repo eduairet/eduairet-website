@@ -6,7 +6,6 @@ interface IProps {
   children: ReactNode;
   isOpen: boolean;
   fullScreenOnPhone?: boolean;
-  // eslint-disable-next-line no-unused-vars
   onClick?: (e: MouseEvent) => void;
 }
 

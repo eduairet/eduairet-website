@@ -56,7 +56,6 @@
     width: auto;
     max-width: none;
     padding-left: 0.75rem;
-    // Centers the logo in the pill's round end.
     padding-right: calc((#{$pill-height} - #{$logo-size-compact}) / 2 - 2px);
     gap: 0.75rem;
   }

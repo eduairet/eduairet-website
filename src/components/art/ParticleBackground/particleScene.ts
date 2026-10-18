@@ -42,7 +42,6 @@ import {
 import { REDUCED_MOTION_QUERY } from '@/utils/constants';
 
 export interface ParticleScene {
-  // eslint-disable-next-line no-unused-vars
   attach: (container: HTMLElement) => void;
   // Keeps GPU resources so a later attach is instant.
   detach: () => void;
@@ -66,8 +65,7 @@ const BURST_DAMPING = 3;
 // Right of center, away from the left-aligned text.
 const RING_REST_X = 0.7;
 
-// The light gain keeps the red home subtitle above 3:1 contrast, so light
-// letters are bold to read better without getting darker.
+// Light-theme gain holds the red subtitle above 3:1, so those letters are bold instead of darker.
 const THEMES = {
   dark: { gain: 0.8, light: 1, equation: AddEquation, weight: 'normal' },
   light: { gain: 0.265, light: 0, equation: MaxEquation, weight: 'bold' },
@@ -367,8 +365,7 @@ export async function createParticleScene(
   const onPointerLeave = () => {
     pointerActive = false;
   };
-  // Left and right clicks, and Enter or Space on a link or button. The loop
-  // never runs with reduced motion, so there is no burst then.
+  // Clicks and activation. Reduced motion never starts the loop, so there is no burst.
   const onBurst = () => {
     if (running) update.uBurst.value = 1;
   };
@@ -427,8 +424,7 @@ export async function createParticleScene(
 
   attach(container);
 
-  // Compile shaders off the main thread before the first frame. The update
-  // shader needs its render target bound to match the one used at run time.
+  // Compile before the first frame. Bind the update shader to its run-time render target.
   const updateScene = new Scene();
   updateScene.add(new Mesh(geometry, state.material));
   renderer.setRenderTarget(compute.getCurrentRenderTarget(state));

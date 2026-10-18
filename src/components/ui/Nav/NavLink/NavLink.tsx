@@ -27,7 +27,6 @@ function NavLink({ href, text, lang, isLangLink = false }: IProps) {
     return pathname == href;
   };
 
-  // The same page in the other language: swap the /{locale} prefix.
   const hrefState = isLangLink
     ? `${href}${pathname.slice(locale.length + 1)}`
     : href;
