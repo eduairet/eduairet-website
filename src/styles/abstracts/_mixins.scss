@@ -94,9 +94,8 @@
   }
 }
 
-// The footer sits in the page flow instead of fixed to the bottom.
 @mixin footer-static {
-  @media (height <= $breakpoint-short-height) {
+  @media (width < $breakpoint-md), (height <= $breakpoint-short-height) {
     @content;
   }
 }

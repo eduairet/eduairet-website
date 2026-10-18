@@ -47,8 +47,6 @@ html {
   font-feature-settings: 'onum';
   @include degular($wght: 400, $opsz: 16);
   scroll-behavior: smooth;
-  // Keep focused elements clear of the fixed header (where the section titles
-  // dock), the open toast and the fixed footer (WCAG 2.4.11, technique C43).
   scroll-padding-top: max(
     #{$header-height} + 1rem,
     var(--toast-bottom, 0px) + 1rem

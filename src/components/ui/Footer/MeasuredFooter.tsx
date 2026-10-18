@@ -9,7 +9,6 @@ interface IProps {
   children: ReactNode;
 }
 
-// The clearance follows this height, so wrapped or larger text can't hide content.
 export default function MeasuredFooter({ className, children }: IProps) {
   const footerRef = useRef<HTMLElement>(null);
 
