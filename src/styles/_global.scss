@@ -30,6 +30,11 @@
   }
 }
 
+// Project pages put the footer in the flow, so the gap matches a short screen.
+html:has([data-project-page]) {
+  --footer-clearance: 1rem;
+}
+
 // The page scrollbar and the page background read their colors from <html>.
 // A separate rule, so browsers without :has() still theme the body.
 :root:has(> body[data-theme='light']) {

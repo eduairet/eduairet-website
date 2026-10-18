@@ -32,6 +32,11 @@
     width: 100%;
   }
 
+  :global(html:has([data-project-page])) & {
+    position: static;
+    width: 100%;
+  }
+
   .section + .section {
     @extend %pill;
     padding: 0 1.5rem;

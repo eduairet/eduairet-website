@@ -44,7 +44,7 @@ export default async function ProjectPage({ params }: IProps) {
     <>
       <JsonLd data={await buildProjectStructuredData(locale, project.slug)} />
       <PageTransition>
-        <article className={styles.project}>
+        <article className={styles.project} data-project-page>
           <IntentLink href={PageUrls.projects_(locale)} className={styles.back}>
             <ArrowIcon direction='left' />
             {projects.allProjects}
