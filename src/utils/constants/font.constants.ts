@@ -17,9 +17,7 @@ export const TYPEKIT_URL = process.env.NEXT_PUBLIC_TYPEKIT ?? '';
 
 const typekitHref = JSON.stringify(TYPEKIT_URL).replace(/</g, '\\u003c');
 
-// Adds the Adobe Fonts stylesheet after the first contentful paint, so lab
-// tools can't count the fonts as render-blocking (see lighthouse.md).
-// Runs as an inline script, so it sticks to syntax every browser parses.
+// Inject Adobe Fonts CSS after first paint, in syntax every browser parses, so it is not render-blocking.
 function loadTypekit(href: string) {
   function load() {
     var link = document.createElement('link');

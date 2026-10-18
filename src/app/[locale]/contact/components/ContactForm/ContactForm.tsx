@@ -38,7 +38,6 @@ interface IReducerAction {
 }
 
 interface IReducer {
-  // eslint-disable-next-line no-unused-vars
   (state: ContactFormModel, action: IReducerAction): ContactFormModel;
 }
 
@@ -102,7 +101,6 @@ function ContactForm() {
     if (isSending) return;
     setSubmitError('');
 
-    // Show every field's error and move focus to the first one to fix.
     const fields = Object.values(ContactFormField);
     const invalid = fields.filter(
       (field) =>
@@ -148,7 +146,6 @@ function ContactForm() {
       return;
     }
 
-    // The toast stays until the visitor closes it or types again.
     successToast.current = showToast(content.contact.form.success);
     dispatch({ type: 'RESET' });
     setPrivacyRead(false);

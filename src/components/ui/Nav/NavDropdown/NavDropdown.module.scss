@@ -20,8 +20,7 @@
   gap: 10px;
   transform: scaleY(0);
   opacity: 0;
-  // visibility removes the closed menu from the tab order and the
-  // accessibility tree; it flips after the closing animation ends.
+  // visibility: hidden drops the closed menu from tab order after the close animation.
   visibility: hidden;
   transform-origin: top right;
   transition:
@@ -41,7 +40,6 @@
     }
   }
 
-  // Phones: fills the screen, under the menu button.
   &.full-screen {
     @media (width < $breakpoint-md) {
       position: fixed;
@@ -62,7 +60,6 @@
         opacity $default-time ease-in-out,
         visibility 0s linear $default-time;
 
-      // Centered when it fits, scrolls from the top when it doesn't.
       > :first-child {
         margin-top: auto;
       }

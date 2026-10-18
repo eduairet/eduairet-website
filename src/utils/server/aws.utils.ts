@@ -122,7 +122,6 @@ export const awsErrorType = async (res: Response) => {
   return type.split(':')[0].split('#').pop();
 };
 
-// Its message is only the HTTP status and the AWS error type.
 export class AwsResponseError extends Error {
   name = 'AwsResponseError';
 }

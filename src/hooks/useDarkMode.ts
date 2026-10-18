@@ -13,7 +13,6 @@ const listeners = new Set<() => void>();
 
 const getTheme = (): Theme => resolveTheme(THEME_STORAGE_KEY);
 
-// The theme as applied to the page, for code outside React.
 export const readTheme = (): Theme =>
   document.body.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
 

@@ -27,7 +27,6 @@ interface IProps {
   close: string;
 }
 
-// A browser window or a phone, drawn with the site's lines around the real shot.
 function Frame({
   frame,
   children,

@@ -26,7 +26,6 @@ export const indexablePages: SitePage[] = [
   'privacy',
 ];
 
-// Every indexable path without its locale, with the date its content last changed.
 export const indexablePaths = [
   ...indexablePages.map((page) => ({
     path: PagePaths[page],
@@ -156,6 +155,5 @@ export const siteMetadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  // Dark is the default theme; the theme script switches it before paint.
   themeColor: THEME_COLORS.dark,
 };

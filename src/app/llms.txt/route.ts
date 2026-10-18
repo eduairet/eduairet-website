@@ -8,8 +8,7 @@ const en = new Dictionary(EnContent);
 const es = new Dictionary(EsContent);
 const content = { en, es };
 
-// A Markdown summary of the site for language models (https://llmstxt.org),
-// built from the same copy and URLs as the pages.
+// Built from the same copy and URLs as the pages (https://llmstxt.org).
 export function GET() {
   const links = indexablePages.flatMap((page) => [
     `- [${en.meta[page].title}](${pageUrl('en', page)}): ${en.meta[page].description}`,

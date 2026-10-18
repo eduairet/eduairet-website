@@ -1,8 +1,7 @@
 @use 'sass:list';
 @use 'sass:map';
 
-// Degular, measured in Chrome: line ascent and descent (em), and the width of
-// a space (home subtitle, wght 200) and of "0" (home summary, wght 300).
+// Degular metrics from Chrome: ascent, descent, a space at weight 200, and "0" at weight 300.
 $degular-metrics: (
   ascent: 0.927,
   descent: 0.237,
@@ -10,9 +9,7 @@ $degular-metrics: (
   zero: 0.557em,
 );
 
-// System fonts that stand in for Degular until it loads, each scaled to match
-// its line breaks (see _font-fallbacks.scss). The title mixes heavy and light
-// letters, so it has its own scale. Order: most common first.
+// Fallbacks scaled to Degular's line breaks. The mixed-weight title has its own scale. Common faces first.
 $degular-fallbacks: (
   'arial': (
     regular: (

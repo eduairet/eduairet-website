@@ -14,7 +14,6 @@ export function getTextInputError(
   return null;
 }
 
-// Errors only show once the field has been touched (left or submitted).
 export default function useTextInput(
   type: TextInputType,
   inputName: string,

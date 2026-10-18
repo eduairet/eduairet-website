@@ -1,6 +1,5 @@
 @use '@/styles/abstracts/index' as *;
 
-// Fades and slides in each time it scrolls into view (see useReveal).
 .reveal {
   opacity: 0;
   transform: translateY(30px);

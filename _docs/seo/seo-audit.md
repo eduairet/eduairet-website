@@ -1,48 +1,89 @@
-# SEO: eduairet-website
+# SEO
 
-Every indexable page is prerendered with its metadata in `<head>`: a self-referencing canonical on `https://www.eduairet.com`, hreflang with `x-default`, Open Graph and X tags, a link to its language feed, and a sitemap entry. The home pages carry `WebSite` and `ProfilePage` structured data, `/projects` a `CollectionPage` with an `ItemList`, and each project page a `CreativeWork`, all with breadcrumbs where they apply.
+Last verified: 2026-10-17.
 
-## Decisions
+## Scope and method
 
-| Decision                                                                      | Why                                                                                                                                                                                                                                                                                             |
-| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| English home canonical is `/en`, not `/`                                      | `/` redirects by language, so it must stay a 302. A 302 target can still be canonical "if other canonicalization signals are present" ([redirects](https://developers.google.com/search/docs/crawling-indexing/301-redirects)).                                                                 |
-| `x-default` is the unprefixed path (`/` for home, `/contact` for contact)     | It redirects by language, which is what x-default is for ([localized versions](https://developers.google.com/search/docs/specialty/international/localized-versions)). Next writes the root without a trailing slash.                                                                           |
-| `WebSite.url` is the domain root, on both `/en` and `/es`                     | Site names only work at the root, and duplicate home pages need the same markup ([site names](https://developers.google.com/search/docs/appearance/site-names)).                                                                                                                                |
-| `Person.image` and `.description` come from the About section                 | Markup must describe what visitors see ([guidelines](https://developers.google.com/search/docs/appearance/structured-data/sd-policies)).                                                                                                                                                        |
-| All AI crawlers allowed; Vercel AI Bots ruleset on Log                        | Vercel's Deny would also block search and user-request fetchers.                                                                                                                                                                                                                                |
-| Sitemap has `lastmod` but no `priority` or `changefreq`                       | Google ignores the last two and uses `lastmod` only when it is accurate ([sitemaps](https://developers.google.com/search/docs/crawling-indexing/sitemaps/build-sitemap)). The dates are set by hand: `PAGES_UPDATED` and each project's `updated`. Change them when the page's content changes. |
-| Each project shares its own 1200×630 JPEG (`/projects/<slug>/og.jpg`)         | A real screenshot says more than the logo. Vercel's "Allow OG Images" bypass rule must include these paths, or link previews are blocked.                                                                                                                                                       |
-| One RSS feed per language (`/en/feed.xml`, `/es/feed.xml`)                    | Lists the projects for readers and aggregators. Feed readers are not browsers, so Vercel Bot Protection needs a bypass for these two paths.                                                                                                                                                     |
-| Project pages use `CreativeWork`, not `SoftwareApplication`                   | Several projects are sites, art or a talk, not installable apps. `CreativeWork` fits all of them and has no required properties to fake.                                                                                                                                                        |
-| `favicon.ico` stays next to `icon.svg`                                        | Google doesn't support SVG favicons ([favicon](https://developers.google.com/search/docs/appearance/favicon-in-search)).                                                                                                                                                                        |
-| `not-found.tsx` keeps its `<title>` element                                   | Only the root `app/not-found` can export metadata ([not-found](https://nextjs.org/docs/app/api-reference/file-conventions/not-found)).                                                                                                                                                          |
-| Home descriptions are the pre-#31 text in both languages                      | Both results should say the same thing; Google showed the English one ([snippets](https://developers.google.com/search/docs/appearance/snippet)).                                                                                                                                               |
-| Spanish home title is "Eduardo Aire Torres \| Ingeniero de Diseño y Producto" | 52 characters; the 65-character title was rewritten from the subtitle ([title links](https://developers.google.com/search/docs/appearance/title-link)).                                                                                                                                         |
-| The home subtitle is inline text, not flex items                              | As flex items each word rendered as its own block, and Google joined them as "Ingeniero - de - Diseño".                                                                                                                                                                                         |
-| Unmatched URLs get `app/global-not-found.tsx` (experimental flag)             | A full server-rendered 404 with `lang` and h1. `notFound()` calls and one-segment paths like `/wp-login.php` still use the layout 404.                                                                                                                                                          |
-| The `/` redirect sends `Vary: Accept-Language`                                | Its target depends on that header ([RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html#name-vary)).                                                                                                                                                                                          |
-| Old portfolio paths 308 straight to `archive.eduairet.com/<path>`             | eduairet.com hosted the Adobe Portfolio until 2023, and old links and Google still use its paths. One permanent hop moves their signals ([redirects](https://developers.google.com/search/docs/crawling-indexing/301-redirects)). Paths gone from the archive stay 404.                         |
+Checks are against the production server from `pnpm build` and `pnpm start --port 3000` (Next.js 16.4.0), plus the source that emits the tags.
 
-## Search Console baseline (2026-10-07)
+Commands used:
 
-- Indexed: `/`, `/en/contact`, `/es`.
-- `/en`: duplicate of `/`, no user-declared canonical, found only through redirects.
-- 404: `/indoctrinated-hound`, `/36days-of-type-2019` (now 308 to eduairet.myportfolio.com).
-- Crawl stats, 90 days: 1,011 requests, 2.3% discovery, no 429s.
+```bash
+curl -sI http://127.0.0.1:3000/en
+curl -s http://127.0.0.1:3000/sitemap.xml
+curl -s http://127.0.0.1:3000/robots.txt
+curl -s http://127.0.0.1:3000/en
+```
 
-## PageSpeed
+User agents for the head check: a browser, Googlebot, facebookexternalhit, and Slackbot. Each received a canonical in `head` for `/en`.
 
-Before PR #31 (production, 2026-10-08): /en mobile 27, /es mobile 39, desktop timed out. Before `perf/lighthouse` (PSI, median of 3): mobile 48 on the home pages and 27 on contact, desktop 62 to 64 or timed out. After `perf/lighthouse` went live (PSI, median of 3): mobile 94 and 90 on the home pages, 96 and 100 on contact; desktop 100 on every page; Accessibility, Best Practices and SEO 100 everywhere. After PR #36 (2026-10-09): mobile /en 100 and /es 89, with Best Practices 96 on /en when Adobe Fonts timed out. After PR #37 (2026-10-10): mobile and desktop 100 on all four pages, with Accessibility, Best Practices and SEO 100. After PRs #39 and #40 (2026-10-10): /en and /es still 100 on mobile and desktop, Accessibility, Best Practices and SEO 100. After PR #42 (2026-10-10): still 100 on mobile and desktop; Best Practices dropped to 96 in 2 of 12 reports when Adobe Fonts timed out on PSI's side. After PR #47 (2026-10-11): mobile 100 on /es and both contact pages and 98 on /en, desktop 100 everywhere, and Accessibility, Best Practices and SEO 100 in all 24 reports. Details, the final local numbers, and how to re-measure are in [lighthouse.md](../performance/lighthouse.md).
+`node -e "import('./oldPortfolioPages.mjs').then(m => console.log(m.oldPortfolioPages.length))"` prints 106.
 
-## How to check
+`rg -c "slug: '" src/utils/constants/projects.constants.ts` prints 12.
 
-On a production build:
+Search Console data, Vercel dashboard rules, and the schema.org validator are outside the scope of this report.
 
-- Fetch each route as a browser, Googlebot, facebookexternalhit, and Slackbot; metadata must be in `<head>`.
-- `/en/does-not-exist`, `/es/does-not-exist` and `/wp-login.php` return 404 with noindex, not 200. A client Suspense boundary around page content turns them into 200s.
-- `/` returns 302 with `Vary: Accept-Language`.
-- Each path in `oldPortfolioPages.mjs`, plus `/resources`, `/en/resources` and `/es/resources`, returns 308 to the same path on `https://archive.eduairet.com`, in one hop. `/home`, `/about` and `/work` return 308 to `/`, `/#about` and `/projects`.
-- For every URL in `/sitemap.xml`: 200, no noindex, self canonical, and the same hreflang set as the sitemap.
-- POST the rendered `/en` and `/es` HTML to `https://validator.schema.org/validate`: 0 errors, 0 warnings.
-- `pnpm test run` covers metadata, sitemap, robots, manifest, and JSON-LD.
+## Metadata
+
+Indexable pages are prerendered with metadata in `head`. The list is `indexablePaths` in `src/utils/server/meta.utils.ts`: home, projects, contact, privacy, and each project slug.
+
+Checked samples return 200, have no `noindex`, and have a self canonical on `https://www.eduairet.com`. The samples are `/en`, `/es`, `/en/contact`, `/es/contact`, `/en/privacy`, `/en/projects`, and `/en/projects/collectible-pleasures`.
+
+`hreflang` is `en`, `es`, and `x-default`. Home `x-default` is `https://www.eduairet.com` with no trailing path. Contact `x-default` is `https://www.eduairet.com/contact`. The English home canonical is `https://www.eduairet.com/en`.
+
+`/` returns 302 and `Vary: Accept-Language`. With `Accept-Language: es` the location is `/es`. Without that header the location is `/en`. The redirect is `proxy` in `src/proxy.ts`.
+
+Titles on the production build:
+
+- `/en`: Eduardo Aire Torres | Design Engineer & Product Engineer
+- `/es`: Eduardo Aire Torres | Ingeniero de Diseño y Producto
+- `/en/contact`: Contact | Eduardo Aire Torres
+- `/es/contact`: Contacto | Eduardo Aire Torres
+- `/en/projects`: Projects | Eduardo Aire Torres
+- `/en/privacy`: Privacy notice | Eduardo Aire Torres
+
+The Spanish home title is 52 characters. `node -e "console.log('Eduardo Aire Torres | Ingeniero de Diseño y Producto'.length)"` prints 52.
+
+Home Open Graph image is `https://www.eduairet.com/en/opengraph-image`. A project page uses `https://www.eduairet.com/projects/<slug>/og.jpg`. `OG_IMAGE_SIZE` is 1200 by 630. Each `head` also links the locale feed (`/en/feed.xml` or `/es/feed.xml`) as `application/rss+xml`.
+
+`/favicon.ico` returns 200 `image/x-icon`. `/icon.svg` returns 200 `image/svg+xml`. `/manifest.webmanifest` returns 200 `application/manifest+json`.
+
+`HomeSubtitle` inserts a real space between words, so the subtitle text is not only a flex gap.
+
+## Structured data
+
+Home JSON-LD types are `WebSite` and `ProfilePage`. `Person` is `ProfilePage.mainEntity`. `WebSite.url` is `https://www.eduairet.com/`. `Person.image` is `https://www.eduairet.com/eduardo-aire-torres.webp` (`PROFILE_PHOTO`). `Person.description` is the About text. `Person.jobTitle` is the home subtitle split on `·`.
+
+`/en/projects` adds `CollectionPage`, `ItemList`, and `BreadcrumbList`. A project page adds `CreativeWork` and `BreadcrumbList`. Contact and privacy responses contain no `application/ld+json`.
+
+Project pages use `CreativeWork`. The schema is shared by every project in `structuredData.utils.ts`.
+
+## Sitemap and robots
+
+`/sitemap.xml` lists 32 URLs. `curl -s http://127.0.0.1:3000/sitemap.xml | grep -c '<url>'` prints 32. That is 16 paths times 2 locales. Every URL has `lastmod`. The file has no `priority` and no `changefreq`.
+
+`lastmod` is copied from `PAGES_UPDATED` and from each project's `updated` (`src/utils/constants/site.constants.ts` and `projects.constants.ts`). Those dates are written by hand. `sitemapRobots.test.ts` checks that the sitemap uses the constants. It does not check that a content edit changed the date.
+
+`/robots.txt` allows `/`, disallows `/api/`, and points `Sitemap` at `https://www.eduairet.com/sitemap.xml`. The rule is `userAgent: '*'` in `src/app/robots.ts`.
+
+`/en/feed.xml` and `/es/feed.xml` return 200 `application/rss+xml`.
+
+## Redirects
+
+`next.config.mjs` sends each of the 106 paths in `oldPortfolioPages.mjs` to the same path on `https://archive.eduairet.com` with status 308. Checked: `/36days-of-type-2019` goes to `https://archive.eduairet.com/36days-of-type-2019`.
+
+`/resources`, `/en/resources`, and `/es/resources` return 308 to `https://archive.eduairet.com/resources`. The locale prefix is not kept.
+
+`/home` returns 308 to `/`. `/about` returns 308 to `/#about`. `/work` returns 308 to `/projects`.
+
+## Unknown URLs
+
+Locale unknown URLs return 404, `noindex`, and `global-not-found.tsx`. Checked: `/en/does-not-exist`, `/es/does-not-exist`, `/en/projects/not-a-real-slug`, `/es/projects/not-a-real-slug`, `/en/contact/extra`, `/.well-known/test`, and `/api/nope`. The title is `Page not found | Eduardo Aire Torres`. Details are in the accessibility report, F-15.
+
+`/wp-login.php` and `/not-a-page.html` return 404 and `noindex` from the Next default error shell. The title is `Eduardo Aire Torres`. `src/proxy.ts` skips paths that match `PUBLIC_FILE`.
+
+`/fr` returns 302 to `/en/fr`. `/en/fr` is the global 404.
+
+## Lighthouse SEO
+
+On this environment the home page scores 92 because one link reads `See more`. The project page scores 100. Numbers and the run method are in the Lighthouse report.

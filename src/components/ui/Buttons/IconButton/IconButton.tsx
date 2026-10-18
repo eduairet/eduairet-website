@@ -9,7 +9,6 @@ interface IProps {
   ariaLabel?: string;
   isActive?: boolean;
   bare?: boolean;
-  // Pass `controls` for buttons that toggle a menu, so the open state is exposed.
   controls?: string;
   onClick?: () => void;
 }

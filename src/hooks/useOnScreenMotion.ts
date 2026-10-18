@@ -1,7 +1,6 @@
 import { RefObject, useEffect } from 'react';
 import { REDUCED_MOTION_QUERY } from '@/utils/constants';
 
-// Runs `start` while the element is on screen, the tab is visible and motion is allowed.
 export function useOnScreenMotion(
   ref: RefObject<HTMLElement | null>,
   start: () => () => void

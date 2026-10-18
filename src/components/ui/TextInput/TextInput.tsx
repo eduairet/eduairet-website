@@ -16,7 +16,6 @@ interface IProps {
   focused?: boolean;
   hint?: string;
   autoComplete?: string;
-  // eslint-disable-next-line no-unused-vars
   onChange: (value: string, focused: boolean, isValid: boolean) => void;
 }
 

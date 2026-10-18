@@ -12,7 +12,6 @@ import {
 
 const VIDEO_SIZE = 320;
 
-// The still shows until the first scroll or input; then the video loops on screen.
 export default function AboutVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
 

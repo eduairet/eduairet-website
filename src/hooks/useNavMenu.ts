@@ -13,7 +13,6 @@ import { PHONE_QUERY } from '@/utils/constants';
 // A click from Enter or Space has no click count.
 const isKeyboardClick = (e: MouseEvent) => e.detail === 0;
 
-// Makes everything outside `keep` inert, and returns a function that undoes it.
 function inertOutside(keep: Element) {
   const madeInert: Element[] = [];
   for (let el = keep; el.parentElement && el !== document.body;) {

@@ -11,9 +11,7 @@ interface IProps {
 }
 
 function FormWrapper({ children, errorMessage, onSubmit, onFocus }: IProps) {
-  // The status region is always rendered so screen readers announce an
-  // error when it appears. noValidate lets our own errors replace the
-  // browser's validation bubbles.
+  // The status region stays in the DOM so an error is announced. noValidate skips browser bubbles.
   return (
     <form
       className={styles.form}

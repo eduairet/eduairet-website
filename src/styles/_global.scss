@@ -5,7 +5,6 @@
   // The footer's spacing, read by the footer and added up for its clearance.
   --footer-padding-y: 1.5rem;
   --footer-gap: 1rem;
-  // Phones stack the social links over the name line.
   --footer-content: calc(
     #{$footer-row-height} + var(--footer-gap) + #{$footer-line-height}
   );
@@ -19,7 +18,6 @@
     --footer-gap: 1.5rem;
   }
 
-  // On one row the footer is as tall as the name pill.
   @include footer-row {
     --footer-padding-y: 1rem;
     --footer-content: #{$pill-height};

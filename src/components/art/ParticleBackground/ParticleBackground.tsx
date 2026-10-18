@@ -9,8 +9,7 @@ import {
   whenVisitorActive,
 } from '@/components/art/startGate';
 
-// Switching locale remounts the layout. Keeping the scene briefly lets the
-// next mount reuse it, so the page keeps a single WebGL context.
+// Locale switches remount the layout. Reuse the scene so one WebGL context survives.
 const RELEASE_DELAY_MS = 1000;
 let retained: {
   scene: ParticleScene;
@@ -36,8 +35,7 @@ export default function ParticleBackground() {
         if (!hasHardwareWebGL()) return;
         const { createParticleScene } = await import('./particleScene');
         if (cancelled) return;
-        // Pause between loading three.js and building the scene; both are
-        // slow on phones.
+        // Yield between loading three.js and building the scene, so a phone is not blocked.
         await new Promise<void>((resolve) => {
           cancelIdle = whenIdle(resolve);
         });
@@ -48,7 +46,6 @@ export default function ParticleBackground() {
       };
       cancelWait = whenVisitorActive(() => {
         cancelIdle = whenIdle(() => {
-          // If three.js fails to load, the page simply has no background.
           start().catch(() => {});
         });
       });

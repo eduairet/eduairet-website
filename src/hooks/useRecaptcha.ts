@@ -5,8 +5,7 @@ import { recaptchaAction } from '@/utils/constants';
 const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 let loading: Promise<void> | null = null;
 
-// Loaded on first use of the form, so page loads stay free of the script,
-// its cookies and its console messages.
+// Load on first use, so the page skips the script, its cookies and its console noise.
 export function loadRecaptcha() {
   loading ??= new Promise<void>((resolve, reject) => {
     if (!siteKey) return reject(new Error('Missing reCAPTCHA site key'));
@@ -15,7 +14,6 @@ export function loadRecaptcha() {
     script.async = true;
     script.onload = () => window.grecaptcha.ready(resolve);
     script.onerror = () => {
-      // Let the next attempt try again.
       loading = null;
       script.remove();
       reject(new Error('reCAPTCHA failed to load'));
@@ -25,11 +23,9 @@ export function loadRecaptcha() {
   return loading;
 }
 
-// reCAPTCHA v3 tokens expire after two minutes and can be verified only once,
-// so a fresh token is requested when the user submits, not on page load.
+// A token expires in two minutes and verifies once, so request it at submit.
 export async function getRecaptchaToken(): Promise<string | null> {
   try {
-    // Rejects without a site key, so siteKey is set below.
     await loadRecaptcha();
     return await window.grecaptcha.execute(siteKey as string, {
       action: recaptchaAction,

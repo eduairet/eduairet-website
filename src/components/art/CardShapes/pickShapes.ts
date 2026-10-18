@@ -52,6 +52,5 @@ export function pickShapes(count: number, random = Math.random): SolidName[] {
     )
       break;
   }
-  // A slot stays empty only with more cards than solids; reuse a shape then.
   return picks.map((name, i) => name ?? names[i % names.length]);
 }

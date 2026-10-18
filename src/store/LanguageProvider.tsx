@@ -18,8 +18,7 @@ interface IProps extends LanguageContextProps {
   children: ReactNode;
 }
 
-// The layout passes the current locale's UI strings, so neither dictionary
-// is bundled into client code.
+// The layout passes this locale's strings, so neither dictionary ships to the client.
 export const LanguageProvider = ({ locale, content, children }: IProps) => {
   // Ends a language switch's view transition once the new locale renders.
   useEffect(localeSwitched, [locale]);

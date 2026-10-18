@@ -80,14 +80,12 @@
     'ital' $italic;
 }
 
-// The footer puts its two sections on one row.
 @mixin footer-row {
   @media (width >= $breakpoint-md) {
     @content;
   }
 }
 
-// The footer stacks its sections; the inverse of footer-row.
 @mixin footer-stacked {
   @media (width < $breakpoint-md) {
     @content;
@@ -100,7 +98,6 @@
   }
 }
 
-// Hover and press states shared by buttons and button-like links.
 @mixin button-states {
   @media (hover: hover) {
     &:hover:not(:disabled, [aria-disabled='true']) {
@@ -138,7 +135,6 @@
   --valid: #{$valid-on-light};
 }
 
-// Small uppercase labels, like the dates on the cards.
 @mixin eyebrow {
   font-size: 0.8125rem;
   text-transform: uppercase;

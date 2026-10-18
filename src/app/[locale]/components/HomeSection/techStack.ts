@@ -1,8 +1,7 @@
 import type { ComponentType } from 'react';
 import * as icons from './icons';
 
-// Stack keys to display names and icons. A tool without an icon shows as
-// text: its owner forbids logo use or publishes no terms for it.
+// A key with no icon is shown as text. The owner forbids the logo or publishes no terms.
 export const TOOLS: Record<string, { name: string; Icon?: ComponentType }> = {
   dotnet: { name: '.NET', Icon: icons.DotNetIcon },
   nextjs: { name: 'Next.js', Icon: icons.NextjsIcon },
