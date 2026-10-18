@@ -13,6 +13,17 @@ on:
   push:
     branches-ignore:
       - main
+    paths-ignore:
+      - '**/*.md'
+      - '_docs/**'
+      - '__tests__/**'
+      - '.github/dependabot.yml'
+      - '.github/workflows/production.yml'
+      - '.github/workflows/tests.yml'
+
+concurrency:
+  group: preview-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   Deploy-Preview:
