@@ -227,4 +227,6 @@ On viewports under 768px wide, `--footer-clearance` is `1rem` in CSS. `MeasuredF
 
 ## Branch `chore/projects-link` (2026-10-17)
 
-The All projects link docks in CSS through `%docked-pill`. The section titles use that same placeholder. This pass did not re-run Lighthouse.
+This branch has no new Lighthouse run. The scores above stay as recorded.
+
+The All projects link and the section titles use `%docked-pill` in `src/styles/abstracts/_placeholders.scss`.

@@ -85,17 +85,18 @@
 
 **Update (2026-10-17, branch `chore/projects-link`): no criterion changes.**
 
-The All projects link on a project page docks with the section titles. Both use `%docked-pill` in `src/styles/abstracts/_placeholders.scss`. On a phone the link sits at the left of the header. From 768px up it sits in the center.
+The All projects link and the section titles use `%docked-pill` in `src/styles/abstracts/_placeholders.scss`. Below 768px wide the link sits at the left of the header. From 768px up the link sits in the center. At a height of 500px or less the link is `static`.
 
-Playwright in Chrome checked `/en/projects/eduardo-pavon`.
+Playwright in Chrome checked `/en/projects/eduardo-pavon` and `/es/projects/eduardo-pavon`.
 
-- At 375 and 390 wide the open phone menu covers the link. `.nav-wrapper` rises to z-index 6. `elementFromPoint` on the link hits the header.
-- At 768 and 1280 wide the open nav menu and the language menu do not overlap the link. Each menu is the top hit in its own box. The link stays the top hit in its own box.
+- At 390px wide the open phone menu covers the link. `.nav-wrapper` uses `$z-menu`.
+- At 1280px wide the open language menu is the top hit in its box. The centered link stays clear of the desktop nav and the logo.
 - The `ProjectMedia` dialog covers the link. The `.close` button stays `position: sticky` with `top: 12px`.
-- At a height of 500 the link is `static`. At a height of 501 it is `sticky`.
-- Below 768px wide the footer stays in the page flow. At 390×844 it is `static` and does not cover the link. At 1280×900 it stays `fixed` at z-index 4, above the link.
+- At 390×500 and at 1280×500 the link is `static`. At 390×501 the link is `sticky`.
+- At 390×844 the footer is `static` in the page flow. At 1280×900 the footer is `fixed` at `$z-footer`. The fixed footer sits above the link.
+- On `/es/projects/eduardo-pavon` at 390px wide the link is `sticky` at `top: 35px` on `$z-docked`.
 
-axe 4.11.0 found 0 violations in 48 runs (home and two project pages in English and Spanish, both themes, 375 and 1280 wide, unscrolled and scrolled with the pill docked).
+axe 4.11.0 found 0 violations in 48 runs (`/en`, `/es`, `/en/projects/collectible-pleasures`, `/es/projects/collectible-pleasures`, `/en/projects/eduardo-pavon`, and `/es/projects/eduardo-pavon`, both themes, 375 and 1280 wide, unscrolled and scrolled with the first section title or the All projects link docked).
 
 Severity counts as found on 2026-10-05:
 
@@ -154,7 +155,7 @@ Severity counts as found on 2026-10-05:
   - The reCAPTCHA notice sits under the button.
   - The pressed Submit button has black text.
 - **Skip link:** a "Skip to content" link appears top-left on the first Tab.
-- **Short screens:** on screens 500px tall or less, the header scrolls away, the footer sits at the end of the page, and section titles are not sticky. The All projects link is not sticky at that height.
+- **Short screens:** on screens 500px tall or less, the header scrolls away, the footer sits at the end of the page, and section titles are not sticky. The All projects link is `static` at that height.
 - **404 page:** the heading reads "404 - Page not found" / "404 - Página no encontrada".
 
 **What axe found vs. what manual testing found.** axe reported only 2 real problems: the active nav link contrast in light mode, and `aria-label` on a `<p>`. Every other finding below came from keyboard, accessibility tree, pixel, motion, and form testing. A clean axe run here would have been very misleading.
