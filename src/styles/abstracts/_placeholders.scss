@@ -68,7 +68,6 @@
   font-size: 1rem;
 }
 
-// Docks in the header, level with the nav pill, and lines up with its side padding.
 %docked-pill {
   position: sticky;
   top: calc((#{$header-height} - #{$pill-height}) / 2);
