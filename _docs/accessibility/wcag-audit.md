@@ -95,7 +95,7 @@ Playwright in Chrome checked `/en/projects/eduardo-pavon`.
 - At a height of 500 the link is `static`. At a height of 501 it is `sticky`.
 - Below 768px wide the footer stays in the page flow. At 390×844 it is `static` and does not cover the link. At 1280×900 it stays `fixed` at z-index 4, above the link.
 
-This pass did not run axe.
+axe 4.11.0 found 0 violations in 48 runs (home and two project pages in English and Spanish, both themes, 375 and 1280 wide, unscrolled and scrolled with the pill docked).
 
 Severity counts as found on 2026-10-05:
 
