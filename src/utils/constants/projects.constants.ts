@@ -142,7 +142,7 @@ export const PROJECTS: Project[] = [
     updated: PROJECTS_UPDATED,
     stack: ['react', 'typescript', 'css'],
     links: [{ kind: 'live', href: 'https://letrastica-5-pocs.netlify.app' }],
-    media: [{ ...desktop('desktop'), height: 600 }, phone('phone')],
+    media: [desktop('desktop'), phone('phone')],
     art: 'letrastica',
   },
   {
