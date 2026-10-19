@@ -89,6 +89,26 @@ describe('SectionCard', () => {
     expect(card.className).toContain(styles.inView);
   });
 
+  test('links a {handle} in the description to that GitHub profile', () => {
+    render(
+      <LanguageProvider locale='en' content={en}>
+        <SectionCard
+          entry={{ ...entry, description: 'Written with {miglconts}.' }}
+          icons={[]}
+          tools={[]}
+        />
+      </LanguageProvider>
+    );
+    const link = screen.getByRole('link', {
+      name: /^@miglconts(?!\w)/,
+      hidden: true,
+    });
+    expect(link.getAttribute('href')).toBe('https://github.com/miglconts');
+    expect(screen.getByText(/^Written with/).textContent).toBe(
+      `Written with @miglconts ${en.home.newTab}.`
+    );
+  });
+
   test('lists the icons by name, then the other tools as text', () => {
     render(
       <LanguageProvider locale='en' content={en}>

@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest';
 import { getDictionary } from '@/app/[locale]/dictionaries';
 import { locales } from '@/utils/server/localization.utils';
-import { toUiContent } from '@/models';
+import { EnContent, EsContent, toUiContent } from '@/models';
 
 test.each(locales)('returns the %s dictionary', async (locale) => {
   expect(await getDictionary(locale)).toBeDefined();
@@ -21,3 +21,16 @@ test.each(['wp-login.php', '_next', '.env', 'toString'])(
     );
   }
 );
+
+const placeholders = (value: unknown, path = ''): [string, string[]][] =>
+  value && typeof value === 'object'
+    ? Object.entries(value).flatMap(([key, child]) =>
+        placeholders(child, `${path}/${key}`)
+      )
+    : [[path, (String(value).match(/\{\w+\}/g) ?? []).sort()]];
+
+test('both dictionaries have the same keys, list lengths and placeholders', () => {
+  expect(Object.fromEntries(placeholders(EsContent))).toEqual(
+    Object.fromEntries(placeholders(EnContent))
+  );
+});

@@ -1,7 +1,7 @@
 {
   "meta": {
     "home": {
-      "title": "Eduardo Aire Torres | Ingeniero de Diseño y Producto",
+      "title": "Eduardo Aire Torres | Ingeniero de diseño y de producto",
       "description": "Diseño y tipografía, junto con aplicaciones web full-stack en React, Next.js, TypeScript y .NET."
     },
     "contact": {
@@ -56,26 +56,26 @@
     "closeToast": "Cerrar aviso"
   },
   "home": {
-    "subtitle": "Ingeniero de Diseño · Ingeniero de Producto",
-    "summary": "Seis años creando aplicaciones web de principio a fin, sobre más de 10 años en diseño y tipografía.",
+    "subtitle": "Ingeniero de diseño · Ingeniero de producto",
+    "summary": "Seis años creando aplicaciones web de principio a fin, sobre más de diez años de diseño y tipografía.",
     "scrollCue": "Conoce más sobre mí",
     "techStack": "Tecnologías",
     "newTab": "(se abre en otra pestaña)"
   },
   "about": {
     "title": "Sobre mí",
-    "text": "Soy ingeniero de diseño. Empecé en el diseño gráfico y la tipografía, y después pasé a construir aplicaciones web, desde la interfaz hasta la base de datos. Me sigue importando tanto cómo se siente un producto como cómo funciona. Ahí es donde más ayudo: llevo las ideas de diseño al código sin perder los detalles y tomo decisiones de producto pensando en las personas. En mis ratos libres diseño tipografías y pruebo ideas nuevas."
+    "text": "Soy ingeniero de diseño. Empecé en el diseño gráfico y la tipografía, y las tareas repetitivas de ese trabajo me llevaron a automatizarlas con Python y JavaScript. De ahí llegué a las aplicaciones web: primero al front-end y luego a todo lo demás, de la base de datos al despliegue. En todo ese camino me ha seguido importando cómo se ve y cómo funciona un producto, y que funcione para todas las personas. Ahí es donde más ayudo: llevo las ideas de diseño al código sin perder los detalles y tomo decisiones de producto pensando en la gente. En paralelo sigo aprendiendo herramientas y formas nuevas de construir software. Lejos de la pantalla hago caligrafía artística y cocino: a la parrilla, ahumado y rostizado, pero también pastas, guisos, pan, repostería y postres."
   },
   "experience": {
     "title": "Experiencia",
     "items": [
       {
-        "role": "Ingeniero de Software",
+        "role": "Ingeniero de software",
         "company": "BevNET.com, Inc.",
         "companyUrl": "https://www.bevnet.com",
         "meta": "Contrato · Remoto",
-        "period": "Ene 2026 – Presente",
-        "description": "Trabajo en una plataforma de medios de cinco marcas, con .NET y Next.js, de la base de datos a la pantalla. Rediseñé la búsqueda de PressRelease para que, en pruebas locales, pasara de segundos a milisegundos, construí Nombase Funding de principio a fin e implementé Sentry en 7 servicios.",
+        "period": "ene. 2026 – actualidad",
+        "description": "Las marcas de BevNET ahora están juntas bajo CPG Media, y trabajo en todas, de la base de datos a la pantalla. Construí el encabezado compartido de CPG Media y una sola búsqueda para todos los sitios, hice el nuevo sitio de Taste Radio en Next.js y pasé páginas antiguas de Blazor a Next.js y nuestras Lambdas a .NET 10. También implementé Sentry en todo el stack y quité los sistemas que el negocio ya había retirado, para que el código sea cada vez más pequeño y fácil de cambiar.",
         "stack": [
           "dotnet",
           "nextjs",
@@ -97,12 +97,12 @@
         ]
       },
       {
-        "role": "Desarrollador Frontend",
+        "role": "Desarrollador front-end",
         "company": "BevNET.com, Inc.",
         "companyUrl": "https://www.bevnet.com",
         "meta": "Contrato · Remoto",
-        "period": "May 2023 – Ene 2026",
-        "description": "Llevé diseños a interfaces de producción para nombase.com y las marcas de BevNET, cuidando los detalles del diseño al código. Pasé del front-end al full-stack, con APIs, bases de datos, migraciones y pruebas, y de ahí al ascenso a Ingeniero de Software.",
+        "period": "may. 2023 – ene. 2026",
+        "description": "Empecé en el front-end de BevNET, NOSH y Brewbound, llevando diseños a interfaces de producción. Luego el trabajo creció: me hice cargo de casi toda la plataforma de comunicados de prensa, construí las páginas de Nombase, de la búsqueda a sus cursos, y rediseñé el paywall y las páginas de suscripción. En el camino pasé del front-end a las API, las bases de datos y las migraciones, y de ahí al ascenso a ingeniero de software.",
         "stack": [
           "nextjs",
           "typescript",
@@ -119,12 +119,12 @@
         ]
       },
       {
-        "role": "Font Engineer y Diseñador Tipográfico",
+        "role": "Ingeniero de fuentes y diseñador tipográfico",
         "company": "And Repeat, Inc.",
         "companyUrl": "https://andrepeat.com",
         "meta": "Contrato · Remoto",
-        "period": "Abr 2021 – Jun 2022",
-        "description": "Diseñé tipografías y construí las herramientas de producción detrás de las fuentes, con scripts en Python y plugins de Glyphs. También creé el Branding System Generator y lo presenté en Typographics TypeLab 2022.",
+        "period": "abr. 2021 – jun. 2022",
+        "description": "Diseñé tipografías y construí las herramientas de producción detrás de las fuentes, con scripts en Python y plugins de Glyphs. También dirigí el Branding System Generator, que programé con {miglconts}, y lo presenté en Typographics TypeLab 2022.",
         "stack": [
           "python",
           "robofont",
@@ -136,11 +136,11 @@
         ]
       },
       {
-        "role": "Desarrollador Frontend y Creative Coder",
+        "role": "Desarrollador front-end y programador creativo",
         "company": "Abismo⁰",
         "companyUrl": "https://abismozero.com",
-        "meta": "Autónomo · Híbrido",
-        "period": "Abr 2020 – Abr 2023",
+        "meta": "Independiente · Híbrido",
+        "period": "abr. 2020 – abr. 2023",
         "description": "Aquí fue donde el arte, el diseño y el código se juntaron para mí. Desarrollé interfaces interactivas con arte generativo y animación, y automaticé el diseño editorial conectando Python y Pandas con InDesign.",
         "stack": [
           "javascript",
@@ -154,12 +154,12 @@
         ]
       },
       {
-        "role": "Diseñador Gráfico Senior",
+        "role": "Diseñador gráfico sénior",
         "company": "Universidad Anáhuac México",
         "companyUrl": "https://www.anahuac.mx/mexico/",
         "meta": "Presencial",
-        "period": "Ene 2017 – Mar 2020",
-        "description": "Renové el lenguaje visual de las comunicaciones del departamento y armé sistemas de branding para eventos, del merchandising y el motion al editorial, la tipografía, la web y la señalética. El trabajo repetitivo, como diplomas e invitaciones animadas, fue lo que me llevó a escribir Python y JavaScript, y de ahí al software.",
+        "period": "ene. 2017 – mar. 2020",
+        "description": "Renové el lenguaje visual de las comunicaciones del departamento y armé sistemas de branding para eventos, del merchandising y la animación al diseño editorial, la tipografía, la web y la señalética. El trabajo repetitivo, como diplomas e invitaciones animadas, fue lo que me llevó a escribir Python y JavaScript, y de ahí al software.",
         "stack": [
           "python",
           "javascript",
@@ -173,7 +173,7 @@
         ]
       },
       {
-        "role": "Archivo de Diseño y Arte",
+        "role": "Archivo de diseño y arte",
         "company": "archive.eduairet.com",
         "companyUrl": "https://archive.eduairet.com",
         "meta": "",
@@ -204,7 +204,9 @@
       "course": "Alchemy University",
       "showcase": "Proyecto en ETHGlobal",
       "accelerator": "Women Build Web3",
-      "appCode": "Código de la aceleradora"
+      "appCode": "Código de la aceleradora",
+      "talk": "Charla en TypeLab 2026",
+      "pitch": "Pitch en la aceleradora"
     },
     "art": {
       "waves": {
@@ -226,29 +228,30 @@
     "items": {
       "eduardo-pavon": {
         "title": "Eduardo Pavón",
-        "period": "Sep – Oct 2026",
+        "period": "sept. – oct. 2026",
         "role": "Diseño y desarrollo",
         "summary": "Un sitio galería para Eduardo Pavón, un artista que dibuja con plumas Bic. Rápido, bilingüe y sereno, para que los dibujos sostengan la página.",
         "explanation": [
           "Eduardo Pavón construye dibujos hiperrealistas trazo a trazo con una pluma. El sitio tenía que mostrar esa paciencia de cerca.",
-          "Hice un sitio estático en español e inglés que carga rápido y no estorba. Una lupa te deja seguir cada línea."
+          "Hice un sitio estático en español e inglés que carga rápido y no estorba. Una lupa te deja seguir cada línea. También dibujé en Glyphs las letras de su nombre."
         ],
         "highlights": [
           "Páginas estáticas en dos idiomas, hechas con Astro y Tailwind, sin framework corriendo en el navegador.",
           "Un solo script pequeño: una lupa sobre cada dibujo.",
-          "Un proceso de imágenes que prepara cada obra para la web.",
-          "Todo corre en Docker, desde el servidor de desarrollo hasta el build."
+          "Un flujo de imágenes que prepara cada obra para la web.",
+          "Todo corre en Docker, desde el servidor de desarrollo hasta la compilación."
         ],
         "media": {
           "home": "La página principal: el nombre del artista en letras azules grandes sobre una breve presentación de su obra.",
           "clip": "Un recorrido hacia abajo por la página principal, de la presentación a los dibujos.",
+          "clip-loupe": "La lupa del sitio recorriendo un dibujo de la serie Remnants.",
           "phone": "La galería en un teléfono."
         },
         "shareAlt": "El sitio de Eduardo Pavón: su nombre en letras azules grandes sobre una breve presentación de su obra."
       },
       "font-proofer": {
         "title": "Font Proofer",
-        "period": "Jun 2026",
+        "period": "jun. 2026",
         "role": "Diseño y desarrollo",
         "summary": "Una plantilla de Claude Code para diseñadores de tipografía. Pones tus fuentes, respondes unas preguntas y obtienes pruebas de impresión y páginas de prueba web.",
         "explanation": [
@@ -262,7 +265,7 @@
           "Las fuentes se quedan en tu equipo. Nunca se suben ni se publican."
         ],
         "media": {
-          "title": "La portada de mi charla en TypeLab 2026: una gran “Aa” con serifas sobre “Claude Font Proofer”.",
+          "title": "La portada de mi charla en TypeLab 2026: una «Aa» grande con serifas sobre «Claude Font Proofer».",
           "print": "Una diapositiva sobre la prueba impresa, con una captura de un PDF generado.",
           "web": "Una diapositiva sobre la prueba web, con una captura de un espécimen en vivo."
         },
@@ -270,15 +273,16 @@
       },
       "vibe-coded-torus": {
         "title": "Vibe-coded Torus",
-        "period": "Mar 2026",
+        "period": "mar. 2026",
         "role": "Proyecto personal",
-        "summary": "El clásico toro de ASCII que gira, rehecho en Rust como un experimento de trabajar con Claude Code a partir de una especificación escrita.",
+        "summary": "El clásico toro de ASCII que gira, rehecho en Rust. Claude escribió las matemáticas y el código; yo definí el contexto y la especificación, y guie el trabajo.",
         "explanation": [
-          "donut.c dibuja un toro en 3D que gira usando solo caracteres de texto. Lo rehíce en Rust con Claude Code.",
-          "Primero escribí las matemáticas y luego cubrí cada paso con pruebas. La versión de abajo es un port que corre en tu navegador."
+          "donut.c dibuja un toro en 3D que gira usando solo caracteres de texto. Lo rehíce en Rust para practicar cómo dirigir un flujo de trabajo con agentes en lugar de escribir el código yo mismo.",
+          "Armé dos agentes de Claude Code: uno que solo resuelve las matemáticas y otro que escribe el código y no puede usar una fórmula hasta que el primero la aprueba. Claude escribió las matemáticas y el código en Rust. Yo definí el contexto y la especificación, y guie cada paso con pruebas. La versión de abajo es una adaptación que corre en tu navegador."
         ],
         "highlights": [
-          "Toma puntos del toro, los gira, los proyecta y sombrea cada uno con 12 caracteres.",
+          "Dos agentes se reparten el trabajo: un asesor de matemáticas que nunca escribe código y un programador que revisa cada fórmula con él antes de usarla.",
+          "Toma puntos del toro, los gira, los proyecta y sombrea cada uno con doce caracteres.",
           "Las matemáticas tienen su propia especificación, y hay pruebas para la proyección, la luz y el dibujo.",
           "Corre en cualquier lado con un comando de Docker."
         ],
@@ -287,12 +291,12 @@
       },
       "letrastica-5": {
         "title": "Letrástica 5",
-        "period": "Abr – Ago 2024",
+        "period": "abr. – ago. 2024",
         "role": "Animación",
         "summary": "El logo animado de Letrástica 5: letras con ojos que siguen tu cursor, sobre un campo de figuritas inquietas.",
         "explanation": [
-          "El logo de la quinta edición de Letrástica se dibujó como un elenco de personajes con ojos. Yo no lo diseñé. Lo animé.",
-          "Cada letra sigue tu cursor y parpadea a su propio ritmo, y las figuritas alrededor no dejan de moverse. Lo hice para insertarlo en el sitio del evento. Mueve tu cursor sobre el de abajo."
+          "El equipo de Letrástica diseñó el logo de su quinta edición como un elenco de personajes con ojos, y yo lo animé.",
+          "Cada letra sigue tu cursor y parpadea a su propio ritmo, y las figuritas alrededor no dejan de moverse. Lo hice para insertarlo en el sitio del festival, donde sigue vivo. Mueve tu cursor sobre el de abajo."
         ],
         "highlights": [
           "Cada letra es su propio dibujo SVG, con ojos que siguen el cursor, o tu toque en el teléfono.",
@@ -301,22 +305,23 @@
           "Hecho para insertarse en el sitio del evento como una pieza independiente."
         ],
         "media": {
-          "desktop": "El logo animado de Letrástica 5: letras negras con ojos blancos sobre un campo verde brillante lleno de figuritas.",
-          "phone": "El logo acomodado para la pantalla de un teléfono."
+          "desktop": "El sitio de Letrástica Festival 5: el logo animado, letras negras con ojos blancos sobre un campo verde brillante lleno de figuritas.",
+          "phone": "El sitio del festival en un teléfono, con el logo acomodado en columna."
         },
-        "shareAlt": "El logo de Letrástica 5: letras negras con ojos blancos sobre un campo verde brillante lleno de figuritas."
+        "shareAlt": "El sitio de Letrástica Festival 5: el logo animado, letras negras con ojos blancos sobre un campo verde brillante lleno de figuritas."
       },
       "the-session": {
         "title": "The Session",
-        "period": "Oct 2023",
+        "period": "oct. 2023",
         "role": "Desarrollador full-stack, equipo de tres",
+        "team": "Equipo: {PLandgrave} (diseño), {dkgoutham} (contratos inteligentes) y yo (full-stack).",
         "summary": "Una DApp para encontrar una sesión de terapia grupal y unirte a la conversación. La hicimos en equipo para ETHOnline 2023.",
         "explanation": [
           "The Session nació de una idea sencilla: hablar ayuda, y nadie debería sentirse solo con eso.",
           "Nuestra diseñadora lo trazó en Figma, nuestro desarrollador de contratos escribió los contratos inteligentes y yo construí la app. Su estilo cálido y llamativo hizo que algo difícil se sintiera acogedor."
         ],
         "highlights": [
-          "Un front end en Next.js hecho a partir del diseño en Figma del equipo.",
+          "Un front-end en Next.js hecho a partir del diseño en Figma del equipo.",
           "Mensajes entre personas con Push Protocol.",
           "Un contrato publicado en la red Sepolia de Scroll."
         ],
@@ -325,11 +330,11 @@
           "groups": "Tarjetas de sesiones de ansiedad, depresión, manejo del estrés y duelo, cada una con día, hora y número de personas.",
           "phone": "La página principal en un teléfono."
         },
-        "shareAlt": "La página principal de The Session: “let’s talk about it” sobre una fila de tarjetas redondeadas."
+        "shareAlt": "La página principal de The Session: «let’s talk about it» sobre una fila de tarjetas redondeadas."
       },
       "emoji-drop": {
         "title": "Emoji Drop",
-        "period": "May – Jun 2023",
+        "period": "may. – jun. 2023",
         "role": "Proyecto personal",
         "summary": "Una DApp pequeña en Internet Computer. Envía un emoji y mira cuál es el que más manda la gente.",
         "explanation": [
@@ -338,7 +343,7 @@
         ],
         "highlights": [
           "Un canister en Motoko que cuenta emojis y revisa que cada entrada sí sea uno.",
-          "Un front end en React y TypeScript servido desde la misma cadena."
+          "Un front-end en React y TypeScript servido desde la misma cadena."
         ],
         "media": {
           "home": "La tarjeta de Emoji Drop: un campo para elegir un emoji, un botón Verify y un botón redondo Send.",
@@ -348,7 +353,7 @@
       },
       "collectible-pleasures": {
         "title": "Collectible Pleasures",
-        "period": "May 2023",
+        "period": "may. 2023",
         "role": "Proyecto personal, Alchemy University",
         "summary": "Una DApp que convierte tres letras en un NFT, dibujadas como las ondas de la portada de Unknown Pleasures. Hice el arte, el contrato y la app.",
         "explanation": [
@@ -361,25 +366,25 @@
           "Un contrato en Solidity con pruebas, y una app en Next.js para conectar la wallet y acuñar."
         ],
         "media": {
-          "home": "El sitio en vivo: “Collectible” sobre un cuadro de ondas blancas, luego “PLEASURES” y un campo para escribir tres letras.",
+          "home": "El sitio en vivo: «Collectible» sobre un cuadro de ondas blancas, luego «PLEASURES» y un campo para escribir tres letras.",
           "phone": "La misma página en un teléfono."
         },
-        "shareAlt": "Collectible Pleasures: un cuadro de ondas blancas entre “Collectible” y “PLEASURES”."
+        "shareAlt": "Collectible Pleasures: un cuadro de ondas blancas entre «Collectible» y «PLEASURES»."
       },
       "melvin-pay": {
         "title": "Melvin Pay",
-        "period": "Ene – Mar 2023",
+        "period": "ene. – mar. 2023",
         "role": "Desarrollador front-end, portal de comercios",
-        "summary": "Un producto de pagos que ayudé a llevar al lanzamiento. Ordené los componentes compartidos para que fueran más fáciles de usar y entregué las funciones del portal de comercios que el equipo necesitaba para salir a producción.",
+        "summary": "Una startup de pagos para el cuidado de mascotas. Construí el portal de comercios a partir de los diseños del equipo y lo terminé a tiempo para el lanzamiento del MVP.",
         "explanation": [
-          "Melvin Pay dejaba que los dueños de mascotas pagaran consultas y cuidados en parcialidades. Me uní para ayudar a lanzarlo y construí el portal de comercios: la parte que usaban clínicas y tiendas para llevar sus ventas.",
-          "La empresa ya cerró, así que estas pantallas vienen de mi código corriendo con datos inventados."
+          "Melvin Pay permitía a los dueños de mascotas pagar consultas y cuidados en parcialidades. Me uní al equipo de Melvin para construir el portal de comercios, la parte que usaban clínicas y tiendas para crear tickets y cobrar, y lo dejé listo para el lanzamiento del MVP, a partir de los diseños y el backend del equipo.",
+          "Las pantallas de abajo usan datos de ejemplo y son solo ilustrativas."
         ],
         "highlights": [
           "Un tablero donde el comercio crea tickets y cobra pagos con un toque.",
           "Listas de tickets pendientes, pagados y sin usar, con el historial de pagos de cada uno.",
           "Un reporte semanal de ingresos que separa efectivo, transferencias y saldos.",
-          "Componentes compartidos ordenados para que el equipo entregara más rápido."
+          "Componentes compartidos ordenados para reutilizarlos sin copiar código."
         ],
         "media": {
           "clip": "Un recorrido por el portal de comercios: las pestañas de tickets y luego el reporte semanal de ingresos.",
@@ -391,28 +396,29 @@
       },
       "typefobia": {
         "title": "Typefobia",
-        "period": "Dic 2022 – Feb 2023",
+        "period": "dic. 2022 – feb. 2023",
         "role": "Desarrollador front-end, Letter Engine",
-        "summary": "El sitio de Typefobia, un “anti congreso” de tipografía. Colores escandalosos, un programa completo y donaciones con tarjeta o cripto.",
+        "team": "Equipo: {miglconts} y yo en Letter Engine, con el equipo de Typefobia.",
+        "summary": "El sitio de Typefobia, un «anticongreso» de tipografía. Colores escandalosos, un programa completo y donaciones con tarjeta o cripto.",
         "explanation": [
           "Typefobia fue un evento de tipografía irreverente, y el sitio tenía que estar a su altura.",
-          "Con Letter Engine hice las páginas del programa, las personas invitadas y los talleres, además de una forma de donar con PayPal o con una wallet de cripto. Escribí la mayor parte del código."
+          "Con Letter Engine y el equipo de Typefobia hice las páginas del programa, las personas invitadas y los talleres, además de una forma de donar con PayPal o con una wallet de cripto. Escribí la mayor parte del código."
         ],
         "highlights": [
-          "Un sitio en Next.js con páginas para el programa, invitadxs, talleres y actividades.",
+          "Un sitio en Next.js con páginas para el programa, las personas invitadas, los talleres y las actividades.",
           "Un contrato de donaciones en Solidity con pruebas, conectado con un botón de wallet.",
-          "Donaciones con PayPal y registro al boletín con Mailchimp."
+          "Donaciones con PayPal, junto al registro al boletín con Mailchimp que hizo el equipo."
         ],
         "media": {
           "clip": "Un recorrido hacia abajo por la página principal mientras cambia el degradado.",
-          "guests": "La página de invitadxs, con la foto y la semblanza de cada ponente en cajas negras.",
+          "guests": "La página «Invitadxs», con la foto y la semblanza de cada ponente en cajas negras.",
           "phone": "La página principal en un teléfono."
         },
         "shareAlt": "La página principal de Typefobia sobre un degradado de rosa a naranja."
       },
       "fontfactory": {
         "title": "FontFactory",
-        "period": "Nov 2022",
+        "period": "nov. 2022",
         "role": "Proyecto personal",
         "summary": "Una DApp en NEAR que acuña tu propia copia de la fuente Paradisio, marcada con un ID de fuente único.",
         "explanation": [
@@ -421,7 +427,7 @@
         ],
         "highlights": [
           "Un contrato en Rust en la testnet de NEAR, con pruebas unitarias y de integración.",
-          "Un front end pequeño que entra con una wallet de NEAR y muestra el último ID de fuente."
+          "Un front-end pequeño que entra con una wallet de NEAR y muestra el último ID de fuente."
         ],
         "media": {
           "home": "La página de FontFactory: un logo redondo FF, una caja para el último ID de fuente y un botón para entrar con NEAR.",
@@ -431,23 +437,23 @@
       },
       "interplanetary-fonts": {
         "title": "InterplanetaryFonts",
-        "period": "Sep 2022 – Abr 2023",
+        "period": "sept. 2022 – abr. 2023",
         "role": "Codiseñador y desarrollador front-end",
+        "team": "Equipo: {hyperalchemy}, {jsanchez034}, {miglconts} y yo.",
         "company": "Women Build Web3",
-        "summary": "Un marketplace descentralizado de fuentes que codiseñé. Llegó a la final de ETHOnline 2022 y entró a la aceleradora Women Build Web3. Di forma a la interfaz y a los datos detrás de ella.",
+        "summary": "Un marketplace descentralizado de fuentes. Al inicio de ETHOnline 2022 propuse la idea y armé el equipo; llegamos a la final y después completamos la aceleradora Women Build Web3.",
         "explanation": [
           "InterplanetaryFonts era un marketplace donde los diseñadores de tipografía podían compartir proyectos, recibir fondos mientras trabajaban y vender fuentes como NFT.",
-          "Lo hicimos en un equipo pequeño para ETHOnline 2022, donde llegó a la final, y luego lo llevamos a la aceleradora Women Build Web3. Nuestro video demo muestra todo el recorrido."
+          "Al inicio de ETHOnline 2022 propuse la idea y armé el equipo, y llegamos a la final. Después pasamos por la aceleradora Women Build Web3 y lo presentamos en su última sesión."
         ],
         "highlights": [
-          "Construí casi todo el front end del hackathon: la galería, las páginas de fuentes y los perfiles de creadores.",
+          "Construí casi todo el front-end del hackathon: la galería, las páginas de fuentes y los perfiles de creadores.",
           "En la página de una fuente eliges los caracteres a acuñar, ves cómo cambia el precio y pruebas la fuente cargada desde IPFS.",
           "Ventanas para acuñar, financiar un proyecto y enviar pagos en flujo a sus creadores con Superfluid.",
-          "En la aceleradora agregué inicio de sesión y perfiles con Lens Protocol, y una capa de GraphQL con Apollo.",
+          "En la aceleradora agregué el inicio de sesión y los perfiles con Lens Protocol, e hice un primer trabajo básico con GraphQL y The Graph.",
           "Rehice el estado de la página principal y moví fuentes y colores a variables de CSS compartidas."
         ],
         "media": {
-          "clip-demo": "Nuestro video demo de ETHOnline 2022, con sonido.",
           "gallery": "La galería de proyectos de fuentes, cada tarjeta con su portada y su creador.",
           "clip-font": "Un recorrido por la página de una fuente, del espécimen a las opciones para acuñar.",
           "phone": "La página de una fuente en un teléfono."
@@ -456,7 +462,7 @@
       },
       "ascii-name-generator": {
         "title": "ASCII Name Generator",
-        "period": "Jun – Jul 2021",
+        "period": "jun. – jul. 2021",
         "role": "Proyecto personal",
         "summary": "Un programa en Python que escribe tu nombre en letras grandes de ASCII, más un sitio pequeño que guarda cada nombre que hizo.",
         "explanation": [
@@ -487,7 +493,7 @@
         "companyUrl": "https://www.anahuac.mx/mexico/",
         "meta": "",
         "period": "2010 – 2014",
-        "description": "Donde empezó todo. Estudié diseño gráfico y me titulé con honores.",
+        "description": "Donde empezó todo. En el camino aprendí por mi cuenta diseño tipográfico y caligrafía, y me titulé con mención honorífica. Mi proyecto de titulación, MUSANS DECO, un libro y una tipografía, se expuso en el Centro Cultural Bella Época, y fui finalista en el concurso del logotipo por los 50 años de la universidad.",
         "stack": []
       },
       {
@@ -496,7 +502,7 @@
         "companyUrl": "https://www.alchemy.com/university/projects/collectible-pleasures",
         "meta": "",
         "period": "2022 – 2023",
-        "description": "Aquí aprendí a construir en Ethereum, desde contratos inteligentes hasta las herramientas alrededor.",
+        "description": "Aquí aprendí a construir en Ethereum. Hice una blockchain de prueba de trabajo y contratos inteligentes, entregué proyectos semanales como una lista de regalos con árbol de Merkle y un explorador de bloques, y cerré con Collectible Pleasures como proyecto final.",
         "stack": []
       },
       {
@@ -505,22 +511,22 @@
         "companyUrl": "https://credenciales.online.anahuac.mx/006b8075-30fa-4485-b35e-d7ca2a74104b",
         "meta": "",
         "period": "2022",
-        "description": "Una mirada más cercana a cómo funcionan las blockchains y dónde encajan.",
+        "description": "Un diplomado en línea sobre cómo funcionan las blockchains y dónde encajan. Lo tomé en 2022, el mismo año en que participé en ETHMéxico y ETHOnline.",
         "stack": []
       },
       {
         "role": "Type@Cooper Condensed Program",
-        "company": "Cooper Union",
+        "company": "The Cooper Union",
         "companyUrl": "https://coopertype.org",
         "meta": "",
         "period": "2019",
-        "description": "Un programa intensivo de diseño tipográfico que alimentó mi amor por las letras.",
+        "description": "Un programa intensivo de verano en The Cooper Union. Estudié diseño tipográfico, caligrafía, historia y teoría con Hannes Famira, Just van Rossum, Ewan Clayton y Alexander Tochilovsky, y Matthew Carter fue uno de los críticos invitados. Mi proyecto final fue Patón, una tipografía de texto slab serif.",
         "stack": []
       }
     ]
   },
   "notFound": {
-    "title": "404 - Página no encontrada"
+    "title": "404 – Página no encontrada"
   },
   "contact": {
     "title": "Contacto",
@@ -597,7 +603,7 @@
         "body": [
           "Uso tu nombre, correo y mensaje solo para leer tu mensaje y responderte. Guardo una copia de respaldo para que tu mensaje no se pierda si un correo se extravía. Reviso cada envío con reCAPTCHA para frenar el spam.",
           "Es todo. No uso tus datos para mercadotecnia ni publicidad, y no los vendo. Cada uso de arriba es necesario para responderte, así que no hay usos opcionales que desactivar.",
-          "reCAPTCHA le da una calificación a cada envío. Si es demasiado baja, el formulario no se envía y te pide intentarlo de nuevo o escribirme por correo. Una calificación muy alta también hace que recibas un correo breve de \"gracias\". Nada más sobre ti se decide de forma automática.",
+          "reCAPTCHA le da una calificación a cada envío. Si es demasiado baja, el formulario no se envía y te pide intentarlo de nuevo o escribirme por correo. Una calificación muy alta también hace que recibas un correo breve de «gracias». Nada más sobre ti se decide de forma automática.",
           "Si te aplica la ley de la Unión Europea, la base legal es mi interés legítimo en responder los mensajes que me envían y en frenar el spam (artículo 6(1)(f) del RGPD)."
         ]
       },
@@ -607,7 +613,7 @@
         "body": [
           "Estas empresas ayudan a que el sitio funcione. Cada una recibe solo lo que necesita:",
           [
-            "Amazon Web Services (AWS) entrega tu mensaje a mi bandeja de entrada con Amazon SES. Cuando reCAPTCHA está muy seguro de que eres una persona, SES también te envía un correo breve de \"gracias\" que no incluye nada de lo que escribiste. Amazon DynamoDB guarda la copia de respaldo. {aws}",
+            "Amazon Web Services (AWS) entrega tu mensaje a mi bandeja de entrada con Amazon SES. Cuando reCAPTCHA está muy seguro de que eres una persona, SES también te envía un correo breve de «gracias» que no incluye nada de lo que escribiste. Amazon DynamoDB guarda la copia de respaldo. {aws}",
             "Google aloja mi bandeja de entrada en Google Workspace, así que tu nombre, correo y mensaje se guardan ahí. Google reCAPTCHA revisa que una persona esté usando el formulario. Se carga la primera vez que haces clic o tabulas a uno de los campos del formulario, y recaba datos de tu navegador y tu dispositivo para esa revisión. {google}",
             "Adobe sirve la tipografía del sitio en cada página con Adobe Fonts. Tu navegador descarga la tipografía desde Adobe, así que Adobe recibe tu dirección IP. Adobe dice que no guarda tu dirección IP ni usa cookies, y que cuenta qué tipografías usa cada sitio para poder pagarles a quienes las diseñan. {adobe}",
             "Vercel aloja el sitio. Como cualquier servicio de alojamiento, recibe tu dirección IP y datos de tu navegador cuando abres una página. Los usa para enviarte la página, bloquear bots y limitar cuántas veces una misma dirección IP puede enviar el formulario. {vercel}"
@@ -643,8 +649,8 @@
         "body": [
           "El código de este sitio no guarda cookies ni usa herramientas de analítica o de publicidad.",
           [
-            "Tema: el sitio guarda \"light\" o \"dark\" en el almacenamiento local de tu navegador, con el nombre \"theme\", para que la página se vea igual en tu próxima visita. En tu primera visita guarda la configuración de tu dispositivo. Nunca sale de tu dispositivo.",
-            "Demos de proyectos: las piezas en vivo de algunas páginas de proyectos (Collectible Pleasures y ASCII Name Generator) guardan las letras que escribes, y la opción de letras al azar, en el almacenamiento de sesión de tu navegador, con los nombres \"waves-letters\", \"ascii-name\" y \"ascii-random\". Nunca salen de tu dispositivo y se borran al cerrar la pestaña.",
+            "Tema: el sitio guarda «light» o «dark» en el almacenamiento local de tu navegador, con el nombre «theme», para que la página se vea igual en tu próxima visita. En tu primera visita guarda la configuración de tu dispositivo. Nunca sale de tu dispositivo.",
+            "Demos de proyectos: las piezas en vivo de algunas páginas de proyectos (Collectible Pleasures y ASCII Name Generator) guardan las letras que escribes, y la opción de letras al azar, en el almacenamiento de sesión de tu navegador, con los nombres «waves-letters», «ascii-name» y «ascii-random». Nunca salen de tu dispositivo y se borran al cerrar la pestaña.",
             "reCAPTCHA: cuando usas el formulario de contacto, Google guarda una cookie llamada _GRECAPTCHA para su revisión contra el spam. Como reCAPTCHA se carga desde google.com, tu navegador también puede enviarle a Google las cookies que ya tenga de google.com.",
             "Vercel: si Vercel te muestra una revisión breve del navegador, tu navegador recuerda durante una hora que la pasaste."
           ],

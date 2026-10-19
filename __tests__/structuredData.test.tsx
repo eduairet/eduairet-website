@@ -48,8 +48,8 @@ test.each(['en', 'es'])(
 test('Person text comes from what the page shows', async () => {
   const { mainEntity } = (await buildHomeStructuredData('es'))['@graph'][1];
   expect(mainEntity.jobTitle).toEqual([
-    'Ingeniero de Diseño',
-    'Ingeniero de Producto',
+    'Ingeniero de diseño',
+    'Ingeniero de producto',
   ]);
   expect(mainEntity.description).toMatch(/^Soy ingeniero de diseño/);
 });

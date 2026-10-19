@@ -170,6 +170,40 @@ describe('Project pages', () => {
     }
   );
 
+  const teamProjects = PROJECTS.filter(
+    ({ slug }) => content.en.projects.items[slug].team
+  );
+
+  test('the team projects name their teammates', () => {
+    expect(teamProjects.map(({ slug }) => slug)).toEqual([
+      'the-session',
+      'typefobia',
+      'interplanetary-fonts',
+    ]);
+  });
+
+  test.each(
+    teamProjects.flatMap((project) =>
+      (['en', 'es'] as const).map((locale) => [locale, project] as const)
+    )
+  )(
+    '%s %s links each teammate to their GitHub profile',
+    async (locale, project) => {
+      await renderPage(locale, project.slug);
+      const team = content[locale].projects.items[project.slug].team!;
+      const handles = [...team.matchAll(/\{(\w+)\}/g)].map(
+        ([, handle]) => handle
+      );
+      expect(handles.length).toBeGreaterThan(0);
+      for (const handle of handles) {
+        const link = screen.getByRole('link', {
+          name: new RegExp(`^@${handle}(?!\\w)`),
+        });
+        expect(link.getAttribute('href')).toBe(`https://github.com/${handle}`);
+      }
+    }
+  );
+
   test('a project without links shows no link list', async () => {
     await renderPage('en', 'melvin-pay');
     expect(

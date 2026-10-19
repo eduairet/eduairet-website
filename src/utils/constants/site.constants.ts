@@ -23,8 +23,10 @@ export const POSTAL_ADDRESS =
 
 export const ARCHIVE_URL = 'https://archive.eduairet.com';
 
+export const GITHUB_URL = 'https://github.com';
+
 export const SocialUrls = {
-  github: 'https://github.com/eduairet',
+  github: `${GITHUB_URL}/${PERSON_HANDLE}`,
   linkedin: 'https://www.linkedin.com/in/eduairet/',
   x: 'https://x.com/eduairet',
   instagram: 'https://www.instagram.com/eduairet/',
@@ -35,8 +37,8 @@ export const PRIVACY_UPDATED = '2026-10-15';
 
 // Dates the sitemap writes as lastmod.
 export const PAGES_UPDATED = {
-  home: '2026-10-15',
-  projects: '2026-10-15',
+  home: '2026-10-19',
+  projects: '2026-10-19',
   contact: '2026-10-14',
   privacy: PRIVACY_UPDATED,
 };

@@ -81,7 +81,9 @@ test('home titles and descriptions say the same thing in both languages', async 
   expect(en.title).toBe(
     'Eduardo Aire Torres | Design Engineer & Product Engineer'
   );
-  expect(es.title).toBe('Eduardo Aire Torres | Ingeniero de Diseño y Producto');
+  expect(es.title).toBe(
+    'Eduardo Aire Torres | Ingeniero de diseño y de producto'
+  );
   expect(en.description).toBe(
     'Design and typography, together with full-stack web applications in React, Next.js, TypeScript, and .NET.'
   );

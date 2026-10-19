@@ -21,7 +21,9 @@ export type ProjectLinkKind =
   | 'course'
   | 'showcase'
   | 'accelerator'
-  | 'appCode';
+  | 'appCode'
+  | 'talk'
+  | 'pitch';
 
 export type ProjectArt = 'letrastica' | 'torus' | 'waves' | 'ascii';
 
@@ -99,7 +101,7 @@ const clip = (name = 'clip'): ProjectVideo => ({
   height: 800,
 });
 
-const PROJECTS_UPDATED = '2026-10-15';
+const PROJECTS_UPDATED = '2026-10-19';
 
 export const PROJECTS: Project[] = [
   {
@@ -113,6 +115,7 @@ export const PROJECTS: Project[] = [
       'docker',
       'vercel',
       'claudecode',
+      'glyphs',
     ],
     links: [
       { kind: 'live', href: 'https://www.eduardopavon.co' },
@@ -127,6 +130,7 @@ export const PROJECTS: Project[] = [
     stack: ['python', 'docker', 'claudecode', 'html', 'css'],
     links: [
       { kind: 'code', href: 'https://github.com/eduairet/claude-font-proofer' },
+      { kind: 'talk', href: 'https://2026.typographics.com/typelab/#2514' },
     ],
     media: [slide('title'), slide('print'), slide('web')],
   },
@@ -146,7 +150,7 @@ export const PROJECTS: Project[] = [
     started: '2024-04',
     updated: PROJECTS_UPDATED,
     stack: ['react', 'typescript', 'css'],
-    links: [{ kind: 'live', href: 'https://letrastica-5-pocs.netlify.app' }],
+    links: [{ kind: 'live', href: 'https://2024.letrastica.com/' }],
     media: [desktop('desktop'), phone('phone', '#000000')],
     art: 'letrastica',
   },
@@ -262,6 +266,10 @@ export const PROJECTS: Project[] = [
       {
         kind: 'appCode',
         href: 'https://github.com/interplanetaryfonts/interplanetaryfonts.xyz',
+      },
+      {
+        kind: 'pitch',
+        href: 'https://www.youtube.com/watch?v=rNPPYQ38o9s',
       },
     ],
     media: [

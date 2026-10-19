@@ -63,6 +63,7 @@ export interface ProjectCopy {
   title: string;
   period: string;
   role: string;
+  team?: string;
   company?: string;
   summary: string;
   explanation: string[];
@@ -100,6 +101,7 @@ const toProjectCopy = (data?: Partial<ProjectCopy>): ProjectCopy => ({
   title: data?.title || '',
   period: data?.period || '',
   role: data?.role || '',
+  team: data?.team || '',
   company: data?.company || '',
   summary: data?.summary || '',
   explanation: data?.explanation || [],
