@@ -121,7 +121,12 @@ export const PROJECTS: Project[] = [
       { kind: 'live', href: 'https://www.eduardopavon.co' },
       { kind: 'code', href: 'https://github.com/Edvardito/eduardopavon.co' },
     ],
-    media: [desktop('home'), clip(), phone('phone', '#f0ffea')],
+    media: [
+      desktop('home'),
+      clip(),
+      clip('clip-loupe'),
+      phone('phone', '#f0ffea'),
+    ],
   },
   {
     slug: 'font-proofer',
