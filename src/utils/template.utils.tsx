@@ -29,7 +29,11 @@ export const contactDetail = (key: string) => {
 export const githubHandle = (newTab: string) =>
   function GitHubHandle(handle: string) {
     return (
-      <ExternalLink href={`${GITHUB_URL}/${handle}`} newTab={newTab} inline>
+      <ExternalLink
+        href={`${GITHUB_URL}/${handle}`}
+        newTab={newTab}
+        className='prose-link'
+      >
         @{handle}
       </ExternalLink>
     );

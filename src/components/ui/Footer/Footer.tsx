@@ -54,7 +54,10 @@ export default async function Footer({ lang }: IProps) {
       <section className={styles.section}>
         <p>
           Eduardo Aire Torres {new Date().getFullYear()}
-          <IntentLink className={styles.privacy} href={PageUrls.privacy_(lang)}>
+          <IntentLink
+            className={`prose-link ${styles.privacy}`}
+            href={PageUrls.privacy_(lang)}
+          >
             {content.footer.privacy}
           </IntentLink>
         </p>

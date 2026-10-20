@@ -29,7 +29,7 @@ export default async function Privacy({ params }: LocaleProps) {
           <ExternalLink
             href={PrivacyLinks[key]}
             newTab={content.home.newTab}
-            inline
+            className='prose-link'
           >
             {privacy.links[key]}
           </ExternalLink>

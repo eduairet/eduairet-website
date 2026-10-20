@@ -172,8 +172,13 @@ a {
   @extend %screen-reader-only;
 }
 
+// Links inside running text get the underline without the global hover bar.
 .prose-link {
-  @extend %prose-link;
+  @extend %text-link;
+
+  &::before {
+    content: none;
+  }
 }
 
 .skip-link {

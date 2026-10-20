@@ -18,7 +18,7 @@ export default async function Credits({ lang }: IProps) {
         <ExternalLink
           href={CreditLinks[key].href}
           newTab={content.home.newTab}
-          inline
+          className='prose-link'
         >
           {CreditLinks[key].label}
         </ExternalLink>
