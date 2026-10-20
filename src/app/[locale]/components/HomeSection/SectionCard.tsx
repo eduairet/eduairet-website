@@ -8,6 +8,7 @@ import TechStackList from './TechStackList';
 import ExternalLink from '@/components/ui/ExternalLink/ExternalLink';
 import { useCardShape } from '@/components/art/CardShapes/useCardShape';
 import { REVEAL_CLASS } from '@/components/wrappers/RevealOnScroll/useReveal';
+import { fillTemplate, githubHandle } from '@/utils/template.utils';
 
 interface IProps {
   entry: SectionEntry;
@@ -55,7 +56,9 @@ export default function SectionCard({ entry, icons, tools }: IProps) {
             )}
           </p>
         )}
-        <p className={styles.description}>{entry.description}</p>
+        <p className={styles.description}>
+          {fillTemplate(entry.description, githubHandle(content.home.newTab))}
+        </p>
         <TechStackList
           icons={icons}
           tools={tools}

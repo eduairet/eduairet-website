@@ -15,6 +15,7 @@ import {
   buildProjectStructuredData,
   projectOr404,
 } from '@/utils/server';
+import { fillTemplate, githubHandle } from '@/utils/template.utils';
 
 interface IProps {
   params: Promise<{ locale: string; slug: string }>;
@@ -54,6 +55,11 @@ export default async function ProjectPage({ params }: IProps) {
               {copy.period} · {copy.role}
             </p>
             <h1 className={styles.title}>{copy.title}</h1>
+            {copy.team && (
+              <p className={styles.team}>
+                {fillTemplate(copy.team, githubHandle(content.home.newTab))}
+              </p>
+            )}
           </div>
           <div className={styles.explanation}>
             {copy.explanation.map((paragraph) => (

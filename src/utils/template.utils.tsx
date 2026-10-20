@@ -1,5 +1,11 @@
 import { Fragment, type ReactNode } from 'react';
-import { EMAIL_ADDRESS, POSTAL_ADDRESS, SocialUrls } from '@/utils/constants';
+import ExternalLink from '@/components/ui/ExternalLink/ExternalLink';
+import {
+  EMAIL_ADDRESS,
+  GITHUB_URL,
+  POSTAL_ADDRESS,
+  SocialUrls,
+} from '@/utils/constants';
 
 type FillPlaceholder = (key: string) => ReactNode;
 
@@ -14,3 +20,12 @@ export const contactDetail = (key: string) => {
   if (key === 'email') return <a href={SocialUrls.email}>{EMAIL_ADDRESS}</a>;
   return null;
 };
+
+export const githubHandle = (newTab: string) =>
+  function GitHubHandle(handle: string) {
+    return (
+      <ExternalLink href={`${GITHUB_URL}/${handle}`} newTab={newTab}>
+        @{handle}
+      </ExternalLink>
+    );
+  };

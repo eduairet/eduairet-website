@@ -64,7 +64,7 @@
   },
   "about": {
     "title": "About",
-    "text": "I'm a design engineer. I started out in graphic design and typography, and later moved into building web apps, from the interface down to the database. I still care as much about how a product feels as how it works. That's where I help most: I turn design ideas into code without losing the details, and I make product choices with people in mind. On the side, I design typefaces and try out new ideas."
+    "text": "I'm a design engineer. I started in graphic design and typography, and the repetitive parts of that work got me writing Python and JavaScript to automate them. That led me to web apps, first the front end and later everything from the database to the deploy. Through all of it, I've kept caring about how a product looks and how it works, and I want it to work for everyone. That's where I help most: I turn design ideas into code without losing the details, and I make product choices with people in mind. On the side, I keep learning new tools and ways of building. Away from the screen, I do calligraphy as an art, and I cook: grilling, smoking and roasting, but also pasta, stews, baking and desserts."
   },
   "experience": {
     "title": "Experience",
@@ -75,7 +75,7 @@
         "companyUrl": "https://www.bevnet.com",
         "meta": "Contract · Remote",
         "period": "Jan 2026 – Present",
-        "description": "I build across a five-brand media platform on .NET and Next.js, from the database to the screen. I reworked PressRelease search so lookups went from seconds to milliseconds in local testing, built Nombase Funding end to end, and set up Sentry across 7 services.",
+        "description": "BevNET's brands now sit together under CPG Media, and I work across all of them, from the database to the screen. I built the shared CPG Media header and one search for every site, built Taste Radio's new site on Next.js, and moved older Blazor pages to Next.js and our Lambdas to .NET 10. I also set up Sentry across the stack and removed the systems the business had retired, so the codebase keeps getting smaller and easier to change.",
         "stack": [
           "dotnet",
           "nextjs",
@@ -102,7 +102,7 @@
         "companyUrl": "https://www.bevnet.com",
         "meta": "Contract · Remote",
         "period": "May 2023 – Jan 2026",
-        "description": "I turned designs into production UI for nombase.com and the BevNET brands, keeping the details intact from design to code. The work grew from the front end into APIs, databases, migrations, and testing, which led to my promotion to Software Engineer.",
+        "description": "I started on the front ends of BevNET, NOSH and Brewbound, turning designs into production UI. Then the work grew: I owned most of the press release platform, built Nombase's pages from search to its courses, and redesigned the paywall and the subscription pages. Along the way I moved from the front end into APIs, databases and migrations, which led to my promotion to Software Engineer.",
         "stack": [
           "nextjs",
           "typescript",
@@ -124,7 +124,7 @@
         "companyUrl": "https://andrepeat.com",
         "meta": "Contract · Remote",
         "period": "Apr 2021 – Jun 2022",
-        "description": "I designed type and built the production tooling behind the typefaces, with Python scripts and Glyphs plugins. I also built the Branding System Generator and presented it at Typographics TypeLab 2022.",
+        "description": "I designed type and built the production tooling behind the typefaces, with Python scripts and Glyphs plugins. I also led the Branding System Generator, which I wrote with {miglconts}, and presented it at Typographics TypeLab 2022.",
         "stack": [
           "python",
           "robofont",
@@ -204,7 +204,9 @@
       "course": "Alchemy University",
       "showcase": "ETHGlobal showcase",
       "accelerator": "Women Build Web3",
-      "appCode": "Accelerator code"
+      "appCode": "Accelerator code",
+      "talk": "TypeLab 2026 talk",
+      "pitch": "Accelerator pitch"
     },
     "art": {
       "waves": {
@@ -231,7 +233,7 @@
         "summary": "A gallery site for Eduardo Pavón, an artist who draws with Bic pens. Fast, bilingual and calm, so the drawings carry the page.",
         "explanation": [
           "Eduardo Pavón builds hyperrealistic drawings stroke by stroke with a ballpoint pen. The site had to show that patience up close.",
-          "I built a static site in Spanish and English that loads fast and stays out of the way. A magnifier lets you follow every line."
+          "I built a static site in Spanish and English that loads fast and stays out of the way. A magnifier lets you follow every line. I also drew the lettering of his name in Glyphs."
         ],
         "highlights": [
           "Static pages in two languages, built with Astro and Tailwind, with no framework running in the browser.",
@@ -242,6 +244,7 @@
         "media": {
           "home": "The home page: the artist’s name in big blue letters over a short statement about his work.",
           "clip": "A scroll down the home page, past the statement and into the drawings.",
+          "clip-loupe": "The site’s magnifier moving over a drawing from the Remnants series.",
           "phone": "The gallery on a phone."
         },
         "shareAlt": "The Eduardo Pavón site: his name in big blue letters over a short statement about his work."
@@ -272,12 +275,13 @@
         "title": "Vibe-coded Torus",
         "period": "Mar 2026",
         "role": "Personal project",
-        "summary": "The classic spinning ASCII torus, rebuilt in Rust as an experiment in working with Claude Code from a written spec.",
+        "summary": "The classic spinning ASCII torus, rebuilt in Rust. Claude wrote the math and the code; I set the context and the spec and steered the work.",
         "explanation": [
-          "donut.c draws a spinning 3D torus with nothing but text characters. I rebuilt it in Rust with Claude Code.",
-          "I wrote the math down first, then had every step covered by tests. The version below is a port that runs in your browser."
+          "donut.c draws a spinning 3D torus with nothing but text characters. I rebuilt it in Rust to practice running an agentic workflow instead of typing the code myself.",
+          "I set up two Claude Code agents: one that only works out the math, and one that writes the code and can’t use a formula until the math agent approves it. Claude wrote the math and the Rust. I set the context and the spec, and steered each step with tests. The version below is a port that runs in your browser."
         ],
         "highlights": [
+          "Two agents split the work: a math advisor that never writes code, and a coder that checks every formula with it first.",
           "Samples points on the torus, rotates them, projects them and shades each one with 12 characters.",
           "The math lives in its own spec, and tests cover projection, light and rendering.",
           "Runs anywhere with one Docker command."
@@ -291,8 +295,8 @@
         "role": "Animation",
         "summary": "The animated logo for Letrástica 5: letters with eyes that follow your pointer, over a field of restless little figures.",
         "explanation": [
-          "The logo for Letrástica’s fifth edition was drawn as a cast of characters with eyes. I didn’t design it. I animated it.",
-          "Each letter watches your pointer and blinks on its own, and the little figures around them keep moving. It was built to drop into the event’s site. Move your pointer over the one below."
+          "The logo for Letrástica’s fifth edition was designed by the Letrástica staff as a cast of characters with eyes, and I animated it.",
+          "Each letter watches your pointer and blinks on its own, and the little figures around them keep moving. I built it to drop into the festival’s site, where it still lives. Move your pointer over the one below."
         ],
         "highlights": [
           "Each letter is its own SVG drawing, with eyes that track the pointer, or your tap on a phone.",
@@ -301,15 +305,16 @@
           "Built to slot into the event’s site as a self-contained piece."
         ],
         "media": {
-          "desktop": "The animated Letrástica 5 logo: black letters with white eyes on a bright green field of little figures.",
-          "phone": "The logo stacked for a phone screen."
+          "desktop": "The Letrástica Festival 5 site: the animated logo, black letters with white eyes on a bright green field of little figures.",
+          "phone": "The festival site on a phone, with the logo stacked."
         },
-        "shareAlt": "The Letrástica 5 logo: black letters with white eyes on a bright green field of little figures."
+        "shareAlt": "The Letrástica Festival 5 site: the animated logo, black letters with white eyes on a bright green field of little figures."
       },
       "the-session": {
         "title": "The Session",
         "period": "Oct 2023",
         "role": "Full-stack developer, team of three",
+        "team": "Team: {PLandgrave} (design), {dkgoutham} (smart contracts) and me (full stack).",
         "summary": "A DApp for finding a group therapy session and joining the talk. We built it as a team for ETHOnline 2023.",
         "explanation": [
           "The Session started with a simple idea: talking helps, and nobody should feel alone with it.",
@@ -370,16 +375,16 @@
         "title": "Melvin Pay",
         "period": "Jan – Mar 2023",
         "role": "Front-end developer, merchant portal",
-        "summary": "A payments product I helped bring to launch. I cleaned up the shared components so they were easier to work with and shipped the merchant-portal features the team needed to go live.",
+        "summary": "A payments startup for pet care. I built the merchant portal from the team’s designs and got it done in time for the MVP launch.",
         "explanation": [
-          "Melvin Pay let pet owners pay for vet visits and pet care in installments. I joined to help bring it to launch, and I built the merchant portal: the side that clinics and shops used to run their sales.",
-          "The company has since closed, so these screens come from my code running with made-up data."
+          "Melvin Pay let pet owners pay for vet visits and pet care in installments. I joined the Melvin team to build the merchant portal, the side clinics and shops used to create tickets and collect payments, and I got it done for the MVP launch, working from the team’s designs and backend.",
+          "The screens below show sample data and are for display only."
         ],
         "highlights": [
           "A dashboard where a shop creates tickets and collects payments in one tap.",
           "Ticket lists for pending, paid and unused sales, with the payment history of each one.",
           "A weekly income report that splits cash, transfers and balances.",
-          "Shared components cleaned up so the team could ship faster."
+          "Shared components cleaned up so they could be reused without copying code."
         ],
         "media": {
           "clip": "A walk through the merchant portal: the ticket tabs, then the weekly income report.",
@@ -393,15 +398,16 @@
         "title": "Typefobia",
         "period": "Dec 2022 – Feb 2023",
         "role": "Front-end developer, Letter Engine",
+        "team": "Team: {miglconts} and me at Letter Engine, with the Typefobia team.",
         "summary": "The site for Typefobia, an “anti-congress” of type. Loud colors, a full program, and donations by card or crypto.",
         "explanation": [
           "Typefobia was an irreverent type event, and the site had to match its tone.",
-          "With Letter Engine, I built the pages for the program, the guests and the workshops, plus a way to donate with PayPal or a crypto wallet. I wrote most of the code."
+          "With Letter Engine and the Typefobia team, I built the pages for the program, the guests and the workshops, plus a way to donate with PayPal or a crypto wallet. I wrote most of the code."
         ],
         "highlights": [
           "A Next.js site with pages for the program, guests, workshops and activities.",
           "A donation contract in Solidity with tests, connected through a wallet button.",
-          "PayPal donations and a Mailchimp newsletter sign-up."
+          "PayPal donations, next to the team’s Mailchimp newsletter sign-up."
         ],
         "media": {
           "clip": "A scroll down the home page as the gradient shifts.",
@@ -433,21 +439,21 @@
         "title": "InterplanetaryFonts",
         "period": "Sep 2022 – Apr 2023",
         "role": "Co-designer and front-end developer",
+        "team": "Team: {hyperalchemy}, {jsanchez034}, {miglconts} and me.",
         "company": "Women Build Web3",
-        "summary": "A decentralized marketplace for fonts that I co-designed. It reached the ETHOnline 2022 finals and joined the Women Build Web3 accelerator. I shaped the interface and the data behind it.",
+        "summary": "A decentralized marketplace for fonts. I brought the idea and the team together early in ETHOnline 2022, where we reached the finals, and then we completed the Women Build Web3 accelerator.",
         "explanation": [
           "InterplanetaryFonts was a marketplace where type designers could share font projects, get funded while they work and sell fonts as NFTs.",
-          "We built it as a small team for ETHOnline 2022, where it reached the finals, and then took it into the Women Build Web3 accelerator. Our demo video shows the whole flow."
+          "I set the idea and put the team together early in ETHOnline 2022, where we reached the finals. Then we went through the Women Build Web3 accelerator and pitched it at its last session."
         ],
         "highlights": [
           "I built most of the hackathon front end: the gallery, the font pages and the creator profiles.",
           "On a font page you pick the characters to mint, watch the price change, and test the font loaded from IPFS.",
           "Modals to mint, fund a project, and stream payments to its creators with Superfluid.",
-          "In the accelerator I added Lens Protocol sign-in and profiles, and a GraphQL layer with Apollo.",
+          "In the accelerator I added Lens Protocol sign-in and profiles, and did some first, basic work with GraphQL and The Graph.",
           "I reworked the home page state and moved fonts and colors into shared CSS variables."
         ],
         "media": {
-          "clip-demo": "Our ETHOnline 2022 demo video, with sound.",
           "gallery": "The gallery of font projects, each card with a cover image and its creator.",
           "clip-font": "A scroll through a font page, from the specimen to the minting options.",
           "phone": "A font page on a phone."
@@ -487,7 +493,7 @@
         "companyUrl": "https://www.anahuac.mx/mexico/",
         "meta": "",
         "period": "2010 – 2014",
-        "description": "Where it all started. I studied graphic design and graduated with honors.",
+        "description": "Where it all started. Along the way I taught myself type design and calligraphy, and I graduated with honors. My graduation project, MUSANS DECO, a book and a typeface, was shown at the Bella Época Cultural Center, and I was a finalist in the university's 50th-anniversary logo contest.",
         "stack": []
       },
       {
@@ -496,7 +502,7 @@
         "companyUrl": "https://www.alchemy.com/university/projects/collectible-pleasures",
         "meta": "",
         "period": "2022 – 2023",
-        "description": "I learned to build on Ethereum here, from smart contracts to the tooling around them.",
+        "description": "I learned to build on Ethereum here. I built a proof-of-work blockchain and smart contracts, shipped weekly projects like a Merkle-tree gift list and a block explorer, and finished with Collectible Pleasures as my final project.",
         "stack": []
       },
       {
@@ -505,22 +511,22 @@
         "companyUrl": "https://credenciales.online.anahuac.mx/006b8075-30fa-4485-b35e-d7ca2a74104b",
         "meta": "",
         "period": "2022",
-        "description": "A closer look at how blockchains work and where they fit.",
+        "description": "An online diploma on how blockchains work and where they fit. I took it in 2022, the same year I joined ETHMéxico and ETHOnline.",
         "stack": []
       },
       {
         "role": "Type@Cooper Condensed Program",
-        "company": "Cooper Union",
+        "company": "The Cooper Union",
         "companyUrl": "https://coopertype.org",
         "meta": "",
         "period": "2019",
-        "description": "An intensive type-design program that fed my love for letters.",
+        "description": "An intensive summer program at The Cooper Union. I studied type design, calligraphy, history and theory with Hannes Famira, Just van Rossum, Ewan Clayton and Alexander Tochilovsky, with Matthew Carter as a guest critic. My final project was Patón, a slab-serif text typeface.",
         "stack": []
       }
     ]
   },
   "notFound": {
-    "title": "404 - Page not found"
+    "title": "404 – Page not found"
   },
   "contact": {
     "title": "Contact",
@@ -597,7 +603,7 @@
         "body": [
           "I use your name, email and message only to read your message and reply to you. I keep a backup copy so your message isn't lost if an email goes missing. I check each send with reCAPTCHA to keep out spam.",
           "That's all. I don't use your data for marketing or advertising, and I don't sell it. Every use above is needed to answer you, so there are no optional uses to turn off.",
-          "reCAPTCHA gives each send a score. If the score is too low, the form doesn't send and asks you to try again or email me. A very high score also means you get a short \"thanks\" email. Nothing else about you is decided automatically.",
+          "reCAPTCHA gives each send a score. If the score is too low, the form doesn't send and asks you to try again or email me. A very high score also means you get a short “thanks” email. Nothing else about you is decided automatically.",
           "If EU law applies to you, the legal basis is my legitimate interest in answering the messages people send me and keeping out spam (GDPR Article 6(1)(f))."
         ]
       },
@@ -607,7 +613,7 @@
         "body": [
           "These companies help run the site. Each one gets only what it needs:",
           [
-            "Amazon Web Services (AWS) delivers your message to my inbox through Amazon SES. When reCAPTCHA is very sure you're a person, SES also sends you a short \"thanks\" email that includes nothing you wrote. Amazon DynamoDB keeps the backup copy. {aws}",
+            "Amazon Web Services (AWS) delivers your message to my inbox through Amazon SES. When reCAPTCHA is very sure you're a person, SES also sends you a short “thanks” email that includes nothing you wrote. Amazon DynamoDB keeps the backup copy. {aws}",
             "Google hosts my inbox in Google Workspace, so your name, email and message are stored there. Google reCAPTCHA checks that a person is using the form. It loads when you first click or tab into one of the form's fields, and it collects details about your browser and device for that check. {google}",
             "Adobe serves the site's font on every page through Adobe Fonts. Your browser downloads the font from Adobe, so Adobe receives your IP address. Adobe says it doesn't store your IP address or set cookies, and that it counts which fonts each website uses so it can pay the type designers. {adobe}",
             "Vercel hosts the site. Like any host, it receives your IP address and browser details when you open a page. It uses them to send you the page, block bots, and limit how often one IP address can send the form. {vercel}"
@@ -643,8 +649,8 @@
         "body": [
           "This site's code sets no cookies and uses no analytics or ad trackers.",
           [
-            "Theme: the site saves \"light\" or \"dark\" in your browser's local storage, under the name \"theme\", so the page keeps its look on your next visit. On your first visit it saves your device's setting. It never leaves your device.",
-            "Project demos: the live pieces on some project pages (Collectible Pleasures and ASCII Name Generator) keep the letters you type, and the random-letters choice, in your browser's session storage, under the names \"waves-letters\", \"ascii-name\" and \"ascii-random\". They never leave your device and are deleted when you close the tab.",
+            "Theme: the site saves “light” or “dark” in your browser's local storage, under the name “theme”, so the page keeps its look on your next visit. On your first visit it saves your device's setting. It never leaves your device.",
+            "Project demos: the live pieces on some project pages (Collectible Pleasures and ASCII Name Generator) keep the letters you type, and the random-letters choice, in your browser's session storage, under the names “waves-letters”, “ascii-name” and “ascii-random”. They never leave your device and are deleted when you close the tab.",
             "reCAPTCHA: when you use the contact form, Google sets a cookie called _GRECAPTCHA for its spam check. Because reCAPTCHA loads from google.com, your browser may also send Google cookies it already has for google.com.",
             "Vercel: if Vercel shows you a short browser check, your browser remembers for one hour that you passed it."
           ],

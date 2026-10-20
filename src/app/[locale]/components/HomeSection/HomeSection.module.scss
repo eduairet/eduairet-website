@@ -134,6 +134,10 @@ $stack-item-size: 34px;
   line-height: 1.55;
   font-size: 1.0625rem;
   @include degular($wght: 300, $opsz: 18);
+
+  a {
+    @extend %prose-link;
+  }
 }
 
 .stack {

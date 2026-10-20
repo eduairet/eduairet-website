@@ -49,6 +49,16 @@
   @include degular($wght: 700, $opsz: 72);
 }
 
+.team {
+  margin-top: 1rem;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+
+  a {
+    @extend %prose-link;
+  }
+}
+
 .explanation {
   display: flex;
   flex-direction: column;

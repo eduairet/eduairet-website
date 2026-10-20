@@ -5,6 +5,7 @@ import {
   useEffect,
   useRef,
   useState,
+  type CSSProperties,
   type MouseEvent,
   type ReactNode,
 } from 'react';
@@ -29,14 +30,19 @@ interface IProps {
 
 function Frame({
   frame,
+  statusBar,
   children,
 }: {
   frame: MediaFrame;
+  statusBar?: string;
   children: ReactNode;
 }) {
   if (frame === 'plain') return <div className={styles.plain}>{children}</div>;
   return (
-    <div className={styles[frame]}>
+    <div
+      className={styles[frame]}
+      style={{ '--status-bar': statusBar } as CSSProperties}
+    >
       {frame === 'browser' && (
         <div className={styles.bar} aria-hidden='true'>
           <span />
@@ -120,23 +126,13 @@ export default function ProjectMedia({
   const render = (item: Media) => {
     const alt = alts[item.name] ?? '';
     if (item.kind === 'video') {
-      const src = file(`${item.name}.mp4`);
-      const poster = file(`${item.name}-poster.webp`);
-      return item.demo ? (
-        <video
-          className={styles.video}
-          width={item.width}
-          height={item.height}
-          poster={poster}
-          aria-label={alt}
-          preload='none'
-          controls
-          playsInline
-        >
-          <source src={src} type='video/mp4' />
-        </video>
-      ) : (
-        <Clip src={src} poster={poster} video={item} label={alt} />
+      return (
+        <Clip
+          src={file(`${item.name}.mp4`)}
+          poster={file(`${item.name}-poster.webp`)}
+          video={item}
+          label={alt}
+        />
       );
     }
     return (
@@ -167,13 +163,13 @@ export default function ProjectMedia({
     <>
       <ul className={styles.media}>
         {media.map((item) => (
-          <li
-            key={item.name}
-            className={`${styles.item} ${
-              item.kind === 'video' && item.demo ? styles.feature : ''
-            }`}
-          >
-            <Frame frame={item.frame}>{render(item)}</Frame>
+          <li key={item.name} className={styles.item}>
+            <Frame
+              frame={item.frame}
+              statusBar={item.kind === 'image' ? item.statusBar : undefined}
+            >
+              {render(item)}
+            </Frame>
           </li>
         ))}
       </ul>

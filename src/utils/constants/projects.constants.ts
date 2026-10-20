@@ -21,7 +21,9 @@ export type ProjectLinkKind =
   | 'course'
   | 'showcase'
   | 'accelerator'
-  | 'appCode';
+  | 'appCode'
+  | 'talk'
+  | 'pitch';
 
 export type ProjectArt = 'letrastica' | 'torus' | 'waves' | 'ascii';
 
@@ -35,6 +37,8 @@ export interface ProjectImage {
   height: number;
   // Exported widths, largest first; files are `${name}-${width}.webp`.
   widths: number[];
+  // Phones paint their status bar in the color at the top of the screen.
+  statusBar?: string;
 }
 
 export interface ProjectVideo {
@@ -43,8 +47,6 @@ export interface ProjectVideo {
   name: string;
   width: number;
   height: number;
-  // A demo has sound and controls; a clip is a short muted loop.
-  demo?: boolean;
 }
 
 export type ProjectMedia = ProjectImage | ProjectVideo;
@@ -68,13 +70,18 @@ const desktop = (name: string): ProjectImage => ({
   widths: [1280, 640],
 });
 
-const phone = (name: string, widths = [390]): ProjectImage => ({
+const phone = (
+  name: string,
+  statusBar: string,
+  widths = [390]
+): ProjectImage => ({
   kind: 'image',
   frame: 'phone',
   name,
   width: 390,
   height: 844,
   widths,
+  statusBar,
 });
 
 const slide = (name: string): ProjectImage => ({
@@ -94,7 +101,7 @@ const clip = (name = 'clip'): ProjectVideo => ({
   height: 800,
 });
 
-const PROJECTS_UPDATED = '2026-10-15';
+const PROJECTS_UPDATED = '2026-10-19';
 
 export const PROJECTS: Project[] = [
   {
@@ -108,12 +115,18 @@ export const PROJECTS: Project[] = [
       'docker',
       'vercel',
       'claudecode',
+      'glyphs',
     ],
     links: [
       { kind: 'live', href: 'https://www.eduardopavon.co' },
       { kind: 'code', href: 'https://github.com/Edvardito/eduardopavon.co' },
     ],
-    media: [desktop('home'), clip(), phone('phone')],
+    media: [
+      desktop('home'),
+      clip(),
+      clip('clip-loupe'),
+      phone('phone', '#f0ffea'),
+    ],
   },
   {
     slug: 'font-proofer',
@@ -122,6 +135,7 @@ export const PROJECTS: Project[] = [
     stack: ['python', 'docker', 'claudecode', 'html', 'css'],
     links: [
       { kind: 'code', href: 'https://github.com/eduairet/claude-font-proofer' },
+      { kind: 'talk', href: 'https://2026.typographics.com/typelab/#2514' },
     ],
     media: [slide('title'), slide('print'), slide('web')],
   },
@@ -141,8 +155,8 @@ export const PROJECTS: Project[] = [
     started: '2024-04',
     updated: PROJECTS_UPDATED,
     stack: ['react', 'typescript', 'css'],
-    links: [{ kind: 'live', href: 'https://letrastica-5-pocs.netlify.app' }],
-    media: [{ ...desktop('desktop'), height: 600 }, phone('phone')],
+    links: [{ kind: 'live', href: 'https://2024.letrastica.com/' }],
+    media: [desktop('desktop'), phone('phone', '#000000')],
     art: 'letrastica',
   },
   {
@@ -154,7 +168,7 @@ export const PROJECTS: Project[] = [
       { kind: 'live', href: 'https://the-session.vercel.app' },
       { kind: 'code', href: 'https://github.com/eduairet/eth-online-2023' },
     ],
-    media: [clip(), desktop('groups'), phone('phone')],
+    media: [clip(), desktop('groups'), phone('phone', '#222222')],
   },
   {
     slug: 'emoji-drop',
@@ -165,7 +179,7 @@ export const PROJECTS: Project[] = [
       { kind: 'live', href: 'https://siav5-oyaaa-aaaao-aspba-cai.icp0.io' },
       { kind: 'code', href: 'https://github.com/eduairet/emoji_drop' },
     ],
-    media: [desktop('home'), phone('phone')],
+    media: [desktop('home'), phone('phone', '#ffffff')],
   },
   {
     slug: 'collectible-pleasures',
@@ -198,7 +212,7 @@ export const PROJECTS: Project[] = [
         href: 'https://www.alchemy.com/university/projects/collectible-pleasures',
       },
     ],
-    media: [desktop('home'), phone('phone')],
+    media: [desktop('home'), phone('phone', '#000000')],
     art: 'waves',
   },
   {
@@ -211,7 +225,7 @@ export const PROJECTS: Project[] = [
       clip(),
       desktop('income'),
       desktop('ticket'),
-      phone('phone', [780, 390]),
+      phone('phone', '#fafafa', [780, 390]),
     ],
   },
   {
@@ -223,7 +237,7 @@ export const PROJECTS: Project[] = [
       { kind: 'live', href: 'https://www.typefobia.com' },
       { kind: 'code', href: 'https://github.com/letterengine/typefobia.com' },
     ],
-    media: [clip(), desktop('guests'), phone('phone')],
+    media: [clip(), desktop('guests'), phone('phone', '#ff047b')],
   },
   {
     slug: 'fontfactory',
@@ -234,7 +248,7 @@ export const PROJECTS: Project[] = [
       { kind: 'live', href: 'https://fontfactory.vercel.app' },
       { kind: 'code', href: 'https://github.com/eduairet/fontfactory' },
     ],
-    media: [desktop('home'), phone('phone')],
+    media: [desktop('home'), phone('phone', '#000000')],
   },
   {
     slug: 'interplanetary-fonts',
@@ -258,19 +272,15 @@ export const PROJECTS: Project[] = [
         kind: 'appCode',
         href: 'https://github.com/interplanetaryfonts/interplanetaryfonts.xyz',
       },
+      {
+        kind: 'pitch',
+        href: 'https://www.youtube.com/watch?v=rNPPYQ38o9s',
+      },
     ],
     media: [
-      {
-        kind: 'video',
-        frame: 'plain',
-        name: 'clip-demo',
-        width: 1280,
-        height: 720,
-        demo: true,
-      },
       desktop('gallery'),
       clip('clip-font'),
-      phone('phone', [780, 390]),
+      phone('phone', '#ffffdd', [780, 390]),
     ],
   },
   {
@@ -285,7 +295,7 @@ export const PROJECTS: Project[] = [
     media: [
       { ...desktop('terminal'), height: 640 },
       desktop('names'),
-      phone('phone'),
+      phone('phone', '#050505'),
     ],
     art: 'ascii',
   },

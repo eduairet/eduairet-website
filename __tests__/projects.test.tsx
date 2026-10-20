@@ -1,4 +1,6 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
+import { readdirSync } from 'node:fs';
+import { join } from 'node:path';
 import {
   cleanup,
   fireEvent,
@@ -170,6 +172,40 @@ describe('Project pages', () => {
     }
   );
 
+  const teamProjects = PROJECTS.filter(
+    ({ slug }) => content.en.projects.items[slug].team
+  );
+
+  test('the team projects name their teammates', () => {
+    expect(teamProjects.map(({ slug }) => slug)).toEqual([
+      'the-session',
+      'typefobia',
+      'interplanetary-fonts',
+    ]);
+  });
+
+  test.each(
+    teamProjects.flatMap((project) =>
+      (['en', 'es'] as const).map((locale) => [locale, project] as const)
+    )
+  )(
+    '%s %s links each teammate to their GitHub profile',
+    async (locale, project) => {
+      await renderPage(locale, project.slug);
+      const team = content[locale].projects.items[project.slug].team!;
+      const handles = [...team.matchAll(/\{(\w+)\}/g)].map(
+        ([, handle]) => handle
+      );
+      expect(handles.length).toBeGreaterThan(0);
+      for (const handle of handles) {
+        const link = screen.getByRole('link', {
+          name: new RegExp(`^@${handle}(?!\\w)`),
+        });
+        expect(link.getAttribute('href')).toBe(`https://github.com/${handle}`);
+      }
+    }
+  );
+
   test('a project without links shows no link list', async () => {
     await renderPage('en', 'melvin-pay');
     expect(
@@ -265,6 +301,9 @@ describe('Project copy', () => {
           expect(text, `${locale} ${slug}`).not.toBe('');
         expect(item.explanation.length).toBeGreaterThan(0);
         expect(item.highlights.length).toBeGreaterThan(0);
+        expect(Object.keys(item.media).sort(), locale).toEqual(
+          project.media.map(({ name }) => name).sort()
+        );
         for (const media of project.media)
           expect(
             item.media[media.name],
@@ -275,4 +314,31 @@ describe('Project copy', () => {
       }
     }
   );
+});
+
+describe('Project media files', () => {
+  test.each(PROJECTS.map((project) => [project.slug, project] as const))(
+    '%s has exactly the files its media list names',
+    (slug, project) => {
+      const expected = project.media.flatMap((item) =>
+        item.kind === 'image'
+          ? item.widths.map((width) => `${item.name}-${width}.webp`)
+          : [`${item.name}.mp4`, `${item.name}-poster.webp`]
+      );
+      expect(
+        readdirSync(join(process.cwd(), 'public/projects', slug)).sort()
+      ).toEqual([...expected, 'og.jpg'].sort());
+    }
+  );
+
+  test('every phone screen names a status bar color', () => {
+    const phones = PROJECTS.flatMap(({ media }) => media).filter(
+      (item) => item.frame === 'phone'
+    );
+    expect(phones.length).toBeGreaterThan(0);
+    for (const phone of phones)
+      expect(phone.kind === 'image' && phone.statusBar).toMatch(
+        /^#[0-9a-f]{6}$/
+      );
+  });
 });

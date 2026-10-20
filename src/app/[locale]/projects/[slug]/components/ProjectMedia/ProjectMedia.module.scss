@@ -1,6 +1,7 @@
 @use '@/styles/abstracts/index' as *;
 
 $gap: 1.5rem;
+$frame-edge: color-mix(in srgb, var(--foreground) 28%, transparent);
 
 // Masonry from CSS columns, so it needs no script.
 .media {
@@ -16,20 +17,16 @@ $gap: 1.5rem;
   margin-bottom: $gap;
 }
 
-.feature {
-  column-span: all;
-}
-
 .browser,
 .plain {
   width: 100%;
   overflow: hidden;
   background-color: var(--background);
-  @include border($weight: 2px);
+  @include border($weight: 1px, $color: $frame-edge);
 }
 
 .browser {
-  @include rounded-corners($radius: 14px);
+  @include rounded-corners($radius: 12px);
 }
 
 .plain {
@@ -39,39 +36,58 @@ $gap: 1.5rem;
 .bar {
   display: flex;
   align-items: center;
-  gap: 6px;
-  height: 26px;
-  padding: 0 12px;
-  border-bottom: 2px solid var(--foreground);
+  gap: 7px;
+  height: 24px;
+  padding: 0 11px;
+  background-color: color-mix(in srgb, var(--foreground) 8%, var(--background));
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--foreground) 16%, transparent);
 
   span {
-    width: 8px;
-    height: 8px;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
-    border: 2px solid var(--foreground);
+    background-color: color-mix(
+      in srgb,
+      var(--foreground) 32%,
+      var(--background)
+    );
   }
 }
 
+// A phone stays dark in both themes, like the real thing.
 .phone {
   width: min(100%, 240px);
-  padding: 8px 8px 12px;
-  background-color: var(--background);
-  @include border($weight: 2px);
-  @include rounded-corners($radius: 34px);
-
-  &::before {
-    content: '';
-    display: block;
-    width: 32%;
-    height: 6px;
-    margin: 2px auto 8px;
-    border-radius: 3px;
-    background-color: var(--foreground);
-  }
+  padding: 5px;
+  background-color: $black;
+  box-shadow: 0 0 0 1px $frame-edge;
+  @include rounded-corners($radius: 38px);
 
   .screen {
+    position: relative;
     overflow: hidden;
-    @include rounded-corners($radius: 24px);
+    @include rounded-corners($radius: 33px);
+
+    // iPhone proportions; percentages here follow the width.
+    &::before {
+      content: '';
+      display: block;
+      padding-top: 13.7%;
+      background-color: var(--status-bar, #{$black});
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 32%;
+      aspect-ratio: 125 / 37;
+      margin-top: 2.8%;
+      translate: -50% 0;
+      border-radius: 999px;
+      background-color: $black;
+    }
   }
 }
 
