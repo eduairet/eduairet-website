@@ -15,10 +15,6 @@
     cursor: pointer;
     text-align: left;
   }
-
-  a {
-    @extend %prose-link;
-  }
 }
 
 .checkbox {

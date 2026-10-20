@@ -15,7 +15,11 @@ export default async function Credits({ lang }: IProps) {
   return (
     <p className={styles.credits}>
       {fillTemplate(content.footer.credits, (key) => (
-        <ExternalLink href={CreditLinks[key].href} newTab={content.home.newTab}>
+        <ExternalLink
+          href={CreditLinks[key].href}
+          newTab={content.home.newTab}
+          className='prose-link'
+        >
           {CreditLinks[key].label}
         </ExternalLink>
       ))}

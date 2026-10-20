@@ -17,14 +17,23 @@ export const fillTemplate = (text: string, fill: FillPlaceholder) =>
 
 export const contactDetail = (key: string) => {
   if (key === 'address') return POSTAL_ADDRESS;
-  if (key === 'email') return <a href={SocialUrls.email}>{EMAIL_ADDRESS}</a>;
+  if (key === 'email')
+    return (
+      <a href={SocialUrls.email} className='prose-link'>
+        {EMAIL_ADDRESS}
+      </a>
+    );
   return null;
 };
 
 export const githubHandle = (newTab: string) =>
   function GitHubHandle(handle: string) {
     return (
-      <ExternalLink href={`${GITHUB_URL}/${handle}`} newTab={newTab}>
+      <ExternalLink
+        href={`${GITHUB_URL}/${handle}`}
+        newTab={newTab}
+        className='prose-link'
+      >
         @{handle}
       </ExternalLink>
     );

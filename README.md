@@ -31,7 +31,7 @@ Each project has three parts:
 - Copy in English and Spanish, keyed by slug: `projects.items` in `src/models/dictionaries/en.json` and `es.json`.
 - Media in `public/projects/<slug>/`: WebP stills at each width listed, MP4 clips with a `-poster.webp`, and `og.jpg` (1200×630) for link previews. Capture screens with scrollbars hidden. A phone screen names its `statusBar` color, the color at the top of the screenshot.
 
-A team project names its teammates in its `team` copy, as `{handle}` placeholders that become links to their GitHub profiles. Experience card descriptions take the same placeholders.
+A team project names its teammates in its `team` copy, as `{handle}` placeholders that become links to their GitHub profiles. Experience card descriptions take the same placeholders. A link inside running text needs the global `prose-link` class, or it gets the hover bar instead of an underline.
 
 The home page shows `HOME_PROJECTS`. `/projects` lists them all, and the first 9 show before "View all". When a page's content changes, update its date (`PAGES_UPDATED` or the project's `updated`), because the sitemap's `lastmod` comes from it.
 

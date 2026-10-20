@@ -257,6 +257,10 @@ export const PROJECTS: Project[] = [
     stack: ['react', 'ethereum', 'tailwind', 'vercel', 'graphql', 'thegraph'],
     links: [
       {
+        kind: 'live',
+        href: 'https://interplanetary-fonts-ethonline.vercel.app',
+      },
+      {
         kind: 'showcase',
         href: 'https://ethglobal.com/showcase/interplanetary-fonts-ekwuo',
       },

@@ -229,7 +229,9 @@ function ContactForm() {
           closeToast(successToast.current);
         }}
         label={fillTemplate(privacyCheck, () => (
-          <IntentLink href={PageUrls.privacy_(locale)}>{noticeLink}</IntentLink>
+          <IntentLink href={PageUrls.privacy_(locale)} className='prose-link'>
+            {noticeLink}
+          </IntentLink>
         ))}
       />
       <ButtonWrapper
