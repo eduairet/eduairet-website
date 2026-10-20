@@ -26,7 +26,11 @@ export default async function Privacy({ params }: LocaleProps) {
       text,
       (key) =>
         contactDetail(key) ?? (
-          <ExternalLink href={PrivacyLinks[key]} newTab={content.home.newTab}>
+          <ExternalLink
+            href={PrivacyLinks[key]}
+            newTab={content.home.newTab}
+            inline
+          >
             {privacy.links[key]}
           </ExternalLink>
         )

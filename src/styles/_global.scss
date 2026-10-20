@@ -172,6 +172,10 @@ a {
   @extend %screen-reader-only;
 }
 
+.prose-link {
+  @extend %prose-link;
+}
+
 .skip-link {
   position: fixed;
   z-index: $z-skip-link;
