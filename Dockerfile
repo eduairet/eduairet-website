@@ -1,4 +1,4 @@
-# October 21, 2026 security release. Keep this patch in sync with .nvmrc.
+# Keep in sync with .nvmrc.
 FROM node:24.22.1-alpine3.23 AS build
 WORKDIR /app
 
