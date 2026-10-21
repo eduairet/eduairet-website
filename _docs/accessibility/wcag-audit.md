@@ -1,6 +1,6 @@
 # WCAG 2.2 AA
 
-Last verified: 2026-10-18.
+Last verified: 2026-10-21.
 
 The site meets WCAG 2.2 Levels A and AA on the checks below, with two exceptions. 2.2.2 Pause, Stop, Hide is an accepted deviation (F-23). 2.4.2 Page Titled fails on file-like unknown URLs (F-15). 4.1.1 Parsing is obsolete in WCAG 2.2 and is not evaluated.
 
@@ -23,6 +23,8 @@ Contrast ratios in this report are the sRGB relative luminance of the tokens in 
 ## Results
 
 axe-core 4.11.0 reported 0 violations in 136 runs. Home and `/projects/collectible-pleasures`, in `en` and `es`, dark and light, at 375 by 812 and 1280 by 900, reported 0 violations in 16 runs.
+
+`/en/projects/the-session` and `/es/projects/the-session`, dark and light, at 375 by 812 and 1280 by 900, reported 0 violations in 8 runs. These runs used the production server from `pnpm build` and `pnpm start --port 3000`. Playwright 1.56.1 launched Google Chrome 156.0.8078.47 with `--no-sandbox` and `--disable-dev-shm-usage`. `@axe-core/playwright` 4.11.0 ran axe-core 4.11.0 with tags `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, and `wcag22aa`. The server returned 200 for each page. The project links list had one link, `https://github.com/eduairet/eth-online-2023`.
 
 The Tab walk took 744 stops across 24 pages and left 0 hidden or fully under the fixed footer.
 

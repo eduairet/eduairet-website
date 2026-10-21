@@ -165,7 +165,6 @@ export const PROJECTS: Project[] = [
     updated: PROJECTS_UPDATED,
     stack: ['nextjs', 'typescript', 'react', 'ethereum'],
     links: [
-      { kind: 'live', href: 'https://the-session.vercel.app' },
       { kind: 'code', href: 'https://github.com/eduairet/eth-online-2023' },
     ],
     media: [clip(), desktop('groups'), phone('phone', '#222222')],
