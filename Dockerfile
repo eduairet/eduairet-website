@@ -1,5 +1,5 @@
 # Keep in sync with .nvmrc.
-FROM node:24.22.1-alpine3.23 AS build
+FROM node:26.12.0-alpine3.23 AS build
 WORKDIR /app
 
 # Keep in sync with "packageManager"; recent Node images no longer bundle Corepack.
