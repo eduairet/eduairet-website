@@ -1,14 +1,14 @@
 # WCAG 2.2 AA
 
-Last verified: 2026-10-21.
+Last verified: 2026-10-29.
 
 The site meets WCAG 2.2 Levels A and AA on the checks below, with two exceptions. 2.2.2 Pause, Stop, Hide is an accepted deviation (F-23). 2.4.2 Page Titled fails on file-like unknown URLs (F-15). 4.1.1 Parsing is obsolete in WCAG 2.2 and is not evaluated.
 
 ## Scope and method
 
-Production server: `pnpm build`, then `pnpm start --port 3000`. Next.js 16.4.0. React 19.3.0. The test run used that build.
+Production server: `pnpm build`, then `pnpm start --port 3000`, in the `Dockerfile` image (Node.js 26.13.0). Next.js 16.4.1. React 19.3.1. The test run used that build.
 
-axe-core 4.11.0 through `@axe-core/playwright` 4.11.0 and Playwright 1.56.1. Browser: Google Chrome 154.0.8037.92 at `/usr/local/bin/google-chrome`, with `--no-sandbox` and `--disable-dev-shm-usage`. Tags: `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa`.
+axe-core 4.11.0, injected over the Chrome DevTools Protocol into headless Google Chrome 156.0.8078.74. Keyboard and layout checks use Playwright 1.56.1 with Google Chrome, `--no-sandbox`, and `--disable-dev-shm-usage`. Tags: `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa`.
 
 Routes, each in `en` and `es`: `/`, `/contact`, `/privacy`, `/projects`, the 12 slugs in `PROJECTS` (`src/utils/constants/projects.constants.ts`), and `/does-not-exist`. Themes: dark and light. The theme is `localStorage` key `theme` plus `colorScheme` emulation. Viewports: 375 by 812, and 1280 by 900. Menus stayed closed.
 
@@ -22,9 +22,7 @@ Contrast ratios in this report are the sRGB relative luminance of the tokens in 
 
 ## Results
 
-axe-core 4.11.0 reported 0 violations in 136 runs. Home and `/projects/collectible-pleasures`, in `en` and `es`, dark and light, at 375 by 812 and 1280 by 900, reported 0 violations in 16 runs.
-
-`/en/projects/the-session` and `/es/projects/the-session`, dark and light, at 375 by 812 and 1280 by 900, reported 0 violations in 8 runs. These runs used the production server from `pnpm build` and `pnpm start --port 3000`. Playwright 1.56.1 launched Google Chrome 156.0.8078.47 with `--no-sandbox` and `--disable-dev-shm-usage`. `@axe-core/playwright` 4.11.0 ran axe-core 4.11.0 with tags `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, and `wcag22aa`. The server returned 200 for each page. The project links list had one link, `https://github.com/eduairet/eth-online-2023`.
+axe-core 4.11.0 reported 0 violations in 136 runs. The server returned 404 on the 8 `/does-not-exist` runs and 200 on the rest. Each run rendered the requested `data-theme`. axe left `color-contrast` for review on 124 runs and `video-caption` on 40 (F-24).
 
 The Tab walk took 744 stops across 24 pages and left 0 hidden or fully under the fixed footer.
 
