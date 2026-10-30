@@ -6,7 +6,6 @@ permissions:
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-  ENABLE_EXPERIMENTAL_COREPACK: true
 
 # Triggered by the push, not by Tests: a workflow_run trigger deploys the default branch.
 on:
@@ -37,10 +36,10 @@ jobs:
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: '.nvmrc'
-      - name: Enable pnpm via Corepack
-        run: corepack enable
+      - name: Install pnpm
+        run: npm install --global pnpm@10.24.0
       - name: Install Vercel CLI
-        run: npm install --global vercel@58.11.0
+        run: npm install --global vercel@65.2.0
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
       - name: Build Project Artifacts
