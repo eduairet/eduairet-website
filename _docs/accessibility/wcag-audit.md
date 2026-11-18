@@ -24,6 +24,8 @@ Contrast ratios in this report are the sRGB relative luminance of the tokens in 
 
 axe-core 4.11.0 reported 0 violations in 136 runs. The server returned 404 on the 8 `/does-not-exist` runs and 200 on the rest. Each run rendered the requested `data-theme`. axe left `color-contrast` for review on 124 runs and `video-caption` on 40 (F-24).
 
+Home page on a Next.js 16.4.5 production build, with axe-core 4.11.0 in headless Google Chrome 158.0.8127.36: `/en` and `/es`, dark and light, at 375 by 812 and 1280 by 900. 8 runs, 0 violations. Each run rendered the requested `data-theme`. axe left `color-contrast` for review on the 4 runs at 375 wide.
+
 The Tab walk took 744 stops across 24 pages and left 0 hidden or fully under the fixed footer.
 
 `footer` is `static` when the width is under 768 or the height is 500 or less. It is `fixed` from 768 wide with height over 500. Checked on home and `/projects/collectible-pleasures`, in `en` and `es`, at 375 by 667, 390 by 844, 767 by 800, and 1280 by 480 (static), and on home at 1280 by 800 and 768 by 800 (fixed). All 20 cases matched. On the fixed cases `--footer-height` is `82px` and `--footer-clearance` is `calc(82px + 1rem)`. On the static cases the clearance is `1rem`.
