@@ -75,7 +75,7 @@
         "companyUrl": "https://www.bevnet.com",
         "meta": "Contract · Remote",
         "period": "Jan 2026 – Present",
-        "description": "BevNET's brands now sit together under CPG Media, and I work across all of them, from the database to the screen. I built the shared CPG Media header and one search for every site, built Taste Radio's new site on Next.js, and moved older Blazor pages to Next.js and our Lambdas to .NET 10. I also set up Sentry across the stack and removed the systems the business had retired, so the codebase keeps getting smaller and easier to change.",
+        "description": "I work across every BevNET brand under CPG Media, from the database to the screen. I built the shared header and one search for every site, and added funding data and shareable reports to Nombase. I moved podcasts and the newsletter archive to Next.js, and our Lambdas to .NET 10. I removed old event sites, Blazor apps and other retired systems, so the codebase keeps shrinking. I set up Sentry, added smoke tests for every deployed app, and review a lot of my team's code.",
         "stack": [
           "dotnet",
           "nextjs",
