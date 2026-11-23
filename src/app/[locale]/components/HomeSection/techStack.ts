@@ -34,6 +34,7 @@ export const TOOLS: Record<string, { name: string; Icon?: ComponentType }> = {
   aftereffects: { name: 'Adobe After Effects' },
   mssql: { name: 'Microsoft SQL Server' },
   aws: { name: 'AWS' },
+  ec2: { name: 'Amazon EC2' },
   codex: { name: 'OpenAI Codex' },
   thegraph: { name: 'The Graph' },
   rust: { name: 'Rust' },

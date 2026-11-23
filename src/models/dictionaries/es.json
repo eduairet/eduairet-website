@@ -75,7 +75,7 @@
         "companyUrl": "https://www.bevnet.com",
         "meta": "Contrato · Remoto",
         "period": "ene. 2026 – actualidad",
-        "description": "Trabajo en todas las marcas de BevNET bajo CPG Media, de la base de datos a la pantalla. Construí el encabezado compartido y una sola búsqueda para todos los sitios, y sumé a Nombase datos de inversión y reportes que se pueden compartir. Llevé los podcasts y el archivo del newsletter a Next.js, y nuestras Lambdas a .NET 10. Quité sitios viejos de eventos, apps de Blazor y otros sistemas retirados, así que el código es cada vez más pequeño. Configuré Sentry, agregué pruebas de humo para cada app en producción y reviso mucho del código de mi equipo.",
+        "description": "Trabajo en todas las marcas de BevNET bajo CPG Media, de la base de datos a la pantalla. Construí el encabezado compartido y una sola búsqueda para todos los sitios, y para los datos de inversión de Nombase hice la API pública, las páginas de empresas y los reportes que se pueden compartir. Llevé los podcasts y el archivo del newsletter a Next.js, y nuestras Lambdas a .NET 10. Quité sitios viejos de eventos, apps de Blazor y otros sistemas retirados, así que el código es cada vez más pequeño. Configuré Sentry, agregué pruebas de humo para cada app en producción y reviso mucho del código de mi equipo.",
         "stack": [
           "dotnet",
           "nextjs",
@@ -91,6 +91,7 @@
           "sass",
           "mssql",
           "aws",
+          "ec2",
           "sentry",
           "claudecode",
           "codex"

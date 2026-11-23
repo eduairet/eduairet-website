@@ -1,32 +1,47 @@
 # WCAG 2.2 AA
 
-Last verified: 2026-10-29.
-
 The site meets WCAG 2.2 Levels A and AA on the checks below, with two exceptions. 2.2.2 Pause, Stop, Hide is an accepted deviation (F-23). 2.4.2 Page Titled fails on file-like unknown URLs (F-15). 4.1.1 Parsing is obsolete in WCAG 2.2 and is not evaluated.
 
 ## Scope and method
 
-Production server: `pnpm build`, then `pnpm start --port 3000`, in the `Dockerfile` image (Node.js 26.13.0). Next.js 16.4.1. React 19.3.1. The test run used that build.
+### Build
 
-axe-core 4.11.0, injected over the Chrome DevTools Protocol into headless Google Chrome 156.0.8078.74. Keyboard and layout checks use Playwright 1.56.1 with Google Chrome, `--no-sandbox`, and `--disable-dev-shm-usage`. Tags: `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa`.
+Every check runs against a production server: `pnpm build`, then `pnpm start --port 3000`, in the `Dockerfile` image (Node.js 26.13.0).
 
-Routes, each in `en` and `es`: `/`, `/contact`, `/privacy`, `/projects`, the 12 slugs in `PROJECTS` (`src/utils/constants/projects.constants.ts`), and `/does-not-exist`. Themes: dark and light. The theme is `localStorage` key `theme` plus `colorScheme` emulation. Viewports: 375 by 812, and 1280 by 900. Menus stayed closed.
+- Home page axe check: Next.js 16.4.6, React 19.3.1.
+- All-routes axe sweep, keyboard, and layout checks: Next.js 16.4.1, React 19.3.1.
 
-That is 17 paths, 2 locales, 2 themes, and 2 widths, so 136 runs. `rg -c "slug: '" src/utils/constants/projects.constants.ts` prints 12. Adding home, contact, privacy, projects, and the unknown path makes 17.
+### axe-core
 
-Keyboard: Playwright presses Tab on `/en`, `/es`, `/en/contact`, `/es/contact`, `/en/projects/collectible-pleasures`, and `/es/projects/collectible-pleasures`. Viewports: 375 by 667, 1280 by 900, 320 by 568, and 1280 by 480. `prefers-reduced-motion: reduce` is on. Each element counts once, so two links with the same name are two stops. A stop inside `footer` is not counted as covered by the footer. The test run walked forward only.
+axe-core 4.11.0, injected over the Chrome DevTools Protocol into headless Google Chrome. Tags: `wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa`. The theme is `localStorage` key `theme` plus `prefers-color-scheme` emulation, and each run confirms the `data-theme` on `body`. Menus stay closed.
 
-Layout: the same Playwright session reads `footer` position, `--footer-clearance`, and the All projects link (`main a[href="/<locale>/projects"]` on `/projects/eduardo-pavon`).
+- Home page: `/en` and `/es`, dark and light, at 375 by 812 and 1280 by 900, so 8 runs. Google Chrome 158.0.8127.36 with `prefers-reduced-motion: reduce`. Before axe runs, the script waits for the Degular font, turns off CSS transitions and animations, and scrolls through the page once. Without that, `color-contrast` sometimes failed on About text caught mid-fade (for example `#cbcbcb` on `#ededed`).
+- All routes: `/`, `/contact`, `/privacy`, `/projects`, the 12 slugs in `PROJECTS` (`src/utils/constants/projects.constants.ts`), and `/does-not-exist`, each in `en` and `es`, dark and light, at 375 by 812 and 1280 by 900. That is 17 paths, 2 locales, 2 themes, and 2 widths, so 136 runs. `rg -c "slug: '" src/utils/constants/projects.constants.ts` prints 12. Adding home, contact, privacy, projects, and the unknown path makes 17. Google Chrome 156.0.8078.74.
+
+### Keyboard
+
+Keyboard and layout checks use Playwright 1.56.1 with Google Chrome, `--no-sandbox`, and `--disable-dev-shm-usage`. Playwright presses Tab on `/en`, `/es`, `/en/contact`, `/es/contact`, `/en/projects/collectible-pleasures`, and `/es/projects/collectible-pleasures`. Viewports: 375 by 667, 1280 by 900, 320 by 568, and 1280 by 480. `prefers-reduced-motion: reduce` is on. Each element counts once, so two links with the same name are two stops. A stop inside `footer` is not counted as covered by the footer. The test run walked forward only.
+
+### Layout
+
+The same Playwright session reads `footer` position, `--footer-clearance`, and the All projects link (`main a[href="/<locale>/projects"]` on `/projects/eduardo-pavon`).
+
+### Contrast
 
 Contrast ratios in this report are the sRGB relative luminance of the tokens in `src/styles/abstracts/variables/_colors.scss`. The test run computed them from the tokens.
 
 ## Results
 
-axe-core 4.11.0 reported 0 violations in 136 runs. The server returned 404 on the 8 `/does-not-exist` runs and 200 on the rest. Each run rendered the requested `data-theme`. axe left `color-contrast` for review on 124 runs and `video-caption` on 40 (F-24).
+### axe-core
 
-Home page on a Next.js 16.4.5 production build, with axe-core 4.11.0 in headless Google Chrome 158.0.8127.36: `/en` and `/es`, dark and light, at 375 by 812 and 1280 by 900. 8 runs, 0 violations. Each run rendered the requested `data-theme`. axe left `color-contrast` for review on the 4 runs at 375 wide.
+- Home page: 8 runs, 0 violations. Each run rendered the requested `data-theme` and `lang`. axe left `color-contrast` for review on all 8.
+- All routes: 136 runs, 0 violations. The server returned 404 on the 8 `/does-not-exist` runs and 200 on the rest. Each run rendered the requested `data-theme`. axe left `color-contrast` for review on 124 runs and `video-caption` on 40 (F-24).
+
+### Keyboard
 
 The Tab walk took 744 stops across 24 pages and left 0 hidden or fully under the fixed footer.
+
+### Layout
 
 `footer` is `static` when the width is under 768 or the height is 500 or less. It is `fixed` from 768 wide with height over 500. Checked on home and `/projects/collectible-pleasures`, in `en` and `es`, at 375 by 667, 390 by 844, 767 by 800, and 1280 by 480 (static), and on home at 1280 by 800 and 768 by 800 (fixed). All 20 cases matched. On the fixed cases `--footer-height` is `82px` and `--footer-clearance` is `calc(82px + 1rem)`. On the static cases the clearance is `1rem`.
 
@@ -251,7 +266,7 @@ Stack in `src/styles/abstracts/variables/_z-index.scss`, back to front: backgrou
 - Severity: Serious
 - Status: Fixed
 - Where: `public/projects/interplanetary-fonts/clip-demo.mp4`, played by `ProjectMedia.tsx` when `demo: true`
-- Now: the video and the `demo` player are gone. The InterplanetaryFonts page links to the pitch instead. On 2026-10-19, `ffprobe` found no audio stream in any clip in `public/projects`.
+- Now: the video and the `demo` player are gone. The InterplanetaryFonts page links to the pitch instead. `ffprobe` found no audio stream in any clip in `public/projects`.
 
 ## Criteria
 
