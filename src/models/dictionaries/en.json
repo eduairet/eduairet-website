@@ -75,7 +75,7 @@
         "companyUrl": "https://www.bevnet.com",
         "meta": "Contract · Remote",
         "period": "Jan 2026 – Present",
-        "description": "I work across every BevNET brand under CPG Media, from the database to the screen. I built the shared header and one search for every site, and added funding data and shareable reports to Nombase. I moved podcasts and the newsletter archive to Next.js, and our Lambdas to .NET 10. I removed old event sites, Blazor apps and other retired systems, so the codebase keeps shrinking. I set up Sentry, added smoke tests for every deployed app, and review a lot of my team's code.",
+        "description": "I work across every BevNET brand under CPG Media, from the database to the screen. I built the shared header and one search for every site, and the public API, company pages and shareable reports for Nombase's funding data. I moved podcasts and the newsletter archive to Next.js, and our Lambdas to .NET 10. I removed old event sites, Blazor apps and other retired systems, so the codebase keeps shrinking. I set up Sentry, added smoke tests for every deployed app, and review a lot of my team's code.",
         "stack": [
           "dotnet",
           "nextjs",
@@ -91,6 +91,7 @@
           "sass",
           "mssql",
           "aws",
+          "ec2",
           "sentry",
           "claudecode",
           "codex"
